@@ -1,19 +1,17 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { callAPI } from "../../../utils/apicall.utils";
 import ErrorMessage from "../../../helpers/ErrorMessage";
 import InputField from "../../form/InputField";
 import { apiUrls } from "../../../utils/api.utils";
 import SuccessMessage from "../../../helpers/Success";
 interface RegisterInterface {
-    username: string;
     email: string;
     password: string;
-    confirmPassword: string;
 }
 const Register: React.FC = () => {
     const navigate = useNavigate()
-    const [register, setRegister] = useState<RegisterInterface>({ username: '', email: '', password: '', confirmPassword: '', });
+    const [register, setRegister] = useState<RegisterInterface>({ email: '', password: '' });
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setRegister((prev) => ({
@@ -23,13 +21,8 @@ const Register: React.FC = () => {
     };
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (register.password !== register.confirmPassword) {
-            ErrorMessage("password and confirmPassword")
-            return;
-        }
         try {
-            const { confirmPassword, ...registerData } = register;
-            const response = await callAPI(apiUrls.register, {}, 'POST', registerData);
+            const response = await callAPI(apiUrls.login, {}, 'POST', register);
             if (!response?.data?.status) {
                 ErrorMessage(response?.data?.message)
             } else {
@@ -47,22 +40,16 @@ const Register: React.FC = () => {
             </div>
             <div className="register-container">
                 <form className="register-form" onSubmit={handleSubmit}>
-                    <h2>Register</h2>
-                    <div className="form-group">
-                        <InputField label="username" name="username" value={register.username} onChange={handleChange} required />
-                    </div>
+                    <h2>Login</h2>
                     <div className="form-group">
                         <InputField label="email" name="email" value={register.email} onChange={handleChange} required />
                     </div>
                     <div className="form-group">
                         <InputField label="password" name="password" value={register.password} onChange={handleChange} required />
                     </div>
-                    <div className="form-group">
-                        <InputField label="confirmPassword" name="confirmPassword" value={register.confirmPassword} onChange={handleChange} required />
-                    </div>
-                    <button type="submit" className="register-button"> Register </button>
+                    <button type="submit" className="register-button"> login</button>
                     <br /><br />
-                    <button type="submit" className="register-button" onClick={() => navigate("/login")}>login</button>
+                    <button type="submit" className="register-button" onClick={() => navigate("/register")}>Register</button>
                 </form>
             </div>
         </div>

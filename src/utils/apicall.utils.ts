@@ -2,8 +2,6 @@ import axios from 'axios';
 import Qs from 'qs';
 import axiosInt from './axios.utils';
 import { defaultConfig } from '../config';
-
-
 async function callAPI(path:string, params:{}, method:string, data = {}, options = {}, headersObj = {}) {
     const API_ROOT = defaultConfig.baseAPIUrl;
     const url = API_ROOT + path;
@@ -27,7 +25,6 @@ async function callAPI(path:string, params:{}, method:string, data = {}, options
         ...options,
     });
 }
-
 function callAPIWithoutAuth(path:string, params:string, method:string, data = null, options = {}, headersObj = {}){
     const API_ROOT = defaultConfig.baseAPIUrl;
     const url = API_ROOT + path;

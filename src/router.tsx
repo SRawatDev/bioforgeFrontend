@@ -17,6 +17,11 @@ const routes: AppRoute[] = [
     element: lazy(() => import('./component/pages/register/index'))
   },
   {
+    guard: Guest,
+    path: '/login',
+    element: lazy(() => import('./component/pages/login/index'))
+  },
+  {
     path: '*',
     element: lazy(() => import('./component/PageNotFound'))
   }

@@ -13,9 +13,7 @@ const Guest: React.FC<Props> = ({ children }) => {
         }
     }, [token, navigate]);
     return (
-        <>
-            {children}
-        </>
+        <>{children}</>
     )
 }
 

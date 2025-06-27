@@ -66,9 +66,10 @@ const Register: React.FC = () => {
                         <div className="form-group">
                             <InputField label="Confirm Password" name="confirmPassword" value={register.confirmPassword} onChange={handleChange} required />
                         </div>
-                        <button type="submit" className="button">
+                        <button type="submit" className="btn btn-primary button">
                             Sign Up
                         </button>
+
                     </form>
                 </div>
             </div>

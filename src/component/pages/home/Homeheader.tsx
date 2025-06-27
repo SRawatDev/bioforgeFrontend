@@ -1,6 +1,8 @@
 import React from 'react'
 import { IoMenuOutline } from 'react-icons/io5';
+import { useNavigate } from 'react-router-dom';
 const Homeheader: React.FC = () => {
+    const navidate = useNavigate()
     return (
         <header>
             <div className="container">
@@ -12,8 +14,8 @@ const Homeheader: React.FC = () => {
                         <IoMenuOutline size={24} />
                     </button>
                     <nav className="navbar header-navbar" data-navbar="">
-                        <button className="btn btn-primary">Sign In</button>
-                        <button className="btn btn-primary">Sign Up</button>
+                        <button className="btn btn-primary" onClick={() => navidate("/login")}>Sign In</button>
+                        <button className="btn btn-primary" onClick={() => navidate("/register")}>Sign Up</button>
                     </nav>
                 </div>
             </div>

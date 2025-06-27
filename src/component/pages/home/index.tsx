@@ -15,10 +15,9 @@ const index: React.FC = () => {
           <section className="hero" id="home">
             <div className="container">
               <div className="hero-content">
-                <h1 className="h1 hero-title">Your full-funnel growth agency</h1>
+                <h1 className="h1 hero-title">Welcome to BioForge — Craft Your Digital Identity</h1>
                 <p className="hero-text">
-                  Capture and retrieve your lists across devices to help you stay
-                  organized at work, home, and on the go
+                  BioForge empowers you to build a personalized bio page where your story, style, and important links come together — all in one beautiful, mobile-ready experience.
                 </p>
                 <button className="btn btn-primary">Get Started</button>
               </div>
@@ -35,9 +34,7 @@ const index: React.FC = () => {
               <div className="about-top">
                 <h2 className="h2 section-title">What we do</h2>
                 <p className="section-text">
-                  Each time a digital asset is purchased or sold, Sequoir donates a
-                  percentage of the fees back into the development of the asset
-                  through its charitable foundation
+                  BioForge helps creators, professionals, and brands design beautiful, mobile-first bio pages — fully customizable, easy to manage, and shareable via a unique public link.
                 </p>
                 <ul className="about-list">
                   <li>
@@ -45,12 +42,9 @@ const index: React.FC = () => {
                       <div className="card-icon">
                         <IoBriefcaseOutline size={24} />
                       </div>
-                      <h3 className="h3 card-title">
-                        Paid Search and Social Management
-                      </h3>
+                      <h3 className="h3 card-title">Link Management & Personal Branding</h3>
                       <p className="card-text">
-                        Help your business increase their visibility and reach
-                        targeted audiences effectively
+                        Create a dynamic bio page with links to your social media, portfolio, shop, and more — all in one place.
                       </p>
                     </div>
                   </li>
@@ -59,10 +53,9 @@ const index: React.FC = () => {
                       <div className="card-icon">
                         <IoChatbubblesOutline size={24} />
                       </div>
-                      <h3 className="h3 card-title">Direct Response Content</h3>
+                      <h3 className="h3 card-title">Public Profiles with Custom URLs</h3>
                       <p className="card-text">
-                        Drive immediate engagement and conversions, prompting your
-                        audience to act right away
+                        Share your page with a clean username-based URL (like bioforge.io/yourname) and connect with your audience instantly.
                       </p>
                     </div>
                   </li>
@@ -71,13 +64,9 @@ const index: React.FC = () => {
                       <div className="card-icon">
                         <IoRocketOutline size={24} />
                       </div>
-                      <h3 className="h3 card-title">
-                        <abbr title="Conversion Rate Optimization">CRO</abbr> and
-                        Retention Optimizations
-                      </h3>
+                      <h3 className="h3 card-title">Themes, Fonts & Styling</h3>
                       <p className="card-text">
-                        By optimizing both conversion rates and customer retention,
-                        your business will significantly boost their overall revenue
+                        Customize your bio page with light/dark themes, colors, fonts, and button styles — no design skills needed.
                       </p>
                     </div>
                   </li>
@@ -92,12 +81,11 @@ const index: React.FC = () => {
                   />
                 </figure>
                 <div className="about-bottom-content">
-                  <h2 className="h2 section-title">We're obsessed with growth</h2>
+                  <h2 className="h2 section-title">We’re built for self-expression</h2>
                   <p className="section-text">
-                    Each time a digital asset is purchased or sold, Sequoir donates
-                    a percentage of the fees back
+                    Whether you’re a creator or entrepreneur, BioForge makes it easy to build, personalize, and share your digital identity — all from one place.
                   </p>
-                  <button className="btn btn-secondary">Sign up for Free</button>
+                  <button className="btn btn-secondary">Get Started for Free</button>
                 </div>
               </div>
             </div>
@@ -105,14 +93,10 @@ const index: React.FC = () => {
           <section className="features" id="features">
             <div className="container">
               <h2 className="h2 section-title">
-                Our team is made up of all different backgrounds from all over the
-                world
+                Built by creators, for creators — globally
               </h2>
               <p className="section-text">
-                Our team is a vibrant tapestry woven from diverse backgrounds and
-                cultures from all corners of the globe. This rich variety not only
-                enhances our creativity and innovation but also fosters a deeper
-                understanding and collaboration among us
+                The BioForge team brings together talent from around the world, united by a shared passion for empowering individuals to express their identity online. Our global perspective drives innovation, inclusivity, and design that speaks to everyone.
               </p>
               <ul className="features-list">
                 <li className="features-item">
@@ -123,10 +107,9 @@ const index: React.FC = () => {
                     />
                   </figure>
                   <div className="feature-item-content">
-                    <h3 className="h2 item-title">Cover your everyday expenses</h3>
+                    <h3 className="h2 item-title">Create & customize in minutes</h3>
                     <p className="item-text">
-                      Everyday expenses can quickly add up. That's why it's
-                      important to have a plan to cover them
+                      Build a beautiful bio page with your links, profile, and style — no coding required. Just pick a template, customize, and publish.
                     </p>
                   </div>
                 </li>
@@ -138,12 +121,9 @@ const index: React.FC = () => {
                     />
                   </figure>
                   <div className="feature-item-content">
-                    <h3 className="h2 item-title">
-                      We offer low fees that are transparent
-                    </h3>
+                    <h3 className="h2 item-title">Always free, always yours</h3>
                     <p className="item-text">
-                      We believe in clear and honest pricing. That's why our fees
-                      are low and transparent, with no hidden charges or surprises
+                      BioForge is free to use, with no hidden fees. We believe your online presence shouldn’t come at a cost — transparency is our promise.
                     </p>
                   </div>
                 </li>

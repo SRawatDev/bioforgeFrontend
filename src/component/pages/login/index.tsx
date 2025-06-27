@@ -34,27 +34,29 @@ const Register: React.FC = () => {
         }
     };
     return (
-        <div className="container">
-            <div className="icon-box">
-                <img src="/src/assets/logo.png" alt="Logo" height={150} />
+        <div className="container-parent">
+            <div className="container-register">
+                <div className="icon-box">
+                    <img src="/src/assets/logo.png" alt="Logo" height={150} />
+                </div>
+                <h2>Sign In to Your Account</h2>
+                <p>Access your account to continue</p>
+                <form onSubmit={handleSubmit}>
+                    <div className="form-group">
+                        <InputField label="email" name="email" value={register.email} onChange={handleChange} required />
+                    </div>
+                    <div className="form-group">
+                        <InputField label="password" name="password" value={register.password} onChange={handleChange} required />
+                    </div>
+                    <button type="submit" className="button">
+                        Sign In
+                    </button>
+                    <br /><br />
+                    <button type="submit" className="button" onClick={() => navigate("/register")}>
+                        Sign Up
+                    </button>
+                </form>
             </div>
-            <h2>Sign In to Your Account</h2>
-            <p>Access your account to continue</p>
-            <form onSubmit={handleSubmit}>
-                <div className="form-group">
-                    <InputField label="email" name="email" value={register.email} onChange={handleChange} required />
-                </div>
-                <div className="form-group">
-                    <InputField label="password" name="password" value={register.password} onChange={handleChange} required />
-                </div>
-                <button type="submit" className="button">
-                    Sign In
-                </button>
-                <br /><br />
-                <button type="submit" className="button" onClick={() => navigate("/register")}>
-                    Sign Up
-                </button>
-            </form>
         </div>
     );
 };

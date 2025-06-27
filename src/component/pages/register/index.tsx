@@ -45,31 +45,32 @@ const Register: React.FC = () => {
         }
     };
     return (
-        <>
-            {loader && <LoadScreen />}
-            <div className="container">
-                <div className="icon-box">
-                    <img src="/src/assets/logo.png" alt="Logo" height={150} />
+        <> {loader && <LoadScreen />}
+            <div className="container-parent">
+                <div className="container-register">
+                    <div className="icon-box">
+                        <img src="/src/assets/logo.png" alt="Logo" height={150} />
+                    </div>
+                    <h2>Sign Up to Your Account</h2>
+                    <p>Access your account to continue</p>
+                    <form onSubmit={handleSubmit}>
+                        <div className="form-group">
+                            <InputField label="Username" name="username" value={register.username} onChange={handleChange} required />
+                        </div>
+                        <div className="form-group">
+                            <InputField label="Email" name="email" value={register.email} onChange={handleChange} required />
+                        </div>
+                        <div className="form-group">
+                            <InputField label="Password" name="password" value={register.password} onChange={handleChange} required />
+                        </div>
+                        <div className="form-group">
+                            <InputField label="Confirm Password" name="confirmPassword" value={register.confirmPassword} onChange={handleChange} required />
+                        </div>
+                        <button type="submit" className="button">
+                            Sign Up
+                        </button>
+                    </form>
                 </div>
-                <h2>Sign Up to Your Account</h2>
-                <p>Access your account to continue</p>
-                <form onSubmit={handleSubmit}>
-                    <div className="form-group">
-                        <InputField label="Username" name="username" value={register.username} onChange={handleChange} required />
-                    </div>
-                    <div className="form-group">
-                        <InputField label="Email" name="email" value={register.email} onChange={handleChange} required />
-                    </div>
-                    <div className="form-group">
-                        <InputField label="Password" name="password" value={register.password} onChange={handleChange} required />
-                    </div>
-                    <div className="form-group">
-                        <InputField label="Confirm Password" name="confirmPassword" value={register.confirmPassword} onChange={handleChange} required />
-                    </div>
-                    <button type="submit" className="button">
-                        Sign Up
-                    </button>
-                </form>
             </div>
         </>
     );

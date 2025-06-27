@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {  callAPIWithoutAuth } from "../../../utils/apicall.utils";
+import { callAPIWithoutAuth } from "../../../utils/apicall.utils";
 import ErrorMessage from "../../../helpers/ErrorMessage";
 import InputField from "../../form/InputField";
 import { apiUrls } from "../../../utils/api.utils";
@@ -25,14 +25,17 @@ const Register: React.FC = () => {
     };
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
         if (register.password !== register.confirmPassword) {
             ErrorMessage("password and confirmPassword")
             return;
         }
+        setLoader(true)
         try {
             const { confirmPassword, ...registerData } = register;
             const response = await callAPIWithoutAuth(apiUrls.register, {}, 'POST', registerData);
             if (!response?.data?.status) {
+                setLoader(false)
                 ErrorMessage(response?.data?.message)
             } else {
                 setLoader(true)
@@ -41,7 +44,7 @@ const Register: React.FC = () => {
                 SuccessMessage(response?.data?.message)
             }
         } catch (err: any) {
-            setLoader(false)
+            setLoader(true)
             ErrorMessage(err.message || "Something went wrong");
         }
     };

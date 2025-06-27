@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { callAPI, callAPIWithoutAuth } from "../../../utils/apicall.utils";
+import { callAPIWithoutAuth } from "../../../utils/apicall.utils";
 import ErrorMessage from "../../../helpers/ErrorMessage";
 import InputField from "../../form/InputField";
 import { apiUrls } from "../../../utils/api.utils";
@@ -23,20 +23,22 @@ const Register: React.FC = () => {
     };
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        setLoader(true)
         try {
             const response = await callAPIWithoutAuth(apiUrls.login, {}, 'POST', login);
             if (!response?.data?.status) {
                 ErrorMessage(response?.data?.message)
+                setLoader(true)
             } else {
                 localStorage.setItem("_id", response?.data?.data?.id)
                 localStorage.setItem("accessToken", response?.data?.data?.token)
                 navigate("/")
-                setLoader(true)
+                setLoader(false)
                 SuccessMessage(response?.data?.message)
             }
         } catch (err: any) {
             ErrorMessage(err.message || "Something went wrong");
-            setLoader(false)
+            setLoader(true)
         }
     };
     return (
@@ -51,15 +53,15 @@ const Register: React.FC = () => {
                     <p>Access your account to continue</p>
                     <form onSubmit={handleSubmit}>
                         <div className="form-group">
-                            <InputField label="email" name="email" value={login.email} onChange={handleChange} required />
+                            <InputField label="Email" name="email" value={login.email} onChange={handleChange} required />
                         </div>
                         <div className="form-group">
-                            <InputField label="password" name="password" value={login.password} onChange={handleChange} required />
+                            <InputField label="Password" name="password" value={login.password} onChange={handleChange} required />
                         </div>
                         <button type="submit" className="button">
                             Sign In
                         </button>
-                        <br /><br />
+                        <br />
                         <button type="submit" className="button" onClick={() => navigate("/register")}>
                             Sign Up
                         </button>

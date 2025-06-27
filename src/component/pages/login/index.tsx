@@ -34,24 +34,27 @@ const Register: React.FC = () => {
         }
     };
     return (
-        <div className="parent-register-container">
-            <div className="logo-image">
+        <div className="container">
+            <div className="icon-box">
                 <img src="/src/assets/logo.png" alt="Logo" height={150} />
             </div>
-            <div className="register-container">
-                <form className="register-form" onSubmit={handleSubmit}>
-                    <h2>Login</h2>
-                    <div className="form-group">
-                        <InputField label="email" name="email" value={register.email} onChange={handleChange} required />
-                    </div>
-                    <div className="form-group">
-                        <InputField label="password" name="password" value={register.password} onChange={handleChange} required />
-                    </div>
-                    <button type="submit" className="register-button"> login</button>
-                    <br /><br />
-                    <button type="submit" className="register-button" onClick={() => navigate("/register")}>Register</button>
-                </form>
-            </div>
+            <h2>Sign In to Your Account</h2>
+            <p>Access your account to continue</p>
+            <form onSubmit={handleSubmit}>
+                <div className="form-group">
+                    <InputField label="email" name="email" value={register.email} onChange={handleChange} required />
+                </div>
+                <div className="form-group">
+                    <InputField label="password" name="password" value={register.password} onChange={handleChange} required />
+                </div>
+                <button type="submit" className="button">
+                    Sign In
+                </button>
+                <br /><br />
+                <button type="submit" className="button" onClick={() => navigate("/register")}>
+                    Sign Up
+                </button>
+            </form>
         </div>
     );
 };

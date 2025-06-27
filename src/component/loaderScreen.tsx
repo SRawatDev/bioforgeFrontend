@@ -1,9 +1,7 @@
 import React from "react";
-const LoadScreen:React.FC = () => (
-  <div className="loading">
-    <img src="/image/logo.svg" alt="logo" />
-    <p className="mt-2">Please wait we are fetching your data</p>
+const LoadScreen: React.FC = () => (
+  <div className="fixed inset-0 flex flex-col items-center justify-center bg-white z-50">
+    <img src="/src/assets/loader.gif" alt="logo" />
   </div>
 );
-
 export default LoadScreen;

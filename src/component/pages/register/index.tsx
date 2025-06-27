@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { callAPI } from "../../../utils/apicall.utils";
 import ErrorMessage from "../../../helpers/ErrorMessage";
 import InputField from "../../form/InputField";
 import { apiUrls } from "../../../utils/api.utils";
 import SuccessMessage from "../../../helpers/Success";
+import LoadScreen from "../../loaderScreen";
 interface RegisterInterface {
     username: string;
     email: string;
@@ -12,6 +13,7 @@ interface RegisterInterface {
     confirmPassword: string;
 }
 const Register: React.FC = () => {
+    const [loader, setLoader] = useState<boolean>(false)
     const navigate = useNavigate()
     const [register, setRegister] = useState<RegisterInterface>({ username: '', email: '', password: '', confirmPassword: '', });
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,39 +35,43 @@ const Register: React.FC = () => {
             if (!response?.data?.status) {
                 ErrorMessage(response?.data?.message)
             } else {
+                setLoader(true)
                 navigate("/login")
                 SuccessMessage(response?.data?.message)
             }
         } catch (err: any) {
+            setLoader(false)
             ErrorMessage(err.message || "Something went wrong");
         }
     };
     return (
-        <div className="parent-register-container">
-            <div className="logo-image">
-                <img src="/src/assets/logo.png" alt="Logo" height={150} />
-            </div>
-            <div className="register-container">
-                <form className="register-form" onSubmit={handleSubmit}>
-                    <h2>Register</h2>
+        <>
+            {loader && <LoadScreen />}
+            <div className="container">
+                <div className="icon-box">
+                    <img src="/src/assets/logo.png" alt="Logo" height={150} />
+                </div>
+                <h2>Sign Up to Your Account</h2>
+                <p>Access your account to continue</p>
+                <form onSubmit={handleSubmit}>
                     <div className="form-group">
-                        <InputField label="username" name="username" value={register.username} onChange={handleChange} required />
+                        <InputField label="Username" name="username" value={register.username} onChange={handleChange} required />
                     </div>
                     <div className="form-group">
-                        <InputField label="email" name="email" value={register.email} onChange={handleChange} required />
+                        <InputField label="Email" name="email" value={register.email} onChange={handleChange} required />
                     </div>
                     <div className="form-group">
-                        <InputField label="password" name="password" value={register.password} onChange={handleChange} required />
+                        <InputField label="Password" name="password" value={register.password} onChange={handleChange} required />
                     </div>
                     <div className="form-group">
-                        <InputField label="confirmPassword" name="confirmPassword" value={register.confirmPassword} onChange={handleChange} required />
+                        <InputField label="Confirm Password" name="confirmPassword" value={register.confirmPassword} onChange={handleChange} required />
                     </div>
-                    <button type="submit" className="register-button"> Register </button>
-                    <br /><br />
-                    <button type="submit" className="register-button" onClick={() => navigate("/login")}>login</button>
+                    <button type="submit" className="button">
+                        Sign Up
+                    </button>
                 </form>
             </div>
-        </div>
+        </>
     );
 };
 

@@ -11,6 +11,7 @@ axiosInt.interceptors.response.use(
   (error: AxiosError) => {
     if (error.response?.status === 401) {
       window.location.href = '/';
+      localStorage.clear()
     }
     ErrorMessage(error.message || 'Something went wrong');
     return Promise.reject(

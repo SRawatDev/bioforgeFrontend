@@ -27,6 +27,11 @@ const routes: AppRoute[] = [
     element: lazy(() => import('./component/pages/home/index'))
   },
   {
+    guard: Authenticated,
+    path: '/profile',
+    element: lazy(() => import('./component/pages/profile/index'))
+  },
+  {
     path: '*',
     element: lazy(() => import('./component/PageNotFound'))
   }

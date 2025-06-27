@@ -1,4 +1,5 @@
 export const apiUrls = {
-    register:"register",  
-    login:"login",  
+    register: "register",
+    login: "login",
+    getUserInfo: "getUserInfo",
 };

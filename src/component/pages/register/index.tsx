@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { callAPI } from "../../../utils/apicall.utils";
+import {  callAPIWithoutAuth } from "../../../utils/apicall.utils";
 import ErrorMessage from "../../../helpers/ErrorMessage";
 import InputField from "../../form/InputField";
 import { apiUrls } from "../../../utils/api.utils";
@@ -31,11 +31,12 @@ const Register: React.FC = () => {
         }
         try {
             const { confirmPassword, ...registerData } = register;
-            const response = await callAPI(apiUrls.register, {}, 'POST', registerData);
+            const response = await callAPIWithoutAuth(apiUrls.register, {}, 'POST', registerData);
             if (!response?.data?.status) {
                 ErrorMessage(response?.data?.message)
             } else {
                 setLoader(true)
+                setRegister({ username: '', email: '', password: '', confirmPassword: '', })
                 navigate("/login")
                 SuccessMessage(response?.data?.message)
             }

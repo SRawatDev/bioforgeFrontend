@@ -1,7 +1,14 @@
 export const apiUrls = {
-    register: "register",
-    login: "login",
-    getUserInfo: "getUserInfo",
-    getUserInfotoken: "getUserInfotoken",
-    getlinks: "get-links",
+    register: "api/v1/register",
+    login: "api/v1/login",
+    getUserInfo: "api/v1/getUserInfo",
+    getUserInfotoken: "api/v1/getUserInfotoken",
+    getlinks: "api/v1/get-links",
+    addlinks: "api/v1/add-links",
+    linkupdate : "api/v1/link-update",
+    upload: "api/upload/singleImage",
+    linkdelete: "api/v1/link-delete",
+    linkupdateStatus: "api/v1/link-updateStatus",
+
+
 };

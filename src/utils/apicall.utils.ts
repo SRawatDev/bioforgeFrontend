@@ -48,7 +48,7 @@ function callAPIWithoutAuth(path:string, params:{}, method:string, data = {}, op
     });
 }
 
-async function API(path:string, params:string, method:string, data = null, options = {}, headersObj = {}){
+async function API(path:string, params:{}, method:string, data = {}, options = {}, headersObj = {}){
     const API_ROOT = defaultConfig.baseAPIUrl;
     const url = API_ROOT + path;
     const headers = {

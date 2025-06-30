@@ -1,9 +1,8 @@
-import React from 'react'
-import { IoMenuOutline } from 'react-icons/io5';
-import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { useNavigate, Link } from "react-router-dom";
+
 const Homeheader: React.FC = () => {
-    const navidate = useNavigate()
+    const navigate = useNavigate();
     return (
         <header>
             <div className="container">
@@ -11,17 +10,31 @@ const Homeheader: React.FC = () => {
                     <img src="https://i.postimg.cc/x87tV35B/logo.png" alt="Funel logo" />
                 </Link>
                 <div className="navbar-wrapper">
-                    <button className="navbar-menu-btn" data-navbar-toggle-btn="">
-                        <IoMenuOutline size={24} />
-                    </button>
-                    <nav className="navbar header-navbar" data-navbar="">
-                        <button className="btn btn-primary" onClick={() => navidate("/login")}>Sign In</button>
-                        <button className="btn btn-primary" onClick={() => navidate("/register")}>Sign Up</button>
-                    </nav>
+                    {!localStorage.getItem("accessToken") ? (
+                        <nav className="navbar header-navbar" data-navbar="">
+                            <button className="btn btn-primary" onClick={() => navigate("/login")}>
+                                Sign In
+                            </button>
+                            <button className="btn btn-primary" onClick={() => navigate("/register")}>
+                                Sign Up
+                            </button>
+                        </nav>
+                    ) :
+                        (<div className="profile" onClick={() => navigate("/profile/"+localStorage.getItem("_id"))}>
+                            <img
+                                src="https://i.pravatar.cc/48"
+                                alt="Profile Picture"
+                                className="avatar"
+                            />
+                            <div className="info">
+                                <span className="name">Dashboard</span>
+                            </div>
+                        </div>)
+                    }
                 </div>
             </div>
         </header>
-    )
-}
+    );
+};
 
-export default Homeheader
+export default Homeheader;

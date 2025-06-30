@@ -2,6 +2,7 @@ import React, { Suspense, Fragment, lazy, type LazyExoticComponent, type Compone
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LoadScreen from './component/loaderScreen';
 import Authenticated from './guard/Authenticated';
+import Header from './layout/Header';
 import Guest from './guard/Guest';
 interface AppRoute {
   path: string;
@@ -27,9 +28,16 @@ const routes: AppRoute[] = [
     element: lazy(() => import('./component/pages/home/index'))
   },
   {
-    guard: Authenticated,
-    path: '/profile',
+    // guard: Authenticated,
+    layout: Header,
+    path: '/profile/:id',
     element: lazy(() => import('./component/pages/profile/index'))
+  },
+  {
+    // layout: Header,
+    guard: Authenticated,
+    path: '/link',
+    element: lazy(() => import('./component/pages/links/Index'))
   },
   {
     path: '*',

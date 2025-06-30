@@ -3,4 +3,5 @@ export const apiUrls = {
     login: "login",
     getUserInfo: "getUserInfo",
     getUserInfotoken: "getUserInfotoken",
+    getlinks: "get-links",
 };

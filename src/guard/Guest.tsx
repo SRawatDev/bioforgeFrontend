@@ -5,6 +5,7 @@ interface Props {
     children: ReactNode;
 }
 const Guest: React.FC<Props> = ({ children }) => {
+    console.log("======",children)
     const token = localStorage.getItem('accessToken')
     const navigate = useNavigate()
     useEffect(() => {

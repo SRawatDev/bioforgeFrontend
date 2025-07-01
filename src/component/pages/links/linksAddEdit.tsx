@@ -6,6 +6,7 @@ import SuccessMessage from '../../../helpers/Success';
 import { apiUrls } from '../../../utils/api.utils';
 import LoadScreen from '../../loaderScreen';
 import { defaultConfig } from '../../../config';
+import { FaInstagram, FaFacebookF, FaTwitter, FaLinkedinIn, FaYoutube } from 'react-icons/fa';
 
 interface Props {
   open: boolean;
@@ -20,30 +21,53 @@ interface Link {
   linkTitle: string;
   linkUrl: string;
   linkLogo: string;
+  type: string;
 }
 
+export const socialPlatforms = [
+  { label: 'Instagram', value: 'instagram', icon: <FaInstagram size={24} /> },
+  { label: 'Facebook', value: 'facebook', icon: <FaFacebookF size={24} /> },
+  { label: 'Twitter', value: 'twitter', icon: <FaTwitter size={24} /> },
+  { label: 'LinkedIn', value: 'linkedin', icon: <FaLinkedinIn size={24} /> },
+  { label: 'YouTube', value: 'youtube', icon: <FaYoutube size={24} /> },
+];
 export const LinksAddEdit: React.FC<Props> = ({ open, onClose, Detail, linkDetail, action }) => {
-  const [loader, setLoader] = useState<boolean>(false);
-  const [link, setLink] = useState<Link>({ linkTitle: '', linkUrl: '', linkLogo: '' });
+  const [loader, setLoader] = useState(false);
+  const [link, setLink] = useState<Link>({ linkTitle: '', linkUrl: '', linkLogo: '', type: 'social' });
   const [preview, setPreview] = useState<string | null>(null);
 
   useEffect(() => {
-    if (open && action === 'edit') {
-      setLink(linkDetail);
-      setPreview(linkDetail?.linkLogo || null);
-    }
-    if (open && action === 'add') {
-      setLink({ linkTitle: '', linkUrl: '', linkLogo: '' });
-      setPreview(null);
+    if (open) {
+      if (action === 'edit') {
+        setLink(linkDetail);
+        setPreview(linkDetail?.linkLogo || null);
+      } else if (action === 'add') {
+        setLink({ linkTitle: '', linkUrl: '', linkLogo: '', type: 'social' });
+        setPreview(null);
+      }
     }
   }, [open, action, linkDetail]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setLink((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+
+    if (name === 'linkTitle' && link.type === 'social') {
+
+      const selected = socialPlatforms.find(
+        (p) => p.label.toLowerCase() === value.toLowerCase() || p.value.toLowerCase() === value.toLowerCase()
+      );
+      setLink((prev) => ({
+        ...prev,
+        [name]: value,
+        linkLogo: selected ? selected.value : prev.linkLogo,
+      }));
+      setPreview(null);
+    } else {
+      setLink((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
   };
 
   const UploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -64,6 +88,7 @@ export const LinksAddEdit: React.FC<Props> = ({ open, onClose, Detail, linkDetai
       }
     } catch (err) {
       console.error('Error uploading image:', err);
+      ErrorMessage('Image upload failed');
     }
   };
 
@@ -73,6 +98,9 @@ export const LinksAddEdit: React.FC<Props> = ({ open, onClose, Detail, linkDetai
     try {
       const endpoint = action === 'edit' ? apiUrls.linkupdate : apiUrls.addlinks;
       const payload = action === 'edit' ? { ...link, _id: linkDetail._id } : link;
+      if (payload.type === 'social' ) {
+        payload.linkLogo = '';
+      }
 
       const response = await callAPI(endpoint, {}, 'POST', payload);
       if (!response?.data?.status) {
@@ -98,16 +126,54 @@ export const LinksAddEdit: React.FC<Props> = ({ open, onClose, Detail, linkDetai
         <div className="modal-content">
           <div className="modal-header">
             <h2>{action === 'edit' ? 'Edit' : 'Add'} Social Link</h2>
-            <button className="close-btn" onClick={onClose}>×</button>
+            <button className="close-btn" onClick={onClose} aria-label="Close">
+              ×
+            </button>
           </div>
           <form onSubmit={handleSubmit}>
-            <InputField
-              label="Link Title"
-              name="linkTitle"
-              value={link.linkTitle}
+            <label htmlFor="linkType">Link Type</label>
+            <select
+              id="linkType"
+              name="type"
+              className="form-control"
+              value={link.type}
               onChange={handleChange}
               required
-            />
+            >
+
+              <option value="social">Social</option>
+              <option value="non_social">Non-Social</option>
+            </select>
+
+            {link.type === 'social' ? (
+              <>
+                <label htmlFor="socialTitle">Social Platform</label>
+                <select
+                  id="socialTitle"
+                  name="linkTitle"
+                  className="form-control"
+                  value={link.linkTitle}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="">Select Platform</option>
+                  {socialPlatforms.map((platform) => (
+                    <option key={platform.value} value={platform.label}>
+                      {platform.label}
+                    </option>
+                  ))}
+                </select>
+              </>
+            ) : (
+              <InputField
+                label="Link Title"
+                name="linkTitle"
+                value={link.linkTitle}
+                onChange={handleChange}
+                required
+              />
+            )}
+
             <InputField
               label="Link Url"
               name="linkUrl"
@@ -116,14 +182,19 @@ export const LinksAddEdit: React.FC<Props> = ({ open, onClose, Detail, linkDetai
               required
             />
 
-            <label>Link Logo (Image)</label>
-            <input
-              type="file"
-              name="image"
-              accept="image/png,image/jpg,image/jpeg"
-              onChange={UploadImage}
-              className="form-control"
-            />
+            {link.type !== 'social' && (
+              <>
+                <label>Link Logo (Image)</label>
+                <input
+                  type="file"
+                  name="image"
+                  accept="image/png,image/jpg,image/jpeg"
+                  onChange={UploadImage}
+                  className="form-control"
+                />
+              </>
+            )}
+
             {preview && (
               <img
                 src={defaultConfig.imagePath + preview}
@@ -131,9 +202,14 @@ export const LinksAddEdit: React.FC<Props> = ({ open, onClose, Detail, linkDetai
                 style={{ marginTop: '10px', width: '80px', borderRadius: '8px' }}
               />
             )}
+
             <div className="modal-actions">
-              <button type="submit" className="btn-primary">Submit</button>
-              <button type="button" className="btn-secondary" onClick={onClose}>Cancel</button>
+              <button type="submit" className="btn-primary">
+                Submit
+              </button>
+              <button type="button" className="btn-secondary" onClick={onClose}>
+                Cancel
+              </button>
             </div>
           </form>
         </div>

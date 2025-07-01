@@ -454,7 +454,7 @@ body {
   justify-content: start;
   flex-wrap: wrap;
   gap: 12px;
-  padding: 20px;
+  padding: 5px;
 }
 
 .link-card {
@@ -553,6 +553,7 @@ body {
 }
 
 .link-info {
+  position: relative;
   flex: 1;
 }
 
@@ -610,21 +611,23 @@ body {
   background-color: #f10202;
   color: white;
 }
-.status{
+.status {
   background-color: #07bc0c;
   color: white;
-
 }
-
 
 .delete:hover {
   background-color: #dc2626;
 }
 .editbutton {
-     background-color: #014178;
-    color: white;
-    padding: 9px 36px;
-    border-radius: 6px;
+  background-color: #014178;
+  color: white;
+  padding: 9px 36px;
+  border-radius: 6px;
+}
+.link-logo {
+  width: 100px;
+  height: 100px;
 }
 
 @media (max-width: 600px) {
@@ -633,8 +636,8 @@ body {
   }
 
   .link-logo {
-    width: 50px;
-    height: 50px;
+    width: 30px;
+    height: 30px;
   }
 
   .button-row {
@@ -769,7 +772,6 @@ input[type="file"] {
 }
 
 .btn {
-  padding: 5px 16px;
   border-radius: 6px;
   font-size: 14px;
   border: none;
@@ -793,4 +795,85 @@ input[type="file"] {
 
 .btn.submit:hover {
   background-color: #a93226;
+}
+
+.mainheader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.toplogo img {
+  height: 60px;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.header-button {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 24px;
+  background-color: transparent;
+  border: none;
+  color: #333;
+}
+
+.header-button:focus,
+.header-button:hover {
+  background-color: #f0f0f0;
+  outline: none;
+}
+.offcanvas-body {
+  padding: 20px;
+  background-color: #fff;
+  overflow-y: hidden;
+
+}
+.offcanvas-stop{
+  min-height: 318px;
+}
+
+.offcanvas-body ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.offcanvas-body li {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Space between icon and text */
+  padding: 6px 0;
+  font-size: 18px;
+  border-bottom: 1px solid #eee;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.offcanvas-body li:hover {
+  color: #007bff;
+  background-color: #f8f9fa;
+  border-radius: 5px;
+  padding-left: 10px;
+}
+
+.offcanvas-body li svg {
+  font-size: 20px;
+  color: #555;
+}
+.three-dots{
+     position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.social-Links{
+  color: #014178;
+  text-decoration: underline;
 }

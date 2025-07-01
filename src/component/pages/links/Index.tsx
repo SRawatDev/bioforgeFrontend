@@ -7,28 +7,35 @@ import LoadScreen from '../../loaderScreen';
 import { defaultConfig } from '../../../config';
 import { LinksAddEdit } from './linksAddEdit';
 import Delete from './Delete';
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
+import { MdOutlineEdit, MdDeleteOutline } from "react-icons/md";
+import { TbStatusChange } from "react-icons/tb";
+import { AiOutlineEye } from "react-icons/ai";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { socialPlatforms } from './linksAddEdit';
 
-interface Link {
+interface LinkItem {
     _id: string;
     linkTitle: string;
     linkUrl: string;
     linkLogo: string;
     status: string;
+    type: string;
 }
 
 const Index: React.FC = () => {
     const [action, setAction] = useState<'add' | 'edit'>('add');
-    const [deleteOpen, setDeleteOpen] = useState<boolean>(false);
-    const [open, setOpen] = useState<boolean>(false);
-    const [linksInfo, setLinksInfo] = useState<Link[]>([]);
-    const [loader, setLoader] = useState<boolean>(false);
-    const [linkDetail, setLinkDetail] = useState<Link>({
+    const [deleteOpen, setDeleteOpen] = useState(false);
+    const [open, setOpen] = useState(false);
+    const [linksInfo, setLinksInfo] = useState<LinkItem[]>([]);
+    const [loader, setLoader] = useState(false);
+    const [linkDetail, setLinkDetail] = useState<LinkItem>({
         _id: '',
         linkTitle: '',
         linkUrl: '',
         linkLogo: '',
-        status: ''
+        status: '',
+        type: ''
     });
 
     const Detail = async () => {
@@ -47,43 +54,43 @@ const Index: React.FC = () => {
         }
     };
 
-    const handleEdit = (item: Link): void => {
+    const handleEdit = (item: LinkItem) => {
         setLinkDetail(item);
         setOpen(true);
         setAction('edit');
     };
 
-    const handleDelete = (item: Link): void => {
+    const handleDelete = (item: LinkItem) => {
         setLinkDetail(item);
         setDeleteOpen(true);
     };
 
-    const confirmDelete = async (item: Link) => {
+    const confirmDelete = async (item: LinkItem) => {
         try {
-            const res = await callAPI(apiUrls.linkdelete, { _id: item?._id }, 'POST', { _id: linkDetail._id });
+            const res = await callAPI(apiUrls.linkdelete, { _id: item._id }, 'POST', {});
             if (res?.data?.status) {
-                SuccessMessage(res?.data?.message);
+                SuccessMessage(res.data.message);
                 setDeleteOpen(false);
                 Detail();
             } else {
-                ErrorMessage(res?.data?.message);
+                ErrorMessage(res.data.message);
             }
         } catch (err: any) {
             ErrorMessage(err.message || 'Delete failed');
         }
     };
-    const confirmStatus = async (item: Link) => {
+
+    const confirmStatus = async (item: LinkItem) => {
         try {
-            const res = await callAPI(apiUrls.linkupdateStatus, { _id: item?._id }, 'GET', {  });
+            const res = await callAPI(apiUrls.linkupdateStatus, { _id: item._id }, 'GET', {});
             if (res?.data?.status) {
-                SuccessMessage(res?.data?.message);
-                setDeleteOpen(false);
+                SuccessMessage(res.data.message);
                 Detail();
             } else {
-                ErrorMessage(res?.data?.message);
+                ErrorMessage(res.data.message);
             }
         } catch (err: any) {
-            ErrorMessage(err.message || 'Delete failed');
+            ErrorMessage(err.message || 'Status update failed');
         }
     };
 
@@ -95,32 +102,181 @@ const Index: React.FC = () => {
         <>
             {loader && <LoadScreen />}
             <div className="linksHeader">
-                <h2 className="links-title">Social Links</h2>
-                <button className="editbutton" onClick={() => { setOpen(true); setAction('add'); }}>ADD</button>
+                <h2 className="links-title">Manage Your Links</h2>
+                <button
+                    className="editbutton"
+                    onClick={() => {
+                        setOpen(true);
+                        setAction('add');
+                        setLinkDetail({
+                            _id: '',
+                            linkTitle: '',
+                            linkUrl: '',
+                            linkLogo: '',
+                            status: '',
+                            type: '',
+                        });
+                    }}
+                >
+                    ADD
+                </button>
             </div>
 
             <div className="links-container">
                 <div className="links-grid">
-                    {linksInfo.map((item) => (
-                        <div className="link-card" key={item._id}>
-                            <img
-                                src={defaultConfig.imagePath + item.linkLogo}
-                                alt={item.linkTitle}
-                                className="link-logo"
-                            />
-                            <div className="link-info">
-                                <h3 className="link-title">{item.linkTitle}</h3>
-                                <p className="link-url"><Link to={item.linkUrl} >{item.linkUrl}</Link></p>
-                                <div className="button-row">
+       
+                    <h5 className='social-Links'>Social Links</h5>
+                    {linksInfo.map((item) => {
+                        const matchedPlatform = socialPlatforms.find(
+                            (platform) => platform.label.toLowerCase() === item.linkTitle.toLowerCase()
+                        );
+                        return (
+                            <>
+                                {
+                                    item?.type == 'social' &&
+                                    <div className="link-card" key={item._id}>
+                                        {matchedPlatform ? (
+                                            <span className="social-icon">{matchedPlatform.icon}</span>
+                                        ) : (
+                                            <img
+                                                src={defaultConfig.imagePath + item.linkLogo}
+                                                alt={item.linkTitle}
+                                                className="link-logo"
+                                            />
+                                        )}
 
-                                    <button className="btn status" onClick={() => confirmStatus(item)}>{item?.status}</button>
-                                    <button className="btn edit" onClick={() => handleEdit(item)}>Edit</button>
-                                    <button className="btn delete" onClick={() => handleDelete(item)}>Delete</button>
-                                </div>
-                            </div>
+                                        <div className="link-info">
+                                            <h3 className="link-title">{item.linkTitle}</h3>
 
-                        </div>
-                    ))}
+                                            <div className="dropdown three-dots">
+                                                <BsThreeDotsVertical
+                                                    className="dropdown-toggle three-dots"
+                                                    role="button"
+                                                    data-bs-toggle="dropdown"
+                                                    aria-expanded="false"
+                                                />
+                                                <ul className="dropdown-menu">
+                                                    <li>
+                                                        <RouterLink
+                                                            className="dropdown-item d-flex align-items-center gap-2"
+                                                            to={item.linkUrl}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                        >
+                                                            <AiOutlineEye /> {item.linkTitle}
+                                                        </RouterLink>
+                                                    </li>
+                                                    <li>
+                                                        <button
+                                                            className="dropdown-item d-flex align-items-center gap-2"
+                                                            type="button"
+                                                            onClick={() => confirmStatus(item)}
+                                                        >
+                                                            <TbStatusChange /> {item.status}
+                                                        </button>
+                                                    </li>
+                                                    <li>
+                                                        <button
+                                                            className="dropdown-item d-flex align-items-center gap-2"
+                                                            type="button"
+                                                            onClick={() => handleEdit(item)}
+                                                        >
+                                                            <MdOutlineEdit /> Edit
+                                                        </button>
+                                                    </li>
+                                                    <li>
+                                                        <button
+                                                            className="dropdown-item d-flex align-items-center gap-2 text-danger"
+                                                            type="button"
+                                                            onClick={() => handleDelete(item)}
+                                                        >
+                                                            <MdDeleteOutline /> Delete
+                                                        </button>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </>
+                        );
+                    })}
+                        <h5 className='social-Links'> Non Social Links</h5>
+                    {linksInfo.map((item) => {
+                        const matchedPlatform = socialPlatforms.find(
+                            (platform) => platform.label.toLowerCase() === item.linkTitle.toLowerCase()
+                        );
+                        return (
+                            <>
+                                {
+                                    item?.type == 'non_social' &&
+                                    <div className="link-card" key={item._id}>
+                                        {matchedPlatform ? (
+                                            <span className="social-icon">{matchedPlatform.icon}</span>
+                                        ) : (
+                                            <img
+                                                src={defaultConfig.imagePath + item.linkLogo}
+                                                alt={item.linkTitle}
+                                                className="link-logo"
+                                            />
+                                        )}
+
+                                        <div className="link-info">
+                                            <h3 className="link-title">{item.linkTitle}</h3>
+
+                                            <div className="dropdown three-dots">
+                                                <BsThreeDotsVertical
+                                                    className="dropdown-toggle three-dots"
+                                                    role="button"
+                                                    data-bs-toggle="dropdown"
+                                                    aria-expanded="false"
+                                                />
+                                                <ul className="dropdown-menu">
+                                                    <li>
+                                                        <RouterLink
+                                                            className="dropdown-item d-flex align-items-center gap-2"
+                                                            to={item.linkUrl}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                        >
+                                                            <AiOutlineEye /> {item.linkTitle}
+                                                        </RouterLink>
+                                                    </li>
+                                                    <li>
+                                                        <button
+                                                            className="dropdown-item d-flex align-items-center gap-2"
+                                                            type="button"
+                                                            onClick={() => confirmStatus(item)}
+                                                        >
+                                                            <TbStatusChange /> {item.status}
+                                                        </button>
+                                                    </li>
+                                                    <li>
+                                                        <button
+                                                            className="dropdown-item d-flex align-items-center gap-2"
+                                                            type="button"
+                                                            onClick={() => handleEdit(item)}
+                                                        >
+                                                            <MdOutlineEdit /> Edit
+                                                        </button>
+                                                    </li>
+                                                    <li>
+                                                        <button
+                                                            className="dropdown-item d-flex align-items-center gap-2 text-danger"
+                                                            type="button"
+                                                            onClick={() => handleDelete(item)}
+                                                        >
+                                                            <MdDeleteOutline /> Delete
+                                                        </button>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </>
+                        );
+                    })}
                 </div>
             </div>
 

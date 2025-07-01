@@ -38,7 +38,6 @@ const index: React.FC = () => {
             } else {
                 setUserInfo(response?.data?.data[0])
                 setLoader(false)
-                SuccessMessage(response?.data?.message)
             }
         } catch (err: any) {
             ErrorMessage(err.message || "Something went wrong");
@@ -70,7 +69,6 @@ const index: React.FC = () => {
                         <div className='contactEmail'>
                             <BiLogoGmail />
                             <p>
-
                                 {userInfo?.email}
                             </p>
                         </div>

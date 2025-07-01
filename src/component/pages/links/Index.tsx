@@ -7,6 +7,12 @@ import LoadScreen from '../../loaderScreen';
 import { defaultConfig } from '../../../config';
 import { LinksAddEdit } from './linksAddEdit';
 import Delete from './Delete';
+import {
+    DragDropContext,
+    Droppable,
+    Draggable,
+    type DropResult,
+} from '@hello-pangea/dnd';
 import { Link as RouterLink } from 'react-router-dom';
 import { MdOutlineEdit, MdDeleteOutline } from "react-icons/md";
 import { TbStatusChange } from "react-icons/tb";
@@ -54,6 +60,10 @@ const Index: React.FC = () => {
         }
     };
 
+    useEffect(() => {
+        Detail();
+    }, []);
+
     const handleEdit = (item: LinkItem) => {
         setLinkDetail(item);
         setOpen(true);
@@ -94,9 +104,34 @@ const Index: React.FC = () => {
         }
     };
 
-    useEffect(() => {
-        Detail();
-    }, []);
+    const handleDragEnd = async (result: DropResult) => {
+        if (!result.destination) return;
+
+        const reordered = Array.from(linksInfo);
+        const [movedItem] = reordered.splice(result.source.index, 1);
+        reordered.splice(result.destination.index, 0, movedItem);
+
+        // Update local state
+        setLinksInfo(reordered);
+
+        // Prepare new indexes for all items
+        const updatedOrder = reordered.map((item, index) => ({
+            _id: item._id,
+            is_index: index
+        }));
+
+        try {
+            setLoader(true);
+            await callAPI(apiUrls.updateindex, {}, 'POST', { items: updatedOrder });
+            await Detail();
+            SuccessMessage('Link order updated');
+        } catch (err: any) {
+            ErrorMessage(err.message || 'Failed to update order');
+        } finally {
+            setLoader(false);
+        }
+    };
+
 
     return (
         <>
@@ -124,159 +159,92 @@ const Index: React.FC = () => {
 
             <div className="links-container">
                 <div className="links-grid">
-       
-                    <h5 className='social-Links'>Social Links</h5>
-                    {linksInfo.map((item) => {
-                        const matchedPlatform = socialPlatforms.find(
-                            (platform) => platform.label.toLowerCase() === item.linkTitle.toLowerCase()
-                        );
-                        return (
-                            <>
-                                {
-                                    item?.type == 'social' &&
-                                    <div className="link-card" key={item._id}>
-                                        {matchedPlatform ? (
-                                            <span className="social-icon">{matchedPlatform.icon}</span>
-                                        ) : (
-                                            <img
-                                                src={defaultConfig.imagePath + item.linkLogo}
-                                                alt={item.linkTitle}
-                                                className="link-logo"
-                                            />
-                                        )}
+                    <DragDropContext onDragEnd={handleDragEnd}>
+                        <Droppable droppableId="links-list">
+                            {(provided) => (
+                                <div ref={provided.innerRef} {...provided.droppableProps}>
+                                    {linksInfo.map((item, index) => {
+                                        const matchedPlatform = socialPlatforms.find(
+                                            (platform) => platform.label.toLowerCase() === item.linkTitle.toLowerCase()
+                                        );
 
-                                        <div className="link-info">
-                                            <h3 className="link-title">{item.linkTitle}</h3>
-
-                                            <div className="dropdown three-dots">
-                                                <BsThreeDotsVertical
-                                                    className="dropdown-toggle three-dots"
-                                                    role="button"
-                                                    data-bs-toggle="dropdown"
-                                                    aria-expanded="false"
-                                                />
-                                                <ul className="dropdown-menu">
-                                                    <li>
-                                                        <RouterLink
-                                                            className="dropdown-item d-flex align-items-center gap-2"
-                                                            to={item.linkUrl}
-                                                            target="_blank"
-                                                            rel="noopener noreferrer"
-                                                        >
-                                                            <AiOutlineEye /> {item.linkTitle}
-                                                        </RouterLink>
-                                                    </li>
-                                                    <li>
-                                                        <button
-                                                            className="dropdown-item d-flex align-items-center gap-2"
-                                                            type="button"
-                                                            onClick={() => confirmStatus(item)}
-                                                        >
-                                                            <TbStatusChange /> {item.status}
-                                                        </button>
-                                                    </li>
-                                                    <li>
-                                                        <button
-                                                            className="dropdown-item d-flex align-items-center gap-2"
-                                                            type="button"
-                                                            onClick={() => handleEdit(item)}
-                                                        >
-                                                            <MdOutlineEdit /> Edit
-                                                        </button>
-                                                    </li>
-                                                    <li>
-                                                        <button
-                                                            className="dropdown-item d-flex align-items-center gap-2 text-danger"
-                                                            type="button"
-                                                            onClick={() => handleDelete(item)}
-                                                        >
-                                                            <MdDeleteOutline /> Delete
-                                                        </button>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                }
-                            </>
-                        );
-                    })}
-                        <h5 className='social-Links'> Non Social Links</h5>
-                    {linksInfo.map((item) => {
-                        const matchedPlatform = socialPlatforms.find(
-                            (platform) => platform.label.toLowerCase() === item.linkTitle.toLowerCase()
-                        );
-                        return (
-                            <>
-                                {
-                                    item?.type == 'non_social' &&
-                                    <div className="link-card" key={item._id}>
-                                        {matchedPlatform ? (
-                                            <span className="social-icon">{matchedPlatform.icon}</span>
-                                        ) : (
-                                            <img
-                                                src={defaultConfig.imagePath + item.linkLogo}
-                                                alt={item.linkTitle}
-                                                className="link-logo"
-                                            />
-                                        )}
-
-                                        <div className="link-info">
-                                            <h3 className="link-title">{item.linkTitle}</h3>
-
-                                            <div className="dropdown three-dots">
-                                                <BsThreeDotsVertical
-                                                    className="dropdown-toggle three-dots"
-                                                    role="button"
-                                                    data-bs-toggle="dropdown"
-                                                    aria-expanded="false"
-                                                />
-                                                <ul className="dropdown-menu">
-                                                    <li>
-                                                        <RouterLink
-                                                            className="dropdown-item d-flex align-items-center gap-2"
-                                                            to={item.linkUrl}
-                                                            target="_blank"
-                                                            rel="noopener noreferrer"
-                                                        >
-                                                            <AiOutlineEye /> {item.linkTitle}
-                                                        </RouterLink>
-                                                    </li>
-                                                    <li>
-                                                        <button
-                                                            className="dropdown-item d-flex align-items-center gap-2"
-                                                            type="button"
-                                                            onClick={() => confirmStatus(item)}
-                                                        >
-                                                            <TbStatusChange /> {item.status}
-                                                        </button>
-                                                    </li>
-                                                    <li>
-                                                        <button
-                                                            className="dropdown-item d-flex align-items-center gap-2"
-                                                            type="button"
-                                                            onClick={() => handleEdit(item)}
-                                                        >
-                                                            <MdOutlineEdit /> Edit
-                                                        </button>
-                                                    </li>
-                                                    <li>
-                                                        <button
-                                                            className="dropdown-item d-flex align-items-center gap-2 text-danger"
-                                                            type="button"
-                                                            onClick={() => handleDelete(item)}
-                                                        >
-                                                            <MdDeleteOutline /> Delete
-                                                        </button>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                }
-                            </>
-                        );
-                    })}
+                                        return (
+                                            <Draggable key={item._id} draggableId={item._id} index={index}>
+                                                {(provided) => (
+                                                    <div
+                                                        className="link-card"
+                                                        ref={provided.innerRef}
+                                                        {...provided.draggableProps}
+                                                        {...provided.dragHandleProps}
+                                                    >
+                                                        {matchedPlatform ? (
+                                                            <span className="social-icon">{matchedPlatform.icon}</span>
+                                                        ) : (
+                                                            <img
+                                                                src={defaultConfig.imagePath + item.linkLogo}
+                                                                alt={item.linkTitle}
+                                                                className="link-logo"
+                                                            />
+                                                        )}
+                                                        <div className="link-info">
+                                                            <h3 className="link-title">
+                                                                <RouterLink to={item.linkUrl}>{item.linkTitle}</RouterLink>
+                                                            </h3>
+                                                            <div className="dropdown three-dots">
+                                                                <BsThreeDotsVertical
+                                                                    className="dropdown-toggle three-dots"
+                                                                    role="button"
+                                                                    data-bs-toggle="dropdown"
+                                                                    aria-expanded="false"
+                                                                />
+                                                                <ul className="dropdown-menu">
+                                                                    <li>
+                                                                        <RouterLink
+                                                                            className="dropdown-item d-flex align-items-center gap-2"
+                                                                            to={item.linkUrl}
+                                                                            target="_blank"
+                                                                            rel="noopener noreferrer"
+                                                                        >
+                                                                            <AiOutlineEye /> {item.linkTitle}
+                                                                        </RouterLink>
+                                                                    </li>
+                                                                    <li>
+                                                                        <button
+                                                                            className="dropdown-item d-flex align-items-center gap-2"
+                                                                            onClick={() => confirmStatus(item)}
+                                                                        >
+                                                                            <TbStatusChange /> {item.status}
+                                                                        </button>
+                                                                    </li>
+                                                                    <li>
+                                                                        <button
+                                                                            className="dropdown-item d-flex align-items-center gap-2"
+                                                                            onClick={() => handleEdit(item)}
+                                                                        >
+                                                                            <MdOutlineEdit /> Edit
+                                                                        </button>
+                                                                    </li>
+                                                                    <li>
+                                                                        <button
+                                                                            className="dropdown-item d-flex align-items-center gap-2 text-danger"
+                                                                            onClick={() => handleDelete(item)}
+                                                                        >
+                                                                            <MdDeleteOutline /> Delete
+                                                                        </button>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                )}
+                                            </Draggable>
+                                        );
+                                    })}
+                                    {provided.placeholder}
+                                </div>
+                            )}
+                        </Droppable>
+                    </DragDropContext>
                 </div>
             </div>
 

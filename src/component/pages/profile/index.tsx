@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from 'react'
 import ErrorMessage from '../../../helpers/ErrorMessage';
-import SuccessMessage from '../../../helpers/Success';
+import { FaEdit } from "react-icons/fa";
 import { callAPI, callAPIWithoutAuth } from '../../../utils/apicall.utils';
 import { apiUrls } from '../../../utils/api.utils';
 import { defaultConfig } from '../../../config';
 import { Link, useParams } from 'react-router-dom';
 import { BiLogoGmail } from "react-icons/bi";
 import LoadScreen from '../../loaderScreen';
+import { socialPlatforms } from '../links/linksAddEdit';
 interface userInfo {
     _id: string;
     username: string;
     email: string;
-    linkInfo: Link[];
+    social: Link[];
+    non_social: Link[];
     bio: string;
+    banner_img: string;
     profile_img: string;
 }
 
@@ -52,7 +55,7 @@ const index: React.FC = () => {
             {loader && <LoadScreen />}
             <div className="profile-container">
                 <div className="cover-photo">
-                    <img id="coverImage" src={defaultConfig?.imagePath + userInfo?.profile_img} alt="Kapak Resmi" />
+                    <img id="coverImage" src={defaultConfig?.imagePath + userInfo?.banner_img} alt="Kapak Resmi" />
                 </div>
                 <div className="profile-picture">
                     <img
@@ -63,7 +66,7 @@ const index: React.FC = () => {
 
                 </div>
                 <div className="profile-info">
-                    <h1 id="username">{userInfo?.username}</h1>
+                    <h1 id="username " className='editprofile'>{userInfo?.username} <Link to={`/updateProfile/${localStorage.getItem("_id")}`}><FaEdit /></Link></h1>
                     <p id="bio">{userInfo?.bio}</p>
                     <button style={{ marginTop: 15 }}>
                         <div className='contactEmail'>
@@ -82,10 +85,11 @@ const index: React.FC = () => {
                         rows={3}
                         defaultValue={""}
                     />
-                    <button>Kaydet</button>
+
                 </div>
+
                 <div className="links-list">
-                    {userInfo?.linkInfo.map(link => (
+                    {userInfo?.non_social.map(link => (
                         <Link
                             key={link._id}
                             to={link.linkUrl}
@@ -97,6 +101,30 @@ const index: React.FC = () => {
                             <span>{link.linkTitle}</span>
                         </Link>
                     ))}
+                </div>
+                <div className="spcial-links-list d-flex  justify-content-center gap-2">
+                    {userInfo?.social.map(link => {
+                        const matchedPlatform = socialPlatforms.find(
+                            (platform) => platform.label.toLowerCase() === link.linkTitle.toLowerCase()
+                        );
+                        return (
+                            <>
+                                <Link
+                                    key={link._id}
+                                    to={link.linkUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="link-card-social"
+                                >
+                                    {matchedPlatform && <span className="social-icon">{matchedPlatform.icon}</span>}
+                                </Link>
+                            </>
+                        )
+                    }
+
+
+
+                    )}
                 </div>
 
             </div>

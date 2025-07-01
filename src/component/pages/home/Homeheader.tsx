@@ -7,11 +7,11 @@ const Homeheader: React.FC = () => {
         <header>
             <div className="container">
                 <Link to={"/"} className="logo">
-                    <img src="https://i.postimg.cc/x87tV35B/logo.png" alt="Funel logo" />
+                    <img src="/src/assets/logo.png" alt="Logo" height={50} />
                 </Link>
                 <div className="navbar-wrapper">
                     {!localStorage.getItem("accessToken") ? (
-                        <nav className="navbar header-navbar" data-navbar="">
+                        <nav className="nav-bar header-navbar" data-navbar="">
                             <button className="btn btn-primary" onClick={() => navigate("/login")}>
                                 Sign In
                             </button>
@@ -20,7 +20,7 @@ const Homeheader: React.FC = () => {
                             </button>
                         </nav>
                     ) :
-                        (<div className="profile" onClick={() => navigate("/profile/"+localStorage.getItem("_id"))}>
+                        (<div className="profile" onClick={() => navigate("/profile/" + localStorage.getItem("_id"))}>
                             <img
                                 src="https://i.pravatar.cc/48"
                                 alt="Profile Picture"

@@ -98,7 +98,7 @@ input[type="date"] {
 .button {
   width: 100%;
   padding: 12px;
-  background: #f44b76;
+  background: #4f46e5;
   color: white;
   border: none;
   border-radius: 8px;
@@ -107,7 +107,7 @@ input[type="date"] {
 }
 
 .button:hover {
-  background: #d83d67; /* darker shade of #f44b76 */
+  background: #4f46e5; /* darker shade of #f44b76 */
 }
 .divider {
   display: flex;
@@ -876,4 +876,7 @@ input[type="file"] {
 .social-Links{
   color: #014178;
   text-decoration: underline;
+}
+.nav-bar{
+  
 }

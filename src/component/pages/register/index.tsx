@@ -53,7 +53,7 @@ const Register: React.FC = () => {
             <div className="container-parent">
                 <div className="container-register">
                     <div className="icon-box">
-                        <img src="/src/assets/logo.png" alt="Logo" height={150} />
+                        <img src="/src/assets/logo.png" alt="Logo" height={50} />
                     </div>
                     <h2>Sign Up to Your Account</h2>
                     <p>Access your account to continue</p>
@@ -65,10 +65,10 @@ const Register: React.FC = () => {
                             <InputField label="Email" name="email" value={register.email} onChange={handleChange} required />
                         </div>
                         <div className="form-group">
-                            <InputField label="Password" name="password" value={register.password} onChange={handleChange} required />
+                            <InputField label="Password" name="password" type="password" value={register.password} onChange={handleChange} required />
                         </div>
                         <div className="form-group">
-                            <InputField label="Confirm Password" name="confirmPassword" value={register.confirmPassword} onChange={handleChange} required />
+                            <InputField label="Confirm Password" name="confirmPassword" type="password" value={register.confirmPassword} onChange={handleChange} required />
                         </div>
                         <button type="submit" className="btn btn-primary button">
                             Sign Up

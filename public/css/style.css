@@ -669,20 +669,9 @@ footer .logo {
     max-width: 950px;
   }
 
-  .navbar-menu-btn {
-    display: none;
-  }
 
-  .navbar {
-    max-height: unset;
-    visibility: visible;
-    position: static;
-    width: auto;
-    background: none;
-    pointer-events: all;
-    overflow: visible;
-    display: flex;
-  }
+
+
 
   .navbar-list {
     display: flex;

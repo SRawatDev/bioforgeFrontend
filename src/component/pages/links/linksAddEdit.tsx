@@ -14,6 +14,7 @@ interface Props {
   Detail: () => void;
   linkDetail: Link;
   action: 'add' | 'edit';
+  NonDetail:()=>void
 }
 
 interface Link {
@@ -31,7 +32,7 @@ export const socialPlatforms = [
   { label: 'LinkedIn', value: 'linkedin', icon: <FaLinkedinIn size={24} /> },
   { label: 'YouTube', value: 'youtube', icon: <FaYoutube size={24} /> },
 ];
-export const LinksAddEdit: React.FC<Props> = ({ open, onClose, Detail, linkDetail, action }) => {
+export const LinksAddEdit: React.FC<Props> = ({ open, onClose, Detail, linkDetail, action,NonDetail }) => {
   const [loader, setLoader] = useState(false);
   const [link, setLink] = useState<Link>({ linkTitle: '', linkUrl: '', linkLogo: '', type: 'social' });
   const [preview, setPreview] = useState<string | null>(null);
@@ -108,6 +109,8 @@ export const LinksAddEdit: React.FC<Props> = ({ open, onClose, Detail, linkDetai
       } else {
         SuccessMessage(response?.data?.message);
         Detail();
+        NonDetail()
+        
         onClose();
       }
     } catch (err: any) {

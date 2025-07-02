@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { GiHamburgerMenu } from "react-icons/gi";
 import { FaHome } from "react-icons/fa";
 import { ImProfile } from "react-icons/im";
-import { IoLinkSharp, IoSettingsSharp } from "react-icons/io5";
+import { IoLinkSharp } from "react-icons/io5";
 import { MdLogout } from "react-icons/md";
 import { Link, useNavigate } from 'react-router-dom';
 import SuccessMessage from '../helpers/Success';
@@ -68,7 +68,7 @@ const Header: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
                         <li><FaHome /> <Link to="/">Home</Link></li>
                         <li><ImProfile /> <Link to={`/profile/${localStorage.getItem("_id")}`}>Profile</Link></li>
                         <li><IoLinkSharp /> <Link to="/link">Links</Link></li>
-                        <li><IoSettingsSharp /> Settings</li>
+                        {/* <li><IoSettingsSharp /> Settings</li> */}
                         <li onClick={handleLogoutClick}><MdLogout /> Logout</li>
                     </ul>
                 </div>

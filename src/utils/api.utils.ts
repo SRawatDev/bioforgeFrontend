@@ -10,6 +10,7 @@ export const apiUrls = {
     linkdelete: "api/v1/link-delete",
     linkupdateStatus: "api/v1/link-updateStatus",
     updateindex : "api/v1/update-index",
+    updateProfile : "api/v1/updateProfile",
 
 
 };

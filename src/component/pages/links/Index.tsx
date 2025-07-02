@@ -19,6 +19,7 @@ import { TbStatusChange } from "react-icons/tb";
 import { AiOutlineEye } from "react-icons/ai";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { socialPlatforms } from './linksAddEdit';
+import LinkShimmer from '../../LinkShimmer';
 
 interface LinkItem {
     _id: string;
@@ -30,6 +31,8 @@ interface LinkItem {
 }
 
 const Index: React.FC = () => {
+    const [non_socialData, setnonSocialData] = useState<LinkItem[]>([])
+
     const [action, setAction] = useState<'add' | 'edit'>('add');
     const [deleteOpen, setDeleteOpen] = useState(false);
     const [open, setOpen] = useState(false);
@@ -47,9 +50,24 @@ const Index: React.FC = () => {
     const Detail = async () => {
         setLoader(true);
         try {
-            const response = await callAPI(apiUrls.getlinks, {}, 'GET', {});
+            const response = await callAPI(apiUrls.getlinks, { type: "non_social" }, 'GET', {});
             if (response?.data?.status) {
                 setLinksInfo(response.data.data || []);
+            } else {
+                ErrorMessage(response?.data?.message);
+            }
+        } catch (err: any) {
+            ErrorMessage(err.message || 'Something went wrong');
+        } finally {
+            setLoader(false);
+        }
+    };
+    const NonDetail = async () => {
+        setLoader(true);
+        try {
+            const response = await callAPI(apiUrls.getlinks, { type: "social" }, 'GET', {});
+            if (response?.data?.status) {
+                setnonSocialData(response.data.data || []);
             } else {
                 ErrorMessage(response?.data?.message);
             }
@@ -62,6 +80,7 @@ const Index: React.FC = () => {
 
     useEffect(() => {
         Detail();
+        NonDetail()
     }, []);
 
     const handleEdit = (item: LinkItem) => {
@@ -82,6 +101,7 @@ const Index: React.FC = () => {
                 SuccessMessage(res.data.message);
                 setDeleteOpen(false);
                 Detail();
+                NonDetail()
             } else {
                 ErrorMessage(res.data.message);
             }
@@ -96,6 +116,7 @@ const Index: React.FC = () => {
             if (res?.data?.status) {
                 SuccessMessage(res.data.message);
                 Detail();
+                NonDetail()
             } else {
                 ErrorMessage(res.data.message);
             }
@@ -106,15 +127,10 @@ const Index: React.FC = () => {
 
     const handleDragEnd = async (result: DropResult) => {
         if (!result.destination) return;
-
         const reordered = Array.from(linksInfo);
         const [movedItem] = reordered.splice(result.source.index, 1);
         reordered.splice(result.destination.index, 0, movedItem);
-
-        // Update local state
         setLinksInfo(reordered);
-
-        // Prepare new indexes for all items
         const updatedOrder = reordered.map((item, index) => ({
             _id: item._id,
             is_index: index
@@ -135,132 +151,214 @@ const Index: React.FC = () => {
 
     return (
         <>
-            {loader && <LoadScreen />}
-            <div className="linksHeader">
-                <h2 className="links-title">Manage Your Links</h2>
-                <button
-                    className="editbutton"
-                    onClick={() => {
-                        setOpen(true);
-                        setAction('add');
-                        setLinkDetail({
-                            _id: '',
-                            linkTitle: '',
-                            linkUrl: '',
-                            linkLogo: '',
-                            status: '',
-                            type: '',
-                        });
-                    }}
-                >
-                    ADD
-                </button>
-            </div>
+            {loader ? <LinkShimmer /> :
+                (
+                    <>
+                        <div className="linksHeader">
 
-            <div className="links-container">
-                <div className="links-grid">
-                    <DragDropContext onDragEnd={handleDragEnd}>
-                        <Droppable droppableId="links-list">
-                            {(provided) => (
-                                <div ref={provided.innerRef} {...provided.droppableProps}>
-                                    {linksInfo.map((item, index) => {
+                            <button
+                                className="editbutton"
+                                onClick={() => {
+                                    setOpen(true);
+                                    setAction('add');
+                                    setLinkDetail({
+                                        _id: '',
+                                        linkTitle: '',
+                                        linkUrl: '',
+                                        linkLogo: '',
+                                        status: '',
+                                        type: '',
+                                    });
+                                }}
+                            >
+                                ADD
+                            </button>
+                        </div>
+
+                        <h5 style={{ marginTop: "20px", textAlign: "center" }}>Manage your Non Social Links</h5>
+                        <div className="links-container">
+                            <div className="links-grid">
+                                <DragDropContext onDragEnd={handleDragEnd}>
+                                    <Droppable droppableId="links-list">
+                                        {(provided) => (
+                                            <div ref={provided.innerRef} {...provided.droppableProps}>
+                                                {linksInfo.map((item, index) => {
+
+
+                                                    return (
+                                                        <Draggable key={item._id} draggableId={item._id} index={index}>
+                                                            {(provided) => (
+                                                                <div
+                                                                    className="link-card"
+                                                                    ref={provided.innerRef}
+                                                                    {...provided.draggableProps}
+                                                                    {...provided.dragHandleProps}
+                                                                >
+
+                                                                    <img
+                                                                        src={defaultConfig.imagePath + item.linkLogo}
+                                                                        alt={item.linkTitle}
+                                                                        className="link-logo"
+                                                                    />
+
+                                                                    <div className="link-info">
+                                                                        <h3 className="link-title">
+                                                                            {item.linkTitle}
+                                                                        </h3>
+                                                                        <div className="dropdown three-dots">
+                                                                            <BsThreeDotsVertical
+                                                                                className="dropdown-toggle three-dots"
+                                                                                role="button"
+                                                                                data-bs-toggle="dropdown"
+                                                                                aria-expanded="false"
+                                                                            />
+                                                                            <ul className="dropdown-menu">
+                                                                                <li>
+                                                                                    <RouterLink
+                                                                                        className="dropdown-item d-flex align-items-center gap-2"
+                                                                                        to={item.linkUrl}
+                                                                                        target="_blank"
+                                                                                        rel="noopener noreferrer"
+                                                                                    >
+                                                                                        <AiOutlineEye /> {item.linkTitle}
+                                                                                    </RouterLink>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <button
+                                                                                        className="dropdown-item d-flex align-items-center gap-2"
+                                                                                        onClick={() => confirmStatus(item)}
+                                                                                    >
+                                                                                        <TbStatusChange /> {item.status}
+                                                                                    </button>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <button
+                                                                                        className="dropdown-item d-flex align-items-center gap-2"
+                                                                                        onClick={() => handleEdit(item)}
+                                                                                    >
+                                                                                        <MdOutlineEdit /> Edit
+                                                                                    </button>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <button
+                                                                                        className="dropdown-item d-flex align-items-center gap-2 text-danger"
+                                                                                        onClick={() => handleDelete(item)}
+                                                                                    >
+                                                                                        <MdDeleteOutline /> Delete
+                                                                                    </button>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            )}
+                                                        </Draggable>
+                                                    );
+                                                })}
+                                                {provided.placeholder}
+                                            </div>
+                                        )}
+                                    </Droppable>
+                                </DragDropContext>
+                            </div>
+                        </div>
+
+                        <h5 style={{ marginTop: "20px", textAlign: "center" }}>Manage your  Social Links</h5>
+                        <div className="links-container">
+                            <div className="links-grid">
+                                {
+                                    non_socialData?.map((item) => {
                                         const matchedPlatform = socialPlatforms.find(
                                             (platform) => platform.label.toLowerCase() === item.linkTitle.toLowerCase()
                                         );
-
                                         return (
-                                            <Draggable key={item._id} draggableId={item._id} index={index}>
-                                                {(provided) => (
-                                                    <div
-                                                        className="link-card"
-                                                        ref={provided.innerRef}
-                                                        {...provided.draggableProps}
-                                                        {...provided.dragHandleProps}
-                                                    >
-                                                        {matchedPlatform ? (
-                                                            <span className="social-icon">{matchedPlatform.icon}</span>
-                                                        ) : (
-                                                            <img
-                                                                src={defaultConfig.imagePath + item.linkLogo}
-                                                                alt={item.linkTitle}
-                                                                className="link-logo"
-                                                            />
-                                                        )}
-                                                        <div className="link-info">
-                                                            <h3 className="link-title">
-                                                                <RouterLink to={item.linkUrl}>{item.linkTitle}</RouterLink>
-                                                            </h3>
-                                                            <div className="dropdown three-dots">
-                                                                <BsThreeDotsVertical
-                                                                    className="dropdown-toggle three-dots"
-                                                                    role="button"
-                                                                    data-bs-toggle="dropdown"
-                                                                    aria-expanded="false"
-                                                                />
-                                                                <ul className="dropdown-menu">
-                                                                    <li>
-                                                                        <RouterLink
-                                                                            className="dropdown-item d-flex align-items-center gap-2"
-                                                                            to={item.linkUrl}
-                                                                            target="_blank"
-                                                                            rel="noopener noreferrer"
-                                                                        >
-                                                                            <AiOutlineEye /> {item.linkTitle}
-                                                                        </RouterLink>
-                                                                    </li>
-                                                                    <li>
-                                                                        <button
-                                                                            className="dropdown-item d-flex align-items-center gap-2"
-                                                                            onClick={() => confirmStatus(item)}
-                                                                        >
-                                                                            <TbStatusChange /> {item.status}
-                                                                        </button>
-                                                                    </li>
-                                                                    <li>
-                                                                        <button
-                                                                            className="dropdown-item d-flex align-items-center gap-2"
-                                                                            onClick={() => handleEdit(item)}
-                                                                        >
-                                                                            <MdOutlineEdit /> Edit
-                                                                        </button>
-                                                                    </li>
-                                                                    <li>
-                                                                        <button
-                                                                            className="dropdown-item d-flex align-items-center gap-2 text-danger"
-                                                                            onClick={() => handleDelete(item)}
-                                                                        >
-                                                                            <MdDeleteOutline /> Delete
-                                                                        </button>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                )}
-                                            </Draggable>
-                                        );
-                                    })}
-                                    {provided.placeholder}
-                                </div>
-                            )}
-                        </Droppable>
-                    </DragDropContext>
-                </div>
-            </div>
+                                            <div
+                                                className="link-card"
+                                            >
 
-            <Delete
-                open={deleteOpen}
-                onClose={() => setDeleteOpen(false)}
-                confirmDetail={() => confirmDelete(linkDetail)}
-                linkDetail={linkDetail}
-            />
-            <LinksAddEdit
-                open={open}
-                onClose={() => setOpen(false)}
-                Detail={Detail}
-                linkDetail={linkDetail}
-                action={action}
-            />
+                                                {matchedPlatform && item.type == 'social' ? (
+                                                    <span className="social-icon">{matchedPlatform.icon}</span>
+                                                ) : (
+                                                    <img
+                                                        src={defaultConfig.imagePath + item.linkLogo}
+                                                        alt={item.linkTitle}
+                                                        className="link-logo"
+                                                    />
+                                                )}
+
+                                                <div className="link-info">
+                                                    <h3 className="link-title">
+                                                        {item.linkTitle}
+                                                    </h3>
+                                                    <div className="dropdown three-dots">
+                                                        <BsThreeDotsVertical
+                                                            className="dropdown-toggle three-dots"
+                                                            role="button"
+                                                            data-bs-toggle="dropdown"
+                                                            aria-expanded="false"
+                                                        />
+                                                        <ul className="dropdown-menu">
+                                                            <li>
+                                                                <RouterLink
+                                                                    className="dropdown-item d-flex align-items-center gap-2"
+                                                                    to={item.linkUrl}
+                                                                    target="_blank"
+                                                                    rel="noopener noreferrer"
+                                                                >
+                                                                    <AiOutlineEye /> {item.linkTitle}
+                                                                </RouterLink>
+                                                            </li>
+                                                            <li>
+                                                                <button
+                                                                    className="dropdown-item d-flex align-items-center gap-2"
+                                                                    onClick={() => confirmStatus(item)}
+                                                                >
+                                                                    <TbStatusChange /> {item.status}
+                                                                </button>
+                                                            </li>
+                                                            <li>
+                                                                <button
+                                                                    className="dropdown-item d-flex align-items-center gap-2"
+                                                                    onClick={() => handleEdit(item)}
+                                                                >
+                                                                    <MdOutlineEdit /> Edit
+                                                                </button>
+                                                            </li>
+                                                            <li>
+                                                                <button
+                                                                    className="dropdown-item d-flex align-items-center gap-2 text-danger"
+                                                                    onClick={() => handleDelete(item)}
+                                                                >
+                                                                    <MdDeleteOutline /> Delete
+                                                                </button>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )
+
+                                    })
+                                }
+                            </div></div>
+
+
+
+                        <Delete
+                            open={deleteOpen}
+                            onClose={() => setDeleteOpen(false)}
+                            confirmDetail={() => confirmDelete(linkDetail)}
+                            linkDetail={linkDetail}
+                        />
+                        <LinksAddEdit
+                            NonDetail={NonDetail}
+                            open={open}
+                            onClose={() => setOpen(false)}
+                            Detail={Detail}
+                            linkDetail={linkDetail}
+                            action={action}
+                        /></>)
+            }
         </>
     );
 };

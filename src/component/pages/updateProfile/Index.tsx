@@ -1,18 +1,47 @@
 import React, { useEffect, useState } from 'react';
-import { callAPIWithoutAuth } from '../../../utils/apicall.utils';
+import { API, callAPI, callAPIWithoutAuth } from '../../../utils/apicall.utils';
 import { apiUrls } from '../../../utils/api.utils';
-import { useParams } from 'react-router-dom';
+import { FaEdit } from "react-icons/fa";
+import { useNavigate, useParams } from 'react-router-dom';
 import ErrorMessage from '../../../helpers/ErrorMessage';
-
-const fontOptions = ['Arial', 'Roboto', 'Times New Roman', 'Georgia', 'Verdana'];
-const colorOptions = ['Light', 'Dark', 'Colorful'];
+import { defaultConfig } from '../../../config';
+import LoadScreen from '../../loaderScreen';
+import SuccessMessage from '../../../helpers/Success';
+const fontOptions = [
+  'Arial',
+  'Roboto',
+  'Times New Roman',
+  'Georgia',
+  'Verdana',
+  'Inter',
+  'Lato',
+  'Open Sans',
+  'Poppins',
+  'Montserrat',
+  'Helvetica Neue',
+  'Segoe UI',
+  'Tahoma',
+  'Playfair Display',
+  'Source Sans Pro'
+];
+const colorOptions = [
+  'Classic Light',
+  'Elegant Dark',
+  'Vibrant Sunset',
+  'Ocean Blue',
+  'Forest Green',
+  'Warm Sand',
+  'Midnight',
+  'Pastel Dream',
+  'Neon Pop',
+  'Monochrome',
+];
 
 interface Theme {
     themeType: string;
     fontFamily: string;
     is_colorImage: string;
 }
-
 interface UserInfo {
     _id: string;
     username: string;
@@ -22,50 +51,34 @@ interface UserInfo {
     profile_img: string;
     theme: Theme;
 }
-
 const Index = () => {
+    const navidate = useNavigate()
     const { id } = useParams();
     const [loader, setLoader] = useState(false);
+    const [previewProfile, setPreviewProfile] = useState<string | null>(null);
+    const [previewBanner, setPreviewBanner] = useState<string | null>(null);
     const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
-    const [formData, setFormData] = useState<{
-        profile_img: File | null;
-        bio: string;
-        banner_img: File | null;
-        theme: Theme;
-    }>({
-        profile_img: null,
-        bio: '',
-        banner_img: null,
-        theme: {
-            themeType: '',
-            fontFamily: '',
-            is_colorImage: '',
-        },
-    });
-
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
     ) => {
-        const { name, value, files } = e.target as any;
-
-        if (name === 'profile_img' || name === 'banner_img') {
-            setFormData((prev) => ({
+        const { name, value } = e.target;
+        setUserInfo((prev) => {
+            if (!prev) return prev;
+            if (['themeType', 'fontFamily', 'is_colorImage'].includes(name)) {
+                return {
+                    ...prev,
+                    theme: {
+                        ...prev.theme,
+                        [name]: value,
+                    },
+                };
+            }
+            return {
                 ...prev,
-                [name]: files[0],
-            }));
-        } else if (name in formData.theme) {
-            setFormData((prev) => ({
-                ...prev,
-                theme: {
-                    ...prev.theme,
-                    [name]: value,
-                },
-            }));
-        } else {
-            setFormData((prev) => ({ ...prev, [name]: value }));
-        }
+                [name]: value,
+            };
+        });
     };
-
     const getUserDetail = async () => {
         setLoader(true);
         try {
@@ -75,17 +88,8 @@ const Index = () => {
             } else {
                 const user = response?.data?.data[0];
                 setUserInfo(user);
-
-                setFormData({
-                    profile_img: null,
-                    bio: user.bio || '',
-                    banner_img: null,
-                    theme: {
-                        themeType: user.theme?.themeType || '',
-                        fontFamily: user.theme?.fontFamily || '',
-                        is_colorImage: user.theme?.is_colorImage || '',
-                    },
-                });
+                setPreviewProfile(user.profile_img || null);
+                setPreviewBanner(user.banner_img || null);
             }
         } catch (err: any) {
             ErrorMessage(err.message || 'Something went wrong');
@@ -93,104 +97,179 @@ const Index = () => {
             setLoader(false);
         }
     };
-
     useEffect(() => {
         if (id) {
             getUserDetail();
         }
     }, [id]);
-
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-
-        const data = new FormData();
-        if (formData.profile_img) data.append('profile_img', formData.profile_img);
-        if (formData.banner_img) data.append('banner_img', formData.banner_img);
-        data.append('bio', formData.bio);
-        data.append('themeType', formData.theme.themeType);
-        data.append('fontFamily', formData.theme.fontFamily);
-        data.append('is_colorImage', formData.theme.is_colorImage);
-
-        // You would send `data` to your backend here
-        console.log('FormData ready for submit:', Object.fromEntries(data.entries()));
+    const UploadProfileImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        try {
+            const files = e.target.files;
+            if (!files || files.length === 0) return;
+            const file = files[0];
+            const formData = new FormData();
+            formData.append('tempImage', file);
+            const apiResponse = await API(apiUrls.upload, {}, 'POST', formData);
+            if (apiResponse.data.status) {
+                const uploadedUrl = apiResponse.data.data;
+                setUserInfo((prev) => ({ ...prev!, profile_img: uploadedUrl }));
+                setPreviewProfile(uploadedUrl);
+                e.target.value = '';
+            } else {
+                ErrorMessage(apiResponse?.data?.message);
+            }
+        } catch (err) {
+            console.error('Error uploading profile image:', err);
+            ErrorMessage('Profile image upload failed');
+        }
     };
-
+    const UploadBannerImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        try {
+            const files = e.target.files;
+            if (!files || files.length === 0) return;
+            const file = files[0];
+            const formData = new FormData();
+            formData.append('tempImage', file);
+            const apiResponse = await API(apiUrls.upload, {}, 'POST', formData);
+            if (apiResponse.data.status) {
+                const uploadedUrl = apiResponse.data.data;
+                setUserInfo((prev) => ({ ...prev!, banner_img: uploadedUrl }));
+                setPreviewBanner(uploadedUrl);
+                e.target.value = '';
+            } else {
+                ErrorMessage(apiResponse?.data?.message);
+            }
+        } catch (err) {
+            console.error('Error uploading banner image:', err);
+            ErrorMessage('Banner image upload failed');
+        }
+    };
     const handleCancel = () => {
-        if (!userInfo) return;
-        setFormData({
-            profile_img: null,
-            bio: userInfo.bio || '',
-            banner_img: null,
-            theme: {
-                themeType: userInfo.theme?.themeType || '',
-                fontFamily: userInfo.theme?.fontFamily || '',
-                is_colorImage: userInfo.theme?.is_colorImage || '',
-            },
-        });
+        navidate(`/profile/${localStorage.getItem("_id")}`)
     };
 
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        setLoader(true)
+        try {
+            const response = await callAPI(apiUrls.updateProfile, {}, 'POST', userInfo );
+            if (!response?.data?.status) {
+                setLoader(true)
+                ErrorMessage(response?.data?.message)
+            } else {
+                setLoader(false)
+                SuccessMessage(response?.data?.message)
+            }
+        } catch (err: any) {
+            setLoader(true)
+            ErrorMessage(err.message || "Something went wrong");
+        }
+    };
     return (
-        <div className="form-container">
-            <form onSubmit={handleSubmit} className="form-box">
-                <h2>Profile Settings</h2>
+        <>
+            {loader && <LoadScreen />}
+            <div className="form-container">
+                <form className="form-box" onSubmit={handleSubmit}>
+                    <div className="cover-photo">
+                        {previewBanner && (
+                            <img
+                                id="coverImage"
+                                src={defaultConfig.imagePath + previewBanner}
+                                alt="Cover Photo"
+                            />
+                        )}
+                        <input
+                            id="bannerUploadInput"
+                            type="file"
+                            name="banner_img"
+                            accept="image/png,image/jpg,image/jpeg"
+                            onChange={UploadBannerImage}
+                            style={{ display: 'none' }}
+                        />
+                        <label htmlFor="bannerUploadInput" className="edit-icon-label">
+                            <FaEdit className="edit-icon" />
+                        </label>
+                    </div>
+                    <div className="profile-picture">
+                        <div className="profile-width">
+                            {previewProfile && (
+                                <img
+                                    id="profileImageedit"
+                                    src={defaultConfig.imagePath + previewProfile}
+                                    alt="Profile Photo"
+                                />
+                            )}
+                            <input
+                                id="profileUploadInput"
+                                type="file"
+                                name="profile_img"
+                                accept="image/png,image/jpg,image/jpeg"
+                                onChange={UploadProfileImage}
+                                style={{ display: 'none' }}
+                            />
 
-                <label>Profile Image</label>
-                <input type="file" name="profile_img" accept="image/*" onChange={handleChange} />
+                            <label htmlFor="profileUploadInput" className="edit-iconprofile-label">
+                                <FaEdit className="edit-iconprofile" />
+                            </label>
+                        </div>
+                    </div>
+                    <label>Bio</label>
+                    <textarea
+                        name="bio"
+                        value={userInfo?.bio || ''}
+                        onChange={handleChange}
+                        placeholder="Enter your bio"
+                    />
 
-                <label>Bio</label>
-                <textarea
-                    name="bio"
-                    value={formData.bio}
-                    onChange={handleChange}
-                    placeholder="Enter your bio"
-                />
 
-                <label>Banner Image</label>
-                <input type="file" name="banner_img" accept="image/*" onChange={handleChange} />
+                    {/* <label>Theme Type</label>
+                    <input
+                        type="text"
+                        name="themeType"
+                        value={userInfo?.theme?.themeType || ''}
+                        onChange={handleChange}
+                        placeholder="Enter theme type"
+                    /> */}
 
-                <label>Theme Type</label>
-                <input
-                    type="text"
-                    name="themeType"
-                    value={formData.theme.themeType}
-                    onChange={handleChange}
-                    placeholder="Enter theme type"
-                />
+                    <label>Font Family</label>
+                    <select
+                        name="fontFamily"
+                        value={userInfo?.theme?.fontFamily || ''}
+                        onChange={handleChange}
+                    >
+                        <option value="">Select Font</option>
+                        {fontOptions.map((font) => (
+                            <option key={font} value={font}>
+                                {font}
+                            </option>
+                        ))}
+                    </select>
 
-                <label>Font Family</label>
-                <select name="fontFamily" value={formData.theme.fontFamily} onChange={handleChange}>
-                    <option value="">Select Font</option>
-                    {fontOptions.map((font) => (
-                        <option key={font} value={font}>
-                            {font}
-                        </option>
-                    ))}
-                </select>
+                    <label>Color Theme</label>
+                    <select
+                        name="is_colorImage"
+                        value={userInfo?.theme?.is_colorImage || ''}
+                        onChange={handleChange}
+                    >
+                        <option value="">Select Theme</option>
+                        {colorOptions.map((option) => (
+                            <option key={option} value={option}>
+                                {option}
+                            </option>
+                        ))}
+                    </select>
 
-                <label>Color Theme</label>
-                <select
-                    name="is_colorImage"
-                    value={formData.theme.is_colorImage}
-                    onChange={handleChange}
-                >
-                    <option value="">Select Theme</option>
-                    {colorOptions.map((option) => (
-                        <option key={option} value={option}>
-                            {option}
-                        </option>
-                    ))}
-                </select>
-
-                <div className="button-group">
-                    <button type="submit" className="submit-btn">
-                        Submit
-                    </button>
-                    <button type="button" className="cancel-btn" onClick={handleCancel}>
-                        Cancel
-                    </button>
-                </div>
-            </form>
-        </div>
+                    <div className="button-group">
+                        <button type="submit" className="submit-btn">
+                            Submit
+                        </button>
+                        <button type="button" className="cancel-btn" onClick={handleCancel}>
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </>
     );
 };
 

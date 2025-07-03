@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { defaultConfig } from "../../../config";
 
 const Homeheader: React.FC = () => {
     const navigate = useNavigate();
@@ -22,7 +23,7 @@ const Homeheader: React.FC = () => {
                     ) :
                         (<div className="profile" onClick={() => navigate("/profile/" + localStorage.getItem("_id"))}>
                             <img
-                                src="https://i.pravatar.cc/48"
+                                src={localStorage.getItem("profile_img") ? defaultConfig.imagePath + "" + localStorage.getItem("profile_img") : "https://i.pravatar.cc/48"}
                                 alt="Profile Picture"
                                 className="avatar"
                             />

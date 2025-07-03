@@ -34,11 +34,10 @@ const Register: React.FC = () => {
         try {
             const { confirmPassword, ...registerData } = register;
             const response = await callAPIWithoutAuth(apiUrls.register, {}, 'POST', registerData);
+            setLoader(false)
             if (!response?.data?.status) {
-                setLoader(false)
                 ErrorMessage(response?.data?.message)
             } else {
-                setLoader(true)
                 setRegister({ username: '', email: '', password: '', confirmPassword: '', })
                 navigate("/login")
                 SuccessMessage(response?.data?.message)

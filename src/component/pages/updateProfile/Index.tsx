@@ -8,33 +8,30 @@ import { defaultConfig } from '../../../config';
 import LoadScreen from '../../loaderScreen';
 import SuccessMessage from '../../../helpers/Success';
 const fontOptions = [
-  'Arial',
-  'Roboto',
-  'Times New Roman',
-  'Georgia',
-  'Verdana',
-  'Inter',
-  'Lato',
-  'Open Sans',
-  'Poppins',
-  'Montserrat',
-  'Helvetica Neue',
-  'Segoe UI',
-  'Tahoma',
-  'Playfair Display',
-  'Source Sans Pro'
+    'Arial',
+    'Roboto',
+    'Times New Roman',
+    'Georgia',
+    'Verdana',
+    'Inter',
+    'Lato',
+    'Open Sans',
+    'Poppins',
+    'Montserrat',
+    'Helvetica Neue',
+    'Segoe UI',
+    'Tahoma',
+    'Playfair Display',
+    'Source Sans Pro',
+    'cursive'
 ];
 const colorOptions = [
-  'Classic Light',
-  'Elegant Dark',
-  'Vibrant Sunset',
-  'Ocean Blue',
-  'Forest Green',
-  'Warm Sand',
-  'Midnight',
-  'Pastel Dream',
-  'Neon Pop',
-  'Monochrome',
+    'Classic Light',//1
+    'Elegant Dark',//1
+    'Forest Green',
+    'Warm Sand',//1
+    'Midnight',//1
+    'Monochrome',//
 ];
 
 interface Theme {
@@ -83,6 +80,7 @@ const Index = () => {
         setLoader(true);
         try {
             const response = await callAPIWithoutAuth(apiUrls.getUserInfo, { _id: id }, 'GET', {});
+            setLoader(false);
             if (!response?.data?.status) {
                 ErrorMessage(response?.data?.message);
             } else {
@@ -92,9 +90,8 @@ const Index = () => {
                 setPreviewBanner(user.banner_img || null);
             }
         } catch (err: any) {
+            setLoader(true);
             ErrorMessage(err.message || 'Something went wrong');
-        } finally {
-            setLoader(false);
         }
     };
     useEffect(() => {
@@ -104,12 +101,14 @@ const Index = () => {
     }, [id]);
     const UploadProfileImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
         try {
+            setLoader(true);
             const files = e.target.files;
             if (!files || files.length === 0) return;
             const file = files[0];
             const formData = new FormData();
             formData.append('tempImage', file);
             const apiResponse = await API(apiUrls.upload, {}, 'POST', formData);
+            setLoader(false);
             if (apiResponse.data.status) {
                 const uploadedUrl = apiResponse.data.data;
                 setUserInfo((prev) => ({ ...prev!, profile_img: uploadedUrl }));
@@ -119,24 +118,27 @@ const Index = () => {
                 ErrorMessage(apiResponse?.data?.message);
             }
         } catch (err) {
-            console.error('Error uploading profile image:', err);
+            setLoader(true);
             ErrorMessage('Profile image upload failed');
         }
     };
     const UploadBannerImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
         try {
+            setLoader(true);
             const files = e.target.files;
             if (!files || files.length === 0) return;
             const file = files[0];
             const formData = new FormData();
             formData.append('tempImage', file);
             const apiResponse = await API(apiUrls.upload, {}, 'POST', formData);
+            setLoader(false);
             if (apiResponse.data.status) {
                 const uploadedUrl = apiResponse.data.data;
                 setUserInfo((prev) => ({ ...prev!, banner_img: uploadedUrl }));
                 setPreviewBanner(uploadedUrl);
                 e.target.value = '';
             } else {
+                setLoader(true);
                 ErrorMessage(apiResponse?.data?.message);
             }
         } catch (err) {
@@ -152,12 +154,14 @@ const Index = () => {
         e.preventDefault();
         setLoader(true)
         try {
-            const response = await callAPI(apiUrls.updateProfile, {}, 'POST', userInfo );
+            const response = await callAPI(apiUrls.updateProfile, {}, 'POST', userInfo || {});
+            setLoader(false)
             if (!response?.data?.status) {
-                setLoader(true)
                 ErrorMessage(response?.data?.message)
             } else {
-                setLoader(false)
+                localStorage.setItem("profile_img", userInfo?.profile_img || "")
+                navidate(`/profile/${localStorage.getItem("_id")}`)
+
                 SuccessMessage(response?.data?.message)
             }
         } catch (err: any) {

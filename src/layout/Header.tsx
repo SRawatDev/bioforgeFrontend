@@ -65,11 +65,11 @@ const Header: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
 
                 <div className="offcanvas-body">
                     <ul>
-                        <li><FaHome /> <Link to="/">Home</Link></li>
-                        <li><ImProfile /> <Link to={`/profile/${localStorage.getItem("_id")}`}>Profile</Link></li>
-                        <li><IoLinkSharp /> <Link to="/link">Links</Link></li>
+                        <li data-bs-dismiss="offcanvas"><FaHome /> <Link to="/">Home</Link></li>
+                        <li data-bs-dismiss="offcanvas"><ImProfile /> <Link to={`/profile/${localStorage.getItem("_id")}`}>Profile</Link></li>
+                        <li data-bs-dismiss="offcanvas"><IoLinkSharp /> <Link to="/link">Links</Link></li>
                         {/* <li><IoSettingsSharp /> Settings</li> */}
-                        <li onClick={handleLogoutClick}><MdLogout /> Logout</li>
+                        <li onClick={handleLogoutClick} data-bs-dismiss="offcanvas"><MdLogout /> Logout</li>
                     </ul>
                 </div>
             </div>

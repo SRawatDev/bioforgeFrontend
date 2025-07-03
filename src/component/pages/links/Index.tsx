@@ -51,30 +51,30 @@ const Index: React.FC = () => {
         setLoader(true);
         try {
             const response = await callAPI(apiUrls.getlinks, { type: "non_social" }, 'GET', {});
+            setLoader(false)
             if (response?.data?.status) {
                 setLinksInfo(response.data.data || []);
             } else {
                 ErrorMessage(response?.data?.message);
             }
         } catch (err: any) {
+            setLoader(true);
             ErrorMessage(err.message || 'Something went wrong');
-        } finally {
-            setLoader(false);
         }
     };
     const NonDetail = async () => {
         setLoader(true);
         try {
             const response = await callAPI(apiUrls.getlinks, { type: "social" }, 'GET', {});
+            setLoader(false)
             if (response?.data?.status) {
                 setnonSocialData(response.data.data || []);
             } else {
                 ErrorMessage(response?.data?.message);
             }
         } catch (err: any) {
+            setLoader(true);
             ErrorMessage(err.message || 'Something went wrong');
-        } finally {
-            setLoader(false);
         }
     };
 
@@ -96,7 +96,9 @@ const Index: React.FC = () => {
 
     const confirmDelete = async (item: LinkItem) => {
         try {
+            setLoader(true);
             const res = await callAPI(apiUrls.linkdelete, { _id: item._id }, 'POST', {});
+            setLoader(false);
             if (res?.data?.status) {
                 SuccessMessage(res.data.message);
                 setDeleteOpen(false);
@@ -106,13 +108,16 @@ const Index: React.FC = () => {
                 ErrorMessage(res.data.message);
             }
         } catch (err: any) {
+            setLoader(true);
             ErrorMessage(err.message || 'Delete failed');
         }
     };
 
     const confirmStatus = async (item: LinkItem) => {
         try {
+              setLoader(true);
             const res = await callAPI(apiUrls.linkupdateStatus, { _id: item._id }, 'GET', {});
+              setLoader(false);
             if (res?.data?.status) {
                 SuccessMessage(res.data.message);
                 Detail();
@@ -121,6 +126,7 @@ const Index: React.FC = () => {
                 ErrorMessage(res.data.message);
             }
         } catch (err: any) {
+              setLoader(true);
             ErrorMessage(err.message || 'Status update failed');
         }
     };
@@ -151,31 +157,31 @@ const Index: React.FC = () => {
 
     return (
         <>
-            {loader ? <LinkShimmer /> :
-                (
-                    <>
-                        <div className="linksHeader">
 
-                            <button
-                                className="editbutton"
-                                onClick={() => {
-                                    setOpen(true);
-                                    setAction('add');
-                                    setLinkDetail({
-                                        _id: '',
-                                        linkTitle: '',
-                                        linkUrl: '',
-                                        linkLogo: '',
-                                        status: '',
-                                        type: '',
-                                    });
-                                }}
-                            >
-                                ADD
-                            </button>
-                        </div>
 
-                        <h5 style={{ marginTop: "20px", textAlign: "center" }}>Manage your Non Social Links</h5>
+            <div className="linksHeader">
+
+                <button
+                    className="editbutton"
+                    onClick={() => {
+                        setOpen(true);
+                        setAction('add');
+                        setLinkDetail({
+                            _id: '',
+                            linkTitle: '',
+                            linkUrl: '',
+                            linkLogo: '',
+                            status: '',
+                            type: '',
+                        });
+                    }}
+                >
+                    ADD
+                </button>
+            </div>
+            {
+                loader ? <LinkShimmer /> :
+                    (<> <h5 style={{ marginTop: "20px", textAlign: "center" }}>Manage your Non Social Links</h5>
                         <div className="links-container">
                             <div className="links-grid">
                                 <DragDropContext onDragEnd={handleDragEnd}>
@@ -202,9 +208,9 @@ const Index: React.FC = () => {
                                                                     />
 
                                                                     <div className="link-info">
-                                                                        <h3 className="link-title">
+                                                                        <p className="link-title" style={{ color: `${item.status === 'active' ? "#07bc0c" : 'red'}` }}>
                                                                             {item.linkTitle}
-                                                                        </h3>
+                                                                        </p>
                                                                         <div className="dropdown three-dots">
                                                                             <BsThreeDotsVertical
                                                                                 className="dropdown-toggle three-dots"
@@ -261,104 +267,108 @@ const Index: React.FC = () => {
                                     </Droppable>
                                 </DragDropContext>
                             </div>
-                        </div>
+                        </div></>)
+            }
 
-                        <h5 style={{ marginTop: "20px", textAlign: "center" }}>Manage your  Social Links</h5>
-                        <div className="links-container">
-                            <div className="links-grid">
-                                {
-                                    non_socialData?.map((item) => {
-                                        const matchedPlatform = socialPlatforms.find(
-                                            (platform) => platform.label.toLowerCase() === item.linkTitle.toLowerCase()
-                                        );
-                                        return (
-                                            <div
-                                                className="link-card"
-                                            >
+            {
+                loader ? <LinkShimmer /> : (<> <h5 style={{ marginTop: "20px", textAlign: "center" }}>Manage your  Social Links</h5>
+                    <div className="links-container">
+                        <div className="links-grid">
+                            {
+                                non_socialData?.map((item) => {
+                                    const matchedPlatform = socialPlatforms.find(
+                                        (platform) => platform.label.toLowerCase() === item.linkTitle.toLowerCase()
+                                    );
+                                    return (
+                                        <div
+                                            className="link-card"
+                                        >
 
-                                                {matchedPlatform && item.type == 'social' ? (
-                                                    <span className="social-icon">{matchedPlatform.icon}</span>
-                                                ) : (
-                                                    <img
-                                                        src={defaultConfig.imagePath + item.linkLogo}
-                                                        alt={item.linkTitle}
-                                                        className="link-logo"
+                                            {matchedPlatform && item.type == 'social' ? (
+                                                <span className="social-icon">{matchedPlatform.icon}</span>
+                                            ) : (
+                                                <img
+                                                    src={defaultConfig.imagePath + item.linkLogo}
+                                                    alt={item.linkTitle}
+                                                    className="link-logo"
+                                                />
+                                            )}
+
+                                            <div className="link-info">
+                                                <p className="link-title" style={{ color: `${item.status === 'active' ? "#07bc0c" : 'red'}` }}>
+                                                    {item.linkTitle}
+                                                </p>
+                                                <div className="dropdown three-dots">
+                                                    <BsThreeDotsVertical
+                                                        className="dropdown-toggle three-dots"
+                                                        role="button"
+                                                        data-bs-toggle="dropdown"
+                                                        aria-expanded="false"
                                                     />
-                                                )}
-
-                                                <div className="link-info">
-                                                    <h3 className="link-title">
-                                                        {item.linkTitle}
-                                                    </h3>
-                                                    <div className="dropdown three-dots">
-                                                        <BsThreeDotsVertical
-                                                            className="dropdown-toggle three-dots"
-                                                            role="button"
-                                                            data-bs-toggle="dropdown"
-                                                            aria-expanded="false"
-                                                        />
-                                                        <ul className="dropdown-menu">
-                                                            <li>
-                                                                <RouterLink
-                                                                    className="dropdown-item d-flex align-items-center gap-2"
-                                                                    to={item.linkUrl}
-                                                                    target="_blank"
-                                                                    rel="noopener noreferrer"
-                                                                >
-                                                                    <AiOutlineEye /> {item.linkTitle}
-                                                                </RouterLink>
-                                                            </li>
-                                                            <li>
-                                                                <button
-                                                                    className="dropdown-item d-flex align-items-center gap-2"
-                                                                    onClick={() => confirmStatus(item)}
-                                                                >
-                                                                    <TbStatusChange /> {item.status}
-                                                                </button>
-                                                            </li>
-                                                            <li>
-                                                                <button
-                                                                    className="dropdown-item d-flex align-items-center gap-2"
-                                                                    onClick={() => handleEdit(item)}
-                                                                >
-                                                                    <MdOutlineEdit /> Edit
-                                                                </button>
-                                                            </li>
-                                                            <li>
-                                                                <button
-                                                                    className="dropdown-item d-flex align-items-center gap-2 text-danger"
-                                                                    onClick={() => handleDelete(item)}
-                                                                >
-                                                                    <MdDeleteOutline /> Delete
-                                                                </button>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
+                                                    <ul className="dropdown-menu">
+                                                        <li>
+                                                            <RouterLink
+                                                                className="dropdown-item d-flex align-items-center gap-2"
+                                                                to={item.linkUrl}
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                            >
+                                                                <AiOutlineEye /> {item.linkTitle}
+                                                            </RouterLink>
+                                                        </li>
+                                                        <li>
+                                                            <button
+                                                                className="dropdown-item d-flex align-items-center gap-2"
+                                                                onClick={() => confirmStatus(item)}
+                                                            >
+                                                                <TbStatusChange /> {item.status}
+                                                            </button>
+                                                        </li>
+                                                        <li>
+                                                            <button
+                                                                className="dropdown-item d-flex align-items-center gap-2"
+                                                                onClick={() => handleEdit(item)}
+                                                            >
+                                                                <MdOutlineEdit /> Edit
+                                                            </button>
+                                                        </li>
+                                                        <li>
+                                                            <button
+                                                                className="dropdown-item d-flex align-items-center gap-2 text-danger"
+                                                                onClick={() => handleDelete(item)}
+                                                            >
+                                                                <MdDeleteOutline /> Delete
+                                                            </button>
+                                                        </li>
+                                                    </ul>
                                                 </div>
                                             </div>
-                                        )
+                                        </div>
+                                    )
 
-                                    })
-                                }
-                            </div></div>
-
-
-
-                        <Delete
-                            open={deleteOpen}
-                            onClose={() => setDeleteOpen(false)}
-                            confirmDetail={() => confirmDelete(linkDetail)}
-                            linkDetail={linkDetail}
-                        />
-                        <LinksAddEdit
-                            NonDetail={NonDetail}
-                            open={open}
-                            onClose={() => setOpen(false)}
-                            Detail={Detail}
-                            linkDetail={linkDetail}
-                            action={action}
-                        /></>)
+                                })
+                            }
+                        </div></div></>)
             }
+
+
+
+
+            <Delete
+                open={deleteOpen}
+                onClose={() => setDeleteOpen(false)}
+                confirmDetail={() => confirmDelete(linkDetail)}
+                linkDetail={linkDetail}
+            />
+            <LinksAddEdit
+                NonDetail={NonDetail}
+                open={open}
+                onClose={() => setOpen(false)}
+                Detail={Detail}
+                linkDetail={linkDetail}
+                action={action}
+            />
+
         </>
     );
 };

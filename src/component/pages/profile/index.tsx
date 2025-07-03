@@ -6,7 +6,6 @@ import { apiUrls } from '../../../utils/api.utils';
 import { defaultConfig } from '../../../config';
 import { Link, useParams } from 'react-router-dom';
 import { BiLogoGmail } from "react-icons/bi";
-import LoadScreen from '../../loaderScreen';
 import { socialPlatforms } from '../links/linksAddEdit';
 import ProfileShimmer from '../../ProfileShimmer';
 const colorMap: Record<string, string> = {
@@ -53,12 +52,11 @@ const index: React.FC = () => {
         setLoader(true)
         try {
             const response = await callAPIWithoutAuth(apiUrls.getUserInfo, { _id: id.id }, 'GET', {});
+            setLoader(false)
             if (!response?.data?.status) {
                 ErrorMessage(response?.data?.data?.message)
-                setLoader(true)
             } else {
                 setUserInfo(response?.data?.data[0])
-                setLoader(false)
             }
         } catch (err: any) {
             ErrorMessage(err.message || "Something went wrong");
@@ -74,7 +72,7 @@ const index: React.FC = () => {
     return (
         <>
             {loader ? <ProfileShimmer /> :
-                <div className="profile-container" style={{ backgroundColor: getBackgroundColor(userInfo?.theme?.is_colorImage), fontFamily: `${userInfo?.theme?.fontFamily}` }}>
+                <div className="profile-container" style={{ backgroundColor: getBackgroundColor(userInfo?.theme?.is_colorImage),  color: `${userInfo?.theme?.is_colorImage === 'Elegant Dark' || userInfo?.theme?.is_colorImage === 'Midnight' ? "White" : "black"}` }}>
                     <div className="cover-photo">
                         <img id="coverImage" src={defaultConfig?.imagePath + userInfo?.banner_img} alt="Kapak Resmi" />
                     </div>
@@ -87,12 +85,12 @@ const index: React.FC = () => {
 
                     </div>
                     <div className="profile-info">
-                        <h1 id="username " className='editprofile'>{userInfo?.username} <Link to={`/updateProfile/${localStorage.getItem("_id")}`}><FaEdit /></Link></h1>
-                        <p id="bio">{userInfo?.bio}</p>
+                        <h1 id="username " className='editprofile' style={{fontFamily: `${userInfo?.theme?.fontFamily}`}}>{userInfo?.username} <Link to={`/updateProfile/${localStorage.getItem("_id")}`}><FaEdit /></Link></h1>
+                        <p id="bio" style={{fontFamily: `${userInfo?.theme?.fontFamily}`}}>{userInfo?.bio}</p>
                         <button style={{ marginTop: 15 }}>
                             <div className='contactEmail'>
                                 <BiLogoGmail />
-                                <p>
+                                <p style={{fontFamily: `${userInfo?.theme?.fontFamily}`}}>
                                     {userInfo?.email}
                                 </p>
                             </div>
@@ -102,6 +100,7 @@ const index: React.FC = () => {
                         <input type="text" id="editUsername" placeholder="Adınızı girin" />
                         <textarea
                             id="editBio"
+                            style={{fontFamily: `${userInfo?.theme?.fontFamily}`}}
                             placeholder="Hakkınızda bir şeyler yazın..."
                             rows={3}
                             defaultValue={""}
@@ -119,7 +118,7 @@ const index: React.FC = () => {
                                 className="link-card"
                             >
                                 <img src={defaultConfig?.imagePath + link.linkLogo} alt={link.linkTitle} className="link-logo" />
-                                <span>{link.linkTitle}</span>
+                                <span style={{fontFamily: `${userInfo?.theme?.fontFamily}`}}>{link.linkTitle}</span>
                             </Link>
                         ))}
                     </div>
@@ -137,7 +136,7 @@ const index: React.FC = () => {
                                         rel="noopener noreferrer"
                                         className="link-card-social"
                                     >
-                                        {matchedPlatform && <span className="social-icon">{matchedPlatform.icon}</span>}
+                                        {matchedPlatform && <span className="social-icon" style={{fontFamily: `${userInfo?.theme?.fontFamily}`}}>{matchedPlatform.icon}</span>}
                                     </Link>
                                 </>
                             )

@@ -14,7 +14,7 @@ interface Props {
   Detail: () => void;
   linkDetail: Link;
   action: 'add' | 'edit';
-  NonDetail:()=>void
+  NonDetail: () => void
 }
 
 interface Link {
@@ -32,7 +32,7 @@ export const socialPlatforms = [
   { label: 'LinkedIn', value: 'linkedin', icon: <FaLinkedinIn size={24} /> },
   { label: 'YouTube', value: 'youtube', icon: <FaYoutube size={24} /> },
 ];
-export const LinksAddEdit: React.FC<Props> = ({ open, onClose, Detail, linkDetail, action,NonDetail }) => {
+export const LinksAddEdit: React.FC<Props> = ({ open, onClose, Detail, linkDetail, action, NonDetail }) => {
   const [loader, setLoader] = useState(false);
   const [link, setLink] = useState<Link>({ linkTitle: '', linkUrl: '', linkLogo: '', type: 'social' });
   const [preview, setPreview] = useState<string | null>(null);
@@ -73,12 +73,14 @@ export const LinksAddEdit: React.FC<Props> = ({ open, onClose, Detail, linkDetai
 
   const UploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     try {
+      setLoader(true);
       const files = e.target.files;
       if (!files || files.length === 0) return;
       const file = files[0];
       const formData = new FormData();
       formData.append('tempImage', file);
       const apiResponse = await API(apiUrls.upload, {}, 'POST', formData);
+      setLoader(false);
       if (apiResponse.data.status) {
         const uploadedUrl = apiResponse.data.data;
         setLink((prev) => ({ ...prev, linkLogo: uploadedUrl }));
@@ -88,6 +90,7 @@ export const LinksAddEdit: React.FC<Props> = ({ open, onClose, Detail, linkDetai
         ErrorMessage(apiResponse?.data?.message);
       }
     } catch (err) {
+      setLoader(true);
       console.error('Error uploading image:', err);
       ErrorMessage('Image upload failed');
     }
@@ -99,24 +102,24 @@ export const LinksAddEdit: React.FC<Props> = ({ open, onClose, Detail, linkDetai
     try {
       const endpoint = action === 'edit' ? apiUrls.linkupdate : apiUrls.addlinks;
       const payload = action === 'edit' ? { ...link, _id: linkDetail._id } : link;
-      if (payload.type === 'social' ) {
+      if (payload.type === 'social') {
         payload.linkLogo = '';
       }
 
       const response = await callAPI(endpoint, {}, 'POST', payload);
+      setLoader(false);
       if (!response?.data?.status) {
         ErrorMessage(response?.data?.message);
       } else {
         SuccessMessage(response?.data?.message);
         Detail();
         NonDetail()
-        
+
         onClose();
       }
     } catch (err: any) {
+      setLoader(true);
       ErrorMessage(err.message || 'Something went wrong');
-    } finally {
-      setLoader(false);
     }
   };
 

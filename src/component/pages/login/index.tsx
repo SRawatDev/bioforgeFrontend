@@ -26,14 +26,14 @@ const Register: React.FC = () => {
         setLoader(true)
         try {
             const response = await callAPIWithoutAuth(apiUrls.login, {}, 'POST', login);
+            setLoader(false)
             if (!response?.data?.status) {
                 ErrorMessage(response?.data?.message)
-                setLoader(true)
             } else {
                 localStorage.setItem("_id", response?.data?.data?.id)
                 localStorage.setItem("accessToken", response?.data?.data?.token)
+                localStorage.setItem("profile_img", response?.data?.data?.profile_img)
                 navigate("/")
-                setLoader(false)
                 SuccessMessage(response?.data?.message)
             }
         } catch (err: any) {
@@ -61,11 +61,12 @@ const Register: React.FC = () => {
                         <button type="submit" className="button">
                             Sign In
                         </button>
-       
+
+                    </form>
+                    <br />
                         <button type="submit" className="button" onClick={() => navigate("/register")}>
                             Sign Up
                         </button>
-                    </form>
                 </div>
             </div>
         </>

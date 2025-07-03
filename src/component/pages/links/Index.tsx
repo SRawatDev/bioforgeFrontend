@@ -3,7 +3,6 @@ import { callAPI } from '../../../utils/apicall.utils';
 import ErrorMessage from '../../../helpers/ErrorMessage';
 import SuccessMessage from '../../../helpers/Success';
 import { apiUrls } from '../../../utils/api.utils';
-import LoadScreen from '../../loaderScreen';
 import { defaultConfig } from '../../../config';
 import { LinksAddEdit } from './linksAddEdit';
 import Delete from './Delete';
@@ -20,6 +19,7 @@ import { AiOutlineEye } from "react-icons/ai";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { socialPlatforms } from './linksAddEdit';
 import LinkShimmer from '../../LinkShimmer';
+import NodataFound from '../../NodataFound';
 
 interface LinkItem {
     _id: string;
@@ -115,9 +115,9 @@ const Index: React.FC = () => {
 
     const confirmStatus = async (item: LinkItem) => {
         try {
-              setLoader(true);
+            setLoader(true);
             const res = await callAPI(apiUrls.linkupdateStatus, { _id: item._id }, 'GET', {});
-              setLoader(false);
+            setLoader(false);
             if (res?.data?.status) {
                 SuccessMessage(res.data.message);
                 Detail();
@@ -126,7 +126,7 @@ const Index: React.FC = () => {
                 ErrorMessage(res.data.message);
             }
         } catch (err: any) {
-              setLoader(true);
+            setLoader(true);
             ErrorMessage(err.message || 'Status update failed');
         }
     };
@@ -180,15 +180,19 @@ const Index: React.FC = () => {
                 </button>
             </div>
             {
+                non_socialData.length == 0 && <NodataFound />
+            }
+            {
                 loader ? <LinkShimmer /> :
-                    (<> <h5 style={{ marginTop: "20px", textAlign: "center" }}>Manage your Non Social Links</h5>
+                    (<>
                         <div className="links-container">
+                            {linksInfo.length > 0 && <h5 style={{ marginTop: "20px", padding: "8px", textDecoration: "underline" }}>Manage your Non Social Links</h5>}
                             <div className="links-grid">
                                 <DragDropContext onDragEnd={handleDragEnd}>
                                     <Droppable droppableId="links-list">
                                         {(provided) => (
                                             <div ref={provided.innerRef} {...provided.droppableProps}>
-                                                {linksInfo.map((item, index) => {
+                                                {linksInfo.length > 0 && linksInfo.map((item, index) => {
 
 
                                                     return (
@@ -271,11 +275,16 @@ const Index: React.FC = () => {
             }
 
             {
-                loader ? <LinkShimmer /> : (<> <h5 style={{ marginTop: "20px", textAlign: "center" }}>Manage your  Social Links</h5>
+                loader ? <LinkShimmer /> : (<>
                     <div className="links-container">
+                        {
+
+
+                            non_socialData.length > 0 && <h5 style={{ marginTop: "20px", padding: "8px", textDecoration: "underline" }}>Manage your  Social Links</h5>
+                        }
                         <div className="links-grid">
                             {
-                                non_socialData?.map((item) => {
+                                non_socialData.length > 0 && non_socialData?.map((item) => {
                                     const matchedPlatform = socialPlatforms.find(
                                         (platform) => platform.label.toLowerCase() === item.linkTitle.toLowerCase()
                                     );

@@ -4,10 +4,11 @@ import { FaEdit } from "react-icons/fa";
 import { callAPIWithoutAuth } from '../../../utils/apicall.utils';
 import { apiUrls } from '../../../utils/api.utils';
 import { defaultConfig } from '../../../config';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { BiLogoGmail } from "react-icons/bi";
 import { socialPlatforms } from '../links/linksAddEdit';
 import ProfileShimmer from '../../ProfileShimmer';
+import Header from '../../../layout/Header';
 const colorMap: Record<string, string> = {
     'Classic Light': '#f9f9f9',
     'Elegant Dark': '#1e1e2f',
@@ -15,7 +16,6 @@ const colorMap: Record<string, string> = {
     'Ocean Blue': '#0077be',
     'Forest Green': '#228B22',
     'Warm Sand': '#f4e1c1',
-    'Midnight': '#121212',
     'Pastel Dream': '#ffd1dc',
     'Neon Pop': '#39ff14',
     'Monochrome': '#cccccc',
@@ -45,6 +45,7 @@ interface Link {
 }
 
 const index: React.FC = () => {
+    const navigate = useNavigate()
     const id = useParams()
     const [userInfo, setUserInfo] = useState<userInfo | null>(null);
     const [loader, setLoader] = useState<boolean>(false)
@@ -54,6 +55,7 @@ const index: React.FC = () => {
             const response = await callAPIWithoutAuth(apiUrls.getUserInfo, { _id: id.id }, 'GET', {});
             setLoader(false)
             if (!response?.data?.status) {
+                navigate("/")
                 ErrorMessage(response?.data?.data?.message)
             } else {
                 setUserInfo(response?.data?.data[0])
@@ -71,8 +73,9 @@ const index: React.FC = () => {
     };
     return (
         <>
+            {localStorage.getItem("accessToken") ? <Header /> : null}
             {loader ? <ProfileShimmer /> :
-                <div className="profile-container" style={{ backgroundColor: getBackgroundColor(userInfo?.theme?.is_colorImage),  color: `${userInfo?.theme?.is_colorImage === 'Elegant Dark' || userInfo?.theme?.is_colorImage === 'Midnight' ? "White" : "black"}` }}>
+                <div className="profile-container" style={{ backgroundColor: getBackgroundColor(userInfo?.theme?.is_colorImage), color: `${userInfo?.theme?.is_colorImage === 'Elegant Dark' || userInfo?.theme?.is_colorImage === 'Midnight' ? "White" : "black"}` }}>
                     <div className="cover-photo">
                         <img id="coverImage" src={defaultConfig?.imagePath + userInfo?.banner_img} alt="Kapak Resmi" />
                     </div>
@@ -85,12 +88,13 @@ const index: React.FC = () => {
 
                     </div>
                     <div className="profile-info">
-                        <h1 id="username " className='editprofile' style={{fontFamily: `${userInfo?.theme?.fontFamily}`}}>{userInfo?.username} <Link to={`/updateProfile/${localStorage.getItem("_id")}`}><FaEdit /></Link></h1>
-                        <p id="bio" style={{fontFamily: `${userInfo?.theme?.fontFamily}`}}>{userInfo?.bio}</p>
+                        <h1 id="username " className='editprofile' style={{ fontFamily: `${userInfo?.theme?.fontFamily}` }}>{userInfo?.username} <Link to={`/updateProfile/${localStorage.getItem("_id")}`}>    {localStorage.getItem("accessToken") ? <FaEdit /> : null}</Link></h1>
+                        <p id="bio" style={{ fontFamily: `${userInfo?.theme?.fontFamily}` }}>{userInfo?.bio}</p>
                         <button style={{ marginTop: 15 }}>
                             <div className='contactEmail'>
                                 <BiLogoGmail />
-                                <p style={{fontFamily: `${userInfo?.theme?.fontFamily}`}}>
+
+                                <p style={{ fontFamily: `${userInfo?.theme?.fontFamily}` }}>
                                     {userInfo?.email}
                                 </p>
                             </div>
@@ -100,7 +104,7 @@ const index: React.FC = () => {
                         <input type="text" id="editUsername" placeholder="Adınızı girin" />
                         <textarea
                             id="editBio"
-                            style={{fontFamily: `${userInfo?.theme?.fontFamily}`}}
+                            style={{ fontFamily: `${userInfo?.theme?.fontFamily}` }}
                             placeholder="Hakkınızda bir şeyler yazın..."
                             rows={3}
                             defaultValue={""}
@@ -118,7 +122,7 @@ const index: React.FC = () => {
                                 className="link-card"
                             >
                                 <img src={defaultConfig?.imagePath + link.linkLogo} alt={link.linkTitle} className="link-logo" />
-                                <span style={{fontFamily: `${userInfo?.theme?.fontFamily}`}}>{link.linkTitle}</span>
+                                <span style={{ fontFamily: `${userInfo?.theme?.fontFamily}` }}>{link.linkTitle}</span>
                             </Link>
                         ))}
                     </div>
@@ -136,7 +140,7 @@ const index: React.FC = () => {
                                         rel="noopener noreferrer"
                                         className="link-card-social"
                                     >
-                                        {matchedPlatform && <span className="social-icon" style={{fontFamily: `${userInfo?.theme?.fontFamily}`}}>{matchedPlatform.icon}</span>}
+                                        {matchedPlatform && <span className="social-icon" style={{ fontFamily: `${userInfo?.theme?.fontFamily}` }}>{matchedPlatform.icon}</span>}
                                     </Link>
                                 </>
                             )

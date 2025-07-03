@@ -26,7 +26,6 @@
 
 .icon-box {
   height: 64px;
-  /* background: linear-gradient(to right, #3b82f6, #8b5cf6); */
   border-radius: 12px;
   margin: 0 auto 16px;
   display: flex;
@@ -170,8 +169,20 @@ input[type="date"] {
   align-items: center;
   justify-content: center;
   background-color: #000000a8;
-;
-
+  z-index: 100;
+}
+.notDataloading {
+  font-size: xx-large;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: -10;
 }
 .header-navbar {
   display: flex;
@@ -221,7 +232,7 @@ input[type="date"] {
 @media (max-width: 600px) {
   .container-register {
     background-color: white;
-    padding: 32px;
+    padding: 11px;
     border-radius: 16px;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
     max-width: 400px;
@@ -243,7 +254,7 @@ body {
 /* Container */
 .profile-container {
   max-width: 900px;
-  margin: 20px auto;
+  margin: 0px auto;
   background: #fff;
   border-radius: 10px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -317,7 +328,7 @@ body {
 
 /* Profil Bilgileri */
 .profile-info {
-  padding: 25px 20px;
+  padding: 4px 11px;
 }
 
 .profile-info h1 {
@@ -369,8 +380,8 @@ body {
 /* Responsive Tasarım */
 @media (max-width: 768px) {
   .profile-container {
-    margin: 10px;
     border-radius: 0;
+    height: 100%;
   }
 
   .cover-photo {
@@ -426,7 +437,7 @@ body {
 .links-container {
   max-width: 400px;
   margin: 0 auto;
-  padding: 20px 16px;
+  padding: 0px 9px;
   font-family: "Segoe UI", sans-serif;
 }
 
@@ -454,7 +465,6 @@ body {
   display: flex;
   justify-content: start;
   flex-wrap: wrap;
-  gap: 12px;
   padding: 5px;
 }
 
@@ -475,7 +485,6 @@ body {
 #bio {
   text-align: start;
 }
-
 
 @media (max-width: 500px) {
   .link-card {
@@ -533,7 +542,6 @@ body {
 .links-grid {
   display: flex;
   flex-direction: column;
-  gap: 20px;
 }
 
 /* Card */
@@ -547,8 +555,6 @@ body {
   gap: 16px;
   transition: transform 0.3s ease;
 }
-
-
 
 .link-info {
   position: relative;
@@ -697,7 +703,7 @@ form {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  margin-top: 16px;
+
 }
 
 input[type="text"],
@@ -884,21 +890,11 @@ input[type="file"] {
 }
 
 .form-container {
-  max-width: 600px;
-  margin: auto;
-  padding: 1rem;
+  padding: 4px;
   box-sizing: border-box;
 }
 
-.form-box {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  padding: 2rem;
-  background: #f9f9f9;
-  border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-}
+
 
 .form-box input,
 .form-box textarea,
@@ -974,7 +970,6 @@ input[type="file"] {
   font-size: 24px;
 }
 
-
 .profile-shimmer-container {
   width: 100%;
   padding: 1rem;
@@ -1002,7 +997,12 @@ input[type="file"] {
   left: -150px;
   height: 100%;
   width: 150px;
-  background: linear-gradient(to right, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%);
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(255, 255, 255, 0.4) 50%,
+    transparent 100%
+  );
   animation: shimmer 1.5s infinite;
 }
 

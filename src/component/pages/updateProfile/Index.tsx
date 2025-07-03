@@ -28,7 +28,6 @@ const fontOptions = [
 const colorOptions = [
     'Classic Light',//1
     'Elegant Dark',//1
-    'Forest Green',
     'Warm Sand',//1
     'Midnight',//1
     'Monochrome',//
@@ -138,7 +137,6 @@ const Index = () => {
                 setPreviewBanner(uploadedUrl);
                 e.target.value = '';
             } else {
-                setLoader(true);
                 ErrorMessage(apiResponse?.data?.message);
             }
         } catch (err) {

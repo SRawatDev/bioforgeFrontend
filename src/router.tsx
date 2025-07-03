@@ -29,12 +29,12 @@ const routes: AppRoute[] = [
   },
   {
     // guard: Authenticated,
-    layout: Header,
+    // layout: Header,
     path: '/profile/:id',
     element: lazy(() => import('./component/pages/profile/index'))
   },
   {
-    // guard: Authenticated,
+    guard: Authenticated,
     layout: Header,
     path: '/updateProfile/:id',
     element: lazy(() => import('./component/pages/updateProfile/Index'))

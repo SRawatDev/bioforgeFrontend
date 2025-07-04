@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import ErrorMessage from '../../../helpers/ErrorMessage';
+import { BsThreeDots } from "react-icons/bs";
 import { FaEdit } from "react-icons/fa";
 import { callAPIWithoutAuth } from '../../../utils/apicall.utils';
 import { apiUrls } from '../../../utils/api.utils';
@@ -10,6 +11,7 @@ import { socialPlatforms } from '../links/linksAddEdit';
 import ProfileShimmer from '../../ProfileShimmer';
 import Header from '../../../layout/Header';
 import axios from 'axios';
+import { Report } from './Report';
 const colorMap: Record<string, string> = {
     'Classic Light': '#f9f9f9',
     'Elegant Dark': '#1e1e2f',
@@ -36,7 +38,6 @@ interface theme {
     fontFamily: string,
     is_colorImage: string
 }
-
 interface Link {
     linkTitle: string;
     linkUrl: string;
@@ -44,16 +45,12 @@ interface Link {
     is_index: number;
     _id: string;
 }
-
-interface linkClicked {
-    userId: string,
-    ipAddress: string
-}
 const index: React.FC = () => {
-    const [clickData, setclickData] = useState<linkClicked>({ userId: '', ipAddress: '' })
+
     const [ip, setIp] = useState<string>('')
     const navigate = useNavigate()
     const id = useParams()
+
     const [userInfo, setUserInfo] = useState<userInfo | null>(null);
     const [loader, setLoader] = useState<boolean>(false)
     const getUserDetail = async () => {
@@ -106,6 +103,7 @@ const index: React.FC = () => {
             ErrorMessage(error.message || "Something went wrong");
         }
     };
+    const userId = localStorage.getItem("_id") || null
 
     return (
         <>
@@ -113,7 +111,14 @@ const index: React.FC = () => {
             {loader ? <ProfileShimmer /> :
                 <div className="profile-container" style={{ backgroundColor: getBackgroundColor(userInfo?.theme?.is_colorImage), color: `${userInfo?.theme?.is_colorImage === 'Elegant Dark' || userInfo?.theme?.is_colorImage === 'Midnight' ? "White" : "black"}` }}>
                     <div className="cover-photo">
-                        <img id="coverImage" src={defaultConfig?.imagePath + userInfo?.banner_img} alt="Kapak Resmi" />
+                        <img id="coverImage three-dots-image" src={defaultConfig?.imagePath + userInfo?.banner_img} alt="Kapak Resmi" />
+                        {userId !== id.id &&
+
+                            <BsThreeDots className='threedots' type="button"
+                                data-bs-toggle="offcanvas"
+                                data-bs-target="#offcanvasBottom"
+                                aria-controls="offcanvasBottom" />
+                        }
                     </div>
                     <div className="profile-picture">
                         <img
@@ -129,7 +134,6 @@ const index: React.FC = () => {
                         <button style={{ marginTop: 15 }}>
                             <div className='contactEmail'>
                                 <BiLogoGmail />
-
                                 <p style={{ fontFamily: `${userInfo?.theme?.fontFamily}` }}>
                                     {userInfo?.email}
                                 </p>
@@ -191,6 +195,7 @@ const index: React.FC = () => {
 
                 </div>
             }
+            <Report userName={userInfo?.username || ""} />
 
         </>
     )

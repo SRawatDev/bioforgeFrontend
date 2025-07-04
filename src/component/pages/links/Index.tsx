@@ -20,6 +20,7 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { socialPlatforms } from './linksAddEdit';
 import LinkShimmer from '../../LinkShimmer';
 import NodataFound from '../../NodataFound';
+import UserInfo from './UserInfo';
 
 interface LinkItem {
     _id: string;
@@ -28,11 +29,24 @@ interface LinkItem {
     linkLogo: string;
     status: string;
     type: string;
+    clickCount?: number,
+    clicks?: [clicks]
+
+}
+interface getuser {
+    username?: string,
+    count?: number
+}
+ export interface clicks {
+    userInfo: getuser,
+    ipAddress: string,
+    count: string
 }
 
 const Index: React.FC = () => {
+    const [openuserInfo,setopenuserInfo]=useState<boolean>(false)
+    const [userInfo, setUserInfo] = useState<clicks[]>([])
     const [non_socialData, setnonSocialData] = useState<LinkItem[]>([])
-
     const [action, setAction] = useState<'add' | 'edit'>('add');
     const [deleteOpen, setDeleteOpen] = useState(false);
     const [open, setOpen] = useState(false);
@@ -153,7 +167,10 @@ const Index: React.FC = () => {
             setLoader(false);
         }
     };
-
+    const handleUserInfo = (clickList: clicks[] = []) => {
+        setUserInfo(clickList)
+        setopenuserInfo(true)
+    }
 
     return (
         <>
@@ -212,8 +229,8 @@ const Index: React.FC = () => {
                                                                     />
 
                                                                     <div className="link-info">
-                                                                        <p className="link-title" style={{ color: `${item.status === 'active' ? "#07bc0c" : 'red'}` }}>
-                                                                            {item.linkTitle}
+                                                                        <p className="link-title" onClick={() => handleUserInfo(item?.clicks)} style={{ color: `${item.status === 'active' ? "#07bc0c" : 'red'}` }}>
+                                                                            {item.linkTitle}({item.clickCount ? item.clickCount : 0})
                                                                         </p>
                                                                         <div className="dropdown three-dots">
                                                                             <BsThreeDotsVertical
@@ -277,11 +294,7 @@ const Index: React.FC = () => {
             {
                 loader ? <LinkShimmer /> : (<>
                     <div className="links-container">
-                        {
-
-
-                            non_socialData.length > 0 && <h5 style={{ marginTop: "20px", padding: "8px", textDecoration: "underline" }}>Manage your  Social Links</h5>
-                        }
+                        {non_socialData.length > 0 && <h5 style={{ marginTop: "20px", padding: "8px", textDecoration: "underline" }}>Manage your  Social Links</h5>}
                         <div className="links-grid">
                             {
                                 non_socialData.length > 0 && non_socialData?.map((item) => {
@@ -304,8 +317,8 @@ const Index: React.FC = () => {
                                             )}
 
                                             <div className="link-info">
-                                                <p className="link-title" style={{ color: `${item.status === 'active' ? "#07bc0c" : 'red'}` }}>
-                                                    {item.linkTitle}
+                                                <p className="link-title" style={{ color: `${item.status === 'active' ? "#07bc0c" : 'red'}` }} onClick={() => handleUserInfo(item?.clicks)}>
+                                                    {item.linkTitle}({item.clickCount ? item.clickCount : 0})
                                                 </p>
                                                 <div className="dropdown three-dots">
                                                     <BsThreeDotsVertical
@@ -360,9 +373,7 @@ const Index: React.FC = () => {
                         </div></div></>)
             }
 
-
-
-
+            <UserInfo userInfo={userInfo} visible={openuserInfo} onClose={()=>setopenuserInfo(false)}/>
             <Delete
                 open={deleteOpen}
                 onClose={() => setDeleteOpen(false)}

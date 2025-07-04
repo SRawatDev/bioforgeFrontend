@@ -426,9 +426,7 @@ header .container {
   color: var(--silver-chalice);
 }
 textarea {
-  max-height: 300px;
-  min-height: 100px;
-  height: 100px;
+  max-height: 150px;
   resize: vertical;
 }
 

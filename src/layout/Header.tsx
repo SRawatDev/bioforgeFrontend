@@ -3,7 +3,7 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { FaHome } from "react-icons/fa";
 import { ImProfile } from "react-icons/im";
 import { TbLockPassword } from "react-icons/tb";
-import { IoLinkSharp, IoSettingsSharp } from "react-icons/io5";
+import { IoLinkSharp,} from "react-icons/io5";
 import { MdLogout } from "react-icons/md";
 import { Link, useNavigate } from 'react-router-dom';
 import SuccessMessage from '../helpers/Success';
@@ -13,7 +13,6 @@ const Header: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
     const navigate = useNavigate();
 
     const handleLogoutClick = () => {
-        // Find and trigger any element with data-bs-dismiss="offcanvas"
         const dismissBtn = document.querySelector('#offcanvasTop [data-bs-dismiss="offcanvas"]') as HTMLElement;
         if (dismissBtn) dismissBtn.click();
 

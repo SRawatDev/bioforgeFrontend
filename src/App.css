@@ -703,7 +703,6 @@ form {
   display: flex;
   flex-direction: column;
   gap: 12px;
-
 }
 
 input[type="text"],
@@ -894,8 +893,6 @@ input[type="file"] {
   box-sizing: border-box;
 }
 
-
-
 .form-box input,
 .form-box textarea,
 .form-box select {
@@ -908,7 +905,7 @@ input[type="file"] {
 
 .form-box textarea {
   resize: vertical;
-  min-height: 80px;
+  min-height: 120px;
 }
 
 .form-box label {
@@ -1124,4 +1121,63 @@ input[type="file"] {
   100% {
     left: 100%;
   }
+}
+
+.user-info-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.user-info-content {
+  background: #fff;
+  padding: 20px 30px;
+  border-radius: 8px;
+  width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.user-info-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+}
+
+.user-info-table th,
+.user-info-table td {
+  border: 1px solid #ccc;
+  padding: 8px 12px;
+  text-align: left;
+}
+
+.user-info-table th {
+  background-color: #f0f0f0;
+}
+
+.close-btn {
+  margin-top: 16px;
+  padding: 1px 20px;
+  background-color: #dc3545;
+  border: none;
+  color: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.three-dots-image{
+  position: relative;
+}
+.threedots{
+position: absolute;
+    color: white;
+    top: 3px;
+    right: 11px;
+    font-size: xx-large;
 }

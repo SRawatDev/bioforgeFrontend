@@ -13,6 +13,7 @@ export const apiUrls = {
     updateProfile: "api/v1/updateProfile",
     linkClicked: "api/v1/link/click",
     changePassword: "api/v1/changePassword",
+    userReport: "api/v1/report",
 
 
 };

@@ -92,9 +92,7 @@ const index: React.FC = () => {
                 userId,
                 ipAddress: userId ? "" : ip
             };
-
             const response = await callAPIWithoutAuth(apiUrls.linkClicked + "/" + id, {}, 'POST', payload);
-
             if (!response?.data?.status) {
                 navigate("/")
                 ErrorMessage(response?.data?.data?.message)
@@ -112,7 +110,7 @@ const index: React.FC = () => {
                 <div className="profile-container" style={{ backgroundColor: getBackgroundColor(userInfo?.theme?.is_colorImage), color: `${userInfo?.theme?.is_colorImage === 'Elegant Dark' || userInfo?.theme?.is_colorImage === 'Midnight' ? "White" : "black"}` }}>
                     <div className="cover-photo">
                         <img id="coverImage three-dots-image" src={defaultConfig?.imagePath + userInfo?.banner_img} alt="Kapak Resmi" />
-                        {userId !== id.id &&
+                        {userId !== id.id && userId &&
 
                             <BsThreeDots className='threedots' type="button"
                                 data-bs-toggle="offcanvas"

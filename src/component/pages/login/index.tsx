@@ -6,11 +6,16 @@ import InputField from "../../form/InputField";
 import { apiUrls } from "../../../utils/api.utils";
 import SuccessMessage from "../../../helpers/Success";
 import LoadScreen from "../../loaderScreen";
+import { FaEyeLowVision } from "react-icons/fa6";
+import { FaEye } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import { IoMdArrowRoundBack } from "react-icons/io";
 interface RegisterInterface {
     email: string;
     password: string;
 }
 const Register: React.FC = () => {
+    const [passwordhide, setpasswordHide] = useState<boolean>(true)
     const [loader, setLoader] = useState<boolean>(false)
     const navigate = useNavigate()
     const [login, setLogin] = useState<RegisterInterface>({ email: '', password: '' });
@@ -44,6 +49,9 @@ const Register: React.FC = () => {
     return (
         <>
             {loader && <LoadScreen />}
+             <Link to={"/"}>
+                <IoMdArrowRoundBack  className="backbutton"/>
+            </Link>
             <div className="container-parent">
                 <div className="container-register">
                     <div className="icon-box">
@@ -53,20 +61,54 @@ const Register: React.FC = () => {
                     <p>Access your account to continue</p>
                     <form onSubmit={handleSubmit}>
                         <div className="form-group">
-                            <InputField label="Email" name="email" value={login.email} onChange={handleChange} required />
+                            <InputField label="Email" type="email" name="email" value={login.email} onChange={handleChange} required />
+
                         </div>
-                        <div className="form-group">
-                            <InputField label="Password" name="password" value={login.password} onChange={handleChange} required type="password" />
+                        <div className="form-group position-relative">
+                            <InputField
+                                label="Password"
+                                name="password"
+                                value={login.password}
+                                onChange={handleChange}
+                                required
+                                type={passwordhide ? "password" : "text"}
+
+                            />
+                            {passwordhide ?
+
+                                (<FaEyeLowVision
+                                    onClick={() => setpasswordHide(false)}
+                                    className="position-absolute"
+                                    style={{
+                                        right: '10px',
+                                        top: '50%',
+                                        transform: 'translateY(-50%)',
+                                        cursor: 'pointer',
+                                        color: '#999'
+                                    }}
+
+                                />) :
+                                (<FaEye className="position-absolute"
+                                    onClick={() => setpasswordHide(true)}
+                                    style={{
+                                        right: '10px',
+                                        top: '50%',
+                                        transform: 'translateY(-50%)',
+                                        cursor: 'pointer',
+                                        color: '#999'
+                                    }} />)
+                            }
                         </div>
+
                         <button type="submit" className="button">
                             Sign In
                         </button>
 
                     </form>
                     <br />
-                        <button type="submit" className="button" onClick={() => navigate("/register")}>
-                            Sign Up
-                        </button>
+                    <button type="submit" className="button" onClick={() => navigate("/register")}>
+                        Sign Up
+                    </button>
                 </div>
             </div>
         </>

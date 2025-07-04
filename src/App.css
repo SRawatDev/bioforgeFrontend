@@ -6,7 +6,6 @@
 /* register and login page */
 .container-parent {
   background-color: #f9fafb;
-  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1180,4 +1179,10 @@ position: absolute;
     top: 3px;
     right: 11px;
     font-size: xx-large;
+}
+.backbutton{
+      font-size: xx-large;
+    margin-top: 10px;
+    margin-left: 10px;
+
 }

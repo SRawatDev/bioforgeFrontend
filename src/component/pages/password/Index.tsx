@@ -6,12 +6,17 @@ import InputField from "../../form/InputField";
 import { apiUrls } from "../../../utils/api.utils";
 import SuccessMessage from "../../../helpers/Success";
 import LoadScreen from "../../loaderScreen";
+import { FaEyeLowVision, FaEye } from "react-icons/fa6";
 interface changepasswordInterface {
   oldPassword: string,
   newPassword: string
 }
 const Index = () => {
   const [loader, setLoader] = useState<boolean>(false)
+  const [showPassword, setShowPassword] = useState({
+    password: false,
+    confirmPassword: false,
+  });
   const navigate = useNavigate()
   const [changepasswordData, setchangepasswordData] = useState<changepasswordInterface>({ oldPassword: '', newPassword: '' });
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,11 +52,81 @@ const Index = () => {
           <h2>Change you password</h2>
 
           <form onSubmit={handleSubmit}>
-            <div className="form-group">
-              <InputField label="Old Password" name="oldPassword" value={changepasswordData.oldPassword} onChange={handleChange} required type="password" />
+            <div className="form-group position-relative">
+              <InputField label="Old Password" name="oldPassword" value={changepasswordData.oldPassword} onChange={handleChange} required type={showPassword.password ? "text" : "password"} />
+              {showPassword.password ? (
+                <FaEye
+                  className="position-absolute"
+                  onClick={() =>
+                    setShowPassword((prev) => ({
+                      ...prev,
+                      password: false,
+                    }))
+                  }
+                  style={{
+                    right: "10px",
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    cursor: "pointer",
+                    color: "#999",
+                  }}
+                />
+              ) : (
+                <FaEyeLowVision
+                  className="position-absolute"
+                  onClick={() =>
+                    setShowPassword((prev) => ({
+                      ...prev,
+                      password: true,
+                    }))
+                  }
+                  style={{
+                    right: "10px",
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    cursor: "pointer",
+                    color: "#999",
+                  }}
+                />
+              )}
             </div>
-            <div className="form-group">
-              <InputField label="New Password" name="newPassword" value={changepasswordData.newPassword} onChange={handleChange} required type="password" />
+            <div className="form-group position-relative">
+              <InputField label="New Password" name="newPassword" value={changepasswordData.newPassword} onChange={handleChange} required type={showPassword.confirmPassword ? "text" : "password"} />
+              {showPassword.confirmPassword ? (
+                <FaEye
+                  className="position-absolute"
+                  onClick={() =>
+                    setShowPassword((prev) => ({
+                      ...prev,
+                      confirmPassword: false,
+                    }))
+                  }
+                  style={{
+                    right: "10px",
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    cursor: "pointer",
+                    color: "#999",
+                  }}
+                />
+              ) : (
+                <FaEyeLowVision
+                  className="position-absolute"
+                  onClick={() =>
+                    setShowPassword((prev) => ({
+                      ...prev,
+                      confirmPassword: true,
+                    }))
+                  }
+                  style={{
+                    right: "10px",
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    cursor: "pointer",
+                    color: "#999",
+                  }}
+                />
+              )}
             </div>
             <button type="submit" className="button">
               Submit

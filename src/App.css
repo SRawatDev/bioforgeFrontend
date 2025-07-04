@@ -839,7 +839,7 @@ input[type="file"] {
   overflow-y: hidden;
 }
 .offcanvas-stop {
-  min-height: 275px;
+  min-height: 320px;
 }
 
 .offcanvas-body ul {

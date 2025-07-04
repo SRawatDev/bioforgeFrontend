@@ -9,6 +9,7 @@ import { BiLogoGmail } from "react-icons/bi";
 import { socialPlatforms } from '../links/linksAddEdit';
 import ProfileShimmer from '../../ProfileShimmer';
 import Header from '../../../layout/Header';
+import axios from 'axios';
 const colorMap: Record<string, string> = {
     'Classic Light': '#f9f9f9',
     'Elegant Dark': '#1e1e2f',
@@ -44,7 +45,13 @@ interface Link {
     _id: string;
 }
 
+interface linkClicked {
+    userId: string,
+    ipAddress: string
+}
 const index: React.FC = () => {
+    const [clickData, setclickData] = useState<linkClicked>({ userId: '', ipAddress: '' })
+    const [ip, setIp] = useState<string>('')
     const navigate = useNavigate()
     const id = useParams()
     const [userInfo, setUserInfo] = useState<userInfo | null>(null);
@@ -65,12 +72,41 @@ const index: React.FC = () => {
             setLoader(true)
         }
     }
+    const getUserIp = async () => {
+        try {
+            const response = await axios.get("https://api.ipify.org/?format=json");
+            setIp(response.data.ip)
+        } catch (error: any) {
+            ErrorMessage(error.message || "Something went wrong");
+        }
+    }
     useEffect(() => {
         getUserDetail()
-    }, [])
+
+        getUserIp()
+    }, [ip])
     const getBackgroundColor = (name?: string) => {
         return colorMap[name || ''] || '#ffffff';
     };
+    const handleClickSubmit = async (id: string) => {
+        try {
+            const userId = localStorage.getItem("accessToken") ? (localStorage.getItem("_id") || "") : "";
+            const payload = {
+                userId,
+                ipAddress: userId ? "" : ip
+            };
+
+            const response = await callAPIWithoutAuth(apiUrls.linkClicked + "/" + id, {}, 'POST', payload);
+
+            if (!response?.data?.status) {
+                navigate("/")
+                ErrorMessage(response?.data?.data?.message)
+            }
+        } catch (error: any) {
+            ErrorMessage(error.message || "Something went wrong");
+        }
+    };
+
     return (
         <>
             {localStorage.getItem("accessToken") ? <Header /> : null}
@@ -120,6 +156,7 @@ const index: React.FC = () => {
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="link-card"
+                                onClick={() => handleClickSubmit(link._id)}
                             >
                                 <img src={defaultConfig?.imagePath + link.linkLogo} alt={link.linkTitle} className="link-logo" />
                                 <span style={{ fontFamily: `${userInfo?.theme?.fontFamily}` }}>{link.linkTitle}</span>
@@ -139,6 +176,7 @@ const index: React.FC = () => {
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="link-card-social"
+                                        onClick={() => handleClickSubmit(link._id)}
                                     >
                                         {matchedPlatform && <span className="social-icon" style={{ fontFamily: `${userInfo?.theme?.fontFamily}` }}>{matchedPlatform.icon}</span>}
                                     </Link>

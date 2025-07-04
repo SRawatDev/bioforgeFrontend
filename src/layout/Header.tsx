@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { GiHamburgerMenu } from "react-icons/gi";
 import { FaHome } from "react-icons/fa";
 import { ImProfile } from "react-icons/im";
-import { IoLinkSharp } from "react-icons/io5";
+import { TbLockPassword } from "react-icons/tb";
+import { IoLinkSharp, IoSettingsSharp } from "react-icons/io5";
 import { MdLogout } from "react-icons/md";
 import { Link, useNavigate } from 'react-router-dom';
 import SuccessMessage from '../helpers/Success';
@@ -62,20 +63,17 @@ const Header: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
                         aria-label="Close"
                     />
                 </div>
-
                 <div className="offcanvas-body">
                     <ul>
                         <li data-bs-dismiss="offcanvas"><FaHome /> <Link to="/">Home</Link></li>
                         <li data-bs-dismiss="offcanvas"><ImProfile /> <Link to={`/profile/${localStorage.getItem("_id")}`}>Profile</Link></li>
                         <li data-bs-dismiss="offcanvas"><IoLinkSharp /> <Link to="/link">Links</Link></li>
-                        {/* <li><IoSettingsSharp /> Settings</li> */}
-                        <li onClick={handleLogoutClick} data-bs-dismiss="offcanvas"><MdLogout /> Logout</li>
+                        <li data-bs-dismiss="offcanvas"><TbLockPassword /> <Link to={"/changepassword"}>Change Password</Link></li>
+                        <li onClick={handleLogoutClick} data-bs-dismiss="offcanvas"><MdLogout />Logout</li>
                     </ul>
                 </div>
             </div>
-
             <div className="page-content">{children}</div>
-
             {showLogout && (
                 <LogoutModal
                     onClose={() => setShowLogout(false)}

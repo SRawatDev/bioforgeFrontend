@@ -1,6 +1,6 @@
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
-const SuccessMessage = (message:string) => {
+const SuccessMessage = (message: string) => {
   setTimeout(
     () =>
       toast.success(message, {

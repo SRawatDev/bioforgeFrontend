@@ -836,10 +836,16 @@ input[type="file"] {
   background-color: #fff;
   overflow-y: hidden;
 }
-.offcanvas-stop {
+/* .offcanvas-stop {
   min-height: 320px;
+} */
+/* offcanavasheight":"offcanavasadminhrohjt */
+.offcanavasheight{
+    min-height: 320px;
 }
-
+.offcanavasadminhrohjt{
+   min-height: 100px;
+}
 .offcanvas-body ul {
   list-style: none;
   padding: 0;

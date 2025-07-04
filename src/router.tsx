@@ -52,6 +52,18 @@ const routes: AppRoute[] = [
     element: lazy(() => import('./component/pages/password/Index'))
   },
   {
+    layout: Header,
+    guard: Authenticated,
+    path: 'admin/DashBoard',
+    element: lazy(() => import('./component/pages/dashboard/Index'))
+  },
+  {
+    layout: Header,
+    guard: Authenticated,
+    path: 'admin/DashBoard/user',
+    element: lazy(() => import('./component/pages/Users/Index'))
+  },
+  {
     path: '*',
     element: lazy(() => import('./component/PageNotFound'))
   }

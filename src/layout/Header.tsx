@@ -3,7 +3,7 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { FaHome } from "react-icons/fa";
 import { ImProfile } from "react-icons/im";
 import { TbLockPassword } from "react-icons/tb";
-import { IoLinkSharp,} from "react-icons/io5";
+import { IoLinkSharp, } from "react-icons/io5";
 import { MdLogout } from "react-icons/md";
 import { Link, useNavigate } from 'react-router-dom';
 import SuccessMessage from '../helpers/Success';
@@ -46,7 +46,7 @@ const Header: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
             </div>
 
             <div
-                className="offcanvas offcanvas-top offcanvas-stop"
+                className={`offcanvas offcanvas-top offcanvas-stop ${localStorage.getItem('type') === 'user'?"offcanavasheight":"offcanavasadminhrohjt"}`}
                 tabIndex={-1}
                 id="offcanvasTop"
                 aria-labelledby="offcanvasTopLabel"
@@ -64,10 +64,12 @@ const Header: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
                 </div>
                 <div className="offcanvas-body">
                     <ul>
-                        <li data-bs-dismiss="offcanvas"><FaHome /> <Link to="/">Home</Link></li>
-                        <li data-bs-dismiss="offcanvas"><ImProfile /> <Link to={`/profile/${localStorage.getItem("_id")}`}>Profile</Link></li>
-                        <li data-bs-dismiss="offcanvas"><IoLinkSharp /> <Link to="/link">Links</Link></li>
-                        <li data-bs-dismiss="offcanvas"><TbLockPassword /> <Link to={"/changepassword"}>Change Password</Link></li>
+                        {localStorage.getItem('type') === 'user' ? (<><li data-bs-dismiss="offcanvas"><FaHome /> <Link to="/">Home</Link></li>
+                            <li data-bs-dismiss="offcanvas"><ImProfile /> <Link to={`/profile/${localStorage.getItem("_id")}`}>Profile</Link></li>
+                            <li data-bs-dismiss="offcanvas"><IoLinkSharp /> <Link to="/link">Links</Link></li>
+                            <li data-bs-dismiss="offcanvas"><TbLockPassword /> <Link to={"/changepassword"}>Change Password</Link></li></>) : (<><li data-bs-dismiss="offcanvas"><FaHome /> <Link to="/admin/DashBoard/user">Users</Link></li>
+
+                            </>)}
                         <li onClick={handleLogoutClick} data-bs-dismiss="offcanvas"><MdLogout />Logout</li>
                     </ul>
                 </div>

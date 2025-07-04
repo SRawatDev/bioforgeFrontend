@@ -37,8 +37,13 @@ const Register: React.FC = () => {
             } else {
                 localStorage.setItem("_id", response?.data?.data?.id)
                 localStorage.setItem("accessToken", response?.data?.data?.token)
+                localStorage.setItem("type", response?.data?.data?.type)
                 localStorage.setItem("profile_img", response?.data?.data?.profile_img)
-                navigate("/")
+                if (response?.data?.data?.type === 'user') {
+                    navigate("/")
+                } else {
+                    navigate("/admin/DashBoard")
+                }
                 SuccessMessage(response?.data?.message)
             }
         } catch (err: any) {
@@ -49,8 +54,8 @@ const Register: React.FC = () => {
     return (
         <>
             {loader && <LoadScreen />}
-             <Link to={"/"}>
-                <IoMdArrowRoundBack  className="backbutton"/>
+            <Link to={"/"}>
+                <IoMdArrowRoundBack className="backbutton" />
             </Link>
             <div className="container-parent">
                 <div className="container-register">

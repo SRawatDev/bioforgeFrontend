@@ -14,6 +14,7 @@ export const apiUrls = {
     linkClicked: "api/v1/link/click",
     changePassword: "api/v1/changePassword",
     userReport: "api/v1/report",
+    getAllUser: "api/v1/getAllUser",
 
 
 };

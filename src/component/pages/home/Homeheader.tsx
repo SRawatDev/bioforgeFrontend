@@ -12,7 +12,7 @@ const Homeheader: React.FC = () => {
                 </Link>
                 <div className="navbar-wrapper">
                     {!localStorage.getItem("accessToken") ? (
-                        <nav className="nav-bar header-navbar" data-navbar="">
+                        <nav className="nav-bar" data-navbar="">
                             <button className="btn btn-primary" onClick={() => navigate("/login")}>
                                 Sign In
                             </button>

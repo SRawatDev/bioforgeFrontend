@@ -47,7 +47,6 @@ export const Report: React.FC<Props> = ({ userName }) => {
             }
         } catch (error: any) {
             setloader(true)
-            console.log("=========")
         }
     };
 

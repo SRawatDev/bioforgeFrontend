@@ -840,11 +840,11 @@ input[type="file"] {
   min-height: 320px;
 } */
 /* offcanavasheight":"offcanavasadminhrohjt */
-.offcanavasheight{
-    min-height: 320px;
+.offcanavasheight {
+  min-height: 350px;
 }
-.offcanavasadminhrohjt{
-   min-height: 100px;
+.offcanavasadminhrohjt {
+  max-height: 200px !important;
 }
 .offcanvas-body ul {
   list-style: none;
@@ -1142,12 +1142,12 @@ input[type="file"] {
 }
 
 .user-info-content {
-  background: #fff;
-  padding: 20px 30px;
-  border-radius: 8px;
-  width: 600px;
-  max-height: 80vh;
-  overflow-y: auto;
+    background: #fff;
+    padding: 12px 12px;
+    border-radius: 10px;
+    width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
 }
 
 .user-info-table {
@@ -1159,7 +1159,7 @@ input[type="file"] {
 .user-info-table th,
 .user-info-table td {
   border: 1px solid #ccc;
-  padding: 8px 12px;
+  padding: 1px 5px;
   text-align: left;
 }
 
@@ -1176,19 +1176,23 @@ input[type="file"] {
   border-radius: 4px;
   cursor: pointer;
 }
-.three-dots-image{
+.three-dots-image {
   position: relative;
 }
-.threedots{
-position: absolute;
-    color: white;
-    top: 3px;
-    right: 11px;
-    font-size: xx-large;
+.threedots {
+  position: absolute;
+  color: white;
+  top: 3px;
+  right: 11px;
+  font-size: xx-large;
 }
-.backbutton{
-      font-size: xx-large;
-    margin-top: 10px;
-    margin-left: 10px;
+.backbutton {
+  font-size: xx-large;
+  margin-top: 10px;
+  margin-left: 10px;
+}
 
+.MuiToolbar-gutters {
+  display: flex;
+  align-items: baseline;
 }

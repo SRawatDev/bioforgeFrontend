@@ -168,8 +168,7 @@ const Index = () => {
         }
     };
     return (
-        <>
-            {loader && <LoadScreen />}
+        <>{loader && <LoadScreen />}
             <div className="form-container">
                 <form className="form-box" onSubmit={handleSubmit}>
                     <div className="cover-photo">
@@ -209,7 +208,6 @@ const Index = () => {
                                 onChange={UploadProfileImage}
                                 style={{ display: 'none' }}
                             />
-
                             <label htmlFor="profileUploadInput" className="edit-iconprofile-label">
                                 <FaEdit className="edit-iconprofile" />
                             </label>
@@ -222,17 +220,6 @@ const Index = () => {
                         onChange={handleChange}
                         placeholder="Enter your bio"
                     />
-
-
-                    {/* <label>Theme Type</label>
-                    <input
-                        type="text"
-                        name="themeType"
-                        value={userInfo?.theme?.themeType || ''}
-                        onChange={handleChange}
-                        placeholder="Enter theme type"
-                    /> */}
-
                     <label>Font Family</label>
                     <select
                         name="fontFamily"

@@ -54,6 +54,12 @@ const routes: AppRoute[] = [
   {
     layout: Header,
     guard: Authenticated,
+    path: '/deleteAccount',
+    element: lazy(() => import('./component/pages/accountDelete/Index'))
+  },
+  {
+    layout: Header,
+    guard: Authenticated,
     path: 'admin/DashBoard',
     element: lazy(() => import('./component/pages/dashboard/Index'))
   },

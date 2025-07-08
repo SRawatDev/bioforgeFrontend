@@ -80,136 +80,143 @@ const Register: React.FC = () => {
     return (
         <>
             {loader && <LoadScreen />}
-            <Link to={"/login"}>
-                <IoMdArrowRoundBack  className="backbutton"/>
-            </Link>
             <div className="container-parent">
+                <Link to={"/login"}>
+                    <IoMdArrowRoundBack className="backbutton" />
+                </Link>
                 <div className="container-register">
-                    <div className="icon-box">
-                        <img src="/src/assets/logo.png" alt="Logo" height={50} />
+                    <div className="container-inner">
+                        <div className="icon-box">
+                            <img src="/src/assets/logo.png" alt="Logo" height={50} />
+                        </div>
+                        <h2>Sign Up to Your Account</h2>
+                        <form onSubmit={handleSubmit}>
+                            <div className="form-group">
+                                <InputField
+                                    label="Username"
+                                    name="username"
+                                    value={register.username}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </div>
+                            <div className="form-group">
+                                <InputField
+                                    label="Email"
+                                    name="email"
+                                    value={register.email}
+                                    type="email"
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </div>
+
+                            {/* Password */}
+                            <div className="form-group position-relative">
+                                <InputField
+                                    label="Password"
+                                    name="password"
+                                    type={showPassword.password ? "text" : "password"}
+                                    value={register.password}
+                                    onChange={handleChange}
+                                    required
+                                />
+                                {showPassword.password ? (
+                                    <FaEye
+                                        className="position-absolute"
+                                        onClick={() =>
+                                            setShowPassword((prev) => ({
+                                                ...prev,
+                                                password: false,
+                                            }))
+                                        }
+                                        style={{
+                                            right: "10px",
+                                            top: "50%",
+                                            transform: "translateY(-50%)",
+                                            cursor: "pointer",
+                                            color: "#999",
+                                        }}
+                                    />
+                                ) : (
+                                    <FaEyeLowVision
+                                        className="position-absolute"
+                                        onClick={() =>
+                                            setShowPassword((prev) => ({
+                                                ...prev,
+                                                password: true,
+                                            }))
+                                        }
+                                        style={{
+                                            right: "10px",
+                                            top: "50%",
+                                            transform: "translateY(-50%)",
+                                            cursor: "pointer",
+                                            color: "#999",
+                                        }}
+                                    />
+                                )}
+                            </div>
+
+                            {/* Confirm Password */}
+                            <div className="form-group position-relative">
+                                <InputField
+                                    label="Confirm Password"
+                                    name="confirmPassword"
+                                    type={showPassword.confirmPassword ? "text" : "password"}
+                                    value={register.confirmPassword}
+                                    onChange={handleChange}
+                                    required
+                                />
+                                {showPassword.confirmPassword ? (
+                                    <FaEye
+                                        className="position-absolute"
+                                        onClick={() =>
+                                            setShowPassword((prev) => ({
+                                                ...prev,
+                                                confirmPassword: false,
+                                            }))
+                                        }
+                                        style={{
+                                            right: "10px",
+                                            top: "50%",
+                                            transform: "translateY(-50%)",
+                                            cursor: "pointer",
+                                            color: "#999",
+                                        }}
+                                    />
+                                ) : (
+                                    <FaEyeLowVision
+                                        className="position-absolute"
+                                        onClick={() =>
+                                            setShowPassword((prev) => ({
+                                                ...prev,
+                                                confirmPassword: true,
+                                            }))
+                                        }
+                                        style={{
+                                            right: "10px",
+                                            top: "50%",
+                                            transform: "translateY(-50%)",
+                                            cursor: "pointer",
+                                            color: "#999",
+                                        }}
+                                    />
+                                )}
+                            </div>
+
+                            <button type="submit" className="btn btn-primary button">
+                                Sign Up
+                            </button>
+                        </form>
                     </div>
-                    <h2>Sign Up to Your Account</h2>
-                    <p>Access your account to continue</p>
 
-                    <form onSubmit={handleSubmit}>
-                        <div className="form-group">
-                            <InputField
-                                label="Username"
-                                name="username"
-                                value={register.username}
-                                onChange={handleChange}
-                                required
-                            />
-                        </div>
-                        <div className="form-group">
-                            <InputField
-                                label="Email"
-                                name="email"
-                                value={register.email}
-                                type="email"
-                                onChange={handleChange}
-                                required
-                            />
-                        </div>
-
-                        {/* Password */}
-                        <div className="form-group position-relative">
-                            <InputField
-                                label="Password"
-                                name="password"
-                                type={showPassword.password ? "text" : "password"}
-                                value={register.password}
-                                onChange={handleChange}
-                                required
-                            />
-                            {showPassword.password ? (
-                                <FaEye
-                                    className="position-absolute"
-                                    onClick={() =>
-                                        setShowPassword((prev) => ({
-                                            ...prev,
-                                            password: false,
-                                        }))
-                                    }
-                                    style={{
-                                        right: "10px",
-                                        top: "50%",
-                                        transform: "translateY(-50%)",
-                                        cursor: "pointer",
-                                        color: "#999",
-                                    }}
-                                />
-                            ) : (
-                                <FaEyeLowVision
-                                    className="position-absolute"
-                                    onClick={() =>
-                                        setShowPassword((prev) => ({
-                                            ...prev,
-                                            password: true,
-                                        }))
-                                    }
-                                    style={{
-                                        right: "10px",
-                                        top: "50%",
-                                        transform: "translateY(-50%)",
-                                        cursor: "pointer",
-                                        color: "#999",
-                                    }}
-                                />
-                            )}
-                        </div>
-
-                        {/* Confirm Password */}
-                        <div className="form-group position-relative">
-                            <InputField
-                                label="Confirm Password"
-                                name="confirmPassword"
-                                type={showPassword.confirmPassword ? "text" : "password"}
-                                value={register.confirmPassword}
-                                onChange={handleChange}
-                                required
-                            />
-                            {showPassword.confirmPassword ? (
-                                <FaEye
-                                    className="position-absolute"
-                                    onClick={() =>
-                                        setShowPassword((prev) => ({
-                                            ...prev,
-                                            confirmPassword: false,
-                                        }))
-                                    }
-                                    style={{
-                                        right: "10px",
-                                        top: "50%",
-                                        transform: "translateY(-50%)",
-                                        cursor: "pointer",
-                                        color: "#999",
-                                    }}
-                                />
-                            ) : (
-                                <FaEyeLowVision
-                                    className="position-absolute"
-                                    onClick={() =>
-                                        setShowPassword((prev) => ({
-                                            ...prev,
-                                            confirmPassword: true,
-                                        }))
-                                    }
-                                    style={{
-                                        right: "10px",
-                                        top: "50%",
-                                        transform: "translateY(-50%)",
-                                        cursor: "pointer",
-                                        color: "#999",
-                                    }}
-                                />
-                            )}
-                        </div>
-
-                        <button type="submit" className="btn btn-primary button">
-                            Sign Up
-                        </button>
-                    </form>
+                </div>
+                <div className="container-image">
+                    <img
+                        src="/src/assets/original-a6dd915f7cf81ea73976dfc1bb4ecd50.webp"
+                        alt="Side Visual"
+                    />
                 </div>
             </div>
         </>

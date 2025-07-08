@@ -45,6 +45,7 @@ const Index = () => {
             {loader && <LoadScreen />}
             <div className="container-parent" style={{ minHeight: "unset" }}>
                 <div className="container-register">
+                          <div className="container-inner">
                     <div className="icon-box">
                         <img src="/src/assets/logo.png" alt="Logo" height={50} />
                     </div>
@@ -95,6 +96,14 @@ const Index = () => {
                         </button>
 
                     </form>
+                </div>
+                </div>
+                <div className="container-image">
+                    <img
+                        src="/src/assets/original-a6dd915f7cf81ea73976dfc1bb4ecd50.webp"
+                        className="blurimage"
+                        alt="Side Visual"
+                    />
                 </div>
             </div>
         </>

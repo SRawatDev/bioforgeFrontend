@@ -46,93 +46,102 @@ const Index = () => {
       {loader && <LoadScreen />}
       <div className="container-parent" style={{ minHeight: "unset" }}>
         <div className="container-register">
-          <div className="icon-box">
-            <img src="/src/assets/logo.png" alt="Logo" height={50} />
+          <div className="container-inner">
+            <div className="icon-box">
+              <img src="/src/assets/logo.png" alt="Logo" height={50} />
+            </div>
+            <h2>Change you password</h2>
+
+            <form onSubmit={handleSubmit}>
+              <div className="form-group position-relative">
+                <InputField label="Old Password" name="oldPassword" value={changepasswordData.oldPassword} onChange={handleChange} required type={showPassword.password ? "text" : "password"} />
+                {showPassword.password ? (
+                  <FaEye
+                    className="position-absolute"
+                    onClick={() =>
+                      setShowPassword((prev) => ({
+                        ...prev,
+                        password: false,
+                      }))
+                    }
+                    style={{
+                      right: "10px",
+                      top: "50%",
+                      transform: "translateY(-50%)",
+                      cursor: "pointer",
+                      color: "#999",
+                    }}
+                  />
+                ) : (
+                  <FaEyeLowVision
+                    className="position-absolute"
+                    onClick={() =>
+                      setShowPassword((prev) => ({
+                        ...prev,
+                        password: true,
+                      }))
+                    }
+                    style={{
+                      right: "10px",
+                      top: "50%",
+                      transform: "translateY(-50%)",
+                      cursor: "pointer",
+                      color: "#999",
+                    }}
+                  />
+                )}
+              </div>
+              <div className="form-group position-relative">
+                <InputField label="New Password" name="newPassword" value={changepasswordData.newPassword} onChange={handleChange} required type={showPassword.confirmPassword ? "text" : "password"} />
+                {showPassword.confirmPassword ? (
+                  <FaEye
+                    className="position-absolute"
+                    onClick={() =>
+                      setShowPassword((prev) => ({
+                        ...prev,
+                        confirmPassword: false,
+                      }))
+                    }
+                    style={{
+                      right: "10px",
+                      top: "50%",
+                      transform: "translateY(-50%)",
+                      cursor: "pointer",
+                      color: "#999",
+                    }}
+                  />
+                ) : (
+                  <FaEyeLowVision
+                    className="position-absolute"
+                    onClick={() =>
+                      setShowPassword((prev) => ({
+                        ...prev,
+                        confirmPassword: true,
+                      }))
+                    }
+                    style={{
+                      right: "10px",
+                      top: "50%",
+                      transform: "translateY(-50%)",
+                      cursor: "pointer",
+                      color: "#999",
+                    }}
+                  />
+                )}
+              </div>
+              <button type="submit" className="button">
+                Submit
+              </button>
+
+            </form>
           </div>
-          <h2>Change you password</h2>
-
-          <form onSubmit={handleSubmit}>
-            <div className="form-group position-relative">
-              <InputField label="Old Password" name="oldPassword" value={changepasswordData.oldPassword} onChange={handleChange} required type={showPassword.password ? "text" : "password"} />
-              {showPassword.password ? (
-                <FaEye
-                  className="position-absolute"
-                  onClick={() =>
-                    setShowPassword((prev) => ({
-                      ...prev,
-                      password: false,
-                    }))
-                  }
-                  style={{
-                    right: "10px",
-                    top: "50%",
-                    transform: "translateY(-50%)",
-                    cursor: "pointer",
-                    color: "#999",
-                  }}
-                />
-              ) : (
-                <FaEyeLowVision
-                  className="position-absolute"
-                  onClick={() =>
-                    setShowPassword((prev) => ({
-                      ...prev,
-                      password: true,
-                    }))
-                  }
-                  style={{
-                    right: "10px",
-                    top: "50%",
-                    transform: "translateY(-50%)",
-                    cursor: "pointer",
-                    color: "#999",
-                  }}
-                />
-              )}
-            </div>
-            <div className="form-group position-relative">
-              <InputField label="New Password" name="newPassword" value={changepasswordData.newPassword} onChange={handleChange} required type={showPassword.confirmPassword ? "text" : "password"} />
-              {showPassword.confirmPassword ? (
-                <FaEye
-                  className="position-absolute"
-                  onClick={() =>
-                    setShowPassword((prev) => ({
-                      ...prev,
-                      confirmPassword: false,
-                    }))
-                  }
-                  style={{
-                    right: "10px",
-                    top: "50%",
-                    transform: "translateY(-50%)",
-                    cursor: "pointer",
-                    color: "#999",
-                  }}
-                />
-              ) : (
-                <FaEyeLowVision
-                  className="position-absolute"
-                  onClick={() =>
-                    setShowPassword((prev) => ({
-                      ...prev,
-                      confirmPassword: true,
-                    }))
-                  }
-                  style={{
-                    right: "10px",
-                    top: "50%",
-                    transform: "translateY(-50%)",
-                    cursor: "pointer",
-                    color: "#999",
-                  }}
-                />
-              )}
-            </div>
-            <button type="submit" className="button">
-              Submit
-            </button>
-
-          </form>
+        </div>
+        <div className="container-image">
+          <img
+            src="/src/assets/original-a6dd915f7cf81ea73976dfc1bb4ecd50.webp"
+            className="blurimage"
+            alt="Side Visual"
+          />
         </div>
       </div>
     </>

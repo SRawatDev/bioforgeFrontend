@@ -20,19 +20,10 @@ const fontOptions = [
 ];
 const colorOptions = [
     'Classic Light',
-    'Royal Purple',
-    'Warm Sand',
-    'Midnight',
-    'Midnight Blue',
-    'Cyber Gray',
-    'Sapphire Black',
+    'aqua',
+    'thistle',
     'Soft Charcoal',
-    'Arctic Ice',
-    'Deep Plum',
-    'Carbon Silver',
- 
 ];
-
 interface Theme {
     themeType: string;
     fontFamily: string;

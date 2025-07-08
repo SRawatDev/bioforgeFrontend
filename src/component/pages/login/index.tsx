@@ -54,68 +54,87 @@ const Register: React.FC = () => {
     return (
         <>
             {loader && <LoadScreen />}
-            <Link to={"/"}>
-                <IoMdArrowRoundBack className="backbutton" />
-            </Link>
+
             <div className="container-parent">
+                <Link to={"/"}>
+                    <IoMdArrowRoundBack className="backbutton" />
+                </Link>
                 <div className="container-register">
-                    <div className="icon-box">
-                        <img src="/src/assets/logo.png" alt="Logo" height={50} />
-                    </div>
-                    <h2>Sign In to Your Account</h2>
-                    <p>Access your account to continue</p>
-                    <form onSubmit={handleSubmit}>
-                        <div className="form-group">
-                            <InputField label="Email" type="email" name="email" value={login.email} onChange={handleChange} required />
-
+                    <div className="container-inner">
+                        <div className="icon-box">
+                            <img src="/src/assets/logo.png" alt="Logo" height={50} />
                         </div>
-                        <div className="form-group position-relative">
-                            <InputField
-                                label="Password"
-                                name="password"
-                                value={login.password}
-                                onChange={handleChange}
-                                required
-                                type={passwordhide ? "password" : "text"}
-
-                            />
-                            {passwordhide ?
-
-                                (<FaEyeLowVision
-                                    onClick={() => setpasswordHide(false)}
-                                    className="position-absolute"
-                                    style={{
-                                        right: '10px',
-                                        top: '50%',
-                                        transform: 'translateY(-50%)',
-                                        cursor: 'pointer',
-                                        color: '#999'
-                                    }}
-
-                                />) :
-                                (<FaEye className="position-absolute"
-                                    onClick={() => setpasswordHide(true)}
-                                    style={{
-                                        right: '10px',
-                                        top: '50%',
-                                        transform: 'translateY(-50%)',
-                                        cursor: 'pointer',
-                                        color: '#999'
-                                    }} />)
-                            }
-                        </div>
-
-                        <button type="submit" className="button">
-                            Sign In
+                        <h2>Sign In to Your Account</h2>
+                        <form onSubmit={handleSubmit}>
+                            <div className="form-group">
+                                <InputField
+                                    label="Email"
+                                    type="email"
+                                    name="email"
+                                    value={login.email}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </div>
+                            <div className="form-group position-relative">
+                                <InputField
+                                    label="Password"
+                                    name="password"
+                                    value={login.password}
+                                    onChange={handleChange}
+                                    required
+                                    type={passwordhide ? "password" : "text"}
+                                />
+                                {passwordhide ? (
+                                    <FaEyeLowVision
+                                        onClick={() => setpasswordHide(false)}
+                                        className="position-absolute"
+                                        style={{
+                                            right: "10px",
+                                            top: "50%",
+                                            transform: "translateY(-50%)",
+                                            cursor: "pointer",
+                                            color: "#999",
+                                        }}
+                                    />
+                                ) : (
+                                    <FaEye
+                                        className="position-absolute"
+                                        onClick={() => setpasswordHide(true)}
+                                        style={{
+                                            right: "10px",
+                                            top: "50%",
+                                            transform: "translateY(-50%)",
+                                            cursor: "pointer",
+                                            color: "#999",
+                                        }}
+                                    />
+                                )}
+                            </div>
+                            <button type="submit" className="button">
+                                Sign In
+                            </button>
+                        </form>
+                        <br />
+                        <button
+                            type="submit"
+                            className="button"
+                            onClick={() => navigate("/register")}
+                        >
+                            Sign Up
                         </button>
+                    </div>
+                </div>
 
-                    </form>
-                    <br />
-                    <button type="submit" className="button" onClick={() => navigate("/register")}>
-                        Sign Up
-                    </button>
+                <div className="container-image">
+                    <img
+                        src="/src/assets/original-a6dd915f7cf81ea73976dfc1bb4ecd50.webp"
+                        className="blurimage"
+                        alt="Side Visual"
+                    />
                 </div>
             </div>
+
         </>
     );
 };

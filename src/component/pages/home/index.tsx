@@ -21,7 +21,7 @@ const index: React.FC = () => {
                 <p className="hero-text">
                   BioForge empowers you to build a personalized bio page where your story, style, and important links come together — all in one beautiful, mobile-ready experience.
                 </p>
-                {!localStorage.getItem("accessToken") ? <button className="btn btn-primary" onClick={() => navigate("/login")}>Get Started</button> : ""}
+                <button className="btn btn-primary" onClick={() => navigate("/login")}>Get Started</button>
               </div>
               <div className="hero-banner" />
             </div>

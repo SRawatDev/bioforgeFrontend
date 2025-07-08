@@ -13,16 +13,18 @@ import Header from '../../../layout/Header';
 import axios from 'axios';
 import { Report } from './Report';
 const colorMap: Record<string, string> = {
-    'Classic Light': '#f9f9f9',
-    'Elegant Dark': '#1e1e2f',
-    'Vibrant Sunset': '#ff7e5f',
-    'Ocean Blue': '#0077be',
-    'Forest Green': '#228B22',
-    'Warm Sand': '#f4e1c1',
-    'Pastel Dream': '#ffd1dc',
-    'Neon Pop': '#39ff14',
-    'Monochrome': '#cccccc',
+  'Midnight Blue': '#2c3e50',      
+  'Royal Purple': '#5D3FD3',         
+  'Cyber Gray': '#2a2a2a',          
+  'Sapphire Black': '#0f0f1a',  
+  'Soft Charcoal': '#3a3a3c',        
+  'Arctic Ice': '#e8f0fe',          
+  'Deep Plum': '#4b0082',            
+  'Carbon Silver': '#d3d3d3',       
+  'Gradient Space': 'linear-gradient(to right, #0f2027, #203a43, #2c5364)', 
+  'Neon Night': 'linear-gradient(to right, #0f0c29, #302b63, #24243e)'      
 };
+
 interface userInfo {
     _id: string;
     username: string;

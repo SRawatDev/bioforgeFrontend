@@ -8,29 +8,29 @@ import { defaultConfig } from '../../../config';
 import LoadScreen from '../../loaderScreen';
 import SuccessMessage from '../../../helpers/Success';
 const fontOptions = [
-    'Arial',
-    'Roboto',
     'Times New Roman',
     'Georgia',
     'Verdana',
-    'Inter',
-    'Lato',
-    'Open Sans',
-    'Poppins',
+    'math',
+    'monospace',
     'Montserrat',
-    'Helvetica Neue',
-    'Segoe UI',
-    'Tahoma',
     'Playfair Display',
     'Source Sans Pro',
     'cursive'
 ];
 const colorOptions = [
-    'Classic Light',//1
-    'Elegant Dark',//1
-    'Warm Sand',//1
-    'Midnight',//1
-    'Monochrome',//
+    'Classic Light',
+    'Royal Purple',
+    'Warm Sand',
+    'Midnight',
+    'Midnight Blue',
+    'Cyber Gray',
+    'Sapphire Black',
+    'Soft Charcoal',
+    'Arctic Ice',
+    'Deep Plum',
+    'Carbon Silver',
+ 
 ];
 
 interface Theme {

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { callAPI } from "../../../utils/apicall.utils";
 import ErrorMessage from "../../../helpers/ErrorMessage";
 import InputField from "../../form/InputField";
@@ -7,6 +7,7 @@ import { apiUrls } from "../../../utils/api.utils";
 import SuccessMessage from "../../../helpers/Success";
 import LoadScreen from "../../loaderScreen";
 import { FaEyeLowVision, FaEye } from "react-icons/fa6";
+import { IoMdArrowRoundBack } from "react-icons/io";
 interface changepasswordInterface {
   oldPassword: string,
   newPassword: string
@@ -45,6 +46,9 @@ const Index = () => {
     <>
       {loader && <LoadScreen />}
       <div className="container-parent" style={{ minHeight: "unset" }}>
+        <Link to={`/dashboard/profile/${localStorage.getItem("_id")}`}>
+          <IoMdArrowRoundBack className="backbutton" />
+        </Link>
         <div className="container-register">
           <div className="container-inner">
             <div className="icon-box">

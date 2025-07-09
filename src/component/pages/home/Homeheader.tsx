@@ -38,7 +38,7 @@ const Homeheader: React.FC = () => {
                     ) : (
                         <div
                             className="home-header-profile"
-                            onClick={() => navigate(`/profile/${userId}`)}
+                            onClick={() => navigate(`/dashboard/profile/${userId}`)}
                         >
                             <img
                                 src={profileImg}

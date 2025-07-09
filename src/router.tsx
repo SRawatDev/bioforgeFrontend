@@ -35,39 +35,33 @@ const routes: AppRoute[] = [
   },
   {
     guard: Authenticated,
-    layout: Header,
+
     path: '/updateProfile/:id',
     element: lazy(() => import('./component/pages/updateProfile/Index'))
   },
   {
-    layout: Header,
+
     guard: Authenticated,
     path: '/link',
     element: lazy(() => import('./component/pages/links/Index'))
   },
   {
-    layout: Header,
+
     guard: Authenticated,
     path: '/changepassword',
     element: lazy(() => import('./component/pages/password/Index'))
   },
   {
-    layout: Header,
+
     guard: Authenticated,
     path: '/deleteAccount',
     element: lazy(() => import('./component/pages/accountDelete/Index'))
   },
   {
-    layout: Header,
+    // layout: Header,
     guard: Authenticated,
-    path: 'admin/DashBoard',
+    path: 'dashBoard/:layout/:id',
     element: lazy(() => import('./component/pages/dashboard/Index'))
-  },
-  {
-    layout: Header,
-    guard: Authenticated,
-    path: 'admin/DashBoard/user',
-    element: lazy(() => import('./component/pages/Users/Index'))
   },
   {
     path: '*',

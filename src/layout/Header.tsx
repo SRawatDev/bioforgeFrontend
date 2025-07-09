@@ -93,7 +93,7 @@ interface LogoutModalProps {
     onConfirm: () => void;
 }
 
-const LogoutModal: React.FC<LogoutModalProps> = ({ onClose, onConfirm }) => {
+export const LogoutModal: React.FC<LogoutModalProps> = ({ onClose, onConfirm }) => {
     return (
         <div className="modal-overlay">
             <div className="modal-box">

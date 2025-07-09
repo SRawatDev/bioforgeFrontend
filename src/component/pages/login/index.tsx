@@ -38,9 +38,10 @@ const Register: React.FC = () => {
                 localStorage.setItem("_id", response?.data?.data?.id)
                 localStorage.setItem("accessToken", response?.data?.data?.token)
                 localStorage.setItem("type", response?.data?.data?.type)
+                localStorage.setItem("username", response?.data?.data?.username)
                 localStorage.setItem("profile_img", response?.data?.data?.profile_img)
                 if (response?.data?.data?.type === 'user') {
-                    navigate("/")
+                    navigate(`/dashboard/profile/${localStorage.getItem("_id")}`)
                 } else {
                     navigate("/admin/DashBoard")
                 }

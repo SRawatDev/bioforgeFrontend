@@ -9,15 +9,9 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { BiLogoGmail } from "react-icons/bi";
 import { socialPlatforms } from '../links/linksAddEdit';
 import ProfileShimmer from '../../ProfileShimmer';
-import Header from '../../../layout/Header';
 import axios from 'axios';
 import { Report } from './Report';
-const colorMap: Record<string, string> = {
-    'Classic Light': '#f9f9f9',
-    'aqua':'aqua',
-    'thistle':'thistle',
-    'Soft Charcoal':'#d3d3d3',
-};
+
 interface userInfo {
     _id: string;
     username: string;
@@ -77,9 +71,7 @@ const index: React.FC = () => {
 
         getUserIp()
     }, [ip])
-    const getBackgroundColor = (name?: string) => {
-        return colorMap[name || ''] || '#ffffff';
-    };
+
     const handleClickSubmit = async (id: string) => {
         try {
             const userId = localStorage.getItem("accessToken") ? (localStorage.getItem("_id") || "") : "";
@@ -100,9 +92,9 @@ const index: React.FC = () => {
 
     return (
         <>
-            {localStorage.getItem("accessToken") ? <Header /> : null}
+
             {loader ? <ProfileShimmer /> :
-                <div className="profile-container" style={{ backgroundColor: getBackgroundColor(userInfo?.theme?.is_colorImage), color: `${userInfo?.theme?.is_colorImage === 'Elegant Dark' || userInfo?.theme?.is_colorImage === 'Midnight' ? "White" : "black"}` }}>
+                <div className="profile-container" style={{ height: "100vh", backgroundColor: (userInfo?.theme?.is_colorImage), color: `${userInfo?.theme?.is_colorImage === 'Elegant Dark' || userInfo?.theme?.is_colorImage === 'Midnight' ? "White" : "black"}` }}>
                     <div className="cover-photo">
                         <img id="coverImage three-dots-image" src={defaultConfig?.imagePath + userInfo?.banner_img} alt="Kapak Resmi" />
                         {userId !== id.id && userId &&

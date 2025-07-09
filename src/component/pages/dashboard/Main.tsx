@@ -25,6 +25,7 @@ interface Theme {
   themeType: string;
   fontFamily: string;
   is_colorImage: string;
+  fontColor: string;
 }
 interface UserInfo {
   _id: string;
@@ -50,7 +51,7 @@ const Main: React.FC = () => {
     const { name, value } = e.target;
     setUserInfo((prev) => {
       if (!prev) return prev;
-      if (["themeType", "fontFamily", "is_colorImage"].includes(name)) {
+      if (["themeType", "fontFamily", "is_colorImage","fontColor"].includes(name)) {
         return {
           ...prev,
           theme: {
@@ -309,20 +310,14 @@ const Main: React.FC = () => {
                 </select>
               </div>
               <div>
+                <label>Font Color</label>
+                <input type="color" id="favcolor" name="fontColor" value={userInfo?.theme?.fontColor || ""}  onChange={handleChange}></input>
+               
+              </div>
+              <div>
                 <label>Color Theme</label>
                 <input type="color" id="favcolor" name="is_colorImage" value={userInfo?.theme?.is_colorImage || ""}  onChange={handleChange}></input>
-                {/* <select
-                  name="is_colorImage"
-                  value={userInfo?.theme?.is_colorImage || ""}
-                  onChange={handleChange}
-                >
-                  <option value="">Select Theme</option>
-                  {colorOptions.map((option) => (
-                    <option key={option} value={option}>
-                      {option}
-                    </option>
-                  ))}
-                </select> */}
+               
               </div>
             </div>
 

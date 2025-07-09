@@ -25,6 +25,7 @@ interface userInfo {
 }
 interface theme {
     fontFamily: string,
+    fontColor: string,
     is_colorImage: string
 }
 interface Link {
@@ -94,7 +95,7 @@ const index: React.FC = () => {
         <>
 
             {loader ? <ProfileShimmer /> :
-                <div className="profile-container" style={{ height: "100vh", backgroundColor: (userInfo?.theme?.is_colorImage), color: `${userInfo?.theme?.is_colorImage === 'Elegant Dark' || userInfo?.theme?.is_colorImage === 'Midnight' ? "White" : "black"}` }}>
+                <div className="profile-container" style={{ height: "100vh", backgroundColor: (userInfo?.theme?.is_colorImage), color: `${userInfo?.theme?.fontColor?userInfo?.theme?.fontColor:"white" }` }}>
                     <div className="cover-photo">
                         <img id="coverImage three-dots-image" src={defaultConfig?.imagePath + userInfo?.banner_img} alt="Kapak Resmi" />
                         {userId !== id.id && userId &&

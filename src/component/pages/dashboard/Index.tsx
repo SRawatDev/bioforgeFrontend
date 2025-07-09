@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import "./dashboard.css";
 import DashboardSidebar from "./DashboardSidebar";
-import Main from "./main";
+import Main from "./Main";
 import { MobileUi } from "./MobileUi";
 import ManageLinks from "../links/Index";
 const Index = () => {

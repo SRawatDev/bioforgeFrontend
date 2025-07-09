@@ -10,12 +10,16 @@ import { FaEyeLowVision } from "react-icons/fa6";
 import { FaEye } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { IoMdArrowRoundBack } from "react-icons/io";
+import {  useDispatch, useSelector } from "react-redux";
+import { addData } from "../../../redux/Slice";
 interface RegisterInterface {
     email: string;
     password: string;
 }
 const Register: React.FC = () => {
+    const selelct = useSelector((state:any) => state.userInfo.data);
     const [passwordhide, setpasswordHide] = useState<boolean>(true)
+    const dispatch = useDispatch();
     const [loader, setLoader] = useState<boolean>(false)
     const navigate = useNavigate()
     const [login, setLogin] = useState<RegisterInterface>({ email: '', password: '' });
@@ -26,6 +30,7 @@ const Register: React.FC = () => {
             [name]: value,
         }));
     };
+    console.log("=======================================",selelct)
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setLoader(true)
@@ -35,6 +40,7 @@ const Register: React.FC = () => {
             if (!response?.data?.status) {
                 ErrorMessage(response?.data?.message)
             } else {
+                dispatch(addData(response?.data?.data))
                 localStorage.setItem("_id", response?.data?.data?.id)
                 localStorage.setItem("accessToken", response?.data?.data?.token)
                 localStorage.setItem("type", response?.data?.data?.type)

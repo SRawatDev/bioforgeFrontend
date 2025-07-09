@@ -23,6 +23,7 @@ interface userInfo {
 interface theme {
     fontFamily: string,
     is_colorImage: string
+    fontColor: string
 }
 interface Link {
     linkTitle: string;
@@ -86,10 +87,16 @@ export const MobileUi: React.FC = () => {
         }
     };
     const userId = localStorage.getItem("_id") || null
-
     return (
         <section id="phone-preview-container" aria-label="Mobile preview of Linktree">
-            <div className="profile-container" style={{ backgroundColor: userInfo?.theme?.is_colorImage, color: `${userInfo?.theme?.is_colorImage === 'Elegant Dark' || userInfo?.theme?.is_colorImage === 'Midnight' ? "White" : "black"}` }}>
+            <div
+                className="profile-container"
+                style={{
+                    backgroundColor: userInfo?.theme?.is_colorImage,
+                    fontFamily: userInfo?.theme?.fontFamily,
+                    color: `${userInfo?.theme?.fontColor ? userInfo?.theme?.fontColor : "white"}`
+                }}
+            >
                 <div className="cover-photo">
                     <img id="coverImage three-dots-image" src={defaultConfig?.imagePath + userInfo?.banner_img} alt="Kapak Resmi" />
                     {userId !== id.id && userId &&
@@ -109,12 +116,24 @@ export const MobileUi: React.FC = () => {
 
                 </div>
                 <div className="profile-info">
-                    <h1 id="username " className='editprofile' style={{ fontFamily: `${userInfo?.theme?.fontFamily}` }}>{userInfo?.username} </h1>
-                    <p id="bio" style={{ fontFamily: `${userInfo?.theme?.fontFamily}` }}>{userInfo?.bio}</p>
+                    <h1 id="username " className='editprofile' style={{
+                    backgroundColor: userInfo?.theme?.is_colorImage,
+                    fontFamily: userInfo?.theme?.fontFamily,
+                    color: `${userInfo?.theme?.fontColor ? userInfo?.theme?.fontColor : "white"}`
+                }}>{userInfo?.username} </h1>
+                    <p id="bio" style={{
+                    backgroundColor: userInfo?.theme?.is_colorImage,
+                    fontFamily: userInfo?.theme?.fontFamily,
+                    color: `${userInfo?.theme?.fontColor ? userInfo?.theme?.fontColor : "white"}`
+                }}>{userInfo?.bio}</p>
                     <button style={{ marginTop: 15 }}>
                         <div className='contactEmail'>
                             <BiLogoGmail />
-                            <p style={{ fontFamily: `${userInfo?.theme?.fontFamily}` }}>
+                            <p  style={{
+                    backgroundColor: userInfo?.theme?.is_colorImage,
+                    fontFamily: userInfo?.theme?.fontFamily,
+                    color: `${userInfo?.theme?.fontColor ? userInfo?.theme?.fontColor : "white"}`
+                }}>
                                 {userInfo?.email}
                             </p>
                         </div>
@@ -143,7 +162,11 @@ export const MobileUi: React.FC = () => {
                             onClick={() => handleClickSubmit(link._id)}
                         >
                             <img src={defaultConfig?.imagePath + link.linkLogo} alt={link.linkTitle} className="link-logo" />
-                            <span style={{ fontFamily: `${userInfo?.theme?.fontFamily}` }}>{link.linkTitle}</span>
+                            <span  style={{
+
+                    fontFamily: userInfo?.theme?.fontFamily,
+                    color: `${userInfo?.theme?.fontColor ? userInfo?.theme?.fontColor : "white"}`
+                }}>{link.linkTitle}</span>
                         </Link>
                     ))}
                 </div>
@@ -158,6 +181,7 @@ export const MobileUi: React.FC = () => {
                                     key={link._id}
                                     to={link.linkUrl}
                                     target="_blank"
+                                    style={{color:"black"}}
                                     rel="noopener noreferrer"
                                     className="link-card-social"
                                     onClick={() => handleClickSubmit(link._id)}

@@ -183,7 +183,7 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
               type="button"
               className="btn btn-share"
               aria-label="Share button"
-              to={`http://localhost:5173/profile/${localStorage.getItem(
+              to={`/profile/${localStorage.getItem(
                 "_id"
               )}`}
               target="blank"

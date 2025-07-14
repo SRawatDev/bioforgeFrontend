@@ -186,7 +186,7 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
               to={`/profile/${localStorage.getItem(
                 "_id"
               )}`}
-              target="blank"
+              
             >
               Share
             </Link>

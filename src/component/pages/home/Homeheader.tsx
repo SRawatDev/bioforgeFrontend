@@ -16,7 +16,7 @@ const Homeheader: React.FC = () => {
         <header className="home-header">
             <div className="home-header-container">
                 <Link to="/" className="home-header-logo">
-                    <img src="/src/assets/logo.png" alt="Logo" height={50} />
+                    <img src="/assets/logo.png" alt="Logo" height={50} />
                 </Link>
 
                 <div className="home-header-actions">

@@ -56,7 +56,7 @@ const Index = () => {
         <div className="container-register">
           <div className="container-inner">
             <div className="icon-box">
-              <img src="/src/assets/logo.png" alt="Logo" height={50} />
+              <img src="/assets/logo.png" alt="Logo" height={50} />
             </div>
             <h2>Account Delete</h2>
 

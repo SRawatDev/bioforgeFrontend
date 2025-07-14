@@ -87,7 +87,7 @@ const Register: React.FC = () => {
                 <div className="container-register">
                     <div className="container-inner">
                         <div className="icon-box">
-                            <img src="/src/assets/logo.png" alt="Logo" height={50} />
+                            <img src="/assets/logo.png" alt="Logo" height={50} />
                         </div>
                         <h2>Sign Up to Your Account</h2>
                         <form onSubmit={handleSubmit}>
@@ -214,7 +214,7 @@ const Register: React.FC = () => {
                 </div>
                 <div className="container-image">
                     <img
-                        src="/src/assets/original-a6dd915f7cf81ea73976dfc1bb4ecd50.webp"
+                        src="/assets/original-a6dd915f7cf81ea73976dfc1bb4ecd50.webp"
                         alt="Side Visual"
                     />
                 </div>

@@ -199,7 +199,7 @@ const Index: React.FC<Props> = ({getUserDetail}) => {
     <>
       <main id="main-content" className="d-flex flex-column" style={{ fontFamily: "&quot;Playfair Display&quot" }}>
         <div className="linksHeader">
-          <img src="/src/assets/logo.png" alt="Logo" height={50} />
+          <img src="/assets/logo.png" alt="Logo" height={50} />
           <button
             className="editbutton"
             onClick={() => {

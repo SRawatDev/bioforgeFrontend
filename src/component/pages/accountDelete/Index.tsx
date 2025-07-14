@@ -115,7 +115,7 @@ const Index = () => {
         </div>
         <div className="container-image">
           <img
-            src="/src/assets/original-a6dd915f7cf81ea73976dfc1bb4ecd50.webp"
+            src="/assets/original-a6dd915f7cf81ea73976dfc1bb4ecd50.webp"
             className="blurimage"
             alt="Side Visual"
           />

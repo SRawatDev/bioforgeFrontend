@@ -41,8 +41,10 @@ export interface clicks {
   ipAddress: string;
   count: string;
 }
-
-const Index: React.FC = () => {
+interface Props {
+  getUserDetail: () => void
+}
+const Index: React.FC<Props> = ({getUserDetail}) => {
   const [openuserInfo, setopenuserInfo] = useState<boolean>(false);
   const [userInfo, setUserInfo] = useState<clicks[]>([]);
   const [non_socialData, setnonSocialData] = useState<LinkItem[]>([]);
@@ -131,6 +133,7 @@ const Index: React.FC = () => {
         SuccessMessage(res.data.message);
         setDeleteOpen(false);
         Detail();
+        getUserDetail()
         NonDetail();
       } else {
         ErrorMessage(res.data.message);
@@ -155,6 +158,7 @@ const Index: React.FC = () => {
         SuccessMessage(res.data.message);
         Detail();
         NonDetail();
+        getUserDetail()
       } else {
         ErrorMessage(res.data.message);
       }
@@ -179,6 +183,7 @@ const Index: React.FC = () => {
       setLoader(true);
       await callAPI(apiUrls.updateindex, {}, "POST", { items: updatedOrder });
       await Detail();
+      getUserDetail()
       SuccessMessage("Link order updated");
     } catch (err: any) {
       ErrorMessage(err.message || "Failed to update order");
@@ -193,7 +198,7 @@ const Index: React.FC = () => {
 
   return (
     <>
-      <main id="main-content" className="d-flex flex-column" style={{fontFamily:"&quot;Playfair Display&quot"}}>
+      <main id="main-content" className="d-flex flex-column" style={{ fontFamily: "&quot;Playfair Display&quot" }}>
         <div className="linksHeader">
           <img src="/src/assets/logo.png" alt="Logo" height={50} />
           <button
@@ -214,7 +219,7 @@ const Index: React.FC = () => {
             Add Links
           </button>
         </div>
-        {non_socialData.length == 0 && <NodataFound />}
+    
         {loader ? (
           <LinkShimmer />
         ) : (
@@ -457,6 +462,7 @@ const Index: React.FC = () => {
           linkDetail={linkDetail}
           action={action}
         />
+            {/* {non_socialData.length != 0 && <div className="links-container"><NodataFound /></div>} */}
       </main>
     </>
   );

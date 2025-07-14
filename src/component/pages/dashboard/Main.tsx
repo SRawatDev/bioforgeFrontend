@@ -36,8 +36,11 @@ interface UserInfo {
   profile_img: string;
   theme: Theme;
 }
-const Main: React.FC = () => {
-  const navidate = useNavigate();
+interface Props {
+  getUserDetails: () => void;
+}
+
+const Main: React.FC<Props> = ({ getUserDetails }) => {
   const { id } = useParams();
   const [loader, setLoader] = useState(false);
   const [previewProfile, setPreviewProfile] = useState<string | null>(null);
@@ -51,7 +54,9 @@ const Main: React.FC = () => {
     const { name, value } = e.target;
     setUserInfo((prev) => {
       if (!prev) return prev;
-      if (["themeType", "fontFamily", "is_colorImage","fontColor"].includes(name)) {
+      if (
+        ["themeType", "fontFamily", "is_colorImage", "fontColor"].includes(name)
+      ) {
         return {
           ...prev,
           theme: {
@@ -81,6 +86,7 @@ const Main: React.FC = () => {
       } else {
         const user = response?.data?.data[0];
         setUserInfo(user);
+
         setPreviewProfile(user.profile_img || null);
         setPreviewBanner(user.banner_img || null);
       }
@@ -92,9 +98,11 @@ const Main: React.FC = () => {
   useEffect(() => {
     if (id) {
       getUserDetail();
+
     }
   }, [id]);
   const UploadProfileImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    await getUserDetails()
     try {
       setLoader(true);
       const files = e.target.files;
@@ -311,13 +319,23 @@ const Main: React.FC = () => {
               </div>
               <div>
                 <label>Font Color</label>
-                <input type="color" id="favcolor" name="fontColor" value={userInfo?.theme?.fontColor || ""}  onChange={handleChange}></input>
-               
+                <input
+                  type="color"
+                  id="favcolor"
+                  name="fontColor"
+                  value={userInfo?.theme?.fontColor || ""}
+                  onChange={handleChange}
+                ></input>
               </div>
               <div>
                 <label>Color Theme</label>
-                <input type="color" id="favcolor" name="is_colorImage" value={userInfo?.theme?.is_colorImage || ""}  onChange={handleChange}></input>
-               
+                <input
+                  type="color"
+                  id="favcolor"
+                  name="is_colorImage"
+                  value={userInfo?.theme?.is_colorImage || ""}
+                  onChange={handleChange}
+                ></input>
               </div>
             </div>
 

@@ -657,6 +657,8 @@ body {
 }
 .editbutton {
   background-color: #014178;
+  display: flex;
+  align-items: center;
   color: white;
   height: 37px;
   padding: 9px 36px;
@@ -1007,7 +1009,8 @@ input[type="file"] {
 }
 
 .profile-shimmer-container {
-  width: 100%;
+  max-width: 100%;
+  min-width: 310px;
   padding: 1rem;
   height: 100vh;
   border-radius: 12px;
@@ -1176,7 +1179,7 @@ input[type="file"] {
 
 .user-info-content {
     background: #fff;
-    padding: 47px 49px;
+    padding:20px 29px;
     border-radius: 10px;
     max-height: 80vh;
     overflow-y: auto;

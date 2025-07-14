@@ -19,7 +19,6 @@ import { AiOutlineEye } from "react-icons/ai";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { socialPlatforms } from "./linksAddEdit";
 import LinkShimmer from "../../LinkShimmer";
-import NodataFound from "../../NodataFound";
 import UserInfo from "./UserInfo";
 
 interface LinkItem {

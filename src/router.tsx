@@ -2,7 +2,6 @@ import React, { Suspense, Fragment, lazy, type LazyExoticComponent, type Compone
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LoadScreen from './component/loaderScreen';
 import Authenticated from './guard/Authenticated';
-import Header from './layout/Header';
 import Guest from './guard/Guest';
 interface AppRoute {
   path: string;

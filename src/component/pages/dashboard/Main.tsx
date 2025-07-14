@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { API, callAPI, callAPIWithoutAuth } from "../../../utils/apicall.utils";
 import { apiUrls } from "../../../utils/api.utils";
 import { FaEdit } from "react-icons/fa";
-import { useNavigate, useParams } from "react-router-dom";
+import {  useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import ErrorMessage from "../../../helpers/ErrorMessage";
 import { defaultConfig } from "../../../config";

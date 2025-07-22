@@ -6,7 +6,9 @@ import SuccessMessage from '../../../helpers/Success';
 import { apiUrls } from '../../../utils/api.utils';
 import LoadScreen from '../../loaderScreen';
 import { defaultConfig } from '../../../config';
-import { FaInstagram, FaFacebookF, FaTwitter, FaLinkedinIn, FaYoutube } from 'react-icons/fa';
+import { FaInstagram, FaFacebookF, FaTwitter, FaLinkedinIn, FaYoutube, FaTimes, FaLink, FaUpload, FaImage } from 'react-icons/fa';
+import { MdAdd, MdEdit } from 'react-icons/md';
+import './LinksAddEdit.css';
 
 interface Props {
   open: boolean;
@@ -14,7 +16,7 @@ interface Props {
   Detail: () => void;
   linkDetail: Link;
   action: 'add' | 'edit';
-  NonDetail: () => void
+  NonDetail: () => void;
 }
 
 interface Link {
@@ -26,16 +28,18 @@ interface Link {
 }
 
 export const socialPlatforms = [
-  { label: 'Instagram', value: 'instagram', icon: <FaInstagram size={24} /> },
-  { label: 'Facebook', value: 'facebook', icon: <FaFacebookF size={24} /> },
-  { label: 'Twitter', value: 'twitter', icon: <FaTwitter size={24} /> },
-  { label: 'LinkedIn', value: 'linkedin', icon: <FaLinkedinIn size={24} /> },
-  { label: 'YouTube', value: 'youtube', icon: <FaYoutube size={24} /> },
+  { label: 'Instagram', value: 'instagram', icon: <FaInstagram size={24} />, color: '#E4405F' },
+  { label: 'Facebook', value: 'facebook', icon: <FaFacebookF size={24} />, color: '#1877F2' },
+  { label: 'Twitter', value: 'twitter', icon: <FaTwitter size={24} />, color: '#1DA1F2' },
+  { label: 'LinkedIn', value: 'linkedin', icon: <FaLinkedinIn size={24} />, color: '#0A66C2' },
+  { label: 'YouTube', value: 'youtube', icon: <FaYoutube size={24} />, color: '#FF0000' },
 ];
+
 export const LinksAddEdit: React.FC<Props> = ({ open, onClose, Detail, linkDetail, action, NonDetail }) => {
   const [loader, setLoader] = useState(false);
   const [link, setLink] = useState<Link>({ linkTitle: '', linkUrl: '', linkLogo: '', type: 'social' });
   const [preview, setPreview] = useState<string | null>(null);
+  const [dragActive, setDragActive] = useState(false);
 
   useEffect(() => {
     if (open) {
@@ -51,9 +55,7 @@ export const LinksAddEdit: React.FC<Props> = ({ open, onClose, Detail, linkDetai
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-
     if (name === 'linkTitle' && link.type === 'social') {
-
       const selected = socialPlatforms.find(
         (p) => p.label.toLowerCase() === value.toLowerCase() || p.value.toLowerCase() === value.toLowerCase()
       );
@@ -71,12 +73,29 @@ export const LinksAddEdit: React.FC<Props> = ({ open, onClose, Detail, linkDetai
     }
   };
 
-  const UploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleDrag = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.type === 'dragenter' || e.type === 'dragover') {
+      setDragActive(true);
+    } else if (e.type === 'dragleave') {
+      setDragActive(false);
+    }
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+    
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      handleFileUpload(e.dataTransfer.files[0]);
+    }
+  };
+
+  const handleFileUpload = async (file: File) => {
     try {
       setLoader(true);
-      const files = e.target.files;
-      if (!files || files.length === 0) return;
-      const file = files[0];
       const formData = new FormData();
       formData.append('tempImage', file);
       const apiResponse = await API(apiUrls.upload, {}, 'POST', formData);
@@ -85,15 +104,21 @@ export const LinksAddEdit: React.FC<Props> = ({ open, onClose, Detail, linkDetai
         const uploadedUrl = apiResponse.data.data;
         setLink((prev) => ({ ...prev, linkLogo: uploadedUrl }));
         setPreview(uploadedUrl);
-        e.target.value = '';
       } else {
         ErrorMessage(apiResponse?.data?.message);
       }
     } catch (err) {
-      setLoader(true);
+      setLoader(false);
       console.error('Error uploading image:', err);
       ErrorMessage('Image upload failed');
     }
+  };
+
+  const UploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+    await handleFileUpload(files[0]);
+    e.target.value = '';
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -105,7 +130,6 @@ export const LinksAddEdit: React.FC<Props> = ({ open, onClose, Detail, linkDetai
       if (payload.type === 'social') {
         payload.linkLogo = '';
       }
-
       const response = await callAPI(endpoint, {}, 'POST', payload);
       setLoader(false);
       if (!response?.data?.status) {
@@ -113,111 +137,218 @@ export const LinksAddEdit: React.FC<Props> = ({ open, onClose, Detail, linkDetai
       } else {
         SuccessMessage(response?.data?.message);
         Detail();
-        NonDetail()
-
+        NonDetail();
         onClose();
       }
     } catch (err: any) {
-      setLoader(true);
+      setLoader(false);
       ErrorMessage(err.message || 'Something went wrong');
     }
   };
 
   if (!open) return null;
 
+  const selectedPlatform = socialPlatforms.find(p => p.label === link.linkTitle);
+
   return (
     <>
       {loader && <LoadScreen />}
-      <div className="modal-backdrop">
-        <div className="modal-content">
+      <div className="modal-overlay" onClick={onClose}>
+        <div className="modal-container" onClick={(e) => e.stopPropagation()}>
           <div className="modal-header">
-            <h2>{action === 'edit' ? 'Edit' : 'Add'} Social Link</h2>
-            <button className="close-btn" onClick={onClose} aria-label="Close">
-              ×
+            <div className="modal-icon">
+              {action === 'edit' ? <MdEdit /> : <MdAdd />}
+            </div>
+            <div className="modal-title-section">
+              <h2>{action === 'edit' ? 'Edit' : 'Add'} Link</h2>
+              <p>Connect your audience to your content</p>
+            </div>
+            <button className="modal-close-btn" onClick={onClose}>
+              <FaTimes />
             </button>
           </div>
-          <form onSubmit={handleSubmit}>
-            <label htmlFor="linkType">Link Type</label>
-            <select
-              id="linkType"
-              name="type"
-              className="form-control"
-              value={link.type}
-              onChange={handleChange}
-              required
-            >
 
-              <option value="social">Social</option>
-              <option value="non_social">Non-Social</option>
-            </select>
+          <div className="modal-body">
+            <form onSubmit={handleSubmit} className="link-form">
+              {/* Link Type Selection */}
+              <div className="form-section">
+                <label className="form-label">
+                  <FaLink className="label-icon" />
+                  Link Type
+                </label>
+                <div className="type-selector">
+                  <label className={`type-option ${link.type === 'social' ? 'active' : ''}`}>
+                    <input
+                      type="radio"
+                      name="type"
+                      value="social"
+                      checked={link.type === 'social'}
+                      onChange={handleChange}
+                    />
+                    <span className="type-content">
+                      <div className="type-icon">📱</div>
+                      <div>
+                        <strong>Social</strong>
+                        <small>Instagram, Facebook, etc.</small>
+                      </div>
+                    </span>
+                  </label>
+                  <label className={`type-option ${link.type === 'non_social' ? 'active' : ''}`}>
+                    <input
+                      type="radio"
+                      name="type"
+                      value="non_social"
+                      checked={link.type === 'non_social'}
+                      onChange={handleChange}
+                    />
+                    <span className="type-content">
+                      <div className="type-icon">🔗</div>
+                      <div>
+                        <strong>Custom</strong>
+                        <small>Website, portfolio, etc.</small>
+                      </div>
+                    </span>
+                  </label>
+                </div>
+              </div>
 
-            {link.type === 'social' ? (
-              <>
-                <label htmlFor="socialTitle">Social Platform</label>
-                <select
-                  id="socialTitle"
-                  name="linkTitle"
-                  className="form-control"
-                  value={link.linkTitle}
-                  onChange={handleChange}
-                  required
-                >
-                  <option value="">Select Platform</option>
-                  {socialPlatforms.map((platform) => (
-                    <option key={platform.value} value={platform.label}>
-                      {platform.label}
-                    </option>
-                  ))}
-                </select>
-              </>
-            ) : (
-              <InputField
-                label="Link Title"
-                name="linkTitle"
-                value={link.linkTitle}
-                onChange={handleChange}
-                required
-              />
-            )}
+              {/* Platform/Title Selection */}
+              <div className="form-section">
+                {link.type === 'social' ? (
+                  <>
+                    <label className="form-label">Social Platform</label>
+                    <div className="social-platforms">
+                      {socialPlatforms.map((platform) => (
+                        <label
+                          key={platform.value}
+                          className={`platform-option ${link.linkTitle === platform.label ? 'selected' : ''}`}
+                          style={{ '--platform-color': platform.color } as React.CSSProperties}
+                        >
+                          <input
+                            type="radio"
+                            name="linkTitle"
+                            value={platform.label}
+                            checked={link.linkTitle === platform.label}
+                            onChange={handleChange}
+                          />
+                          <div className="platform-content">
+                            {platform.icon}
+                            <span>{platform.label}</span>
+                          </div>
+                        </label>
+                      ))}
+                    </div>
+                  </>
+                ) : (
+                  <div className="input-group">
+                    <InputField
+                      label="Link Title"
+                      name="linkTitle"
+                      value={link.linkTitle}
+                      onChange={handleChange}
+                      required
+                      placeholder="Enter link title"
+                    />
+                  </div>
+                )}
+              </div>
 
-            <InputField
-              label="Link Url"
-              name="linkUrl"
-              value={link.linkUrl}
-              onChange={handleChange}
-              required
-            />
+              {/* URL Input */}
+              <div className="form-section">
+                <div className="input-group">
+                  <InputField
+                    label="Link URL"
+                    name="linkUrl"
+                    value={link.linkUrl}
+                    onChange={handleChange}
+                    required
+                    placeholder={link.type === 'social' ? `Enter your ${link.linkTitle || 'social'} profile URL` : 'https://example.com'}
+                  />
+                </div>
+              </div>
 
-            {link.type !== 'social' && (
-              <>
-                <label>Link Logo (Image)</label>
-                <input
-                  type="file"
-                  name="image"
-                  accept="image/png,image/jpg,image/jpeg"
-                  onChange={UploadImage}
-                  className="form-control"
-                />
-              </>
-            )}
+              {/* Image Upload for Non-Social */}
+              {link.type !== 'social' && (
+                <div className="form-section">
+                  <label className="form-label">
+                    <FaImage className="label-icon" />
+                    Link Logo
+                  </label>
+                  <div
+                    className={`upload-area ${dragActive ? 'drag-active' : ''}`}
+                    onDragEnter={handleDrag}
+                    onDragLeave={handleDrag}
+                    onDragOver={handleDrag}
+                    onDrop={handleDrop}
+                  >
+                    <input
+                      type="file"
+                      id="imageUpload"
+                      accept="image/png,image/jpg,image/jpeg"
+                      onChange={UploadImage}
+                      className="upload-input"
+                    />
+                    <label htmlFor="imageUpload" className="upload-label">
+                      {preview ? (
+                        <div className="preview-container">
+                          <img
+                            src={defaultConfig.imagePath + preview}
+                            alt="Preview"
+                            className="preview-image"
+                          />
+                          <div className="preview-overlay">
+                            <FaUpload />
+                            <span>Change Image</span>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="upload-placeholder">
+                          <FaUpload size={32} />
+                          <h4>Upload Logo</h4>
+                          <p>Drag & drop or click to select</p>
+                          <small>PNG, JPG up to 5MB</small>
+                        </div>
+                      )}
+                    </label>
+                  </div>
+                </div>
+              )}
 
-            {preview && (
-              <img
-                src={defaultConfig.imagePath + preview}
-                alt="Preview"
-                style={{ marginTop: '10px', width: '80px', borderRadius: '8px' }}
-              />
-            )}
+              {/* Preview Section */}
+              {(link.linkTitle || link.linkUrl) && (
+                <div className="form-section">
+                  <label className="form-label">Preview</label>
+                  <div className="link-preview">
+                    <div className="preview-icon">
+                      {link.type === 'social' && selectedPlatform ? (
+                        <div style={{ color: selectedPlatform.color }}>
+                          {selectedPlatform.icon}
+                        </div>
+                      ) : preview ? (
+                        <img src={defaultConfig.imagePath + preview} alt="Logo" />
+                      ) : (
+                        <FaLink />
+                      )}
+                    </div>
+                    <div className="preview-content">
+                      <h4>{link.linkTitle || 'Link Title'}</h4>
+                      <p>{link.linkUrl || 'Link URL'}</p>
+                    </div>
+                  </div>
+                </div>
+              )}
 
-            <div className="modal-actions">
-              <button type="submit" className="btn-primary">
-                Submit
-              </button>
-              <button type="button" className="btn-secondary" onClick={onClose}>
-                Cancel
-              </button>
-            </div>
-          </form>
+              {/* Form Actions */}
+              <div className="form-actions">
+                <button type="button" className="btn-secondary" onClick={onClose}>
+                  Cancel
+                </button>
+                <button type="submit" className="btn-primary">
+                  {action === 'edit' ? 'Update Link' : 'Add Link'}
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </>

@@ -1,470 +1,488 @@
-import React, { useEffect, useState } from "react";
-import { callAPI } from "../../../utils/apicall.utils";
-import ErrorMessage from "../../../helpers/ErrorMessage";
-import SuccessMessage from "../../../helpers/Success";
-import { apiUrls } from "../../../utils/api.utils";
-import { defaultConfig } from "../../../config";
-import { LinksAddEdit } from "./linksAddEdit";
-import Delete from "./Delete";
+import React, { useEffect, useState } from 'react'
+import { callAPI } from '../../../utils/apicall.utils'
+import ErrorMessage from '../../../helpers/ErrorMessage'
+import SuccessMessage from '../../../helpers/Success'
+import { apiUrls } from '../../../utils/api.utils'
+import { defaultConfig } from '../../../config'
+import { LinksAddEdit } from './linksAddEdit'
+import Delete from './Delete'
 import {
   DragDropContext,
   Droppable,
   Draggable,
-  type DropResult,
-} from "@hello-pangea/dnd";
-import { Link as RouterLink } from "react-router-dom";
-import { MdOutlineEdit, MdDeleteOutline } from "react-icons/md";
-import { TbStatusChange } from "react-icons/tb";
-import { AiOutlineEye } from "react-icons/ai";
-import { BsThreeDotsVertical } from "react-icons/bs";
-import { socialPlatforms } from "./linksAddEdit";
-import LinkShimmer from "../../LinkShimmer";
-import UserInfo from "./UserInfo";
+  type DropResult
+} from '@hello-pangea/dnd'
+import { Link as RouterLink } from 'react-router-dom'
+import { MdOutlineEdit, MdDeleteOutline } from 'react-icons/md'
+import { TbStatusChange } from 'react-icons/tb'
+import { AiOutlineEye } from 'react-icons/ai'
+import { BsThreeDotsVertical } from 'react-icons/bs'
+import { socialPlatforms } from './linksAddEdit'
+import LinkShimmer from '../../LinkShimmer'
+import UserInfo from './UserInfo'
+import './Link.css'
 
 interface LinkItem {
-  _id: string;
-  linkTitle: string;
-  linkUrl: string;
-  linkLogo: string;
-  status: string;
-  type: string;
-  clickCount?: number;
-  clicks?: [clicks];
+  _id: string
+  linkTitle: string
+  linkUrl: string
+  linkLogo: string
+  status: string
+  type: string
+  clickCount?: number
+  clicks?: [clicks]
 }
+
 interface getuser {
-  username?: string;
-  count?: number;
+  username?: string
+  count?: number
 }
+
 export interface clicks {
-  userInfo: getuser;
-  ipAddress: string;
-  count: string;
+  userInfo: getuser
+  ipAddress: string
+  count: string
 }
+
 interface Props {
   getUserDetail: () => void
 }
-const Index: React.FC<Props> = ({getUserDetail}) => {
-  const [openuserInfo, setopenuserInfo] = useState<boolean>(false);
-  const [userInfo, setUserInfo] = useState<clicks[]>([]);
-  const [non_socialData, setnonSocialData] = useState<LinkItem[]>([]);
-  const [action, setAction] = useState<"add" | "edit">("add");
-  const [deleteOpen, setDeleteOpen] = useState(false);
-  const [open, setOpen] = useState(false);
-  const [linksInfo, setLinksInfo] = useState<LinkItem[]>([]);
-  const [loader, setLoader] = useState(false);
+
+const Index: React.FC<Props> = ({ getUserDetail }) => {
+  const [openuserInfo, setopenuserInfo] = useState<boolean>(false)
+  const [userInfo, setUserInfo] = useState<clicks[]>([])
+  const [non_socialData, setnonSocialData] = useState<LinkItem[]>([])
+  const [action, setAction] = useState<'add' | 'edit'>('add')
+  const [deleteOpen, setDeleteOpen] = useState(false)
+  const [open, setOpen] = useState(false)
+  const [linksInfo, setLinksInfo] = useState<LinkItem[]>([])
+  const [loader, setLoader] = useState(false)
   const [linkDetail, setLinkDetail] = useState<LinkItem>({
-    _id: "",
-    linkTitle: "",
-    linkUrl: "",
-    linkLogo: "",
-    status: "",
-    type: "",
-  });
+    _id: '',
+    linkTitle: '',
+    linkUrl: '',
+    linkLogo: '',
+    status: '',
+    type: ''
+  })
 
   const Detail = async () => {
-    setLoader(true);
+    setLoader(true)
     try {
       const response = await callAPI(
         apiUrls.getlinks,
-        { type: "non_social" },
-        "GET",
+        { type: 'non_social' },
+        'GET',
         {}
-      );
-      setLoader(false);
+      )
+      setLoader(false)
       if (response?.data?.status) {
-        setLinksInfo(response.data.data || []);
+        setLinksInfo(response.data.data || [])
       } else {
-        ErrorMessage(response?.data?.message);
+        ErrorMessage(response?.data?.message)
       }
     } catch (err: any) {
-      setLoader(true);
-      ErrorMessage(err.message || "Something went wrong");
+      setLoader(true)
+      ErrorMessage(err.message || 'Something went wrong')
     }
-  };
+  }
+
   const NonDetail = async () => {
-    setLoader(true);
+    setLoader(true)
     try {
       const response = await callAPI(
         apiUrls.getlinks,
-        { type: "social" },
-        "GET",
+        { type: 'social' },
+        'GET',
         {}
-      );
-      setLoader(false);
+      )
+      setLoader(false)
       if (response?.data?.status) {
-        setnonSocialData(response.data.data || []);
+        setnonSocialData(response.data.data || [])
       } else {
-        ErrorMessage(response?.data?.message);
+        ErrorMessage(response?.data?.message)
       }
     } catch (err: any) {
-      setLoader(true);
-      ErrorMessage(err.message || "Something went wrong");
+      setLoader(true)
+      ErrorMessage(err.message || 'Something went wrong')
     }
-  };
+  }
 
   useEffect(() => {
-    Detail();
-    NonDetail();
-  }, []);
+    Detail()
+    NonDetail()
+  }, [])
 
   const handleEdit = (item: LinkItem) => {
-    setLinkDetail(item);
-    setOpen(true);
-    setAction("edit");
-  };
+    setLinkDetail(item)
+    setOpen(true)
+    setAction('edit')
+  }
 
   const handleDelete = (item: LinkItem) => {
-    setLinkDetail(item);
-    setDeleteOpen(true);
-  };
+    setLinkDetail(item)
+    setDeleteOpen(true)
+  }
 
   const confirmDelete = async (item: LinkItem) => {
     try {
-      setLoader(true);
+      setLoader(true)
       const res = await callAPI(
         apiUrls.linkdelete,
         { _id: item._id },
-        "POST",
+        'POST',
         {}
-      );
-      setLoader(false);
+      )
+      setLoader(false)
       if (res?.data?.status) {
-        SuccessMessage(res.data.message);
-        setDeleteOpen(false);
-        Detail();
+        SuccessMessage(res.data.message)
+        setDeleteOpen(false)
+        Detail()
         getUserDetail()
-        NonDetail();
+        NonDetail()
       } else {
-        ErrorMessage(res.data.message);
+        ErrorMessage(res.data.message)
       }
     } catch (err: any) {
-      setLoader(true);
-      ErrorMessage(err.message || "Delete failed");
+      setLoader(true)
+      ErrorMessage(err.message || 'Delete failed')
     }
-  };
+  }
 
   const confirmStatus = async (item: LinkItem) => {
     try {
-      setLoader(true);
+      setLoader(true)
       const res = await callAPI(
         apiUrls.linkupdateStatus,
         { _id: item._id },
-        "GET",
+        'GET',
         {}
-      );
-      setLoader(false);
+      )
+      setLoader(false)
       if (res?.data?.status) {
-        SuccessMessage(res.data.message);
-        Detail();
-        NonDetail();
+        SuccessMessage(res.data.message)
+        Detail()
+        NonDetail()
         getUserDetail()
       } else {
-        ErrorMessage(res.data.message);
+        ErrorMessage(res.data.message)
       }
     } catch (err: any) {
-      setLoader(true);
-      ErrorMessage(err.message || "Status update failed");
+      setLoader(true)
+      ErrorMessage(err.message || 'Status update failed')
     }
-  };
+  }
 
   const handleDragEnd = async (result: DropResult) => {
-    if (!result.destination) return;
-    const reordered = Array.from(linksInfo);
-    const [movedItem] = reordered.splice(result.source.index, 1);
-    reordered.splice(result.destination.index, 0, movedItem);
-    setLinksInfo(reordered);
+    if (!result.destination) return
+    const reordered = Array.from(linksInfo)
+    const [movedItem] = reordered.splice(result.source.index, 1)
+    reordered.splice(result.destination.index, 0, movedItem)
+    setLinksInfo(reordered)
     const updatedOrder = reordered.map((item, index) => ({
       _id: item._id,
-      is_index: index,
-    }));
-
+      is_index: index
+    }))
     try {
-      setLoader(true);
-      await callAPI(apiUrls.updateindex, {}, "POST", { items: updatedOrder });
-      await Detail();
+      setLoader(true)
+      await callAPI(apiUrls.updateindex, {}, 'POST', { items: updatedOrder })
+      await Detail()
       getUserDetail()
-      SuccessMessage("Link order updated");
+      SuccessMessage('Link order updated')
     } catch (err: any) {
-      ErrorMessage(err.message || "Failed to update order");
+      ErrorMessage(err.message || 'Failed to update order')
     } finally {
-      setLoader(false);
+      setLoader(false)
     }
-  };
+  }
+
   const handleUserInfo = (clickList: clicks[] = []) => {
-    setUserInfo(clickList);
-    setopenuserInfo(true);
-  };
+    setUserInfo(clickList)
+    setopenuserInfo(true)
+  }
 
   return (
-    <>
-      <main id="main-content" className="d-flex flex-column" style={{ fontFamily: "&quot;Playfair Display&quot" }}>
-        <div className="linksHeader">
-          <img src="/assets/logo.png" alt="Logo" height={50} />
+    <div className='links-page-container'>
+      <div className='links-page-content'>
+        <div className='links-header'>
+          <div className='links-logo'>
+            <img src='/assets/logo12.png' alt='BioForge Logo' />
+          </div>
+          <div className='header-content'>
+            <h1>Manage Your Links</h1>
+            <p>Add, edit, and organize your links to customize your profile</p>
+          </div>
           <button
-            className="editbutton"
+            className='add-link-button'
             onClick={() => {
-              setOpen(true);
-              setAction("add");
+              setOpen(true)
+              setAction('add')
               setLinkDetail({
-                _id: "",
-                linkTitle: "",
-                linkUrl: "",
-                linkLogo: "",
-                status: "",
-                type: "",
-              });
+                _id: '',
+                linkTitle: '',
+                linkUrl: '',
+                linkLogo: '',
+                status: '',
+                type: ''
+              })
             }}
           >
-            Add Links
+            Add New Link
           </button>
         </div>
-    
+
         {loader ? (
           <LinkShimmer />
         ) : (
-          <>
-            <div className="links-container">
-              {linksInfo.length > 0 && (
-                <h5
-                  style={{
-                    marginTop: "20px",
-                    padding: "8px",
-                  }}
-                >
-                  Non Social Links
-                </h5>
-              )}
-              <div className="links-grid">
+          <div className='links-sections'>
+            {/* Non-Social Links Section */}
+            {linksInfo.length > 0 && (
+              <div className='links-section'>
+                <div className='section-header'>
+                  <h2>Regular Links</h2>
+                  <p>Drag to reorder your links</p>
+                </div>
+
                 <DragDropContext onDragEnd={handleDragEnd}>
-                  <Droppable droppableId="links-list">
-                    {(provided) => (
-                      <div ref={provided.innerRef} {...provided.droppableProps}>
-                        {linksInfo.length > 0 &&
-                          linksInfo.map((item, index) => {
-                            return (
-                              <Draggable
-                                key={item._id}
-                                draggableId={item._id}
-                                index={index}
+                  <Droppable droppableId='links-list'>
+                    {provided => (
+                      <div
+                        className='links-list'
+                        ref={provided.innerRef}
+                        {...provided.droppableProps}
+                      >
+                        {linksInfo.map((item, index) => (
+                          <Draggable
+                            key={item._id}
+                            draggableId={item._id}
+                            index={index}
+                          >
+                            {provided => (
+                              <div
+                                className={`link-item ${
+                                  item.status !== 'active' ? 'inactive' : ''
+                                }`}
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
                               >
-                                {(provided) => (
-                                  <div
-                                    className="link-card"
-                                    ref={provided.innerRef}
-                                    {...provided.draggableProps}
-                                    {...provided.dragHandleProps}
-                                  >
+                                <div className='link-item-content'>
+                                  <div className='link-item-icon'>
                                     <img
                                       src={
                                         defaultConfig.imagePath + item.linkLogo
                                       }
                                       alt={item.linkTitle}
-                                      className="link-logo"
                                     />
+                                  </div>
 
-                                    <div className="link-info">
-                                      <p
-                                        className="link-title"
-                                        onClick={() =>
-                                          handleUserInfo(item?.clicks)
-                                        }
-                                        style={{
-                                          color: `${item.status === "active"
-                                            ? "#07bc0c"
-                                            : "red"
-                                            }`,
-                                        }}
+                                  <div className='link-item-details'>
+                                    <h3
+                                      onClick={() =>
+                                        handleUserInfo(item?.clicks)
+                                      }
+                                      className='link-title'
+                                    >
+                                      {item.linkTitle}
+                                    </h3>
+                                    <p className='link-url'>{item.linkUrl}</p>
+                                    <div className='link-stats'>
+                                      <span className='link-clicks'>
+                                        {item.clickCount || 0} clicks
+                                      </span>
+                                      <span
+                                        className={`link-status ${item.status}`}
                                       >
-                                        {item.linkTitle}(
-                                        {item.clickCount ? item.clickCount : 0})
-                                      </p>
-                                      <div className="dropdown three-dots">
-                                        <BsThreeDotsVertical
-                                          className="dropdown-toggle three-dots"
-                                          role="button"
-                                          data-bs-toggle="dropdown"
-                                          aria-expanded="false"
-                                        />
-                                        <ul className="dropdown-menu">
-                                          <li>
-                                            <RouterLink
-                                              className="dropdown-item d-flex align-items-center gap-2"
-                                              to={item.linkUrl}
-                                              target="_blank"
-                                              rel="noopener noreferrer"
-                                            >
-                                              <AiOutlineEye /> {item.linkTitle}
-                                            </RouterLink>
-                                          </li>
-                                          <li>
-                                            <button
-                                              className="dropdown-item d-flex align-items-center gap-2"
-                                              onClick={() =>
-                                                confirmStatus(item)
-                                              }
-                                            >
-                                              <TbStatusChange /> {item.status}
-                                            </button>
-                                          </li>
-                                          <li>
-                                            <button
-                                              className="dropdown-item d-flex align-items-center gap-2"
-                                              onClick={() => handleEdit(item)}
-                                            >
-                                              <MdOutlineEdit /> Edit
-                                            </button>
-                                          </li>
-                                          <li>
-                                            <button
-                                              className="dropdown-item d-flex align-items-center gap-2 text-danger"
-                                              onClick={() => handleDelete(item)}
-                                            >
-                                              <MdDeleteOutline /> Delete
-                                            </button>
-                                          </li>
-                                        </ul>
-                                      </div>
+                                        {item.status}
+                                      </span>
                                     </div>
                                   </div>
-                                )}
-                              </Draggable>
-                            );
-                          })}
+
+                                  <div className='link-item-actions'>
+                                    <button
+                                      className='action-button view-button'
+                                      onClick={() =>
+                                        window.open(item.linkUrl, '_blank')
+                                      }
+                                    >
+                                      <AiOutlineEye />
+                                    </button>
+                                    <button
+                                      className='action-button status-button'
+                                      onClick={() => confirmStatus(item)}
+                                    >
+                                      <TbStatusChange />
+                                    </button>
+                                    <button
+                                      className='action-button edit-button'
+                                      onClick={() => handleEdit(item)}
+                                    >
+                                      <MdOutlineEdit />
+                                    </button>
+                                    <button
+                                      className='action-button delete-button'
+                                      onClick={() => handleDelete(item)}
+                                    >
+                                      <MdDeleteOutline />
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            )}
+                          </Draggable>
+                        ))}
                         {provided.placeholder}
                       </div>
                     )}
                   </Droppable>
                 </DragDropContext>
               </div>
-            </div>
-          </>
-        )}
+            )}
 
-        {loader ? (
-          <LinkShimmer />
-        ) : (
-          <>
-            <div className="links-container">
-              {non_socialData.length > 0 && (
-                <h5
-                  style={{
-                    marginTop: "20px",
-                    padding: "8px",
-                  }}
-                >
-                  Social Links
-                </h5>
-              )}
-              <div className="links-grid">
-                {non_socialData.length > 0 &&
-                  non_socialData?.map((item) => {
+            {/* Social Links Section */}
+            {non_socialData.length > 0 && (
+              <div className='links-section'>
+                <div className='section-header'>
+                  <h2>Social Media Links</h2>
+                  <p>Connect your social profiles</p>
+                </div>
+
+                <div className='links-list social-links-list'>
+                  {non_socialData.map(item => {
                     const matchedPlatform = socialPlatforms.find(
-                      (platform) =>
+                      platform =>
                         platform.label.toLowerCase() ===
                         item.linkTitle.toLowerCase()
-                    );
-                    return (
-                      <div className="link-card">
-                        {matchedPlatform && item.type == "social" ? (
-                          <span className="social-icon">
-                            {matchedPlatform.icon}
-                          </span>
-                        ) : (
-                          <img
-                            src={defaultConfig.imagePath + item.linkLogo}
-                            alt={item.linkTitle}
-                            className="link-logo"
-                          />
-                        )}
+                    )
 
-                        <div className="link-info">
-                          <p
-                            className="link-title"
-                            style={{
-                              color: `${item.status === "active" ? "#07bc0c" : "red"
-                                }`,
-                            }}
-                            onClick={() => handleUserInfo(item?.clicks)}
-                          >
-                            {item.linkTitle}(
-                            {item.clickCount ? item.clickCount : 0})
-                          </p>
-                          <div className="dropdown three-dots">
-                            <BsThreeDotsVertical
-                              className="dropdown-toggle three-dots"
-                              role="button"
-                              data-bs-toggle="dropdown"
-                              aria-expanded="false"
-                            />
-                            <ul className="dropdown-menu">
-                              <li>
-                                <RouterLink
-                                  className="dropdown-item d-flex align-items-center gap-2"
-                                  to={item.linkUrl}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                >
-                                  <AiOutlineEye /> {item.linkTitle}
-                                </RouterLink>
-                              </li>
-                              <li>
-                                <button
-                                  className="dropdown-item d-flex align-items-center gap-2"
-                                  onClick={() => confirmStatus(item)}
-                                >
-                                  <TbStatusChange /> {item.status}
-                                </button>
-                              </li>
-                              <li>
-                                <button
-                                  className="dropdown-item d-flex align-items-center gap-2"
-                                  onClick={() => handleEdit(item)}
-                                >
-                                  <MdOutlineEdit /> Edit
-                                </button>
-                              </li>
-                              <li>
-                                <button
-                                  className="dropdown-item d-flex align-items-center gap-2 text-danger"
-                                  onClick={() => handleDelete(item)}
-                                >
-                                  <MdDeleteOutline /> Delete
-                                </button>
-                              </li>
-                            </ul>
+                    return (
+                      <div
+                        key={item._id}
+                        className={`link-item ${
+                          item.status !== 'active' ? 'inactive' : ''
+                        }`}
+                      >
+                        <div className='link-item-content'>
+                          <div className='link-item-icon social-icon'>
+                            {matchedPlatform && item.type === 'social' ? (
+                              matchedPlatform.icon
+                            ) : (
+                              <img
+                                src={defaultConfig.imagePath + item.linkLogo}
+                                alt={item.linkTitle}
+                              />
+                            )}
+                          </div>
+
+                          <div className='link-item-details'>
+                            <h3
+                              onClick={() => handleUserInfo(item?.clicks)}
+                              className='link-title'
+                            >
+                              {item.linkTitle}
+                            </h3>
+                            <p className='link-url'>{item.linkUrl}</p>
+                            <div className='link-stats'>
+                              <span className='link-clicks'>
+                                {item.clickCount || 0} clicks
+                              </span>
+                              <span className={`link-status ${item.status}`}>
+                                {item.status}
+                              </span>
+                            </div>
+                          </div>
+
+                          <div className='link-item-actions'>
+                            <button
+                              className='action-button view-button'
+                              onClick={() =>
+                                window.open(item.linkUrl, '_blank')
+                              }
+                            >
+                              <AiOutlineEye />
+                            </button>
+                            <button
+                              className='action-button status-button'
+                              onClick={() => confirmStatus(item)}
+                            >
+                              <TbStatusChange />
+                            </button>
+                            <button
+                              className='action-button edit-button'
+                              onClick={() => handleEdit(item)}
+                            >
+                              <MdOutlineEdit />
+                            </button>
+                            <button
+                              className='action-button delete-button'
+                              onClick={() => handleDelete(item)}
+                            >
+                              <MdDeleteOutline />
+                            </button>
                           </div>
                         </div>
                       </div>
-                    );
+                    )
                   })}
+                </div>
               </div>
-            </div>
-          </>
+            )}
+
+            {linksInfo.length === 0 && non_socialData.length === 0 && !loader && (
+              <div className='no-links'>
+                <div className='no-links-content'>
+                  <h3>No Links Added Yet</h3>
+                  <p>
+                    Add your first link to get started with your BioForge
+                    profile
+                  </p>
+                  <button
+                    className='add-link-button'
+                    onClick={() => {
+                      setOpen(true)
+                      setAction('add')
+                      setLinkDetail({
+                        _id: '',
+                        linkTitle: '',
+                        linkUrl: '',
+                        linkLogo: '',
+                        status: '',
+                        type: ''
+                      })
+                    }}
+                  >
+                    Add Your First Link
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
         )}
+      </div>
 
-        <UserInfo
-          userInfo={userInfo}
-          visible={openuserInfo}
-          onClose={() => setopenuserInfo(false)}
-        />
-        <Delete
-          open={deleteOpen}
-          onClose={() => setDeleteOpen(false)}
-          confirmDetail={() => confirmDelete(linkDetail)}
-          linkDetail={linkDetail}
-        />
-        <LinksAddEdit
-          NonDetail={NonDetail}
-          open={open}
-          onClose={() => setOpen(false)}
-          Detail={Detail}
-          linkDetail={linkDetail}
-          action={action}
-        />
-            {/* {non_socialData.length != 0 && <div className="links-container"><NodataFound /></div>} */}
-      </main>
-    </>
-  );
-};
+      <UserInfo
+        userInfo={userInfo}
+        visible={openuserInfo}
+        onClose={() => setopenuserInfo(false)}
+      />
 
-export default Index;
+      <Delete
+        open={deleteOpen}
+        onClose={() => setDeleteOpen(false)}
+        confirmDetail={() => confirmDelete(linkDetail)}
+        linkDetail={linkDetail}
+      />
+
+      <LinksAddEdit
+        NonDetail={NonDetail}
+        open={open}
+        onClose={() => setOpen(false)}
+        Detail={Detail}
+        linkDetail={linkDetail}
+        action={action}
+      />
+    </div>
+  )
+}
+
+export default Index

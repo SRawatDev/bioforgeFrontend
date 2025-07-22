@@ -10,12 +10,14 @@ import { FaEyeLowVision } from "react-icons/fa6";
 import { FaEye } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { IoMdArrowRoundBack } from "react-icons/io";
+import "./Login.css";
 interface RegisterInterface {
   email: string;
   password: string;
 }
-const Register: React.FC = () => {
-  const [passwordhide, setpasswordHide] = useState<boolean>(true);
+
+const Login: React.FC = () => {
+   const [passwordhide, setpasswordHide] = useState<boolean>(true);
   const [loader, setLoader] = useState<boolean>(false);
   const navigate = useNavigate();
   const [login, setLogin] = useState<RegisterInterface>({
@@ -63,18 +65,37 @@ const Register: React.FC = () => {
   return (
     <>
       {loader && <LoadScreen />}
-      <div className="container-parent">
-        <Link to={"/"}>
-          <IoMdArrowRoundBack className="backbutton" />
+      <div className="container-parent" style={{ 
+        background: 'linear-gradient(to bottom right, #3b82f6, #8b5cf6)',
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}>
+        <Link to={"/"} style={{ position: 'absolute', top: '20px', left: '20px', color: 'white' }}>
+          <IoMdArrowRoundBack className="backbutton" style={{ fontSize: '24px' }} />
         </Link>
-        <div className="container-register">
+        <div className="container-register" style={{
+          background: 'white',
+          borderRadius: '8px',
+          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+          padding: '40px',
+          width: '100%',
+          maxWidth: '400px'
+        }}>
           <div className="container-inner">
-            <div className="icon-box">
+            <div className="icon-box" style={{ textAlign: 'center', marginBottom: '20px' }}>
               <img src="/assets/logo.png" alt="Logo" height={50} />
             </div>
-            <h2>Sign In to Your Account</h2>
+            <h2 style={{ 
+              textAlign: 'center', 
+              marginBottom: '20px', 
+              color: '#1f2937',
+              fontSize: '24px',
+              fontWeight: 'bold'
+            }}>Sign In to Your Account</h2>
             <form onSubmit={handleSubmit}>
-              <div className="form-group">
+              <div className="form-group" style={{ marginBottom: '20px' }}>
                 <InputField
                   label="Email"
                   type="email"
@@ -82,9 +103,15 @@ const Register: React.FC = () => {
                   value={login.email}
                   onChange={handleChange}
                   required
+                  style={{
+                    width: '100%',
+                    padding: '10px',
+                    borderRadius: '4px',
+                    border: '1px solid #d1d5db'
+                  }}
                 />
               </div>
-              <div className="form-group position-relative">
+              <div className="form-group position-relative" style={{ marginBottom: '20px' }}>
                 <InputField
                   label="Password"
                   name="password"
@@ -92,6 +119,12 @@ const Register: React.FC = () => {
                   onChange={handleChange}
                   required
                   type={passwordhide ? "password" : "text"}
+                  style={{
+                    width: '100%',
+                    padding: '10px',
+                    borderRadius: '4px',
+                    border: '1px solid #d1d5db'
+                  }}
                 />
                 {passwordhide ? (
                   <FaEyeLowVision
@@ -119,31 +152,44 @@ const Register: React.FC = () => {
                   />
                 )}
               </div>
-              <button type="submit" className="button">
+              <button type="submit" className="button" style={{
+                width: '100%',
+                padding: '10px',
+                borderRadius: '4px',
+                background: 'linear-gradient(to right, #3b82f6, #8b5cf6)',
+                color: 'white',
+                border: 'none',
+                cursor: 'pointer',
+                fontWeight: 'bold',
+                transition: 'opacity 0.3s'
+              }}>
                 Sign In
               </button>
             </form>
             <br />
             <button
-              type="submit"
+              type="button"
               className="button"
               onClick={() => navigate("/register")}
+              style={{
+                width: '100%',
+                padding: '10px',
+                borderRadius: '4px',
+                background: '#f3f4f6',
+                color: '#4b5563',
+                border: 'none',
+                cursor: 'pointer',
+                fontWeight: 'bold',
+                transition: 'background 0.3s'
+              }}
             >
               Sign Up
             </button>
           </div>
-        </div>
-
-        <div className="container-image">
-          <img
-            src="/assets/original-a6dd915f7cf81ea73976dfc1bb4ecd50.webp"
-            className="blurimage"
-            alt="Side Visual"
-          />
         </div>
       </div>
     </>
   );
 };
 
-export default Register;
+export default Login;

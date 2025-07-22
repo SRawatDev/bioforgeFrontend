@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BioForge - Neon Layout</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body
+    class="m-0 p-0 bg-black font-sans min-h-screen flex flex-col justify-center items-center p-5"
+  >
+    <!-- Main Container -->
+    <div
+      class="w-full max-w-[400px] min-h-[700px] bg-gray-900 rounded-[30px] shadow-[0_0_50px_rgba(0,255,255,0.3)] flex flex-col py-[40px] px-[30px] relative overflow-hidden border border-cyan-500/30"
+    >
+      <!-- Neon Glow Effect -->
+      <div
+        class="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-purple-500/5 rounded-[30px]"
+      ></div>
+
+      <!-- Header Section -->
+      <div class="text-center mb-[40px] relative z-10">
+        <div class="relative inline-block mb-[25px]">
+          <div
+            class="w-[120px] h-[120px] rounded-full overflow-hidden mx-auto shadow-[0_0_30px_rgba(0,255,255,0.5)] border-2 border-cyan-400"
+          >
+             <img src="../../../../public/assets/108723120.png" alt="" class="w-full h-full object-cover">
+          </div>
+          <div
+            class="absolute inset-0 rounded-full border-2 border-cyan-400 animate-pulse"
+          ></div>
+        </div>
+
+        <h1
+          class="text-white text-[28px] font-bold m-0 mb-[10px] drop-shadow-[0_0_20px_rgba(0,255,255,0.8)]"
+        >
+        VANSH KUSWAHA
+        </h1>
+        <p
+          class="text-cyan-300 text-[16px] font-medium m-0 mb-3 drop-shadow-[0_0_10px_rgba(0,255,255,0.5)]"
+        >
+          Cyber Artist
+        </p>
+        <p
+          class="text-gray-300 text-[14px] m-0 leading-relaxed max-w-[280px] mx-auto"
+        >
+          Creating digital art in the metaverse. Welcome to my neon world.
+        </p>
+      </div>
+
+      <!-- Social Media Section -->
+      <div class="flex-grow flex flex-col justify-center relative z-10">
+        <div class="flex justify-center flex-wrap gap-6 mb-8">
+          <div
+            onclick="openSocial('instagram')"
+            class="w-20 h-20 bg-gradient-to-br from-[#E4405F] to-[#C13584] rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 hover:scale-110 hover:shadow-[0_0_25px_rgba(228,64,95,0.8)]"
+          >
+            <i class="fab fa-instagram text-white text-2xl"></i>
+          </div>
+
+          <div
+            onclick="openSocial('twitter')"
+            class="w-20 h-20 bg-[#1DA1F2] rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 hover:scale-110 hover:shadow-[0_0_25px_rgba(29,161,242,0.8)]"
+          >
+            <i class="fab fa-twitter text-white text-2xl"></i>
+          </div>
+
+          <div
+            onclick="openSocial('youtube')"
+            class="w-20 h-20 bg-[#FF0000] rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 hover:scale-110 hover:shadow-[0_0_25px_rgba(255,0,0,0.8)]"
+          >
+            <i class="fab fa-youtube text-white text-2xl"></i>
+          </div>
+
+          <div
+            onclick="openSocial('tiktok')"
+            class="w-20 h-20 bg-black rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 hover:scale-110 hover:shadow-[0_0_25px_rgba(255,255,255,0.5)]"
+          >
+            <i class="fab fa-tiktok text-white text-2xl"></i>
+          </div>
+
+          <div
+            onclick="openSocial('discord')"
+            class="w-20 h-20 bg-[#5865F2] rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 hover:scale-110 hover:shadow-[0_0_25px_rgba(88,101,242,0.8)]"
+          >
+            <i class="fab fa-discord text-white text-2xl"></i>
+          </div>
+
+          <div
+            onclick="openSocial('spotify')"
+            class="w-20 h-20 bg-[#1DB954] rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 hover:scale-110 hover:shadow-[0_0_25px_rgba(29,185,84,0.8)]"
+          >
+            <i class="fab fa-spotify text-white text-2xl"></i>
+          </div>
+        </div>
+
+        <p class="text-gray-500 text-[12px] font-light text-center">
+          Built with BioForge
+        </p>
+      </div>
+    </div>
+
+    <script>
+      function openSocial(platform) {
+        const urls = {
+          instagram: 'https://instagram.com/johndoe',
+          twitter: 'https://twitter.com/johndoe',
+          youtube: 'https://youtube.com/@johndoe',
+          tiktok: 'https://tiktok.com/@johndoe',
+          discord: 'https://discord.gg/johndoe',
+          spotify: 'https://open.spotify.com/user/johndoe'
+        }
+
+        if (urls[platform]) {
+          window.open(urls[platform], '_blank')
+        }
+      }
+    </script>
+  </body>
+</html>

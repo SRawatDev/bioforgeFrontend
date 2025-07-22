@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { API, callAPI, callAPIWithoutAuth } from '../../../utils/apicall.utils';
 import { apiUrls } from '../../../utils/api.utils';
-import { FaEdit } from "react-icons/fa";
+import { FaEdit, FaCamera } from "react-icons/fa";
 import { useNavigate, useParams } from 'react-router-dom';
 import ErrorMessage from '../../../helpers/ErrorMessage';
 import { defaultConfig } from '../../../config';
 import LoadScreen from '../../loaderScreen';
 import SuccessMessage from '../../../helpers/Success';
+import './updateProfile.css';
+
 const fontOptions = [
     'Times New Roman',
     'Georgia',
@@ -18,17 +20,20 @@ const fontOptions = [
     'Source Sans Pro',
     'cursive'
 ];
+
 const colorOptions = [
     'Classic Light',
     'aqua',
     'thistle',
     'Soft Charcoal',
 ];
+
 interface Theme {
     themeType: string;
     fontFamily: string;
     is_colorImage: string;
 }
+
 interface UserInfo {
     _id: string;
     username: string;
@@ -38,13 +43,15 @@ interface UserInfo {
     profile_img: string;
     theme: Theme;
 }
-const Index = () => {
-    const navidate = useNavigate()
+
+const UpdateProfile = () => {
+    const navigate = useNavigate();
     const { id } = useParams();
     const [loader, setLoader] = useState(false);
     const [previewProfile, setPreviewProfile] = useState<string | null>(null);
     const [previewBanner, setPreviewBanner] = useState<string | null>(null);
     const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
     ) => {
@@ -66,6 +73,7 @@ const Index = () => {
             };
         });
     };
+
     const getUserDetail = async () => {
         setLoader(true);
         try {
@@ -80,15 +88,17 @@ const Index = () => {
                 setPreviewBanner(user.banner_img || null);
             }
         } catch (err: any) {
-            setLoader(true);
+            setLoader(false);
             ErrorMessage(err.message || 'Something went wrong');
         }
     };
+
     useEffect(() => {
         if (id) {
             getUserDetail();
         }
     }, [id]);
+
     const UploadProfileImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
         try {
             setLoader(true);
@@ -108,10 +118,11 @@ const Index = () => {
                 ErrorMessage(apiResponse?.data?.message);
             }
         } catch (err) {
-            setLoader(true);
+            setLoader(false);
             ErrorMessage('Profile image upload failed');
         }
     };
+
     const UploadBannerImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
         try {
             setLoader(true);
@@ -131,126 +142,157 @@ const Index = () => {
                 ErrorMessage(apiResponse?.data?.message);
             }
         } catch (err) {
-            console.error('Error uploading banner image:', err);
+            setLoader(false);
             ErrorMessage('Banner image upload failed');
         }
     };
+
     const handleCancel = () => {
-        navidate(`/profile/${localStorage.getItem("_id")}`)
+        navigate(`/dashboard/index/${localStorage.getItem("_id")}`);
     };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setLoader(true)
+        setLoader(true);
         try {
             const response = await callAPI(apiUrls.updateProfile, {}, 'POST', userInfo || {});
-            setLoader(false)
+            setLoader(false);
             if (!response?.data?.status) {
-                ErrorMessage(response?.data?.message)
+                ErrorMessage(response?.data?.message);
             } else {
-                localStorage.setItem("profile_img", userInfo?.profile_img || "")
-                navidate(`/profile/${localStorage.getItem("_id")}`)
-
-                SuccessMessage(response?.data?.message)
+                localStorage.setItem("profile_img", userInfo?.profile_img || "");
+                navigate(`/dashboard/index/${localStorage.getItem("_id")}`);
+                SuccessMessage(response?.data?.message);
             }
         } catch (err: any) {
-            setLoader(true)
+            setLoader(false);
             ErrorMessage(err.message || "Something went wrong");
         }
     };
+
     return (
-        <>{loader && <LoadScreen />}
-            <div className="form-container">
-                <form className="form-box" onSubmit={handleSubmit}>
-                    <div className="cover-photo">
-                        {previewBanner && (
-                            <img
-                                id="coverImage"
-                                src={defaultConfig.imagePath + previewBanner}
-                                alt="Cover Photo"
-                            />
-                        )}
-                        <input
-                            id="bannerUploadInput"
-                            type="file"
-                            name="banner_img"
-                            accept="image/png,image/jpg,image/jpeg"
-                            onChange={UploadBannerImage}
-                            style={{ display: 'none' }}
-                        />
-                        <label htmlFor="bannerUploadInput" className="edit-icon-label">
-                            <FaEdit className="edit-icon" />
-                        </label>
-                    </div>
-                    <div className="profile-picture">
-                        <div className="profile-width">
-                            {previewProfile && (
-                                <img
-                                    id="profileImageedit"
-                                    src={defaultConfig.imagePath + previewProfile}
-                                    alt="Profile Photo"
-                                />
-                            )}
+        <>
+            {loader && <LoadScreen />}
+            <div className="update-profile-container">
+                <div className="update-profile-card">
+                    <h1 className="update-profile-title">Edit Your Profile</h1>
+                    
+                    <form className="update-profile-form" onSubmit={handleSubmit}>
+                        {/* Banner Image */}
+                        <div className="banner-upload-container">
+                            <div className="banner-preview" 
+                                style={{
+                                    backgroundImage: previewBanner 
+                                        ? `url(${defaultConfig.imagePath + previewBanner})` 
+                                        : 'none'
+                                }}
+                            >
+                                <div className="banner-overlay">
+                                    <label htmlFor="bannerUploadInput" className="banner-upload-label">
+                                        <FaCamera />
+                                        <span>Change Cover</span>
+                                    </label>
+                                </div>
+                            </div>
                             <input
-                                id="profileUploadInput"
+                                id="bannerUploadInput"
                                 type="file"
-                                name="profile_img"
+                                name="banner_img"
                                 accept="image/png,image/jpg,image/jpeg"
-                                onChange={UploadProfileImage}
-                                style={{ display: 'none' }}
+                                onChange={UploadBannerImage}
+                                className="hidden-input"
                             />
-                            <label htmlFor="profileUploadInput" className="edit-iconprofile-label">
-                                <FaEdit className="edit-iconprofile" />
-                            </label>
                         </div>
-                    </div>
-                    <label>Bio</label>
-                    <textarea
-                        name="bio"
-                        value={userInfo?.bio || ''}
-                        onChange={handleChange}
-                        placeholder="Enter your bio"
-                    />
-                    <label>Font Family</label>
-                    <select
-                        name="fontFamily"
-                        value={userInfo?.theme?.fontFamily || ''}
-                        onChange={handleChange}
-                    >
-                        <option value="">Select Font</option>
-                        {fontOptions.map((font) => (
-                            <option key={font} value={font}>
-                                {font}
-                            </option>
-                        ))}
-                    </select>
-
-                    <label>Color Theme</label>
-                    <select
-                        name="is_colorImage"
-                        value={userInfo?.theme?.is_colorImage || ''}
-                        onChange={handleChange}
-                    >
-                        <option value="">Select Theme</option>
-                        {colorOptions.map((option) => (
-                            <option key={option} value={option}>
-                                {option}
-                            </option>
-                        ))}
-                    </select>
-
-                    <div className="button-group">
-                        <button type="submit" className="submit-btn">
-                            Submit
-                        </button>
-                        <button type="button" className="cancel-btn" onClick={handleCancel}>
-                            Cancel
-                        </button>
-                    </div>
-                </form>
+                        
+                        {/* Profile Image */}
+                        <div className="profile-upload-container">
+                            <div className="profile-image-wrapper">
+                                <div className="profile-image-preview" 
+                                    style={{
+                                        backgroundImage: previewProfile 
+                                            ? `url(${defaultConfig.imagePath + previewProfile})` 
+                                            : 'none'
+                                    }}
+                                >
+                                    <div className="profile-overlay">
+                                        <label htmlFor="profileUploadInput" className="profile-upload-icon">
+                                            <FaCamera />
+                                        </label>
+                                    </div>
+                                </div>
+                                <input
+                                    id="profileUploadInput"
+                                    type="file"
+                                    name="profile_img"
+                                    accept="image/png,image/jpg,image/jpeg"
+                                    onChange={UploadProfileImage}
+                                    className="hidden-input"
+                                />
+                            </div>
+                        </div>
+                        
+                        {/* Form Fields */}
+                        <div className="form-fields">
+                            <div className="form-group">
+                                <label htmlFor="bio">Bio</label>
+                                <textarea
+                                    id="bio"
+                                    name="bio"
+                                    value={userInfo?.bio || ''}
+                                    onChange={handleChange}
+                                    placeholder="Tell the world about yourself"
+                                    rows={4}
+                                />
+                            </div>
+                            
+                            <div className="form-group">
+                                <label htmlFor="fontFamily">Font Style</label>
+                                <select
+                                    id="fontFamily"
+                                    name="fontFamily"
+                                    value={userInfo?.theme?.fontFamily || ''}
+                                    onChange={handleChange}
+                                >
+                                    <option value="">Select Font</option>
+                                    {fontOptions.map((font) => (
+                                        <option key={font} value={font} style={{ fontFamily: font }}>
+                                            {font}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                            
+                            <div className="form-group">
+                                <label htmlFor="colorTheme">Color Theme</label>
+                                <select
+                                    id="colorTheme"
+                                    name="is_colorImage"
+                                    value={userInfo?.theme?.is_colorImage || ''}
+                                    onChange={handleChange}
+                                >
+                                    <option value="">Select Theme</option>
+                                    {colorOptions.map((option) => (
+                                        <option key={option} value={option}>
+                                            {option}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                            
+                            <div className="form-actions">
+                                <button type="submit" className="save-button">
+                                    Save Changes
+                                </button>
+                                <button type="button" className="cancel-button" onClick={handleCancel}>
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
         </>
     );
 };
 
-export default Index;
+export default UpdateProfile;

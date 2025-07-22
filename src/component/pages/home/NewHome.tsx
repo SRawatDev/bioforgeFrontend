@@ -1,0 +1,445 @@
+import React, { useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Lenis from '@studio-freight/lenis';
+import Navbar from '../../navbar/Navbar';;
+import { 
+  FiArrowRight, 
+  FiStar, 
+  FiUsers, 
+  FiZap, 
+  FiSmartphone, 
+  FiTrendingUp,
+  FiCheck,
+  FiPlay
+} from 'react-icons/fi';
+import './NewHome.css';
+
+const NewHome: React.FC = () => {
+  const navigate = useNavigate();
+  const lenisRef = useRef<Lenis | null>(null);
+
+  useEffect(() => {
+    // Initialize Lenis for smooth scrolling
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      direction: 'vertical',
+      gestureDirection: 'vertical',
+      smooth: true,
+      mouseMultiplier: 1,
+      smoothTouch: false,
+      touchMultiplier: 2,
+      infinite: false,
+    });
+
+    lenisRef.current = lenis;
+
+    function raf(time: number) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+
+    requestAnimationFrame(raf);
+
+    return () => {
+      lenis.destroy();
+    };
+  }, []);
+
+// Replace the useEffect and scrollToSection function with this:
+const scrollToSection = (selector: string) => {
+  const element = document.querySelector(selector);
+  if (element) {
+    element.scrollIntoView({ 
+      behavior: 'smooth',
+      block: 'start'
+    });
+  }
+};
+
+
+
+  const features = [
+    {
+      icon: <FiZap />,
+      title: "Lightning Fast",
+      description: "Create your bio page in minutes with our intuitive drag-and-drop builder"
+    },
+    {
+      icon: <FiSmartphone />,
+      title: "Mobile First",
+      description: "All templates are optimized for mobile devices and look perfect on any screen"
+    },
+    {
+      icon: <FiTrendingUp />,
+      title: "Analytics Included",
+      description: "Track your visitors, clicks, and engagement with built-in analytics"
+    },
+    {
+      icon: <FiUsers />,
+      title: "Social Integration",
+      description: "Connect all your social media accounts and showcase them beautifully"
+    }
+  ];
+
+  const testimonials = [
+    {
+      name: "Sarah Johnson",
+      role: "Content Creator",
+      image: "/assets/testimonial1.jpg",
+      text: "BioForge transformed my online presence. The templates are stunning and so easy to customize!"
+    },
+    {
+      name: "Mike Chen",
+      role: "Entrepreneur",
+      image: "/assets/testimonial2.jpg",
+      text: "Perfect for showcasing my business links. The analytics feature helps me understand my audience better."
+    },
+    {
+      name: "Emma Davis",
+      role: "Artist",
+      image: "/assets/testimonial3.jpg",
+      text: "As an artist, I needed something beautiful and unique. BioForge delivered exactly what I was looking for."
+    }
+  ];
+
+  const pricingPlans = [
+    {
+      name: "Free",
+      price: "$0",
+      period: "forever",
+      features: [
+        "1 Bio Page",
+        "5 Links",
+        "Basic Templates",
+        "Mobile Responsive"
+      ],
+      popular: false
+    },
+    {
+      name: "Pro",
+      price: "$9",
+      period: "per month",
+      features: [
+        "Unlimited Bio Pages",
+        "Unlimited Links",
+        "Premium Templates",
+        "Advanced Analytics",
+        "Custom Domain",
+        "Priority Support"
+      ],
+      popular: true
+    },
+    {
+      name: "Enterprise",
+      price: "$29",
+      period: "per month",
+      features: [
+        "Everything in Pro",
+        "Team Collaboration",
+        "White Label",
+        "API Access",
+        "Custom Integrations",
+        "Dedicated Support"
+      ],
+      popular: false
+    }
+  ];
+
+  return (
+    <>
+            <Navbar />
+
+      <div className="new-home">
+        {/* Hero Section */}
+        <section className="hero-section">
+          <div className="hero-background">
+            <div className="gradient-orb orb-1"></div>
+            <div className="gradient-orb orb-2"></div>
+            <div className="gradient-orb orb-3"></div>
+          </div>
+          
+          <div className="container">
+            <div className="hero-content">
+              <div className="hero-badge">
+                <FiStar className="badge-icon" />
+                <span>Trusted by 10,000+ creators</span>
+              </div>
+              
+              <h1 className="hero-title">
+                Create Your Perfect
+                <span className="gradient-text"> Digital Identity</span>
+              </h1>
+              
+              <p className="hero-subtitle">
+                Build stunning bio pages that showcase your personality, connect your audience 
+                to your content, and grow your online presence. No coding required.
+              </p>
+              
+              <div className="hero-actions">
+                <button 
+                  className="btn btn-primary btn-large"
+                  onClick={() => navigate('/register')}
+                >
+                  Get Started Free
+                  <FiArrowRight className="btn-icon" />
+                </button>
+                
+                <button 
+                  className="btn btn-secondary btn-large"
+                  onClick={() => navigate('/landingPage')}
+                >
+                  <FiPlay className="btn-icon" />
+                  View Templates
+                </button>
+              </div>
+              
+              <div className="hero-stats">
+                <div className="stat-item">
+                  <span className="stat-number">10K+</span>
+                  <span className="stat-label">Active Users</span>
+                </div>
+                <div className="stat-item">
+                  <span className="stat-number">50+</span>
+                  <span className="stat-label">Templates</span>
+                </div>
+                <div className="stat-item">
+                  <span className="stat-number">99.9%</span>
+                  <span className="stat-label">Uptime</span>
+                </div>
+              </div>
+            </div>
+            
+            <div className="hero-visual">
+              <div className="phone-mockup">
+                <div className="phone-screen">
+                  <div className="mockup-content">
+                    <div className="mockup-avatar"></div>
+                    <div className="mockup-name"></div>
+                    <div className="mockup-bio"></div>
+                    <div className="mockup-links">
+                      <div className="mockup-link"></div>
+                      <div className="mockup-link"></div>
+                      <div className="mockup-link"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div className="scroll-indicator" onClick={() => scrollToSection('.features-section')}>
+            <div className="scroll-arrow"></div>
+          </div>
+        </section>
+
+        {/* Features Section */}
+        <section className="features-section">
+          <div className="container">
+            <div className="section-header">
+              <h2 className="section-title">Why Choose BioForge?</h2>
+              <p className="section-subtitle">
+                Everything you need to create a professional online presence
+              </p>
+            </div>
+            
+            <div className="features-grid">
+              {features.map((feature, index) => (
+                <div key={index} className="feature-card">
+                  <div className="feature-icon">
+                    {feature.icon}
+                  </div>
+                  <h3 className="feature-title">{feature.title}</h3>
+                  <p className="feature-description">{feature.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* How It Works Section */}
+        <section className="how-it-works-section">
+          <div className="container">
+            <div className="section-header">
+              <h2 className="section-title">How It Works</h2>
+              <p className="section-subtitle">
+                Get your bio page live in just 3 simple steps
+              </p>
+            </div>
+            
+            <div className="steps-container">
+              <div className="step-item">
+                <div className="step-number">1</div>
+                <div className="step-content">
+                  <h3>Choose a Template</h3>
+                  <p>Select from our collection of beautiful, professionally designed templates</p>
+                </div>
+              </div>
+              
+              <div className="step-item">
+                <div className="step-number">2</div>
+                <div className="step-content">
+                  <h3>Customize Your Page</h3>
+                  <p>Add your content, links, and personal branding with our easy-to-use editor</p>
+                </div>
+              </div>
+              
+              <div className="step-item">
+                <div className="step-number">3</div>
+                <div className="step-content">
+                  <h3>Share Your Link</h3>
+                  <p>Publish your bio page and share your unique link across all platforms</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Testimonials Section */}
+        <section className="testimonials-section">
+          <div className="container">
+            <div className="section-header">
+              <h2 className="section-title">What Our Users Say</h2>
+              <p className="section-subtitle">
+                Join thousands of creators who trust BioForge
+              </p>
+            </div>
+            
+            <div className="testimonials-grid">
+              {testimonials.map((testimonial, index) => (
+                <div key={index} className="testimonial-card">
+                  <div className="testimonial-content">
+                    <div className="stars">
+                      {[...Array(5)].map((_, i) => (
+                        <FiStar key={i} className="star-filled" />
+                      ))}
+                    </div>
+                    <p className="testimonial-text">"{testimonial.text}"</p>
+                  </div>
+                  <div className="testimonial-author">
+                    <div className="author-avatar">
+                      <img src={testimonial.image} alt={testimonial.name} />
+                    </div>
+                    <div className="author-info">
+                      <h4 className="author-name">{testimonial.name}</h4>
+                      <p className="author-role">{testimonial.role}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Pricing Section */}
+        <section className="pricing-section">
+          <div className="container">
+            <div className="section-header">
+              <h2 className="section-title">Simple, Transparent Pricing</h2>
+              <p className="section-subtitle">
+                Choose the plan that's right for you
+              </p>
+            </div>
+            
+            <div className="pricing-grid">
+              {pricingPlans.map((plan, index) => (
+                <div key={index} className={`pricing-card ${plan.popular ? 'popular' : ''}`}>
+                  {plan.popular && <div className="popular-badge">Most Popular</div>}
+                  
+                  <div className="pricing-header">
+                    <h3 className="plan-name">{plan.name}</h3>
+                    <div className="plan-price">
+                      <span className="price">{plan.price}</span>
+                      <span className="period">/{plan.period}</span>
+                    </div>
+                  </div>
+                  
+                  <ul className="plan-features">
+                    {plan.features.map((feature, featureIndex) => (
+                      <li key={featureIndex} className="feature-item">
+                        <FiCheck className="check-icon" />
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  
+                  <button className={`btn ${plan.popular ? 'btn-primary' : 'btn-outline'} btn-full`}>
+                    Get Started
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* CTA Section */}
+        <section className="cta-section">
+          <div className="container">
+            <div className="cta-content">
+              <h2 className="cta-title">Ready to Build Your Digital Identity?</h2>
+              <p className="cta-subtitle">
+                Join thousands of creators who are already using BioForge to grow their online presence
+              </p>
+              <div className="cta-actions">
+                <button 
+                  className="btn btn-primary btn-large"
+                  onClick={() => navigate('/register')}
+                >
+                  Start Building Now
+                  <FiArrowRight className="btn-icon" />
+                </button>
+                <button 
+                  className="btn btn-secondary btn-large"
+                  onClick={() => navigate('/landingPage')}
+                >
+                  Explore Templates
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Footer */}
+        <footer className="footer">
+          <div className="container">
+            <div className="footer-content">
+              <div className="footer-brand">
+                <h3>BioForge</h3>
+                <p>Create your perfect digital identity</p>
+              </div>
+              
+              <div className="footer-links">
+                <div className="footer-column">
+                  <h4>Product</h4>
+                  <a href="/landingPage">Templates</a>
+                  <a href="/features">Features</a>
+                  <a href="/pricing">Pricing</a>
+                </div>
+                
+                <div className="footer-column">
+                  <h4>Company</h4>
+                  <a href="/about">About</a>
+                  <a href="/contact">Contact</a>
+                  <a href="/blog">Blog</a>
+                </div>
+                
+                <div className="footer-column">
+                  <h4>Support</h4>
+                  <a href="/help">Help Center</a>
+                  <a href="/privacy">Privacy</a>
+                  <a href="/terms">Terms</a>
+                </div>
+              </div>
+            </div>
+            
+            <div className="footer-bottom">
+              <p>&copy; 2025 BioForge. All rights reserved.</p>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </>
+  );
+};
+
+export default NewHome;

@@ -172,7 +172,7 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
             <textarea
               id="editBio"
               style={{ fontFamily: `${userInfo?.theme?.fontFamily}` }}
-              placeholder="Hakkınızda bir şeyler yazın..."
+              placeholder="Hakkınızda bir şeyler yazın.."
               rows={3}
               defaultValue={""}
             />
@@ -226,14 +226,17 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
                     onClick={() => handleClickSubmit(link._id)}
                   >
                     {matchedPlatform && (
-                      <span
+                        <span
                         className="social-icon"
                         style={{
-                          fontFamily: `${userInfo?.theme?.fontFamily}`,
+                          fontFamily: `${userInfo?.theme?.fontFamily}`, 
+                          backgroundColor: userInfo?.theme?.is_colorImage, 
+                          color: `${userInfo?.theme?.fontColor ? userInfo?.theme?.fontColor : "white"}`,
+                          gap: 0
                         }}
-                      >
+                        >
                         {matchedPlatform.icon}
-                      </span>
+                        </span>
                     )}
                   </Link>
                 </>

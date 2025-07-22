@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hydra Juice - Premium Experience</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'float-reverse': 'float 8s ease-in-out infinite reverse',
+                        'float-slow': 'float 7s ease-in-out infinite',
+                        'background-shift': 'backgroundShift 10s ease-in-out infinite',
+                        'slide-down': 'slideDown 1s ease-out',
+                        'logo-float': 'logoFloat 3s ease-in-out infinite',
+                        'pulse-custom': 'pulse 2s ease-in-out infinite',
+                        'slide-in-left': 'slideInLeft 0.8s ease-out both',
+                        'slide-in-right': 'slideInRight 0.8s ease-out both',
+                        'fade-in-up': 'fadeInUp 1s ease-out both',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="m-0 p-0 box-border bg-gradient-to-br from-[#1a1a2e] via-[#16213e] to-[#0f3460] font-inter min-h-screen flex flex-col justify-center items-center p-5 overflow-x-hidden">
+    
+    <!-- Floating Background Elements -->
+    <div class="fixed top-[10%] left-[10%] w-[100px] h-[100px] bg-gradient-to-br from-[#ff6b6b] to-[#4ecdc4] rounded-full opacity-10 animate-float z-0"></div>
+    <div class="fixed top-[60%] right-[15%] w-[80px] h-[80px] bg-gradient-to-br from-[#feca57] to-[#ff9ff3] rounded-full opacity-10 animate-float-reverse z-0"></div>
+    <div class="fixed bottom-[20%] left-[20%] w-[60px] h-[60px] bg-gradient-to-br from-[#48dbfb] to-[#0abde3] rounded-full opacity-10 animate-float-slow z-0"></div>
+
+    <!-- Main Container -->
+    <div class="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-[20px] border border-white/20 w-full max-w-[420px] min-h-[750px] rounded-[40px] shadow-[0_25px_50px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.2)] flex flex-col py-[50px] px-[30px] relative z-10 overflow-hidden">
+        
+        <!-- Animated Background Pattern -->
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,107,107,0.1)_0%,transparent_50%),radial-gradient(circle_at_80%_80%,rgba(78,205,196,0.1)_0%,transparent_50%),radial-gradient(circle_at_40%_60%,rgba(254,202,87,0.1)_0%,transparent_50%)] animate-background-shift -z-10"></div>
+
+        <!-- Header Section -->
+        <div class="text-center mb-[50px] animate-slide-down">
+            <!-- Logo Container -->
+            <div class="relative inline-block mb-[30px]">
+                <div class="w-[140px] h-[140px] bg-gradient-to-br from-[#667eea] via-[#764ba2] to-[#f093fb] rounded-[35px] flex items-center justify-center mx-auto shadow-[0_20px_40px_rgba(102,126,234,0.3),inset_0_2px_0_rgba(255,255,255,0.3)] relative -rotate-[5deg] animate-logo-float">
+                    <div class="text-[36px] font-black text-white drop-shadow-[2px_2px_8px_rgba(0,0,0,0.3)] rotate-[5deg]">H</div>
+                </div>
+                <!-- Glow Effect -->
+                <div class="absolute -top-[10px] -left-[10px] -right-[10px] -bottom-[10px] bg-gradient-to-br from-[#667eea] to-[#764ba2] rounded-[45px] opacity-30 blur-[20px] -z-10 animate-pulse-custom"></div>
+            </div>
+
+            <h1 class="text-white text-[42px] font-extrabold m-0 mb-[15px] bg-gradient-to-br from-[#667eea] via-[#764ba2] to-[#f093fb] bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(102,126,234,0.5)] tracking-[-1px]">HYDRA</h1>
+            
+            <p class="text-white/80 text-[18px] font-light m-0 tracking-[2px] uppercase">Premium Juice Bar</p>
+        </div>
+
+        <!-- Navigation Grid -->
+        <div class="grid grid-cols-2 gap-5 mb-10 flex-grow">
+            <!-- Drinks Card -->
+            <div onclick="handleNavigation('drinks')" class="bg-gradient-to-br from-[rgba(255,107,107,0.2)] to-[rgba(255,142,83,0.1)] backdrop-blur-[10px] border border-[rgba(255,107,107,0.3)] rounded-[25px] py-[30px] px-5 text-center cursor-pointer transition-all duration-[400ms] ease-[cubic-bezier(0.175,0.885,0.32,1.275)] relative overflow-hidden animate-slide-in-left hover:-translate-y-[10px] hover:scale-105 hover:shadow-[0_20px_40px_rgba(255,107,107,0.4)]" style="animation-delay: 0.2s;">
+                <div class="text-[48px] mb-[15px] drop-shadow-[0_4px_8px_rgba(0,0,0,0.2)]">🍹</div>
+                <h3 class="text-white text-[18px] font-semibold m-0 mb-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]">Drinks</h3>
+                <p class="text-white/70 text-xs m-0 font-light">Fresh Juices</p>
+            </div>
+
+            <!-- Location Card -->
+            <div onclick="handleNavigation('location')" class="bg-gradient-to-br from-[rgba(78,205,196,0.2)] to-[rgba(199,244,100,0.1)] backdrop-blur-[10px] border border-[rgba(78,205,196,0.3)] rounded-[25px] py-[30px] px-5 text-center cursor-pointer transition-all duration-[400ms] ease-[cubic-bezier(0.175,0.885,0.32,1.275)] relative overflow-hidden animate-slide-in-right hover:-translate-y-[10px] hover:scale-105 hover:shadow-[0_20px_40px_rgba(78,205,196,0.4)]" style="animation-delay: 0.4s;">
+                <div class="text-[48px] mb-[15px] drop-shadow-[0_4px_8px_rgba(0,0,0,0.2)]">📍</div>
+                <h3 class="text-white text-[18px] font-semibold m-0 mb-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]">Locations</h3>
+                <p class="text-white/70 text-xs m-0 font-light">Find Us</p>
+            </div>
+
+            <!-- Wellness Card -->
+            <div onclick="handleNavigation('wellbeing')" class="bg-gradient-to-br from-[rgba(254,202,87,0.2)] to-[rgba(255,159,243,0.1)] backdrop-blur-[10px] border border-[rgba(254,202,87,0.3)] rounded-[25px] py-[30px] px-5 text-center cursor-pointer transition-all duration-[400ms] ease-[cubic-bezier(0.175,0.885,0.32,1.275)] relative overflow-hidden animate-slide-in-left hover:-translate-y-[10px] hover:scale-105 hover:shadow-[0_20px_40px_rgba(254,202,87,0.4)]" style="animation-delay: 0.6s;">
+                <div class="text-[48px] mb-[15px] drop-shadow-[0_4px_8px_rgba(0,0,0,0.2)]">🌿</div>
+                <h3 class="text-white text-[18px] font-semibold m-0 mb-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]">Wellness</h3>
+                <p class="text-white/70 text-xs m-0 font-light">Health Tips</p>
+            </div>
+
+            <!-- Podcast Card -->
+            <div onclick="handleNavigation('podcast')" class="bg-gradient-to-br from-[rgba(72,219,251,0.2)] to-[rgba(10,189,227,0.1)] backdrop-blur-[10px] border border-[rgba(72,219,251,0.3)] rounded-[25px] py-[30px] px-5 text-center cursor-pointer transition-all duration-[400ms] ease-[cubic-bezier(0.175,0.885,0.32,1.275)] relative overflow-hidden animate-slide-in-right hover:-translate-y-[10px] hover:scale-105 hover:shadow-[0_20px_40px_rgba(72,219,251,0.4)]" style="animation-delay: 0.8s;">
+                <div class="text-[48px] mb-[15px] drop-shadow-[0_4px_8px_rgba(0,0,0,0.2)]">🎧</div>
+                <h3 class="text-white text-[18px] font-semibold m-0 mb-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]">Podcast</h3>
+                <p class="text-white/70 text-xs m-0 font-light">Latest Episodes</p>
+            </div>
+        </div>
+
+        <!-- Social Media Section -->
+        <div class="text-center animate-fade-in-up" style="animation-delay: 1s;">
+            <div class="flex justify-center gap-[25px] mb-[30px] flex-wrap">
+                <div onclick="openSocial('instagram')" class="w-[55px] h-[55px] bg-gradient-to-br from-[#667eea] to-[#764ba2] rounded-[18px] flex items-center justify-center cursor-pointer transition-all duration-300 ease-[cubic-bezier(0.175,0.885,0.32,1.275)] shadow-[0_8px_25px_rgba(102,126,234,0.3)] border border-white/20 hover:-translate-y-[5px] hover:scale-110 hover:rotate-[5deg] hover:shadow-[0_15px_35px_rgba(102,126,234,0.5)]">
+                    <span class="text-white text-2xl"></span>
+                </div>
+
+                <div onclick="openSocial('tiktok')" class="w-[55px] h-[55px] bg-gradient-to-br from-[#ff6b6b] to-[#4ecdc4] rounded-[18px] flex items-center justify-center cursor-pointer transition-all duration-300 ease-[cubic-bezier(0.175,0.885,0.32,1.275)] shadow-[0_8px_25px_rgba(255,107,107,0.3)] border border-white/20 hover:-translate-y-[5px] hover:scale-110 hover:-rotate-[5deg] hover:shadow-[0_15px_35px_rgba(255,107,107,0.5)]">
+                    <span class="text-white text-2xl"></span>
+                </div>
+
+                <div onclick="openSocial('youtube')" class="w-[55px] h-[55px] bg-gradient-to-br from-[#feca57] to-[#ff9ff3] rounded-[18px] flex items-center justify-center cursor-pointer transition-all duration-300 ease-[cubic-bezier(0.175,0.885,0.32,1.275)] shadow-[0_8px_25px_rgba(254,202,87,0.3)] border border-white/20 hover:-translate-y-[5px] hover:scale-110 hover:rotate-[5deg] hover:shadow-[0_15px_35px_rgba(254,202,87,0.5)]">
+                    <span class="text-white text-2xl"></span>
+                </div>
+
+                <div onclick="openSocial('spotify')" class="w-[55px] h-[55px] bg-gradient-to-br from-[#48dbfb] to-[#0abde3] rounded-[18px] flex items-center justify-center cursor-pointer transition-all duration-300 ease-[cubic-bezier(0.175,0.885,0.32,1.275)] shadow-[0_8px_25px_rgba(72,219,251,0.3)] border border-white/20 hover:-translate-y-[5px] hover:scale-110 hover:-rotate-[5deg] hover:shadow-[0_15px_35px_rgba(72,219,251,0.5)]">
+                    <span class="text-white text-2xl"></span>
+                </div>
+            </div>
+
+            <div class="h-px bg-gradient-to-r from-transparent via-white/30 to-transparent my-[25px]"></div>
+
+            <p class="text-white/60 text-[13px] font-light m-0 mb-2 tracking-[1px]">© 2024 HYDRA JUICE</p>
+            <p class="text-white/40 text-[11px] font-light m-0 tracking-[0.5px]">Premium Experience • Fresh Daily</p>
+        </div>
+    </div>
+</body>
+</html>

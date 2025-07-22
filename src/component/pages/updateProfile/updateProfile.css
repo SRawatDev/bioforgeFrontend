@@ -1,0 +1,363 @@
+/* Update Profile Styles */
+.update-profile-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+  background: linear-gradient(
+    135deg,
+    #667eea 0%,
+    #764ba2 25%,
+    #f093fb 50%,
+    #f5576c 75%,
+    #4facfe 100%
+  );
+  background-size: 400% 400%;
+  animation: gradientAnimation 15s ease infinite;
+}
+
+.update-profile-card {
+  width: 100%;
+  max-width: 800px;
+  background-color: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.update-profile-title {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
+  color: #333;
+  margin: 30px 0;
+}
+
+.update-profile-form {
+  position: relative;
+}
+
+/* Banner Image */
+.banner-upload-container {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+}
+
+.banner-preview {
+  width: 100%;
+  height: 100%;
+  background-color: #e0e0e0;
+  background-size: cover;
+  background-position: center;
+}
+
+.banner-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.3s;
+}
+
+.banner-upload-container:hover .banner-overlay {
+  opacity: 1;
+}
+
+.banner-upload-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+  cursor: pointer;
+  padding: 10px 20px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 8px;
+}
+
+.banner-upload-label svg {
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+
+/* Profile Image */
+.profile-upload-container {
+  display: flex;
+  justify-content: center;
+  margin-top: -60px;
+  position: relative;
+  z-index: 10;
+}
+
+.profile-image-wrapper {
+  position: relative;
+}
+
+.profile-image-preview {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background-color: #e0e0e0;
+  border: 4px solid white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  background-size: cover;
+  background-position: center;
+}
+
+.profile-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.profile-image-wrapper:hover .profile-overlay {
+  opacity: 1;
+}
+
+.profile-upload-icon {
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.hidden-input {
+  display: none;
+}
+
+/* Form Fields */
+.form-fields {
+  padding: 30px;
+}
+
+.form-group {
+  margin-bottom: 24px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: border-color 0.3s;
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.form-group textarea:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 40px;
+}
+
+.save-button,
+.cancel-button {
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  border: none;
+}
+
+.save-button {
+  background-color: #3b82f6;
+  color: white;
+  flex: 1;
+  margin-right: 10px;
+}
+
+.save-button:hover {
+  background-color: #2563eb;
+}
+
+.cancel-button {
+  background-color: #f3f4f6;
+  color: #4b5563;
+  flex: 1;
+  margin-left: 10px;
+}
+
+.cancel-button:hover {
+  background-color: #e5e7eb;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .update-profile-container {
+    padding: 0;
+  }
+  
+  .update-profile-card {
+    border-radius: 0;
+    box-shadow: none;
+  }
+  
+  .banner-upload-container {
+    height: 150px;
+  }
+  
+  .profile-image-preview {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .form-actions {
+    flex-direction: column;
+  }
+  
+  .save-button,
+  .cancel-button {
+    margin: 5px 0;
+    width: 100%;
+  }
+  
+  .save-button {
+    margin-right: 0;
+  }
+  
+  .cancel-button {
+    margin-left: 0;
+  }
+}
+
+/* Font Preview in Select */
+select option {
+  font-size: 14px;
+}
+
+/* Color Theme Preview */
+select[name="is_colorImage"] option[value="Classic Light"] {
+  background-color: #ffffff;
+  color: #333333;
+}
+
+select[name="is_colorImage"] option[value="aqua"] {
+  background-color: #00ffff;
+  color: #333333;
+}
+
+select[name="is_colorImage"] option[value="thistle"] {
+  background-color: #d8bfd8;
+  color: #333333;
+}
+
+select[name="is_colorImage"] option[value="Soft Charcoal"] {
+  background-color: #333333;
+  color: #ffffff;
+}
+
+/* Animation for hover effects */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.save-button:active {
+  transform: scale(0.98);
+}
+
+/* Additional styling for better UX */
+.form-group textarea::placeholder {
+  color: #9ca3af;
+}
+
+.update-profile-form {
+  position: relative;
+}
+
+/* Loading state styling */
+.form-fields.loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* Success message styling */
+.success-message {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #10b981;
+  color: white;
+  padding: 15px 25px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  animation: slideIn 0.3s ease-out forwards;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Error message styling */
+.error-message {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #ef4444;
+  color: white;
+  padding: 15px 25px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  animation: slideIn 0.3s ease-out forwards;
+}

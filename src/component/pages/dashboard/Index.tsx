@@ -4,11 +4,13 @@ import DashboardSidebar from "./DashboardSidebar";
 import Main from "./Main";
 import { MobileUi } from "./MobileUi";
 import ManageLinks from "../links/Index";
+import UpadteProfile from "../updateProfile/Index"
 import { callAPIWithoutAuth } from "../../../utils/apicall.utils";
 import { apiUrls } from "../../../utils/api.utils";
 import { useEffect, useState } from "react";
 import ErrorMessage from "../../../helpers/ErrorMessage";
 import ProfileShimmer from "../../ProfileShimmer";
+import { FaShareAlt } from "react-icons/fa"; // Import share icon
 
 interface Theme {
   fontFamily: string;
@@ -40,6 +42,7 @@ const Index = () => {
   const { layout, id } = useParams();
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [loader, setLoader] = useState<boolean>(false);
+  const [isMobileView, setIsMobileView] = useState<boolean>(false);
   const navigate = useNavigate();
 
   const getUserDetail = async () => {
@@ -65,32 +68,81 @@ const Index = () => {
     }
   };
 
+  // Function to open profile in new tab
+  const openProfileInNewTab = () => {
+    if (userInfo && userInfo._id) {
+      window.open(`/dashboard/profile/${userInfo._id}`, '_blank');
+    }
+  };
+
   useEffect(() => {
     getUserDetail();
+    
+    // Check if screen is mobile size
+    const checkMobileView = () => {
+      setIsMobileView(window.innerWidth < 992);
+    };
+    
+    // Initial check
+    checkMobileView();
+    
+    // Add resize listener
+    window.addEventListener('resize', checkMobileView);
+    
+    // Cleanup
+    return () => window.removeEventListener('resize', checkMobileView);
   }, [id]);
 
   return (
-    <div className="d-flex">
-      <DashboardSidebar />
-      {layout === "profile" ? (
-        <Main getUserDetails={getUserDetail} />
-      ) : (
-        <ManageLinks getUserDetail={getUserDetail} />
-      )}
-
-      {loader ? (
-        <section
-          id="phone-preview-container"
-          aria-label="Mobile preview of Linktree"
-        >
-          <div className="profile-container">
-            <ProfileShimmer />
+    <>
+    {/* <DashboardSidebar /> */}
+    <div className="dashboard-layout">
+      <div className="dashboard-sidebar">
+        <DashboardSidebar />
+      </div>
+      
+      <div className="dashboard-main-area">
+        <div className="dashboard-main-content">
+          {layout === "profile" ? (
+            <Main getUserDetails={getUserDetail} />
+          ) : (
+            <ManageLinks getUserDetail={getUserDetail} />
+          )}
+        </div>
+      </div>
+      
+      <div className={`dashboard-preview ${isMobileView ? 'mobile-mode' : ''}`}>
+        <div className="preview-header">
+          <h3>Mobile Preview</h3>
+          <div className="preview-actions">
+            <p>See how your profile looks on mobile devices</p>
+            {/* Share button */}
+            <button 
+              className="share-profile-button" 
+              onClick={openProfileInNewTab}
+              title="Open profile in new tab"
+            >
+              <FaShareAlt /> share
+            </button>
           </div>
-        </section>
-      ) : (
-        <MobileUi userInfo={userInfo} />
-      )}
+        </div>
+        
+        <div className="preview-device">
+          <div className="device-frame">
+            <div className="device-status-bar"></div>
+            <div className="device-content">
+              {loader ? (
+                <ProfileShimmer />
+              ) : (
+                <MobileUi userInfo={userInfo} />
+              )}
+            </div>
+            <div className="device-home-button"></div>
+          </div>
+        </div>
+      </div>
     </div>
+    </>
   );
 };
 

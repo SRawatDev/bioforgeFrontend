@@ -43,7 +43,7 @@ const routes: AppRoute[] = [
     path: '/navbar',
     element: lazy(() => import('./component/navbar/Navbar'))
   },
- 
+
   {
     path: '/card',
     element: lazy(() => import('./component/pages/template/Card'))
@@ -80,8 +80,8 @@ const routes: AppRoute[] = [
   },
   {
     guard: Authenticated,
-    path: '/changepassword',
-    element: lazy(() => import('./component/pages/password/Index'))
+    path: '/dashboard/changepassword/:id',
+    element: lazy(() => import('./component/pages/dashboard/password/Index'))
   },
   {
     guard: Authenticated,
@@ -122,16 +122,16 @@ const routes: AppRoute[] = [
   }
 ]
 
-export function RenderRout() {
+export function RenderRout () {
   return (
     <Router>
       <Suspense fallback={<LoadScreen />}>
         <Routes>
           {routes.map((route, i) => {
-            const Guard = route.guard || Fragment;
-            const Auth = route.auth || Fragment;
-            const Layout = route.layout || Fragment;
-            const Component = route.element;
+            const Guard = route.guard || Fragment
+            const Auth = route.auth || Fragment
+            const Layout = route.layout || Fragment
+            const Component = route.element
 
             return (
               <Route
@@ -147,10 +147,10 @@ export function RenderRout() {
                   </Guard>
                 }
               />
-            );
+            )
           })}
         </Routes>
       </Suspense>
     </Router>
-  );
+  )
 }

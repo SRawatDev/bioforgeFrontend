@@ -77,25 +77,18 @@ const Index = () => {
 
   useEffect(() => {
     getUserDetail();
-    
-    // Check if screen is mobile size
     const checkMobileView = () => {
       setIsMobileView(window.innerWidth < 992);
-    };
-    
-    // Initial check
+    }; 
     checkMobileView();
-    
-    // Add resize listener
     window.addEventListener('resize', checkMobileView);
-    
-    // Cleanup
     return () => window.removeEventListener('resize', checkMobileView);
   }, [id]);
+  console.log("======================",layout)
 
   return (
     <>
-    {/* <DashboardSidebar /> */}
+
     <div className="dashboard-layout">
       <div className="dashboard-sidebar">
         <DashboardSidebar />
@@ -103,7 +96,7 @@ const Index = () => {
       
       <div className="dashboard-main-area">
         <div className="dashboard-main-content">
-          {layout === "profile" ? (
+          {layout === "updateProfile" ? (
             <Main getUserDetails={getUserDetail} />
           ) : (
             <ManageLinks getUserDetail={getUserDetail} />
@@ -116,7 +109,7 @@ const Index = () => {
           <h3>Mobile Preview</h3>
           <div className="preview-actions">
             <p>See how your profile looks on mobile devices</p>
-            {/* Share button */}
+
             <button 
               className="share-profile-button" 
               onClick={openProfileInNewTab}

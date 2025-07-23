@@ -337,10 +337,10 @@ html.lenis {
 }
 
 @media (max-width: 576px) {
-  .dashboard-main-content {
-    padding: 10px;
-  }
-  
+    .dashboard-main-content {
+        padding: 10px;
+        margin-left: 10px;
+    }
   .device-frame {
     width: 220px;
     height: 460px;

@@ -61,9 +61,9 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose }) => {
       category: "main"
     },
     {
-      path: "/analytics",
-      label: "Analytics",
-      icon: <IoStatsChartOutline />,
+      path: "/",
+      label: "Home",
+      icon: <IoHomeOutline />,
       category: "main"
     },
     {

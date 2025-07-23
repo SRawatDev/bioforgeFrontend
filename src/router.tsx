@@ -51,10 +51,7 @@ const routes: AppRoute[] = [
     path: '/navbar',
     element: lazy(() => import('./component/navbar/Navbar'))
   },
-  {
-    path: '/templates',
-    element: lazy(() => import('./component/pages/template/TemplatesLanding'))
-  },
+ 
   {
     path: '/card',
     element: lazy(() => import('./component/pages/template/Card'))
@@ -72,10 +69,7 @@ const routes: AppRoute[] = [
   //   element: lazy(() => import('./component/navbar/Navbar'))
   // },
 
-  {
-    path: '/templates/:templateId/preview',
-    element: lazy(() => import('./component/pages/template/TemplatePreview'))
-  },
+
 
   // Public profile view (no authentication required)
   {
@@ -84,12 +78,7 @@ const routes: AppRoute[] = [
   },
 
   // Protected routes (only accessible when logged in)
-  {
-    guard: Authenticated,
-    // layout: Header,
-    path: '/templates/:templateId/customize',
-    element: lazy(() => import('./component/pages/template/TemplateCustomizer'))
-  },
+ 
   {
     guard: Authenticated,
     // layout: Header,

@@ -20,7 +20,7 @@ import { BsThreeDotsVertical } from 'react-icons/bs'
 import { socialPlatforms } from './linksAddEdit'
 import LinkShimmer from '../../LinkShimmer'
 import UserInfo from './UserInfo'
-import './Link.css'
+// import './Link.css'
 
 interface LinkItem {
   _id: string

@@ -16,7 +16,7 @@ import {
   IoNotificationsOutline
 } from "react-icons/io5";
 import { FaUser, FaCrown } from "react-icons/fa";
-import "./DashboardSidebar.css";
+// import "./DashboardSidebar.css";
 
 interface SidebarProps {
   isMobile?: boolean;

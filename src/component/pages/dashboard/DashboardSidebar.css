@@ -587,7 +587,7 @@
 }
 
 /* Dark Mode Support */
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: light) {
   .dashboard-sidebar {
     background: linear-gradient(180deg, #1a202c 0%, #2d3748 100%);
     border-right-color: #4a5568;

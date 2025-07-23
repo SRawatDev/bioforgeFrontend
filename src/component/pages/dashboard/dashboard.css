@@ -913,7 +913,7 @@ html.lenis {
 }
 
 /* Dark mode support */
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: light) {
   .dashboard-layout {
     background-color: #1f2937;
   }

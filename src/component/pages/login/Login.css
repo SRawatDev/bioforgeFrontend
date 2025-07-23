@@ -552,7 +552,7 @@
 }
 
 /* Dark Mode Support */
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: light) {
   .signin-container {
     background: #1a1a1a;
   }

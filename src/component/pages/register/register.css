@@ -618,7 +618,7 @@
 }
 
 /* Dark Mode Support */
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: light) {
   .register-container {
     background: #1a1a1a;
   }

@@ -32,6 +32,7 @@ interface Theme {
     themeType: string;
     fontFamily: string;
     is_colorImage: string;
+    fontColor: string
 }
 
 interface UserInfo {
@@ -52,27 +53,31 @@ const UpdateProfile = () => {
     const [previewBanner, setPreviewBanner] = useState<string | null>(null);
     const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
 
-    const handleChange = (
-        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-    ) => {
-        const { name, value } = e.target;
-        setUserInfo((prev) => {
-            if (!prev) return prev;
-            if (['themeType', 'fontFamily', 'is_colorImage'].includes(name)) {
-                return {
-                    ...prev,
-                    theme: {
-                        ...prev.theme,
-                        [name]: value,
-                    },
-                };
-            }
-            return {
-                ...prev,
-                [name]: value,
-            };
-        });
-    };
+     const handleChange = (
+       e: React.ChangeEvent<
+         HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+       >
+     ) => {
+       const { name, value } = e.target;
+       setUserInfo((prev) => {
+         if (!prev) return prev;
+         if (
+           ["themeType", "fontFamily", "is_colorImage", "fontColor"].includes(name)
+         ) {
+           return {
+             ...prev,
+             theme: {
+               ...prev.theme,
+               [name]: value,
+             },
+           };
+         }
+         return {
+           ...prev,
+           [name]: value,
+         };
+       });
+     };
 
     const getUserDetail = async () => {
         setLoader(true);
@@ -263,22 +268,27 @@ const UpdateProfile = () => {
                                 </select>
                             </div>
 
-                            <div className="form-group">
-                                <label htmlFor="colorTheme">Color Theme</label>
-                                <select
-                                    id="colorTheme"
-                                    name="is_colorImage"
-                                    value={userInfo?.theme?.is_colorImage || ''}
+                            <div>
+                                <label>Font Color</label>
+                                <input
+                                    type="color"
+                                    id="favcolor"
+                                    name="fontColor"
+                                    value={userInfo?.theme?.fontColor || ""}
                                     onChange={handleChange}
-                                >
-                                    <option value="">Select Theme</option>
-                                    {colorOptions.map((option) => (
-                                        <option key={option} value={option}>
-                                            {option}
-                                        </option>
-                                    ))}
-                                </select>
+                                ></input>
                             </div>
+                            <div>
+                                <label>Color Theme</label>
+                                <input
+                                    type="color"
+                                    id="favcolor"
+                                    name="is_colorImage"
+                                    value={userInfo?.theme?.is_colorImage || ""}
+                                    onChange={handleChange}
+                                ></input>
+                            </div>
+
 
                             <div className="form-actions">
                                 <button type="submit" className="save-button">

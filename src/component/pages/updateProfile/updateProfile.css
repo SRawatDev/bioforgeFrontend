@@ -5,14 +5,7 @@
   justify-content: center;
   align-items: center;
   padding: 40px 20px;
-  background: linear-gradient(
-    135deg,
-    #667eea 0%,
-    #764ba2 25%,
-    #f093fb 50%,
-    #f5576c 75%,
-    #4facfe 100%
-  );
+
   background-size: 400% 400%;
   animation: gradientAnimation 15s ease infinite;
 }
@@ -186,7 +179,6 @@
   box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
 }
 
-
 .form-actions {
   display: flex;
   justify-content: space-between;
@@ -231,35 +223,35 @@
   .update-profile-container {
     padding: 0;
   }
-  
+
   .update-profile-card {
     border-radius: 0;
     box-shadow: none;
   }
-  
+
   .banner-upload-container {
     height: 150px;
   }
-  
+
   .profile-image-preview {
     width: 100px;
     height: 100px;
   }
-  
+
   .form-actions {
     flex-direction: column;
   }
-  
+
   .save-button,
   .cancel-button {
     margin: 5px 0;
     width: 100%;
   }
-  
+
   .save-button {
     margin-right: 0;
   }
-  
+
   .cancel-button {
     margin-left: 0;
   }

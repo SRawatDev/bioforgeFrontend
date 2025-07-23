@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import ErrorMessage from "../../../helpers/ErrorMessage";
 import ProfileShimmer from "../../ProfileShimmer";
 import { FaShareAlt } from "react-icons/fa"; // Import share icon
+import UpdateProfile from "../updateProfile/Index";
 
 interface Theme {
   fontFamily: string;
@@ -97,7 +98,8 @@ const Index = () => {
       <div className="dashboard-main-area">
         <div className="dashboard-main-content">
           {layout === "updateProfile" ? (
-            <Main getUserDetails={getUserDetail} />
+            // <Main getUserDetails={getUserDetail} />
+            <UpdateProfile/>
           ) : (
             <ManageLinks getUserDetail={getUserDetail} />
           )}

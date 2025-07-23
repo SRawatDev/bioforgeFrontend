@@ -11,6 +11,8 @@ import { IoMdArrowRoundBack } from 'react-icons/io'
 import { MdSecurity } from 'react-icons/md'
 import './changePassword.css'
 import DashboardSidebar from '../DashboardSidebar'
+import LinkShimmer from '../../../LinkShimmer'
+
 
 interface changepasswordInterface {
   oldPassword: string
@@ -111,6 +113,9 @@ const Index = () => {
         >
           <IoMdArrowRoundBack />
         </Link> */}
+         {loader ? (
+          <LinkShimmer />
+        ) : (
         <div className='dashboard-layout'>
           {/* Left side - Form */}
 
@@ -162,7 +167,7 @@ const Index = () => {
                       required
                       type={showPassword.oldPassword ? 'text' : 'password'}
                       placeholder='Enter your current password'
-                      error={formErrors.oldPassword}
+                     
                     />
                     <button
                       type='button'
@@ -193,7 +198,7 @@ const Index = () => {
                       required
                       type={showPassword.newPassword ? 'text' : 'password'}
                       placeholder='Enter your new password'
-                      error={formErrors.newPassword}
+                     
                     />
                     <button
                       type='button'
@@ -242,7 +247,7 @@ const Index = () => {
                 <p>
                   Remember your password?{' '}
                   <Link to={`/dashboard/index/${localStorage.getItem('_id')}`}>
-                    Back to dashboard
+                   <span className='auth-footer-text'> Back to dashboard</span>
                   </Link>
                 </p>
               </div>
@@ -265,7 +270,9 @@ const Index = () => {
             />
           </div>
         </div>
+       )}
       </div>
+             
     </>
   )
 }

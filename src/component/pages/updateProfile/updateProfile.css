@@ -5,10 +5,11 @@
   background: linear-gradient(133deg, #ffffff 0%, #b99b87 100%);
   padding: 2rem 1rem;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  margin-left: 35px;
 }
 
 .profile-container {
-  max-width: 800px;
+  max-width: 1050px;
   margin: 0 auto;
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);

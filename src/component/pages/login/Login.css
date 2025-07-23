@@ -551,30 +551,4 @@
   box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
 }
 
-/* Dark Mode Support */
-@media (prefers-color-scheme: light) {
-  .signin-container {
-    background: #1a1a1a;
-  }
-  
-  .signin-row {
-    background: #2d2d2d;
-    color: white;
-  }
-  
-  .signin-input {
-    background: #3d3d3d;
-    border-color: #555;
-    color: white;
-  }
-  
-  .signin-label {
-    background: #2d2d2d;
-    color: #ccc;
-  }
-  
-  .signin-input:focus + .signin-label,
-  .signin-input:not(:placeholder-shown) + .signin-label {
-    color: #fff;
-  }
-}
+

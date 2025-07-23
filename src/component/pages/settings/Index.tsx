@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import { callAPI } from '../../../utils/apicall.utils'
-import { apiUrls } from '../../../utils/api.utils'
-import { ErrorMessage, SuccessMessage } from '../template/message.utils'
 import LoadScreen from '../../loaderScreen'
-
+import SuccessMessage from '../../../helpers/Success'
+import ErrorMessage from '../../../helpers/ErrorMessage'
 interface Settings {
   notifications: {
     email: boolean

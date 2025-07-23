@@ -98,7 +98,8 @@ const Index = () => {
       <div className="dashboard-main-area">
         <div className="dashboard-main-content">
           {layout === "updateProfile" ? (
-           <UpdateProfile />
+            // <Main getUserDetails={getUserDetail} />
+            <UpdateProfile/>
           ) : (
             <ManageLinks getUserDetail={getUserDetail} />
           )}

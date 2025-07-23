@@ -134,7 +134,7 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose }) => {
           <div className="user-profile-section">
             <div className="user-profile">
               <div className="avatar-container">
-                <img
+                <img 
                   src={
                     localStorage.getItem("profile_img")
                       ? defaultConfig.imagePath + localStorage.getItem("profile_img")

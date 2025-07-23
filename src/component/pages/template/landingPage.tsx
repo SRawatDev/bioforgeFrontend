@@ -9,7 +9,6 @@ const LandingPage = () => {
     const lenisRef = useRef<Lenis | null>(null)
 
    useEffect(() => {
-    // Initialize Lenis with correct options
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -21,26 +20,19 @@ const LandingPage = () => {
       touchMultiplier: 2,
       infinite: false,
     });
-
     lenisRef.current = lenis;
-
     function raf(time: number) {
       lenis.raf(time);
       requestAnimationFrame(raf);
     }
-
     requestAnimationFrame(raf);
-
-    // Optional: Listen to scroll events
     lenis.on('scroll', (e: any) => {
-      // console.log('Scrolling:', e);
     });
 
     return () => {
       lenis.destroy();
     };
   }, []);
-    // Sample data for 10 cards
     const cardData = [
         {
             id: 1,

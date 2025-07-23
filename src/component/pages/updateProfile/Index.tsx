@@ -98,6 +98,7 @@ const UpdateProfile = () => {
             getUserDetail();
         }
     }, [id]);
+    console.log("=========================", previewBanner)
 
     const UploadProfileImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
         try {
@@ -174,19 +175,21 @@ const UpdateProfile = () => {
         <>
             {loader && <LoadScreen />}
             <div className="update-profile-container">
+
                 <div className="update-profile-card">
                     <h1 className="update-profile-title">Edit Your Profile</h1>
-                    
+
                     <form className="update-profile-form" onSubmit={handleSubmit}>
                         {/* Banner Image */}
                         <div className="banner-upload-container">
-                            <div className="banner-preview" 
-                                style={{
-                                    backgroundImage: previewBanner 
-                                        ? `url(${defaultConfig.imagePath + previewBanner})` 
-                                        : 'none'
-                                }}
+                            <div className="banner-preview"
                             >
+                                <img className='banner-preview' src={
+                                    previewBanner
+                                        ? `${defaultConfig.imagePath + previewBanner}`
+                                        : 'none'
+                                } alt="" />
+
                                 <div className="banner-overlay">
                                     <label htmlFor="bannerUploadInput" className="banner-upload-label">
                                         <FaCamera />
@@ -203,14 +206,12 @@ const UpdateProfile = () => {
                                 className="hidden-input"
                             />
                         </div>
-                        
-                        {/* Profile Image */}
                         <div className="profile-upload-container">
                             <div className="profile-image-wrapper">
-                                <div className="profile-image-preview" 
+                                <div className="profile-image-preview"
                                     style={{
-                                        backgroundImage: previewProfile 
-                                            ? `url(${defaultConfig.imagePath + previewProfile})` 
+                                        backgroundImage: previewProfile
+                                            ? `url(${defaultConfig.imagePath + previewProfile})`
                                             : 'none'
                                     }}
                                 >
@@ -230,7 +231,7 @@ const UpdateProfile = () => {
                                 />
                             </div>
                         </div>
-                        
+
                         {/* Form Fields */}
                         <div className="form-fields">
                             <div className="form-group">
@@ -244,7 +245,7 @@ const UpdateProfile = () => {
                                     rows={4}
                                 />
                             </div>
-                            
+
                             <div className="form-group">
                                 <label htmlFor="fontFamily">Font Style</label>
                                 <select
@@ -261,7 +262,7 @@ const UpdateProfile = () => {
                                     ))}
                                 </select>
                             </div>
-                            
+
                             <div className="form-group">
                                 <label htmlFor="colorTheme">Color Theme</label>
                                 <select
@@ -278,7 +279,7 @@ const UpdateProfile = () => {
                                     ))}
                                 </select>
                             </div>
-                            
+
                             <div className="form-actions">
                                 <button type="submit" className="save-button">
                                     Save Changes

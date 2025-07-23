@@ -10,8 +10,6 @@ import LoadScreen from './component/loaderScreen'
 import Authenticated from './guard/Authenticated'
 import Guest from './guard/Guest'
 import Header from './component/navbar/Navbar'
-import Navbar from './component/navbar/Navbar'
-
 interface AppRoute {
   path: string
   element: LazyExoticComponent<ComponentType<any>>
@@ -21,7 +19,6 @@ interface AppRoute {
 }
 
 const routes: AppRoute[] = [
-  // Guest routes (only accessible when not logged in)
   {
     guard: Guest,
     path: '/register',
@@ -38,16 +35,11 @@ const routes: AppRoute[] = [
     element: lazy(() => import('./component/pages/dashboard/profile/SignIn'))
   },
 
-  // Public routes (accessible to everyone)
   {
-    //  guard: Authenticated,
-    // layout: Header,
     path: '/',
     element: lazy(() => import('./component/pages/home/NewHome'))
   },
   {
-    //  guard: Authenticated,
-    // layout: Header,
     path: '/navbar',
     element: lazy(() => import('./component/navbar/Navbar'))
   },
@@ -60,28 +52,13 @@ const routes: AppRoute[] = [
     path: '/landingPage',
     element: lazy(() => import('./component/pages/template/landingPage'))
   },
-  // {
-  //   path: '/Footer',
-  //   element: lazy(() => import('./component/pages/template/Footer'))
-  // },
-  // {
-  //   path: '/Navbar',
-  //   element: lazy(() => import('./component/navbar/Navbar'))
-  // },
-
-
-
-  // Public profile view (no authentication required)
   {
     path: '/dashboard/profile/:id',
     element: lazy(() => import('./component/pages/dashboard/profile/index'))
   },
 
-  // Protected routes (only accessible when logged in)
- 
   {
     guard: Authenticated,
-    // layout: Header,
     path: '/dashboard/profile/:id',
     element: lazy(() => import('./component/pages/dashboard/Index'))
   },
@@ -93,37 +70,31 @@ const routes: AppRoute[] = [
   },
   {
     guard: Authenticated,
-    // layout: Header,
     path: '/updateProfile/:id',
     element: lazy(() => import('./component/pages/updateProfile/Index'))
   },
   {
     guard: Authenticated,
-    // layout: Header,
     path: '/links',
     element: lazy(() => import('./component/pages/links/Index'))
   },
   {
     guard: Authenticated,
-    // layout: Header,
     path: '/changepassword',
     element: lazy(() => import('./component/pages/password/Index'))
   },
   {
     guard: Authenticated,
-    // layout: Header,
     path: '/deleteAccount',
     element: lazy(() => import('./component/pages/accountDelete/Index'))
   },
   {
     guard: Authenticated,
-    // layout: Header,
     path: '/dashboard/:layout/:id',
     element: lazy(() => import('./component/pages/dashboard/Index'))
   },
   {
     guard: Authenticated,
-    // layout: Header,
     path: '/admin/users',
     element: lazy(() => import('./component/pages/admin/Users'))
   },
@@ -141,12 +112,10 @@ const routes: AppRoute[] = [
   },
   {
     guard: Authenticated,
-    // layout: Header,
     path: '/dasboard',
     element: lazy(() => import('./component/pages/dashboard/DashboardSidebar'))
   },
 
-  // Catch all route - 404 page
   {
     path: '*',
     element: lazy(() => import('./component/PageNotFound'))

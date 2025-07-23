@@ -147,7 +147,7 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
             </p>
             <button style={{ marginTop: 15 }}>
               <div className="contactEmail">
-                <BiLogoGmail />
+        
                 <p
                   style={{
                     backgroundColor: userInfo?.theme?.is_colorImage,
@@ -158,7 +158,9 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
                       }`,
                   }}
                 >
-                  {userInfo?.email}
+                  <Link className="mobile-email-button" to={`mailto:${userInfo?.email}`} target="blank">
+                          <BiLogoGmail />
+                  {userInfo?.email}</Link>
                 </p>
               </div>
             </button>

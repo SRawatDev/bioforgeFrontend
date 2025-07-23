@@ -78,6 +78,7 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
       setLoader(false)
       if (response?.data?.status) {
         setLinksInfo(response.data.data || [])
+        getUserDetail()
       } else {
         ErrorMessage(response?.data?.message)
       }
@@ -99,6 +100,8 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
       setLoader(false)
       if (response?.data?.status) {
         setnonSocialData(response.data.data || [])
+        getUserDetail()
+        
       } else {
         ErrorMessage(response?.data?.message)
       }

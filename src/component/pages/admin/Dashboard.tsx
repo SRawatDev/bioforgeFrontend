@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { callAPI } from '../../../utils/apicall.utils'
 import { apiUrls } from '../../../utils/api.utils'
-import { ErrorMessage, SuccessMessage } from '../template/message.utils'
+
 import LoadScreen from '../../loaderScreen'
 import NodataFound from '../../NodataFound'
+import ErrorMessage from '../../../helpers/ErrorMessage'
 
 interface AdminStats {
   totalUsers: number
@@ -41,19 +42,15 @@ const Dashboard: React.FC = () => {
         callAPI(apiUrls.userReport, {}, 'GET', {}),
         callAPI(apiUrls.getAllUser, { limit: 5 }, 'GET', {})
       ])
-
       if (statsResponse?.data?.status) {
         setStats(statsResponse.data.data)
       }
-
       if (usersResponse?.data?.status) {
         setRecentUsers(usersResponse.data.data)
       }
     } catch (err: any) {
-      ErrorMessage(err.message || 'Failed to fetch dashboard data')
-    } finally {
       setLoader(false)
-    }
+    } 
   }
 
   if (loader) return <LoadScreen />

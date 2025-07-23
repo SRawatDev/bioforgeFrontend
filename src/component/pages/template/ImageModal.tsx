@@ -1,28 +1,30 @@
 import React, { useEffect } from 'react';
 import './ImageModal.css';
-
-const ImageModal = ({ image, title, description, category, onClose }) => {
+interface CardProps {
+  title: string;
+  image: string;
+  description: string;
+  category: string;
+  index: number;
+   onClose: () => void;
+}
+const ImageModal = ({ image, title, description, category, onClose }:CardProps) => {
   useEffect(() => {
-    // Prevent body scroll when modal is open
     document.body.style.overflow = 'hidden';
-    
-    // Handle escape key
-    const handleEscape = (e) => {
+    const handleEscape = (e:any) => {
       if (e.key === 'Escape') {
         onClose();
       }
     };
 
     document.addEventListener('keydown', handleEscape);
-
-    // Cleanup
     return () => {
       document.body.style.overflow = 'unset';
       document.removeEventListener('keydown', handleEscape);
     };
   }, [onClose]);
 
-  const handleBackdropClick = (e) => {
+  const handleBackdropClick = (e:any) => {
     if (e.target === e.currentTarget) {
       onClose();
     }

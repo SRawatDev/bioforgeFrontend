@@ -209,7 +209,7 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
       <div className='links-page-content'>
         <div className='links-header'>
           <div className='links-logo'>
-            <img src='/assets/logo12.png' alt='BioForge Logo' />
+            <img className='links-logo' src='/assets/logo12.png' alt='BioForge Logo' />
           </div>
           <div className='header-content'>
             <h1>Manage Your Links</h1>

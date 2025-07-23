@@ -73,7 +73,7 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose }) => {
       category: "settings"
     },
     {
-      path: "/changepassword",
+      path: `/dashboard/changepassword/${localStorage.getItem("_id")}`,
       label: "Change Password",
       icon: <IoKeyOutline />,
       category: "settings"
@@ -124,7 +124,7 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose }) => {
         <div className="user-profile-section">
             <div className="user-profile">
               <div className="avatar-container">
-                <img
+                <img 
                   src={
                     localStorage.getItem("profile_img")
                       ? defaultConfig.imagePath + localStorage.getItem("profile_img")

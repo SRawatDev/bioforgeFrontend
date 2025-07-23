@@ -130,7 +130,7 @@ const LandingPage = () => {
         <Navbar />
         <div className='landing-page'>
             {/* Hero Section */}
-            <section className='hero-section'>
+            {/* <section className='hero-section'>
                 <div className='hero-content'>
                     <div className='hero-text'>
                         <h1 className='hero-title'>
@@ -172,7 +172,7 @@ const LandingPage = () => {
                 <div className='scroll-indicator' onClick={scrollToGallery}>
                     <div className='scroll-arrow'></div>
                 </div>
-            </section>
+            </section> */}
 
             {/* Gallery Section */}
             <section className='gallery-section'>

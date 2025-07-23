@@ -53,6 +53,10 @@ const routes: AppRoute[] = [
     element: lazy(() => import('./component/pages/template/landingPage'))
   },
   {
+    path: '/about',
+    element: lazy(() => import('./component/pages/about/About'))
+  },
+  {
     path: '/dashboard/profile/:id',
     element: lazy(() => import('./component/pages/dashboard/profile/index'))
   },

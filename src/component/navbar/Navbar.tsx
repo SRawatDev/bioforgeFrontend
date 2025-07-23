@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './Navbar.css';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { defaultConfig } from '../../config';
 
 const Navbar: React.FC = () => {
@@ -30,10 +30,11 @@ const Navbar: React.FC = () => {
           ☰
         </div>
         <div className={`navbar-links-container ${isMobileMenuOpen ? 'active' : ''}`}>
-          <div className="navbar-links">
-            <a href="/" className="navbar-link">Home</a>
-            <a href="/landingPage" className="navbar-link">Templates</a>
-          </div>
+            <div className="navbar-links">
+            <Link to="/" className="navbar-link">Home</Link>
+            <Link to="/landingPage" className="navbar-link">Templates</Link>
+            <Link to="/about" className="navbar-link">About</Link>
+            </div>
           <div className="navbar-right">
             {
               !isLoggedIn ? (

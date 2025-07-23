@@ -9,7 +9,7 @@ import LoadScreen from '../../../loaderScreen'
 import { FaLowVision, FaEye, FaKey, FaLock } from 'react-icons/fa'
 import { IoMdArrowRoundBack } from 'react-icons/io'
 import { MdSecurity } from 'react-icons/md'
-import './changePassword.css'
+// import './changePassword.css'
 import DashboardSidebar from '../DashboardSidebar'
 import LinkShimmer from '../../../LinkShimmer'
 

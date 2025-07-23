@@ -12,7 +12,7 @@ import {
   FiCheck,
   FiPlay
 } from 'react-icons/fi';
-import './NewHome.css';
+// import './NewHome.css';
 import DashboardSidebar from '../dashboard/DashboardSidebar';
 
 const NewHome: React.FC = () => {

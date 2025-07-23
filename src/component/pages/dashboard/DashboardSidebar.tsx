@@ -48,30 +48,7 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose }) => {
   };
 
   const menuItems = [
-    {
-      path: `/dashboard/index/${localStorage.getItem("_id")}`,
-      label: "Dashboard",
-      icon: <IoHomeOutline />,
-      category: "main"
-    },
-    {
-      path: `/dashboard/links/${localStorage.getItem("_id")}`,
-      label: "Manage Links",
-      icon: <IoLinkOutline />,
-      category: "main"
-    },
-    // {
-    //   path: "/",
-    //   label: "Home",
-    //   icon: <IoHomeOutline />,
-    //   category: "main"
-    // },
-    {
-      path: `/dashboard/updateProfile/${localStorage.getItem("_id")}`,
-      label: "Edit Profile",
-      icon: <IoPersonOutline />,
-      category: "settings"
-    },
+
     {
       path: `/dashboard/changepassword/${localStorage.getItem("_id")}`,
       label: "Change Password",
@@ -79,22 +56,28 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose }) => {
       category: "settings"
     },
     {
-      path: "/settings",
-      label: "Settings",
-      icon: <IoSettingsOutline />,
-      category: "settings"
+      path: `/dashboard/links/${localStorage.getItem("_id")}`,
+      label: "Manage Links",
+      icon: <IoLinkOutline />,
+      category: "main"
     },
+    {
+      path: `/dashboard/updateProfile/${localStorage.getItem("_id")}`,
+      label: "Edit Profile",
+      icon: <IoPersonOutline />,
+      category: "main"
+    },
+   
     {
       path: "/deleteAccount",
       label: "Delete Account",
       icon: <IoTrashOutline />,
-      category: "danger"
+      category: "settings"
     }
   ];
 
   const mainItems = menuItems.filter(item => item.category === "main");
   const settingsItems = menuItems.filter(item => item.category === "settings");
-  const dangerItems = menuItems.filter(item => item.category === "danger");
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (isMobile && onClose) {
@@ -205,44 +188,10 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose }) => {
               </ul>
             </div>
 
-            {/* Danger Zone */}
-            <div className="menu-section danger-section">
-              {!isCollapsed && <h6 className="section-title">Danger Zone</h6>}
-              <ul className="menu-list">
-                {dangerItems.map((item, index) => (
-                  <li key={index} className="menu-item">
-                    <Link
-                      to={item.path}
-                      className={`menu-link danger-link ${isActiveLink(item.path) ? 'active' : ''}`}
-                      onClick={isMobile && onClose ? onClose : undefined}
-                      title={isCollapsed ? item.label : ''}
-                    >
-                      <span className="menu-icon">{item.icon}</span>
-                      {!isCollapsed && <span className="menu-text">{item.label}</span>}
-                      {isActiveLink(item.path) && <div className="active-indicator"></div>}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
+           
           </div>
         </div>
-
-        {/* Sidebar Footer */}
         <div className="sidebar-footer">
-          {!isCollapsed && (
-            <div className="upgrade-card">
-              <div className="upgrade-content">
-                <div className="upgrade-icon">
-                  <FaCrown />
-                </div>
-                <h6>Upgrade to Pro</h6>
-                <p>Get unlimited links and advanced analytics</p>
-                <button className="upgrade-btn">Upgrade Now</button>
-              </div>
-            </div>
-          )}
-
           <button
             className="logout-btn"
             onClick={handleLogoutClick}
@@ -251,8 +200,6 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose }) => {
             <IoLogOutOutline className="menu-icon" />
             {!isCollapsed && <span>Logout</span>}
           </button>
-
-          {/* Collapse Toggle (Desktop Only) */}
           {!isMobile && (
             <button
               className="collapse-toggle"
@@ -265,7 +212,6 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose }) => {
         </div>
       </nav>
 
-      {/* Backdrop for mobile */}
       {isMobile && (
         <div className="sidebar-backdrop" onClick={onClose}></div>
       )}

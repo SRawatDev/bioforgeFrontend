@@ -29,8 +29,6 @@ const routes: AppRoute[] = [
     path: '/login',
     element: lazy(() => import('./component/pages/login/login'))
   },
-
-
   {
     path: '/',
     element: lazy(() => import('./component/pages/home/NewHome'))
@@ -48,7 +46,6 @@ const routes: AppRoute[] = [
     path: '/dashboard/profile/:id',
     element: lazy(() => import('./component/pages/dashboard/profile/index'))
   },
-
   {
     guard: Authenticated,
     path: '/dashboard/profile/:id',
@@ -59,11 +56,6 @@ const routes: AppRoute[] = [
     layout: Header,
     path: '/admin/DashBoard',
     element: lazy(() => import('./component/pages/admin/Dashboard'))
-  },
-  {
-    guard: Authenticated,
-    path: '/updateProfile/:id',
-    element: lazy(() => import('./component/pages/updateProfile/Index'))
   },
   {
     guard: Authenticated,

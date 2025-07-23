@@ -205,10 +205,10 @@ input[type="date"] {
   justify-content: center;
   z-index: -10;
 }
-.header-navbar {
+/* .header-navbar {
   display: flex;
   gap: 3px;
-}
+} */
 /* page not found */
 
 /*======================

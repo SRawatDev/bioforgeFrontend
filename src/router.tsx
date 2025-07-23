@@ -40,8 +40,16 @@ const routes: AppRoute[] = [
 
   // Public routes (accessible to everyone)
   {
+    //  guard: Authenticated,
+    // layout: Header,
     path: '/',
     element: lazy(() => import('./component/pages/home/NewHome'))
+  },
+  {
+    //  guard: Authenticated,
+    // layout: Header,
+    path: '/navbar',
+    element: lazy(() => import('./component/navbar/Navbar'))
   },
   {
     path: '/templates',

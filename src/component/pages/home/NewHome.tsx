@@ -13,6 +13,7 @@ import {
   FiPlay
 } from 'react-icons/fi';
 import './NewHome.css';
+import DashboardSidebar from '../dashboard/DashboardSidebar';
 
 const NewHome: React.FC = () => {
   const navigate = useNavigate();
@@ -148,7 +149,7 @@ const scrollToSection = (selector: string) => {
 
   return (
     <>
-            <Navbar />
+            <Navbar  />
 
       <div className="new-home">
         {/* Hero Section */}

@@ -60,14 +60,14 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose }) => {
       icon: <IoLinkOutline />,
       category: "main"
     },
+    // {
+    //   path: "/",
+    //   label: "Home",
+    //   icon: <IoHomeOutline />,
+    //   category: "main"
+    // },
     {
-      path: "/",
-      label: "Home",
-      icon: <IoHomeOutline />,
-      category: "main"
-    },
-    {
-      path: `/updateProfile/${localStorage.getItem("_id")}`,
+      path: `/dashboard/updateProfile/${localStorage.getItem("_id")}`,
       label: "Edit Profile",
       icon: <IoPersonOutline />,
       category: "settings"
@@ -95,8 +95,6 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose }) => {
   const mainItems = menuItems.filter(item => item.category === "main");
   const settingsItems = menuItems.filter(item => item.category === "settings");
   const dangerItems = menuItems.filter(item => item.category === "danger");
-
-  // Close sidebar when clicking outside on mobile
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (isMobile && onClose) {
@@ -106,11 +104,9 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose }) => {
         }
       }
     };
-
     if (isMobile) {
       document.addEventListener('mousedown', handleClickOutside);
     }
-
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
@@ -119,19 +115,13 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose }) => {
   return (
     <>
       <nav className={`dashboard-sidebar ${isMobile ? 'mobile-sidebar' : ''} ${isCollapsed ? 'collapsed' : ''}`}>
-        {/* Mobile Close Button */}
         {isMobile && (
           <button className="sidebar-close-btn" onClick={onClose}>
             <IoClose />
           </button>
         )}
-
-        {/* Sidebar Header */}
         <div className="sidebar-header">
-         
-
-          {/* User Profile Section */}
-          <div className="user-profile-section">
+        <div className="user-profile-section">
             <div className="user-profile">
               <div className="avatar-container">
                 <img

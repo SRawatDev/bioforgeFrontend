@@ -29,19 +29,11 @@ const routes: AppRoute[] = [
     path: '/login',
     element: lazy(() => import('./component/pages/login/login'))
   },
-  {
-    guard: Guest,
-    path: '/signin',
-    element: lazy(() => import('./component/pages/dashboard/profile/SignIn'))
-  },
+
 
   {
     path: '/',
     element: lazy(() => import('./component/pages/home/NewHome'))
-  },
-  {
-    path: '/navbar',
-    element: lazy(() => import('./component/navbar/Navbar'))
   },
 
   {

@@ -7,10 +7,9 @@ import { apiUrls } from '../../../../utils/api.utils'
 import SuccessMessage from '../../../../helpers/Success'
 import LoadScreen from '../../../loaderScreen'
 import { FaLowVision, FaEye, FaKey, FaLock } from 'react-icons/fa'
-import { IoMdArrowRoundBack } from 'react-icons/io'
 import { MdSecurity } from 'react-icons/md'
 import './changePassword.css'
-import DashboardSidebar from '../DashboardSidebar'
+
 
 interface changepasswordInterface {
   oldPassword: string
@@ -162,7 +161,7 @@ const Index = () => {
                       required
                       type={showPassword.oldPassword ? 'text' : 'password'}
                       placeholder='Enter your current password'
-                      error={formErrors.oldPassword}
+                 
                     />
                     <button
                       type='button'
@@ -181,9 +180,7 @@ const Index = () => {
 
                 <div className='form-group'>
                   <div className='input-wrapper'>
-                    <div className='input-icon'>
-                      <FaKey />
-                    </div>
+            
                     <InputField
                       id='newPassword'
                       label='New Password'
@@ -193,8 +190,11 @@ const Index = () => {
                       required
                       type={showPassword.newPassword ? 'text' : 'password'}
                       placeholder='Enter your new password'
-                      error={formErrors.newPassword}
+      
                     />
+                            <div className='input-icon'>
+                      <FaKey />
+                    </div>
                     <button
                       type='button'
                       className='password-toggle'

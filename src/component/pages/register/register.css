@@ -617,37 +617,6 @@
   }
 }
 
-/* Dark Mode Support */
-@media (prefers-color-scheme: light) {
-  .register-container {
-    background: #1a1a1a;
-  }
-
-  .register-row {
-    background: #2d2d2d;
-    color: white;
-  }
-
-  .register-input {
-    background: #3d3d3d;
-    border-color: #555;
-    color: white;
-  }
-
-  .register-label {
-    background: #2d2d2d;
-    color: #ccc;
-  }
-
-  .register-input:focus + .register-label,
-  .register-input:not(:placeholder-shown) + .register-label {
-    color: #fff;
-  }
-
-  .input-icon {
-    color: #ccc;
-  }
-}
 
 /* Print Styles */
 @media print {

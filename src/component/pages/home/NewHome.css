@@ -920,26 +920,4 @@ html.lenis {
   transform: none !important;
 }
 
-/* Focus states for accessibility */
-/* .btn:focus,
-.navbar-link:focus {
-  outline: 2px solid #6366f1;
-  outline-offset: 2px;
-} */
 
-/* High contrast mode support */
-@media (prefers-contrast: high) {
-  .gradient-text {
-    -webkit-text-fill-color: unset;
-    color: #ffeaa7;
-  }
-  
-  .btn-primary {
-    background: #6366f1;
-  }
-  
-  .btn-secondary {
-    background: rgba(255, 255, 255, 0.9);
-    color: #333;
-  }
-}

@@ -586,61 +586,6 @@
   background: #a0aec0;
 }
 
-/* Dark Mode Support */
-@media (prefers-color-scheme: light) {
-  .dashboard-sidebar {
-    background: linear-gradient(180deg, #1a202c 0%, #2d3748 100%);
-    border-right-color: #4a5568;
-  }
-  
-  .sidebar-header {
-    background: #1a202c;
-    border-bottom-color: #4a5568;
-  }
-  
-  .brand-name {
-    color: #f7fafc;
-  }
-  
-  .user-profile {
-    background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
-    border-color: #4a5568;
-  }
-  
-  .username {
-    color: #f7fafc;
-  }
-  
-  .section-title {
-    color: #718096;
-  }
-  
-  .menu-link {
-    color: #cbd5e0;
-  }
-  
-  .menu-link:hover {
-    background: rgba(102, 126, 234, 0.2);
-    color: #90cdf4;
-  }
-  
-  .sidebar-footer {
-    background: #1a202c;
-    border-top-color: #4a5568;
-  }
-  
-  .logout-btn {
-    border-color: #4a5568;
-    color: #cbd5e0;
-  }
-  
-  .collapse-toggle {
-    background: #2d3748;
-    border-color: #4a5568;
-    color: #cbd5e0;
-  }
-}
-
 /* High Contrast Mode */
 @media (prefers-contrast: high) {
   .dashboard-sidebar {

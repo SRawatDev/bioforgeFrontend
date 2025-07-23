@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import "./dashboard.css";
+// import "./dashboard.css";
 import DashboardSidebar from "./DashboardSidebar";
 import Main from "./Main";
 import { MobileUi } from "./MobileUi";

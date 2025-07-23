@@ -9,7 +9,7 @@ import LoadScreen from "../../loaderScreen";
 import { FaLowVision, FaEye, FaTrashAlt } from "react-icons/fa";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { MdWarning } from "react-icons/md";
-import "./deleteAccount.css";
+// import "./deleteAccount.css";
 
 interface changepasswordInterface {
   password: string;
@@ -109,6 +109,7 @@ const Index = () => {
                 <div className="form-group">
                   <div className="input-wrapper">
                     <InputField
+                    id="NewInputWrapper"
                       label="Enter your password to confirm"
                       name="password"
                       value={changepasswordData.password}

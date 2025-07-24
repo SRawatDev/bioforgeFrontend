@@ -13,10 +13,13 @@ import {
   FiPlay
 } from 'react-icons/fi';
 import './NewHome.css';
-import DashboardSidebar from '../dashboard/DashboardSidebar';
+import { Footer } from '../../Footer/Footer';
 
 const NewHome: React.FC = () => {
   const navigate = useNavigate();
+    const isLoggedIn = localStorage.getItem("accessToken");
+      const userId = localStorage.getItem("_id");
+
   const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
@@ -24,13 +27,7 @@ const NewHome: React.FC = () => {
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      direction: 'vertical',
-      gestureDirection: 'vertical',
-      smooth: true,
-      mouseMultiplier: 1,
-      smoothTouch: false,
-      touchMultiplier: 2,
-      infinite: false,
+     
     });
 
     lenisRef.current = lenis;
@@ -46,8 +43,6 @@ const NewHome: React.FC = () => {
       lenis.destroy();
     };
   }, []);
-
-// Replace the useEffect and scrollToSection function with this:
 const scrollToSection = (selector: string) => {
   const element = document.querySelector(selector);
   if (element) {
@@ -71,11 +66,7 @@ const scrollToSection = (selector: string) => {
       title: "Mobile First",
       description: "All templates are optimized for mobile devices and look perfect on any screen"
     },
-    {
-      icon: <FiTrendingUp />,
-      title: "Analytics Included",
-      description: "Track your visitors, clicks, and engagement with built-in analytics"
-    },
+  
     {
       icon: <FiUsers />,
       title: "Social Integration",
@@ -104,52 +95,18 @@ const scrollToSection = (selector: string) => {
     }
   ];
 
-  const pricingPlans = [
-    {
-      name: "Free",
-      price: "$0",
-      period: "forever",
-      features: [
-        "1 Bio Page",
-        "5 Links",
-        "Basic Templates",
-        "Mobile Responsive"
-      ],
-      popular: false
-    },
-    {
-      name: "Pro",
-      price: "$9",
-      period: "per month",
-      features: [
-        "Unlimited Bio Pages",
-        "Unlimited Links",
-        "Premium Templates",
-        "Advanced Analytics",
-        "Custom Domain",
-        "Priority Support"
-      ],
-      popular: true
-    },
-    {
-      name: "Enterprise",
-      price: "$29",
-      period: "per month",
-      features: [
-        "Everything in Pro",
-        "Team Collaboration",
-        "White Label",
-        "API Access",
-        "Custom Integrations",
-        "Dedicated Support"
-      ],
-      popular: false
+  const navigateUser=()=>{
+    if(isLoggedIn){
+      navigate(`/dashboard/index/${userId}`)
+    }else{
+      navigate("/register")
     }
-  ];
+  }
+
 
   return (
     <>
-            <Navbar  />
+
 
       <div className="new-home">
         {/* Hero Section */}
@@ -160,7 +117,7 @@ const scrollToSection = (selector: string) => {
             <div className="gradient-orb orb-3"></div>
           </div>
           
-          <div className="container">
+          <div className="container d-flex" >
             <div className="hero-content">
               <div className="hero-badge">
                 <FiStar className="badge-icon" />
@@ -180,7 +137,7 @@ const scrollToSection = (selector: string) => {
               <div className="hero-actions">
                 <button 
                   className="btn btn-primary btn-large"
-                  onClick={() => navigate('/register')}
+                     onClick={navigateUser}
                 >
                   Get Started Free
                   <FiArrowRight className="btn-icon" />
@@ -332,46 +289,7 @@ const scrollToSection = (selector: string) => {
           </div>
         </section>
 
-        {/* Pricing Section */}
-        <section className="pricing-section">
-          <div className="container">
-            <div className="section-header">
-              <h2 className="section-title">Simple, Transparent Pricing</h2>
-              <p className="section-subtitle">
-                Choose the plan that's right for you
-              </p>
-            </div>
-            
-            <div className="pricing-grid">
-              {pricingPlans.map((plan, index) => (
-                <div key={index} className={`pricing-card ${plan.popular ? 'popular' : ''}`}>
-                  {plan.popular && <div className="popular-badge">Most Popular</div>}
-                  
-                  <div className="pricing-header">
-                    <h3 className="plan-name">{plan.name}</h3>
-                    <div className="plan-price">
-                      <span className="price">{plan.price}</span>
-                      <span className="period">/{plan.period}</span>
-                    </div>
-                  </div>
-                  
-                  <ul className="plan-features">
-                    {plan.features.map((feature, featureIndex) => (
-                      <li key={featureIndex} className="feature-item">
-                        <FiCheck className="check-icon" />
-                        <span>{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  
-                  <button className={`btn ${plan.popular ? 'btn-primary' : 'btn-outline'} btn-full`}>
-                    Get Started
-                  </button>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+
 
         {/* CTA Section */}
         <section className="cta-section">
@@ -384,7 +302,7 @@ const scrollToSection = (selector: string) => {
               <div className="cta-actions">
                 <button 
                   className="btn btn-primary btn-large"
-                  onClick={() => navigate('/register')}
+                  onClick={navigateUser}
                 >
                   Start Building Now
                   <FiArrowRight className="btn-icon" />
@@ -399,45 +317,8 @@ const scrollToSection = (selector: string) => {
             </div>
           </div>
         </section>
-
-        {/* Footer */}
-        <footer className="footer">
-          <div className="container">
-            <div className="footer-content">
-              <div className="footer-brand">
-                <h3>BioForge</h3>
-                <p>Create your perfect digital identity</p>
-              </div>
-              
-              <div className="footer-links">
-                <div className="footer-column">
-                  <h4>Product</h4>
-                  <a href="/landingPage">Templates</a>
-                  <a href="/features">Features</a>
-                  <a href="/pricing">Pricing</a>
-                </div>
-                
-                <div className="footer-column">
-                  <h4>Company</h4>
-                  <a href="/about">About</a>
-                  <a href="/contact">Contact</a>
-                  <a href="/blog">Blog</a>
-                </div>
-                
-                <div className="footer-column">
-                  <h4>Support</h4>
-                  <a href="/help">Help Center</a>
-                  <a href="/privacy">Privacy</a>
-                  <a href="/terms">Terms</a>
-                </div>
-              </div>
-            </div>
-            
-            <div className="footer-bottom">
-              <p>&copy; 2025 BioForge. All rights reserved.</p>
-            </div>
-          </div>
-        </footer>
+        <Footer/>
+      
       </div>
     </>
   );

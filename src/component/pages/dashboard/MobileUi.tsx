@@ -128,6 +128,7 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
               id="bio"
               style={{
                 fontFamily: userInfo?.theme?.fontFamily,
+                textAlign:"center",
                 color: `${userInfo?.theme?.fontColor
                   ? userInfo?.theme?.fontColor
                   : "white"

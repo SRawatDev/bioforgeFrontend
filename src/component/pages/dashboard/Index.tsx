@@ -9,7 +9,7 @@ import { apiUrls } from "../../../utils/api.utils";
 import { useEffect, useState } from "react";
 import ErrorMessage from "../../../helpers/ErrorMessage";
 import ProfileShimmer from "../../ProfileShimmer";
-import { FaShareAlt } from "react-icons/fa"; 
+import { FaShareAlt } from "react-icons/fa";
 interface Theme {
   fontFamily: string;
   is_colorImage: string;
@@ -42,7 +42,6 @@ const Index = () => {
   const [loader, setLoader] = useState<boolean>(false);
   const [isMobileView, setIsMobileView] = useState<boolean>(false);
   const navigate = useNavigate();
-
   const getUserDetail = async () => {
     if (!id) return;
     setLoader(true);
@@ -65,75 +64,66 @@ const Index = () => {
       ErrorMessage(err.message || "Something went wrong");
     }
   };
-
-  // Function to open profile in new tab
   const openProfileInNewTab = () => {
     if (userInfo && userInfo._id) {
-      window.open(`/dashboard/profile/${userInfo._id}`, '_blank');
+      window.open(`/dashboard/profile/${userInfo._id}`, "_blank");
     }
   };
-
   useEffect(() => {
     getUserDetail();
     const checkMobileView = () => {
       setIsMobileView(window.innerWidth < 992);
-    }; 
+    };
     checkMobileView();
-    window.addEventListener('resize', checkMobileView);
-    return () => window.removeEventListener('resize', checkMobileView);
+    window.addEventListener("resize", checkMobileView);
+    return () => window.removeEventListener("resize", checkMobileView);
   }, [id]);
-  console.log("======================",layout)
-
   return (
     <>
-
-    <div className="dashboard-layout">
-      <div className="dashboard-sidebar">
-        <DashboardSidebar />
-      </div>
-      
-      <div className="dashboard-main-area">
-        <div className="dashboard-main-content">
-          {layout === "updateProfile" ? (
-            <Main getUserDetails={getUserDetail} />
-            // <UpdateProfile/>
-          ) : (
-            <ManageLinks getUserDetail={getUserDetail} />
-          )}
+      <div className="dashboard-layout">
+        <div className="dashboard-sidebar">
+          <DashboardSidebar />
         </div>
-      </div>
-      
-      <div className={`dashboard-preview ${isMobileView ? 'mobile-mode' : ''}`}>
-        <div className="preview-header">
-          <h3>Mobile Preview</h3>
-          <div className="preview-actions">
-            <p>See how your profile looks on mobile devices</p>
 
-            <button 
-              className="share-profile-button" 
-              onClick={openProfileInNewTab}
-              title="Open profile in new tab"
-            >
-              <FaShareAlt /> share
-            </button>
+        <div className="dashboard-main-area">
+          <div className="dashboard-main-content">
+            {layout === "updateProfile" ? (
+              <Main getUserDetails={getUserDetail} />
+            ) : (
+              <ManageLinks getUserDetail={getUserDetail} />
+            )}
           </div>
         </div>
-        
-        <div className="preview-device">
-          <div className="device-frame">
-            <div className="device-status-bar"></div>
-            <div className="device-content">
-              {loader ? (
-                <ProfileShimmer />
-              ) : (
-                <MobileUi userInfo={userInfo} />
-              )}
+
+        <div
+          className={`dashboard-preview ${isMobileView ? "mobile-mode" : ""}`}
+        >
+          <div className="preview-header">
+            <h3>Mobile Preview</h3>
+            <div className="preview-actions">
+              <p>See how your profile looks on mobile devices</p>
+
+              <button
+                className="share-profile-button"
+                onClick={openProfileInNewTab}
+                title="Open profile in new tab"
+              >
+                <FaShareAlt /> share
+              </button>
             </div>
-            <div className="device-home-button"></div>
+          </div>
+
+          <div className="preview-device">
+            <div className="device-frame">
+              <div className="device-status-bar"></div>
+              <div className="device-content">
+                {loader ? <ProfileShimmer /> : <MobileUi userInfo={userInfo} />}
+              </div>
+              <div className="device-home-button"></div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
     </>
   );
 };

@@ -24,6 +24,7 @@
 }
 .mobile-email-button{
   display: flex;
+  font-size: 20px;
   gap: 10px;
   margin-bottom:0px;
 }
@@ -103,8 +104,10 @@
 }
 
 .mobile-bio {
-  font-size: 15px;
+  font-size: 20px;
   line-height: 1.5;
+  text-align: justify;
+  hyphens: auto;
   margin-bottom: 16px;
   
   margin-bottom:0px;
@@ -160,7 +163,7 @@
 
 .mobile-link-title {
   font-weight: 500;
-  font-size: 15px;
+  font-size: 20px;
 }
 
 /* Social Media Section */
@@ -337,10 +340,11 @@
 }
 
 .mobile-bio {
-  font-size: 15px;
-  text-align: left;
+  font-size: 20px;
   line-height: 1.5;
   margin-bottom: 6px;
+    text-align: justify;
+  hyphens: auto;
   opacity: 0.85;
 }
 
@@ -393,7 +397,7 @@
 
 .mobile-link-title {
   font-weight: 500;
-  font-size: 15px;
+  font-size: 20px;
 }
 
 /* Social Media Section */
@@ -505,9 +509,7 @@
     font-size: 20px;
   }
   
-  .mobile-bio {
-    font-size: 14px;
-  }
+  
   
 
   
@@ -525,7 +527,7 @@
   }
   
   .mobile-link-title {
-    font-size: 14px;
+  font-size: 20px;
   }
   
   .mobile-social-icon {
@@ -551,7 +553,6 @@
   }
   
   .mobile-bio {
-    font-size: 16px;
     max-width: 80%;
     margin-left: auto;
     margin-right: auto;
@@ -573,7 +574,7 @@
   }
   
   .mobile-link-title {
-    font-size: 16px;
+  font-size: 20px;
   }
   
   .mobile-social-icon {

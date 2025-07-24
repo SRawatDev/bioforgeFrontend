@@ -149,7 +149,7 @@ const Index: React.FC = () => {
                   }
                 </h1>
 
-                <p className="mobile-bio">{userInfo?.bio}</p>
+                <p className="mobile-bio" style={{    textAlign:"center",}}>{userInfo?.bio}</p>
 
                 <p  className="mobile-email-button">
                   <BiLogoGmail />

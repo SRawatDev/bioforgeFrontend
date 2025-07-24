@@ -30,6 +30,7 @@ const routes: AppRoute[] = [
     element: lazy(() => import('./component/pages/login/login'))
   },
   {
+    layout: Header,
     path: '/',
     element: lazy(() => import('./component/pages/home/NewHome'))
   },
@@ -40,6 +41,7 @@ const routes: AppRoute[] = [
   },
   {
     path: '/landingPage',
+    layout: Header,
     element: lazy(() => import('./component/pages/template/landingPage'))
   },
   {
@@ -106,7 +108,7 @@ const routes: AppRoute[] = [
   }
 ]
 
-export function RenderRout () {
+export function RenderRout() {
   return (
     <Router>
       <Suspense fallback={<LoadScreen />}>

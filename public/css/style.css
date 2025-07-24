@@ -1046,6 +1046,8 @@ html.lenis {
 
 .user-profile-section {
   position: relative;
+  width: 100%;
+
 }
 
 .user-profile {

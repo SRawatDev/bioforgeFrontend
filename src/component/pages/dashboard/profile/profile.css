@@ -22,6 +22,11 @@
   height: 100%;
   object-fit: cover;
 }
+.mobile-email-button{
+  display: flex;
+  gap: 10px;
+  margin-bottom:0px;
+}
 
 .mobile-menu-dots {
   position: absolute;
@@ -60,10 +65,10 @@
   align-items: center;
   text-align: center;
   margin-bottom: 24px;
+  margin-top: 40px;
 }
 
 .mobile-avatar {
-  margin-top: -60px;
   margin-bottom: 16px;
   position: relative;
   z-index: 2;
@@ -101,21 +106,12 @@
   font-size: 15px;
   line-height: 1.5;
   margin-bottom: 16px;
+  
+  margin-bottom:0px;
   opacity: 0.85;
 }
 
-.mobile-email-button {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background-color: rgba(59, 130, 246, 0.8);
-  color: white;
-  padding: 8px 16px;
-  border-radius: 20px;
-  text-decoration: none;
-  font-weight: 500;
-  font-size: 14px;
-}
+
 
 /* Links Section */
 .mobile-links {
@@ -307,7 +303,6 @@
 }
 
 .mobile-avatar {
-  margin-top: -60px;
   margin-bottom: 16px;
   position: relative;
   z-index: 2;
@@ -343,23 +338,13 @@
 
 .mobile-bio {
   font-size: 15px;
+  text-align: left;
   line-height: 1.5;
-  margin-bottom: 16px;
+  margin-bottom: 6px;
   opacity: 0.85;
 }
 
-.mobile-email-button {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background-color: rgba(59, 130, 246, 0.8);
-  color: white;
-  padding: 8px 16px;
-  border-radius: 20px;
-  text-decoration: none;
-  font-weight: 500;
-  font-size: 14px;
-}
+
 
 /* Links Section */
 .mobile-links {
@@ -524,10 +509,7 @@
     font-size: 14px;
   }
   
-  .mobile-email-button {
-    padding: 6px 12px;
-    font-size: 13px;
-  }
+
   
   .mobile-section-title {
     font-size: 16px;
@@ -575,10 +557,7 @@
     margin-right: auto;
   }
   
-  .mobile-email-button {
-    padding: 10px 20px;
-    font-size: 15px;
-  }
+
   
   .mobile-section-title {
     font-size: 20px;

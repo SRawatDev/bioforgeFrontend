@@ -81,12 +81,20 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
 
       <section
         id="phone-preview-container"
+        style={{ height: "100%" }}
+
         aria-label="Mobile preview of Linktree"
       >
         <div
           className="profile-container"
           style={{
-            backgroundColor: userInfo?.theme?.is_colorImage,
+    
+            backgroundImage: `url(${defaultConfig?.imagePath + userInfo?.banner_img})`,
+            height: "100%",
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+            overflow:"scroll",
             fontFamily: userInfo?.theme?.fontFamily,
             color: `${userInfo?.theme?.fontColor
               ? userInfo?.theme?.fontColor
@@ -94,22 +102,7 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
               }`,
           }}
         >
-          <div className="cover-photo">
-            <img
-              id="coverImage three-dots-image"
-              src={defaultConfig?.imagePath + userInfo?.banner_img}
-              alt="Kapak Resmi"
-            />
-            {userId !== id.id && userId && (
-              <BsThreeDots
-                className="threedots"
-                type="button"
-                data-bs-toggle="offcanvas"
-                data-bs-target="#offcanvasBottom"
-                aria-controls="offcanvasBottom"
-              />
-            )}
-          </div>
+        
           <div className="profile-picture">
             <img
               id="profileImage"
@@ -122,7 +115,6 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
               id="username "
               className="editprofile"
               style={{
-                backgroundColor: userInfo?.theme?.is_colorImage,
                 fontFamily: userInfo?.theme?.fontFamily,
                 color: `${userInfo?.theme?.fontColor
                   ? userInfo?.theme?.fontColor
@@ -130,12 +122,11 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
                   }`,
               }}
             >
-              {userInfo?.username}{" "}
+              @{userInfo?.username}{" "}
             </h1>
             <p
               id="bio"
               style={{
-                backgroundColor: userInfo?.theme?.is_colorImage,
                 fontFamily: userInfo?.theme?.fontFamily,
                 color: `${userInfo?.theme?.fontColor
                   ? userInfo?.theme?.fontColor
@@ -145,25 +136,22 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
             >
               {userInfo?.bio}
             </p>
-            <button style={{ marginTop: 15 }}>
-              <div className="contactEmail">
-        
-                <p
-                  style={{
-                    backgroundColor: userInfo?.theme?.is_colorImage,
-                    fontFamily: userInfo?.theme?.fontFamily,
-                    color: `${userInfo?.theme?.fontColor
-                      ? userInfo?.theme?.fontColor
-                      : "white"
-                      }`,
-                  }}
-                >
-                  <Link className="mobile-email-button" to={`mailto:${userInfo?.email}`} target="blank">
-                          <BiLogoGmail />
-                  {userInfo?.email}</Link>
-                </p>
-              </div>
-            </button>
+            <div className="contactEmail">
+
+              <p
+                style={{
+                  fontFamily: userInfo?.theme?.fontFamily,
+                  color: `${userInfo?.theme?.fontColor
+                    ? userInfo?.theme?.fontColor
+                    : "white"
+                    }`,
+                }}
+              >
+                <p className="mobile-email-button">
+                  <BiLogoGmail />
+                  <p>{userInfo?.email}</p></p>
+              </p>
+            </div>
           </div>
           <div className="edit-form" id="editForm">
             <input
@@ -189,6 +177,11 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
                 rel="noopener noreferrer"
                 className="link-card"
                 onClick={() => handleClickSubmit(link._id)}
+                style={{
+                  '--card-bg': userInfo?.theme?.is_colorImage || '#333',
+                  '--card-color': userInfo?.theme?.fontColor || 'white',
+                  '--card-font': userInfo?.theme?.fontFamily || 'sans-serif',
+                } as React.CSSProperties}
               >
                 <img
                   src={defaultConfig?.imagePath + link.linkLogo}
@@ -196,6 +189,7 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
                   className="link-logo"
                 />
                 <span
+                  className="link-card-title"
                   style={{
                     fontFamily: userInfo?.theme?.fontFamily,
                     color: `${userInfo?.theme?.fontColor
@@ -228,17 +222,16 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
                     onClick={() => handleClickSubmit(link._id)}
                   >
                     {matchedPlatform && (
-                        <span
+                      <span
                         className="social-icon"
                         style={{
-                          fontFamily: `${userInfo?.theme?.fontFamily}`, 
-                          backgroundColor: userInfo?.theme?.is_colorImage, 
+                          fontFamily: `${userInfo?.theme?.fontFamily}`,
                           color: `${userInfo?.theme?.fontColor ? userInfo?.theme?.fontColor : "white"}`,
                           gap: 0
                         }}
-                        >
+                      >
                         {matchedPlatform.icon}
-                        </span>
+                      </span>
                     )}
                   </Link>
                 </>

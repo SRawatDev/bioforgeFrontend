@@ -323,9 +323,8 @@ body {
 
 /* Profil Resmi */
 .profile-picture {
-  position: relative;
   text-align: center;
-  margin-top: -34px;
+  margin-top: 41px;
   padding: 0 20px;
 }
 .profile-picture1 {
@@ -337,7 +336,7 @@ body {
 .profile-picture img {
   width: 90px;
   height: 90px;
-  border: 5px solid #fff;
+  border: 2px solid #fff;
   border-radius: 50%;
   object-fit: cover;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -505,7 +504,7 @@ body {
 
   justify-content: start;
   flex-wrap: wrap;
-  padding: 5px;
+    padding: 5px;
 }
 
 .link-card {
@@ -513,9 +512,7 @@ body {
   display: flex;
   align-items: center;
   margin-bottom: 10px;
-  background: white;
   border: 1px solid #ddd;
-  border-radius: 8px;
   padding: 8px;
   text-decoration: none;
   color: black;
@@ -534,12 +531,7 @@ body {
     flex-direction: column;
   }
 }
-.contactEmail {
-  display: flex;
-  gap: 4px;
-  align-items: center;
-  align-content: baseline;
-}
+
 .profile {
   display: flex;
   align-items: center;
@@ -584,12 +576,20 @@ body {
 .link-card {
   display: flex;
   align-items: flex-start;
-  background-color: #fff;
-  padding: 8px;
-  border-radius: 7px;
+  padding: 5px 8px 6px 9px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
   gap: 16px;
-  transition: transform 0.3s ease;
+  transition: background-color 0.4s ease, transform 0.3s ease;
+  background-color: var(--card-bg); 
+  color: var(--card-color);
+  font-family: var(--card-font);
+}
+
+.link-card-title{
+  margin-top:8px;
+}
+.link-card:hover {
+  background-color: transparent;
 }
 
 .link-info {
@@ -929,6 +929,7 @@ input[type="file"] {
 }
 .editprofile {
   display: flex;
+  justify-content: center;
   gap: 10px;
 }
 
@@ -1135,7 +1136,6 @@ input[type="file"] {
   display: flex;
   align-items: center;
   padding: 10px;
-  background: #e0e0e0;
   border-radius: 12px;
   margin-bottom: 12px;
   position: relative;
@@ -1309,4 +1309,8 @@ input[type="color"] {
   width: 28px;
   border-radius: 50%;
   margin-left: 6px;
+}
+.mobile-email-button{
+  display: flex;
+  align-items: anchor-center;
 }

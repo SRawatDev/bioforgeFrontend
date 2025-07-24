@@ -22,6 +22,7 @@ interface userInfo {
   banner_img: string
   profile_img: string
   theme: theme
+
 }
 
 interface theme {
@@ -108,7 +109,6 @@ const Index: React.FC = () => {
 
 
   const userId = localStorage.getItem('_id') || null
-
   return (
     <>
       {loader ? (
@@ -117,58 +117,52 @@ const Index: React.FC = () => {
         <div
           className="mobile-profile"
           style={{
-            backgroundColor: userInfo?.theme?.is_colorImage || '#f5f5f5',
-            color: userInfo?.theme?.fontColor || '#333',
-            fontFamily: userInfo?.theme?.fontFamily || 'sans-serif'
+            // backgroundColor: userInfo?.theme?.is_colorImage,
+            backgroundImage: `url(${defaultConfig?.imagePath + userInfo?.banner_img})`,
+            height: "100%",
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+            overflow: "scroll",
+            fontFamily: userInfo?.theme?.fontFamily,
+            color: `${userInfo?.theme?.fontColor
+              ? userInfo?.theme?.fontColor
+              : "white"
+              }`,
           }}
         >
-          <div className="mobile-banner">
-            <img 
-              src={defaultConfig?.imagePath + userInfo?.banner_img} 
-              alt="Banner"
-            />
-            
-            {userId !== id.id && userId && (
-              <BsThreeDots
-                className="mobile-menu-dots"
-                type="button"
-                data-bs-toggle="offcanvas"
-                data-bs-target="#offcanvasBottom"
-                aria-controls="offcanvasBottom"
-              />
-            )}
-          </div>
+
           <div className="mobile-content">
             <div className="mobile-profile-header">
               <div className="mobile-avatar">
-                <img 
-                  src={defaultConfig?.imagePath + userInfo?.profile_img} 
+                <img
+                  src={defaultConfig?.imagePath + userInfo?.profile_img}
                   alt="Profile"
                 />
               </div>
-              
+
               <div className="mobile-user-info">
                 <h1 className="mobile-username">
-                  {userInfo?.username}
-                  {localStorage.getItem('accessToken') && userId === id.id 
-              
+                  @{userInfo?.username}
+                  {localStorage.getItem('accessToken') && userId === id.id
+
                   }
                 </h1>
-                
+
                 <p className="mobile-bio">{userInfo?.bio}</p>
-                
-                <a href={`mailto:${userInfo?.email}`} className="mobile-email-button">
+
+                <p  className="mobile-email-button">
                   <BiLogoGmail />
                   <span>{userInfo?.email}</span>
-                </a>
+                </p>
               </div>
             </div>
 
             <div className="mobile-links">
               {userInfo?.non_social && userInfo.non_social.length > 0 && (
                 <>
-                  <h2 className="mobile-section-title">Links</h2>
-                  
+
+
                   <div className="mobile-links-list">
                     {userInfo.non_social.map(link => (
                       <Link
@@ -176,8 +170,14 @@ const Index: React.FC = () => {
                         to={link.linkUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="mobile-link-item"
+                        className="link-card"
                         onClick={() => handleClickSubmit(link._id)}
+                        style={{
+                          padding: "10px",
+                          '--card-bg': userInfo?.theme?.is_colorImage || '#333',
+                          '--card-color': userInfo?.theme?.fontColor || 'white',
+                          '--card-font': userInfo?.theme?.fontFamily || 'sans-serif',
+                        } as React.CSSProperties}
                       >
                         <img
                           src={defaultConfig?.imagePath + link.linkLogo}
@@ -190,11 +190,9 @@ const Index: React.FC = () => {
                   </div>
                 </>
               )}
-              
+
               {userInfo?.social && userInfo.social.length > 0 && (
                 <div className="mobile-social-section">
-                  <h2 className="mobile-section-title">Social Media</h2>
-                  
                   <div className="mobile-social-icons">
                     {userInfo.social.map(link => {
                       const matchedPlatform = socialPlatforms.find(
@@ -205,11 +203,21 @@ const Index: React.FC = () => {
                           key={link._id}
                           to={link.linkUrl}
                           target="_blank"
+                          style={{ color: "black" }}
                           rel="noopener noreferrer"
-                          className="mobile-social-icon"
+                          className="link-card-social"
                           onClick={() => handleClickSubmit(link._id)}
                         >
-                          {matchedPlatform && matchedPlatform.icon}
+                          <span
+                            className="social-icon"
+                            style={{
+                              fontFamily: `${userInfo?.theme?.fontFamily}`,
+                              color: `${userInfo?.theme?.fontColor ? userInfo?.theme?.fontColor : "white"}`,
+                              gap: 0
+                            }}
+                          >
+                            {matchedPlatform && matchedPlatform.icon}
+                          </span>
                         </Link>
                       )
                     })}

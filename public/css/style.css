@@ -1927,7 +1927,6 @@ html.lenis {
 .links-list {
   display: flex;
   flex-direction: column;
-  gap: 15px;
 }
 
 .link-item {
@@ -1974,11 +1973,7 @@ html.lenis {
   object-fit: cover;
 }
 
-.social-icon {
-  font-size: 24px;
-  color: #6366f1;
-  background-color: #f0f4ff;
-}
+
 
 .link-item-details {
   flex: 1;

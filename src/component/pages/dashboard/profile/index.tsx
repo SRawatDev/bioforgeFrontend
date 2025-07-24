@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import ErrorMessage from '../../../../helpers/ErrorMessage'
 import { BsThreeDots } from 'react-icons/bs'
-import { FaEdit, FaShareAlt } from 'react-icons/fa'
 import { callAPIWithoutAuth } from '../../../../utils/apicall.utils'
 import { apiUrls } from '../../../../utils/api.utils'
 import { defaultConfig } from '../../../../config'
@@ -106,20 +105,7 @@ const Index: React.FC = () => {
     }
   }
 
-  const shareProfile = () => {
-    if (navigator.share) {
-      navigator.share({
-        title: `${userInfo?.username}'s Profile`,
-        url: window.location.href
-      })
-        .catch((error) => console.log('Error sharing', error));
-    } else {
-      // Fallback for browsers that don't support navigator.share
-      navigator.clipboard.writeText(window.location.href)
-        .then(() => alert('Profile link copied to clipboard!'))
-        .catch((err) => console.error('Could not copy text: ', err));
-    }
-  }
+
 
   const userId = localStorage.getItem('_id') || null
 
@@ -136,7 +122,6 @@ const Index: React.FC = () => {
             fontFamily: userInfo?.theme?.fontFamily || 'sans-serif'
           }}
         >
-          {/* Banner Image */}
           <div className="mobile-banner">
             <img 
               src={defaultConfig?.imagePath + userInfo?.banner_img} 
@@ -153,10 +138,7 @@ const Index: React.FC = () => {
               />
             )}
           </div>
-          
-          {/* Profile Content */}
           <div className="mobile-content">
-            {/* Profile Header */}
             <div className="mobile-profile-header">
               <div className="mobile-avatar">
                 <img 
@@ -169,9 +151,7 @@ const Index: React.FC = () => {
                 <h1 className="mobile-username">
                   {userInfo?.username}
                   {localStorage.getItem('accessToken') && userId === id.id 
-                    // <Link to={`/updateProfile/${localStorage.getItem('_id')}`} className="mobile-edit-icon">
-                    //   <FaEdit />
-                    // </Link>
+              
                   }
                 </h1>
                 
@@ -183,8 +163,7 @@ const Index: React.FC = () => {
                 </a>
               </div>
             </div>
-            
-            {/* Links Section */}
+
             <div className="mobile-links">
               {userInfo?.non_social && userInfo.non_social.length > 0 && (
                 <>
@@ -212,7 +191,6 @@ const Index: React.FC = () => {
                 </>
               )}
               
-              {/* Social Links */}
               {userInfo?.social && userInfo.social.length > 0 && (
                 <div className="mobile-social-section">
                   <h2 className="mobile-section-title">Social Media</h2>
@@ -240,15 +218,6 @@ const Index: React.FC = () => {
               )}
             </div>
           </div>
-          
-          {/* Share Button */}
-          {/* <button 
-            className="mobile-share-button" 
-            onClick={shareProfile}
-            aria-label="Share profile"
-          >
-            <FaShareAlt />
-          </button> */}
         </div>
       )}
       <Report userName={userInfo?.username || ''} />

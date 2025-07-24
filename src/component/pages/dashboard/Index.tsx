@@ -4,15 +4,12 @@ import DashboardSidebar from "./DashboardSidebar";
 import Main from "./Main";
 import { MobileUi } from "./MobileUi";
 import ManageLinks from "../links/Index";
-import UpadteProfile from "../updateProfile/Index"
 import { callAPIWithoutAuth } from "../../../utils/apicall.utils";
 import { apiUrls } from "../../../utils/api.utils";
 import { useEffect, useState } from "react";
 import ErrorMessage from "../../../helpers/ErrorMessage";
 import ProfileShimmer from "../../ProfileShimmer";
-import { FaShareAlt } from "react-icons/fa"; // Import share icon
-import UpdateProfile from "../updateProfile/Index";
-
+import { FaShareAlt } from "react-icons/fa"; 
 interface Theme {
   fontFamily: string;
   is_colorImage: string;
@@ -98,8 +95,8 @@ const Index = () => {
       <div className="dashboard-main-area">
         <div className="dashboard-main-content">
           {layout === "updateProfile" ? (
-            // <Main getUserDetails={getUserDetail} />
-            <UpdateProfile/>
+            <Main getUserDetails={getUserDetail} />
+            // <UpdateProfile/>
           ) : (
             <ManageLinks getUserDetail={getUserDetail} />
           )}

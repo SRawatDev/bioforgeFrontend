@@ -8,6 +8,9 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { BiLogoGmail } from "react-icons/bi";
 import { socialPlatforms } from "../links/linksAddEdit";
 import axios from "axios";
+import { TbBackground } from "react-icons/tb";
+// import './mobilePreview.css'
+
 interface userInfo {
   _id: string;
   username: string;
@@ -19,11 +22,13 @@ interface userInfo {
   profile_img: string;
   theme: theme;
 }
+
 interface theme {
   fontFamily: string;
   is_colorImage: string;
   fontColor: string;
 }
+
 interface Link {
   linkTitle: string;
   linkUrl: string;
@@ -31,13 +36,16 @@ interface Link {
   is_index: number;
   _id: string;
 }
+
 interface MobileUiProps {
   userInfo: userInfo | null;
 }
+
 export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
   const [ip, setIp] = useState<string>("");
   const navigate = useNavigate();
   const id = useParams();
+
   const getUserIp = async () => {
     try {
       const response = await axios.get("https://api.ipify.org/?format=json");
@@ -46,11 +54,10 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
       ErrorMessage(error.message || "Something went wrong");
     }
   };
+
   useEffect(() => {
     getUserIp();
   }, [ip]);
-
-
 
   const handleClickSubmit = async (id: string) => {
     try {
@@ -75,13 +82,22 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
       ErrorMessage(error.message || "Something went wrong");
     }
   };
+
   const userId = localStorage.getItem("_id") || null;
+
   return (
     <>
-
       <section
         id="phone-preview-container"
         aria-label="Mobile preview of Linktree"
+        style={{
+          backgroundImage: userInfo?.banner_img 
+            ? `url(${defaultConfig?.imagePath + userInfo?.banner_img})` 
+            : 'none',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat'
+        }}
       >
         <div
           className="profile-container"
@@ -94,22 +110,17 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
               }`,
           }}
         >
-          <div className="cover-photo">
-            <img
-              id="coverImage three-dots-image"
-              src={defaultConfig?.imagePath + userInfo?.banner_img}
-              alt="Kapak Resmi"
+          {/* Three dots for actions - positioned at top right */}
+          {userId !== id.id && userId && (
+            <BsThreeDots
+              className="threedots"
+              type="button"
+              data-bs-toggle="offcanvas"
+              data-bs-target="#offcanvasBottom"
+              aria-controls="offcanvasBottom"
             />
-            {userId !== id.id && userId && (
-              <BsThreeDots
-                className="threedots"
-                type="button"
-                data-bs-toggle="offcanvas"
-                data-bs-target="#offcanvasBottom"
-                aria-controls="offcanvasBottom"
-              />
-            )}
-          </div>
+          )}
+
           <div className="profile-picture">
             <img
               id="profileImage"
@@ -117,9 +128,10 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
               alt="Profil Fotoğrafı"
             />
           </div>
+
           <div className="profile-info">
             <h1
-              id="username "
+              id="username"
               className="editprofile"
               style={{
                 backgroundColor: userInfo?.theme?.is_colorImage,
@@ -130,7 +142,7 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
                   }`,
               }}
             >
-              {userInfo?.username}{" "}
+              {userInfo?.username}
             </h1>
             <p
               id="bio"
@@ -147,7 +159,6 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
             </p>
             <button style={{ marginTop: 15 }}>
               <div className="contactEmail">
-                <BiLogoGmail />
                 <p
                   style={{
                     backgroundColor: userInfo?.theme?.is_colorImage,
@@ -158,11 +169,15 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
                       }`,
                   }}
                 >
-                  {userInfo?.email}
+                  <Link className="mobile-email-button" to={`mailto:${userInfo?.email}`} target="blank">
+                    <BiLogoGmail />
+                    {userInfo?.email}
+                  </Link>
                 </p>
               </div>
             </button>
           </div>
+
           <div className="edit-form" id="editForm">
             <input
               type="text"
@@ -207,7 +222,8 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
               </Link>
             ))}
           </div>
-          <div className="spcial-links-list d-flex  justify-content-center gap-2">
+
+          <div className="spcial-links-list d-flex justify-content-center gap-2">
             {userInfo?.social.map((link) => {
               const matchedPlatform = socialPlatforms.find(
                 (platform) =>
@@ -215,37 +231,34 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
                   link.linkTitle.toLowerCase()
               );
               return (
-                <>
-                  <Link
-                    key={link._id}
-                    to={link.linkUrl}
-                    target="_blank"
-                    style={{ color: "black" }}
-                    rel="noopener noreferrer"
-                    className="link-card-social"
-                    onClick={() => handleClickSubmit(link._id)}
-                  >
-                    {matchedPlatform && (
-                        <span
-                        className="social-icon"
-                        style={{
-                          fontFamily: `${userInfo?.theme?.fontFamily}`, 
-                          backgroundColor: userInfo?.theme?.is_colorImage, 
-                          color: `${userInfo?.theme?.fontColor ? userInfo?.theme?.fontColor : "white"}`,
-                          gap: 0
-                        }}
-                        >
-                        {matchedPlatform.icon}
-                        </span>
-                    )}
-                  </Link>
-                </>
+                <Link
+                  key={link._id}
+                  to={link.linkUrl}
+                  target="_blank"
+                  style={{ color: "black" }}
+                  rel="noopener noreferrer"
+                  className="link-card-social"
+                  onClick={() => handleClickSubmit(link._id)}
+                >
+                  {matchedPlatform && (
+                    <span
+                      className="social-icon"
+                      style={{
+                        fontFamily: `${userInfo?.theme?.fontFamily}`,
+                        backgroundColor: userInfo?.theme?.is_colorImage,
+                        color: `${userInfo?.theme?.fontColor ? userInfo?.theme?.fontColor : "white"}`,
+                        gap: 0
+                      }}
+                    >
+                      {matchedPlatform.icon}
+                    </span>
+                  )}
+                </Link>
               );
             })}
           </div>
         </div>
       </section>
-
     </>
   );
 };

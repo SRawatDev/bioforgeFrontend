@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import './Navbar.css';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { defaultConfig } from '../../config';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 
 const Navbar: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -34,6 +34,7 @@ const Navbar: React.FC = () => {
           <div className="navbar-links">
             <Link to={"/"} className="navbar-link">Home</Link>
             <Link to={"/landingPage"} className="navbar-link">Themes</Link>
+            <Link to={"/about"} className="navbar-link">About</Link>
           </div>
           <div className="navbar-right">
             {

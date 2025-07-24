@@ -1,3 +1,4 @@
+//chnage the  layout design of card in mobile portrait mode
 import './Card.css';
 import type { ThemeData } from './landingPage';
 import { defaultConfig } from '../../../config';

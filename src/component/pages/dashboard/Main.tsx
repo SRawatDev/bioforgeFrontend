@@ -123,8 +123,8 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
         setPreviewBanner(user.banner_img || null);
       }
     } catch (err: any) {
-      setLoader(false);
-      ErrorMessage(err.message || "Something went wrong");
+      setLoader(true);
+     
     }
   };
 
@@ -154,8 +154,7 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
         ErrorMessage(apiResponse?.data?.message);
       }
     } catch (err) {
-      setLoader(false);
-      ErrorMessage("Profile image upload failed");
+      setLoader(true);
     }
   };
 
@@ -178,8 +177,7 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
         ErrorMessage(apiResponse?.data?.message);
       }
     } catch (err) {
-      setLoader(false);
-      ErrorMessage("Banner image upload failed");
+      setLoader(true);
     }
   };
 
@@ -207,8 +205,7 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
         SuccessMessage(response?.data?.message);
       }
     } catch (err: any) {
-      setLoader(false);
-      ErrorMessage(err.message || "Something went wrong");
+      setLoader(true);
     }
   };
   const selectSelectedTheme = (img: string) => {
@@ -237,9 +234,9 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
           <form className="profile-form" onSubmit={handleSubmit}>
             <div className="section-card">
               <div className="section-header">
-                <h3 className="section-title">Cover Image</h3>
+                <h3 className="section-title">Theme </h3>
                 <p className="section-description">
-                  Upload a banner image for your profile
+                  Upload a theme for your profile
                 </p>
               </div>
               <div className="static-banner-grid">
@@ -265,7 +262,7 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
                   ) : (
                     <div className="banner-placeholder">
                       <FaCamera className="placeholder-icon" />
-                      <span>No cover image</span>
+                      <span>No Theme</span>
                     </div>
                   )}
                   <div className="banner-overlay">
@@ -274,7 +271,7 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
                       className="upload-button"
                     >
                       <FaCamera />
-                      <span>Change Cover</span>
+                      <span>Change Theme</span>
                     </label>
                   </div>
                 </div>

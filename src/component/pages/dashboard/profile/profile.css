@@ -106,8 +106,7 @@
 .mobile-bio {
   font-size: 20px;
   line-height: 1.5;
-  text-align: justify;
-  hyphens: auto;
+
   margin-bottom: 16px;
   
   margin-bottom:0px;
@@ -343,8 +342,7 @@
   font-size: 20px;
   line-height: 1.5;
   margin-bottom: 6px;
-    text-align: justify;
-  hyphens: auto;
+
   opacity: 0.85;
 }
 

@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { callAPI } from '../../../utils/apicall.utils'
 import { apiUrls } from '../../../utils/api.utils'
-
 import LoadScreen from '../../loaderScreen'
 import ErrorMessage from '../../../helpers/ErrorMessage'
-
 interface ReportData {
   totalUsers: number
   activeUsers: number
@@ -39,16 +37,15 @@ const Reports: React.FC = () => {
         'GET',
         {}
       )
+      setLoader(false)
       if (response?.data?.status) {
         setReportData(response.data.data)
       } else {
         ErrorMessage(response?.data?.message || 'Failed to fetch report data')
       }
     } catch (err: any) {
-      ErrorMessage(err.message || 'Something went wrong')
-    } finally {
-      setLoader(false)
-    }
+      setLoader(true)
+    } 
   }
 
   if (loader) return <LoadScreen />

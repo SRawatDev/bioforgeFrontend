@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import ErrorMessage from "../../../helpers/ErrorMessage";
 import ProfileShimmer from "../../ProfileShimmer";
 import { FaShareAlt } from "react-icons/fa";
+import { TbRuler } from "react-icons/tb";
 interface Theme {
   fontFamily: string;
   is_colorImage: string;
@@ -60,8 +61,7 @@ const Index = () => {
         setUserInfo(response?.data?.data[0]);
       }
     } catch (err: any) {
-      setLoader(false);
-      ErrorMessage(err.message || "Something went wrong");
+      setLoader(true);
     }
   };
   const openProfileInNewTab = () => {

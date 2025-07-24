@@ -63,8 +63,7 @@ const Index: React.FC = () => {
         setUserInfo(response?.data?.data[0])
       }
     } catch (err: any) {
-      ErrorMessage(err.message || 'Something went wrong')
-      setLoader(false)
+      setLoader(true)
     }
   }
 
@@ -84,6 +83,7 @@ const Index: React.FC = () => {
 
   const handleClickSubmit = async (id: string) => {
     try {
+      
       const userId = localStorage.getItem('accessToken')
         ? localStorage.getItem('_id') || ''
         : ''
@@ -102,7 +102,7 @@ const Index: React.FC = () => {
         ErrorMessage(response?.data?.data?.message)
       }
     } catch (error: any) {
-      ErrorMessage(error.message || 'Something went wrong')
+
     }
   }
 
@@ -149,7 +149,7 @@ const Index: React.FC = () => {
                   }
                 </h1>
 
-                <p className="mobile-bio" style={{    textAlign:"center",}}>{userInfo?.bio}</p>
+                <p className="mobile-bio" style={{    textAlign:"left",}}>{userInfo?.bio}</p>
 
                 <p  className="mobile-email-button">
                   <BiLogoGmail />

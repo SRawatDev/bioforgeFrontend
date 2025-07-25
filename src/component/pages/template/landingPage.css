@@ -162,7 +162,7 @@ html.lenis {
   z-index: 1;
 }
 
-.section-title {
+/* .section-title {
   font-size: clamp(2.5rem, 6vw, 4rem);
   font-weight: 800;
   margin-bottom: 25px;
@@ -171,7 +171,7 @@ html.lenis {
   -webkit-text-fill-color: transparent;
   background-clip: text;
   line-height: 1.2;
-}
+} */
 
 .section-subtitle {
   font-size: clamp(1rem, 2.5vw, 1.3rem);

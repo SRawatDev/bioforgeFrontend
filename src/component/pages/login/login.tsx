@@ -69,10 +69,10 @@ const Login: React.FC = () => {
     setLoader(true);
     try {
       const response = await callAPIWithoutAuth(apiUrls.login, {}, "POST", loginData);
+      setLoader(false);
       
       if (!response?.data?.status) {
         ErrorMessage(response?.data?.message || "Login failed");
-        setLoader(false);
       } else {
         const userData = response.data.data;
         localStorage.setItem("_id", userData.id);
@@ -80,8 +80,7 @@ const Login: React.FC = () => {
         localStorage.setItem("type", userData.type);
         localStorage.setItem("username", userData.username);
         localStorage.setItem("profile_img", userData.profile_img || "");
-        
-        setLoader(false);
+  
         SuccessMessage(response.data.message || "Welcome back to BioForge!");
         
         if (userData.type === "user") {
@@ -91,8 +90,8 @@ const Login: React.FC = () => {
         }
       }
     } catch (err: any) {
-      setLoader(false);
-      ErrorMessage(err.message || "Something went wrong. Please try again.");
+      setLoader(true);
+    
     }
   };
 

@@ -150,6 +150,7 @@ html.lenis {
   align-items: center;
   padding: 30px 20px;
   position: relative;
+  overflow: hidden;
 }
 
 /* Modern iPhone 14 Pro Style Device Frame */

@@ -116,9 +116,9 @@ const Register: React.FC = () => {
         registerData
       );
       
+      setLoader(false);
       if (!response?.data?.status) {
         ErrorMessage(response?.data?.message || "Registration failed");
-        setLoader(false);
       } else {
         setRegister({
           username: "",
@@ -126,13 +126,12 @@ const Register: React.FC = () => {
           password: "",
           confirmPassword: "",
         });
-        setLoader(false);
         SuccessMessage(response?.data?.message || "Account created successfully! Please sign in.");
         navigate("/login");
       }
     } catch (err: any) {
-      setLoader(false);
-      ErrorMessage(err.message || "Something went wrong. Please try again.");
+      setLoader(true);
+      
     }
   };
 

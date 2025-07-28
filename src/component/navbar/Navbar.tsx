@@ -4,14 +4,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import { defaultConfig } from '../../config';
 // import { Link } from 'react-router-dom';
 
-const Navbar: React.FC = () => {
+const Navbar: React.FC<{ children?: React.ReactNode }>  = ({ children }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
   const navigate = useNavigate();
-  const isLoggedIn = !!localStorage.getItem("accessToken");
+  const isLoggedIn = localStorage.getItem("accessToken");
 
   const profileImg = localStorage.getItem("profile_img")
     ? defaultConfig.imagePath + localStorage.getItem("profile_img")
@@ -20,6 +20,7 @@ const Navbar: React.FC = () => {
   const userId = localStorage.getItem("_id");
 
   return (
+    <>
     <nav className="navbar" style={{ backgroundColor: 'red', minHeight: '70px' }}>
       <div className="navbar-container">
         <div className="navbar-left">
@@ -34,7 +35,7 @@ const Navbar: React.FC = () => {
           <div className="navbar-links">
             <Link to={"/"} className="navbar-link">Home</Link>
             <Link to={"/landingPage"} className="navbar-link">Themes</Link>
-            <Link to={"/about"} className="navbar-link">About</Link>
+            {/* <Link to={"/about"} className="navbar-link">About</Link> */}
           </div>
           <div className="navbar-right">
             {
@@ -49,6 +50,8 @@ const Navbar: React.FC = () => {
         </div>
       </div>
     </nav>
+    {children}
+    </>
   );
 };
 

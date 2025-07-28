@@ -130,13 +130,13 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose }) => {
                   <h6 className="username">
                     {localStorage.getItem("username") || "User"}
                   </h6>
-                  <span className="user-role">Premium User</span>
+                  {/* <span className="user-role">Premium User</span>
                   <div className="user-stats">
                     <span className="stat-item">
                       <IoStatsChartOutline />
                       <span>1.2k views</span>
                     </span>
-                  </div>
+                  </div> */}
                 </div>
               )}
             </div>

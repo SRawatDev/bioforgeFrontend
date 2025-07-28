@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { callAPI } from '../../../utils/apicall.utils'
 import { apiUrls } from '../../../utils/api.utils'
-import { ErrorMessage, SuccessMessage } from '../template/message.utils'
 import LoadScreen from '../../loaderScreen'
 import NodataFound from '../../NodataFound'
+import ErrorMessage from '../../../helpers/ErrorMessage'
+import SuccessMessage from '../../../helpers/Success'
 
 interface User {
   _id: string
@@ -28,24 +29,25 @@ const Users: React.FC = () => {
     setLoader(true)
     try {
       const response = await callAPI(apiUrls.getAllUser, {}, 'GET', {})
+      setLoader(false)
       if (response?.data?.status) {
         setUsers(response.data.data || [])
       } else {
         ErrorMessage(response?.data?.message || 'Failed to fetch users')
       }
     } catch (err: any) {
-      ErrorMessage(err.message || 'Something went wrong')
-    } finally {
-      setLoader(false)
+      setLoader(true)
     }
   }
 
   const handleStatusUpdate = async (userId: string, newStatus: string) => {
     try {
+      setLoader(true)
       const response = await callAPI(apiUrls.userStatusUpdate, {}, 'POST', {
         userId,
         status: newStatus
       })
+      setLoader(false)
       if (response?.data?.status) {
         SuccessMessage('User status updated successfully')
         fetchUsers()
@@ -53,15 +55,17 @@ const Users: React.FC = () => {
         ErrorMessage(response?.data?.message || 'Failed to update status')
       }
     } catch (err: any) {
-      ErrorMessage(err.message || 'Something went wrong')
+      setLoader(true)
     }
   }
 
   const handleDeleteUser = async (userId: string) => {
     try {
+            setLoader(true)
       const response = await callAPI(apiUrls.admindeleteUser, {}, 'DELETE', {
         userId
       })
+            setLoader(false)
       if (response?.data?.status) {
         SuccessMessage('User deleted successfully')
         setDeleteConfirm(null)
@@ -70,7 +74,7 @@ const Users: React.FC = () => {
         ErrorMessage(response?.data?.message || 'Failed to delete user')
       }
     } catch (err: any) {
-      ErrorMessage(err.message || 'Something went wrong')
+            setLoader(true)
     }
   }
 
@@ -140,22 +144,20 @@ const Users: React.FC = () => {
                       </td>
                       <td className='px-6 py-4 whitespace-nowrap'>
                         <span
-                          className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                            user.type === 'admin'
+                          className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${user.type === 'admin'
                               ? 'bg-purple-100 text-purple-800'
                               : 'bg-blue-100 text-blue-800'
-                          }`}
+                            }`}
                         >
                           {user.type}
                         </span>
                       </td>
                       <td className='px-6 py-4 whitespace-nowrap'>
                         <span
-                          className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                            user.status === 'active'
+                          className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${user.status === 'active'
                               ? 'bg-green-100 text-green-800'
                               : 'bg-red-100 text-red-800'
-                          }`}
+                            }`}
                         >
                           {user.status}
                         </span>
@@ -172,11 +174,10 @@ const Users: React.FC = () => {
                                 user.status === 'active' ? 'inactive' : 'active'
                               )
                             }
-                            className={`px-3 py-1 rounded text-xs font-medium ${
-                              user.status === 'active'
+                            className={`px-3 py-1 rounded text-xs font-medium ${user.status === 'active'
                                 ? 'bg-red-100 text-red-800 hover:bg-red-200'
                                 : 'bg-green-100 text-green-800 hover:bg-green-200'
-                            }`}
+                              }`}
                           >
                             {user.status === 'active'
                               ? 'Deactivate'

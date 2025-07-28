@@ -108,9 +108,8 @@ export const LinksAddEdit: React.FC<Props> = ({ open, onClose, Detail, linkDetai
         ErrorMessage(apiResponse?.data?.message);
       }
     } catch (err) {
-      setLoader(false);
-      console.error('Error uploading image:', err);
-      ErrorMessage('Image upload failed');
+      setLoader(true);
+     
     }
   };
 
@@ -141,9 +140,8 @@ export const LinksAddEdit: React.FC<Props> = ({ open, onClose, Detail, linkDetai
         onClose();
       }
     } catch (err: any) {
-      setLoader(false);
-      ErrorMessage(err.message || 'Something went wrong');
-    }
+      setLoader(true);
+     }
   };
 
   if (!open) return null;
@@ -169,7 +167,7 @@ export const LinksAddEdit: React.FC<Props> = ({ open, onClose, Detail, linkDetai
           </div>
 
           <div className="modal-body">
-            <form onSubmit={handleSubmit} className="link-form">
+            <form onSubmit={handleSubmit} className="link-form gap-0">
               {/* Link Type Selection */}
               <div className="form-section">
                 <label className="form-label">

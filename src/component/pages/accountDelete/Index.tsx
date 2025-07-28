@@ -9,12 +9,9 @@ import LoadScreen from "../../loaderScreen";
 import { FaLowVision, FaEye, FaTrashAlt } from "react-icons/fa";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { MdWarning } from "react-icons/md";
-// import "./deleteAccount.css";
-
 interface changepasswordInterface {
   password: string;
 }
-
 const Index = () => {
   const [loader, setLoader] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState({
@@ -55,8 +52,7 @@ const Index = () => {
         SuccessMessage(response?.data?.message);
       }
     } catch (err: any) {
-      ErrorMessage(err.message || "Something went wrong");
-      setLoader(false);
+      setLoader(true);
     }
   };
 

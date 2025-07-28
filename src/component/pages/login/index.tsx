@@ -58,7 +58,7 @@ const Login: React.FC = () => {
         SuccessMessage(response?.data?.message);
       }
     } catch (err: any) {
-      ErrorMessage(err.message || "Something went wrong");
+     
       setLoader(true);
     }
   };

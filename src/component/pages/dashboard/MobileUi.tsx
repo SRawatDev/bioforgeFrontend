@@ -5,9 +5,10 @@ import { callAPIWithoutAuth } from '../../../utils/apicall.utils'
 import { apiUrls } from '../../../utils/api.utils'
 import { defaultConfig } from '../../../config'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { BiLogoGmail } from 'react-icons/bi'
+import { BiBorderRadius, BiLogoGmail } from 'react-icons/bi'
 import { socialPlatforms } from '../links/linksAddEdit'
 import axios from 'axios'
+import type { MdHeight } from 'react-icons/md'
 
 // ... (keep the existing interfaces)
 interface userInfo {
@@ -95,10 +96,11 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
   const containerStyle = {
     ...getThemeStyles(),
     borderRadius: '33px',
-    boxShadow: '0 4px 6px rgba(95, 229, 51, 0.1), 0 1px 3px rgba(211, 215, 18, 0.08)',
+    boxShadow:
+      '0 4px 6px rgba(95, 229, 51, 0.1), 0 1px 3px rgba(211, 215, 18, 0.08)',
     padding: '0.5rem',
     maxWidth: '400px',
-    maxHeight: '710px',
+    maxHeight: '710px'
   }
 
   const profilePictureStyle = {
@@ -116,18 +118,23 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
     fontWeight: 'bold',
     marginBottom: '0.5rem',
     textAlign: 'center' as const,
-    background: 'linear-gradient(45deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3, #54a0ff)',
+    background:
+      'linear-gradient(45deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3, #54a0ff)',
     backgroundSize: '400% 400%',
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
+    fontFamily: userInfo?.theme?.fontFamily,
+    color: `${
+      userInfo?.theme?.fontColor ? userInfo?.theme?.fontColor : 'white'
+    }`
   }
 
   const bioStyle = {
     fontSize: '1rem',
     marginBottom: '0.5rem',
     textAlign: 'start' as const,
-    lineHeight: '1.2',
-    }
+    lineHeight: '1.2'
+  }
 
   const linkCardStyle = {
     ...getThemeStyles(true),
@@ -144,7 +151,9 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
   const linkLogoStyle = {
     width: '24px',
     height: '24px',
-    marginRight: '1rem'
+    marginRight: '1rem',
+    BiBorderRadius: '15px',
+    marginTop: '5.5px'
   }
 
   const socialLinksStyle = {
@@ -185,11 +194,20 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
               data-bs-target='#offcanvasBottom'
               aria-controls='offcanvasBottom'
               style={{
-                color: userInfo?.theme?.fontColor || '#333',
-                position: 'absolute',
-                top: '1rem',
-                right: '4rem',
-                fontSize: '1.5rem'
+                backgroundImage: `url(${
+                  defaultConfig?.imagePath + userInfo?.banner_img
+                })`,
+                height: '100%',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+                overflow: 'scroll',
+                fontFamily: userInfo?.theme?.fontFamily,
+                color: `${
+                  userInfo?.theme?.fontColor
+                    ? userInfo?.theme?.fontColor
+                    : 'white'
+                }`
               }}
             />
           )}
@@ -202,14 +220,63 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
           />
 
           <div className='profile-info'>
-            <h1 id='username' className='editprofile' style={headingStyle}>
-              {userInfo?.username}
+            <h1
+              id='username'
+              className='editprofile'
+              style={{
+                fontFamily: userInfo?.theme?.fontFamily,
+                color: `${
+                  userInfo?.theme?.fontColor
+                    ? userInfo?.theme?.fontColor
+                    : 'white'
+                }`
+              }}
+            >
+              {' '}
+              @{userInfo?.username} 
             </h1>
-            <p id='bio' style={bioStyle}>
+            <p
+              id='bio'
+              style={{
+                fontFamily: userInfo?.theme?.fontFamily,
+                textAlign: 'left',
+                color: `${
+                  userInfo?.theme?.fontColor
+                    ? userInfo?.theme?.fontColor
+                    : 'white'
+                }`
+              }}
+            >
               {userInfo?.bio}
             </p>
+            <div className='contactEmail'>
+              <p
+                style={{
+                  fontFamily: userInfo?.theme?.fontFamily,
+                  color: `${
+                    userInfo?.theme?.fontColor
+                      ? userInfo?.theme?.fontColor
+                      : 'white'
+                  }`
+                }}
+              >
+                <p className='mobile-email-button' >
+                  <BiLogoGmail />
+                  <p style={{ marginLeft:'5px' }}>{userInfo?.email}</p>
+                </p>
+              </p>
+            </div>
           </div>
-
+          <div className='edit-form' id='editForm'>
+            <input type='text' id='editUsername' placeholder='Adınızı girin' />
+            <textarea
+              id='editBio'
+              style={{ fontFamily: `${userInfo?.theme?.fontFamily}` }}
+              placeholder='Hakkınızda bir şeyler yazın..'
+              rows={3}
+              defaultValue={''}
+            />
+          </div>
           <div className='links-list'>
             {userInfo?.non_social.map(link => (
               <Link
@@ -219,14 +286,34 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
                 rel='noopener noreferrer'
                 className='link-card'
                 onClick={() => handleClickSubmit(link._id)}
-                style={linkCardStyle}
+                style={
+                  {
+                    '--card-bg': userInfo?.theme?.is_colorImage || '#333',
+                    '--card-color': userInfo?.theme?.fontColor || 'white',
+                    '--card-font': userInfo?.theme?.fontFamily || 'sans-serif',
+                    'border-radius':' 9px'
+                  } as React.CSSProperties
+                }
               >
                 <img
                   src={defaultConfig?.imagePath + link.linkLogo}
                   alt={link.linkTitle}
-                  style={linkLogoStyle}
+                  // style={linkLogoStyle}
+                  className="link-logo"
+                  style={{ width: '24px', height: '24px', marginRight: '1rem', borderRadius: '15px', marginTop: '5.5px' }}
                 />
-                <span>{link.linkTitle}</span>
+               <span
+                  className="link-card-title"
+                  style={{
+                    fontFamily: userInfo?.theme?.fontFamily,
+                    color: `${userInfo?.theme?.fontColor
+                      ? userInfo?.theme?.fontColor
+                      : "white"
+                      }`,
+                  }}
+                >
+                  {link.linkTitle}
+                </span>
               </Link>
             ))}
           </div>
@@ -255,6 +342,7 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
               )
             })}
           </div>
+           
         </div>
       </section>
     </>

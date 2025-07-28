@@ -4,7 +4,6 @@ import { apiUrls } from '../../../utils/api.utils'
 
 import LoadScreen from '../../loaderScreen'
 import NodataFound from '../../NodataFound'
-import ErrorMessage from '../../../helpers/ErrorMessage'
 
 interface AdminStats {
   totalUsers: number

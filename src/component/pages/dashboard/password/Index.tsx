@@ -92,8 +92,7 @@ const Index = () => {
         SuccessMessage(response?.data?.message)
       }
     } catch (err: any) {
-      ErrorMessage(err.message || 'Something went wrong')
-      setLoader(false)
+      setLoader(true)
     }
   }
 

@@ -1,13 +1,12 @@
-import React, { useEffect, useRef, useState } from "react";
+import  { useEffect, useRef, useState } from "react";
 import Lenis from "@studio-freight/lenis";
 import Card from "./Card";
 import "./LandingPage.css";
-import Footer from "./Footer";
-import Navbar from "../../navbar/Navbar";
 import { callAPIWithoutAuth } from "../../../utils/apicall.utils";
 import { apiUrls } from "../../../utils/api.utils";
 import ErrorMessage from "../../../helpers/ErrorMessage";
 import { ThemeShimmer } from "../../LinkShimmer";
+import { Footer } from "../../Footer/Footer";
 
 export interface ThemeData {
     _id?: string;
@@ -22,17 +21,11 @@ const LandingPage = () => {
     const lenisRef = useRef<Lenis | null>(null);
 
     useEffect(() => {
-        const lenis = new Lenis({
-            duration: 1.2,
-            easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-            direction: "vertical",
-            gestureDirection: "vertical",
-            smooth: true,
-            mouseMultiplier: 1,
-            smoothTouch: false,
-            touchMultiplier: 2,
-            infinite: false,
-        });
+       const lenis = new Lenis({
+        duration: 1.2,
+        easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      
+    });
 
         lenisRef.current = lenis;
 
@@ -73,8 +66,7 @@ const LandingPage = () => {
 
     return (
         <>
-  
-            <Navbar />
+
             <div className="landing-page">
                 <section className="gallery-section">
                     <div className="section-header">
@@ -97,8 +89,9 @@ const LandingPage = () => {
                     </div>
                 </section>
 
-                <Footer />
+             
             </div>
+            <Footer/>
         </>
     );
 };

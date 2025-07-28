@@ -19,7 +19,6 @@
   max-width: 600px;
   width: 100%;
   max-height: 90vh;
-  overflow: hidden;
   animation: modalSlideIn 0.3s ease-out;
 }
 @keyframes modalSlideIn {
@@ -154,6 +153,9 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   gap: 12px;
+}
+form{
+  gap: 0 !important;
 }
 .platform-option {
   border: 2px solid #e2e8f0;
@@ -294,7 +296,6 @@
 .form-actions {
   display: flex;
   justify-content: flex-end;
-  padding-top: 20px;
   border-top: 1px solid #e2e8f0;
 }
 .btn-primary,

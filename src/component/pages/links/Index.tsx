@@ -84,7 +84,6 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
       }
     } catch (err: any) {
       setLoader(true)
-      ErrorMessage(err.message || 'Something went wrong')
     }
   }
 
@@ -107,7 +106,6 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
       }
     } catch (err: any) {
       setLoader(true)
-      ErrorMessage(err.message || 'Something went wrong')
     }
   }
 
@@ -148,7 +146,6 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
       }
     } catch (err: any) {
       setLoader(true)
-      ErrorMessage(err.message || 'Delete failed')
     }
   }
 
@@ -172,7 +169,6 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
       }
     } catch (err: any) {
       setLoader(true)
-      ErrorMessage(err.message || 'Status update failed')
     }
   }
 
@@ -189,14 +185,14 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
     try {
       setLoader(true)
       await callAPI(apiUrls.updateindex, {}, 'POST', { items: updatedOrder })
+      setLoader(false)
       await Detail()
       getUserDetail()
       SuccessMessage('Link order updated')
     } catch (err: any) {
       ErrorMessage(err.message || 'Failed to update order')
-    } finally {
-      setLoader(false)
-    }
+      setLoader(true)
+    } 
   }
 
   const handleUserInfo = (clickList: clicks[] = []) => {

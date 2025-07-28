@@ -2,7 +2,19 @@
 import './Card.css';
 import type { ThemeData } from './landingPage';
 import { defaultConfig } from '../../../config';
+import { useNavigate } from 'react-router-dom';
 const Card = ({ themeName, themeImg, themeDiscription }: ThemeData) => {
+  const isLoggedIn = localStorage.getItem("accessToken");
+  const userId = localStorage.getItem("_id");
+  const navigate = useNavigate()
+  const isloginCheck = () => {
+    if (isLoggedIn) {
+      navigate(`/dashboard/updateProfile/${userId}`)
+    } else {
+      navigate("/register")
+    }
+  }
+
   return (
     <>
       <div className={`card card`}>
@@ -16,7 +28,7 @@ const Card = ({ themeName, themeImg, themeDiscription }: ThemeData) => {
         <div className="card-image-container">
           <img src={defaultConfig.baseAPIUrl + "images/" + themeImg} alt={themeName} className="card-image" />
           <div className="image-overlay">
-            <button type="button" className="quick-preview-btn">
+            <button type="button" className="quick-preview-btn" onClick={isloginCheck}>
               Quick View
             </button>
           </div>

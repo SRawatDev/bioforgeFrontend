@@ -187,6 +187,9 @@ html.lenis {
   background: linear-gradient(180deg, #0f0f23 0%, #1a1a2e 30%, #16213e 60%, #0f3460 100%);
   position: relative;
 }
+.gallery-section::-webkit-scrollbar {
+  width: 8px;
+}
 
 .gallery-section::before {
   content: '';

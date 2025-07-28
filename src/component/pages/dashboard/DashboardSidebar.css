@@ -31,6 +31,7 @@
   padding: 24px 20px;
   border-bottom: 1px solid #f1f5f9;
   background: white;
+  
 }
 
 .brand-section {
@@ -131,6 +132,14 @@
 .user-info {
   flex: 1;
   min-width: 0;
+}
+.user-info h6 {
+  font-weight: 500;
+    color: #2d3748;
+    font-size: 20px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    margin-left: 9px;
 }
 
 .username {

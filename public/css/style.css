@@ -55,17 +55,17 @@ html.lenis {
 
 /* MODERN MOBILE PREVIEW SECTION */
 .dashboard-preview {
-  width: 420px;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-left: 1px solid #eaeaea;
-  padding: 0;
-  flex-shrink: 0;
-  overflow: hidden;
-  transition: all 0.3s ease;
-  position: relative;
+    width: 420px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(134deg, #e5e6ed 0%, #29282b 100%);
+    border-left: 1px solid #eaeaea;
+    padding: 0;
+    flex-shrink: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    position: relative;
 }
 
 /* Modern Preview Header */
@@ -84,7 +84,7 @@ html.lenis {
 }
 
 .preview-header h3 {
-  color: white;
+  color: rgb(4, 4, 4);
   font-size: 20px;
   font-weight: 600;
   margin: 0;
@@ -99,7 +99,7 @@ html.lenis {
 }
 
 .preview-actions p {
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(9, 9, 9, 0.8);
   font-size: 13px;
   margin: 0;
   font-weight: 400;
@@ -111,7 +111,7 @@ html.lenis {
   align-items: center;
   gap: 8px;
   padding: 10px 18px;
-  background: rgba(255, 255, 255, 0.15);
+  background-color: #3d3a35;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -126,10 +126,10 @@ html.lenis {
 }
 
 .share-profile-button:hover {
-  background: rgba(255, 255, 255, 0.25);
+  background-color: rgba(22, 199, 25, 0.25);
   transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-  border-color: rgba(255, 255, 255, 0.3);
+  border-color: rgba(239, 6, 6, 0.3);
   color: white;
 }
 
@@ -655,7 +655,6 @@ html.lenis {
 .dashboard-sidebar .sidebar-header {
   padding: 20px;
   border-bottom: 1px solid #eaeaea;
-  display: flex;
   align-items: center;
   justify-content: space-between;
 }
@@ -1206,7 +1205,14 @@ html.lenis {
   flex: 1;
   min-width: 0;
 }
-
+.user-info h6 {
+  font-weight: 500;
+    color: #2d3748;
+    font-size: 20px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    margin-left: 9px;
+}
 .username {
   font-size: 16px;
   font-weight: 600;
@@ -1218,13 +1224,17 @@ html.lenis {
 }
 
 .user-role {
-  font-size: 12px;
-  color: #667eea;
-  font-weight: 500;
-  background: rgba(102, 126, 234, 0.1);
-  padding: 2px 8px;
-  border-radius: 12px;
-  display: inline-block;
+    font-size: 15px;
+    color: #667eea;
+    font-weight: 700;
+    background: linear-gradient(121deg, #a30000, #7f6224, #8f2020, #ff9ff3, #54a0ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradientShift 4s ease-in-out infinite;
+    padding: 2px 8px;
+    border-radius: 12px;
+    display: inline-block;
 }
 .user-stats {
   margin-top: 8px;

@@ -154,7 +154,7 @@ html.lenis {
 
 /* Modern iPhone 14 Pro Style Device Frame */
 .device-frame {
-  width: 317px;
+  width: 327px;
   height: 740px;
   background: linear-gradient(145deg, #1a1a1a, #2d2d2d);
   border-radius: 50px;
@@ -444,6 +444,7 @@ html.lenis {
 @media (max-width: 1200px) {
   .dashboard-preview {
     width: 380px;
+    background-color: white;
   }
   
   .device-frame {

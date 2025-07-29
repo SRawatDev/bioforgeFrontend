@@ -1,5 +1,5 @@
 import React from 'react';
-
+// import './Delete.css';
 interface Props {
   open: boolean;
   onClose: () => void;

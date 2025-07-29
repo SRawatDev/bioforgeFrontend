@@ -26,14 +26,14 @@ const Card = ({ themeName, themeImg, themeDiscription }: ThemeData) => {
 
         <div className="card-image-container">
           <img src={defaultConfig.baseAPIUrl + "images/" + themeImg} alt={themeName} className="card-image" />
-          <div className="image-overlay">
+          {/* <div className="image-overlay">
             <button type="button" className="quick-preview-btn" onClick={isloginCheck}>
               Quick View
             </button>
-          </div>
-          <div className="image-click-hint">
+          </div> */}
+          {/* <div className="image-click-hint">
             <span>Click to view full image</span>
-          </div>
+          </div> */}
         </div>
 
         <div className="card-content">
@@ -42,7 +42,7 @@ const Card = ({ themeName, themeImg, themeDiscription }: ThemeData) => {
 
           <div className="card-footer">
             <button type="button" className="preview-button">
-              <span>Preview</span>
+              <span onClick={isloginCheck}>Preview</span>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M7 17L17 7M17 7H7M17 7V17" />
               </svg>
@@ -51,15 +51,7 @@ const Card = ({ themeName, themeImg, themeDiscription }: ThemeData) => {
         </div>
       </div>
 
-      {/* {isModalOpen && (
-        <ImageModal
-          image={image}
-          title={title}
-          description={description}
-          category={category}
-          onClose={closeModal}
-        />
-      )} */}
+     
     </>
   );
 };

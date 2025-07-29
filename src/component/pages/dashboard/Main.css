@@ -346,11 +346,6 @@
   transition: all 0.3s ease;
 }
 
-.color-input-wrapper:focus-within {
-  border-color: #6366f1;
-  background: white;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-}
 
 .color-input {
   width: 60px;
@@ -361,16 +356,7 @@
   background: none;
 }
 
-.color-input::-webkit-color-swatch-wrapper {
-  padding: 0;
-  border-radius: 8px;
-  overflow: hidden;
-}
 
-.color-input::-webkit-color-swatch {
-  border: 2px solid #e5e7eb;
-  border-radius: 6px;
-}
 
 .color-preview {
   width: 24px;
@@ -521,16 +507,7 @@
   opacity: 0.7;
 }
 
-/* Accessibility */
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}
 
-/* Focus styles for keyboard navigation */
 .upload-button:focus,
 .profile-upload-btn:focus,
 .save-button:focus,
@@ -539,16 +516,6 @@
   outline-offset: 2px;
 }
 
-/* High contrast mode support */
-@media (prefers-contrast: high) {
-  .section-card {
-    border: 2px solid #000;
-  }
-  
-  .banner-container {
-    border-color: #000;
-  }
-}
 .static-banner-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));

@@ -8,8 +8,6 @@ import {
   FiUsers, 
   FiZap, 
   FiSmartphone, 
-  FiTrendingUp,
-  FiCheck,
   FiPlay
 } from 'react-icons/fi';
 import './NewHome.css';
@@ -19,30 +17,6 @@ const NewHome: React.FC = () => {
   const navigate = useNavigate();
     const isLoggedIn = localStorage.getItem("accessToken");
       const userId = localStorage.getItem("_id");
-
-  const lenisRef = useRef<Lenis | null>(null);
-
-  useEffect(() => {
-    // Initialize Lenis for smooth scrolling
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-     
-    });
-
-    lenisRef.current = lenis;
-
-    function raf(time: number) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-
-    requestAnimationFrame(raf);
-
-    return () => {
-      lenis.destroy();
-    };
-  }, []);
 const scrollToSection = (selector: string) => {
   const element = document.querySelector(selector);
   if (element) {

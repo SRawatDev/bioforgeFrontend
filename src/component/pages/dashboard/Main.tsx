@@ -213,7 +213,7 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
     setUserInfo((prev) => ({ ...prev!, banner_img: img }));
   };
 
-  console.log("================", previewProfile);
+
   return (
     <>
       {loader && <LoadScreen />}
@@ -245,8 +245,7 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
                     key={idx}
                     src={defaultConfig.imagePath + src.themeImg}
                     alt={`Static Banner ${idx + 1}`}
-                    className={`static-banner-thumb  'selected' : ''
-                                            }`}
+                    className={`static-banner-thumb  'selected' : ''}`}
                     onClick={() => selectSelectedTheme(src.themeImg)}
                   />
                 ))}
@@ -279,7 +278,59 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
                   id="bannerUploadInput"
                   type="file"
                   name="banner_img"
-                  accept="image/png,image/jpg,image/jpeg"
+                  accept="image/png,image/jpg,image/jpeg,image/avif"
+                  onChange={UploadBannerImage}
+                  className="file-input"
+                />
+              </div>
+            </div>
+            <div className="section-card">
+              <div className="section-header">
+                <h3 className="section-title">Theme </h3>
+                <p className="section-description">
+                  Upload a theme for your profile
+                </p>
+              </div>
+              <div className="static-banner-grid">
+                {themeimg.map((src, idx) => (
+                  <img
+                    key={idx}
+                    src={defaultConfig.imagePath + src.themeImg}
+                    alt={`Static Banner ${idx + 1}`}
+                    className={`static-banner-thumb  'selected' : ''}`}
+                    onClick={() => selectSelectedTheme(src.themeImg)}
+                  />
+                ))}
+              </div>
+              <div className="banner-upload-area">
+                <div className="banner-container">
+                  {previewBanner ? (
+                    <img
+                      className="banner-image"
+                      src={`${defaultConfig.imagePath + previewBanner}`}
+                      alt="Banner preview"
+                    />
+                  ) : (
+                    <div className="banner-placeholder">
+                      <FaCamera className="placeholder-icon" />
+                      <span>No Theme</span>
+                    </div>
+                  )}
+                  <div className="banner-overlay">
+                    <label
+                      htmlFor="bannerUploadInput"
+                      className="upload-button"
+                    >
+                      <FaCamera />
+                      <span>Change Theme</span>
+                    </label>
+                  </div>
+                </div>
+                <input
+                  id="bannerUploadInput"
+                  type="file"
+                  name="banner_img"
+                  accept="image/png,image/jpg,image/jpeg,image/avif"
                   onChange={UploadBannerImage}
                   className="file-input"
                 />

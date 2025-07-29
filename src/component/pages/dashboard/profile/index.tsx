@@ -132,6 +132,16 @@ const Index: React.FC = () => {
           }}
         >
 
+
+                        {userId !== id.id && userId &&
+
+                            <BsThreeDots className='threedots' type="button"
+                                data-bs-toggle="offcanvas"
+                                data-bs-target="#offcanvasBottom"
+                                aria-controls="offcanvasBottom" />
+                        }
+               
+
           <div className="mobile-content">
             <div className="mobile-profile-header">
               <div className="mobile-avatar">

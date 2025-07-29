@@ -311,10 +311,6 @@
   animation: shimmer 3s infinite;
 }
 
-@keyframes shimmer {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
 
 .upgrade-content {
   position: relative;
@@ -568,61 +564,6 @@
   }
 }
 
-/* Custom Scrollbar */
-.sidebar-content::-webkit-scrollbar {
-  width: 4px;
-}
 
-.sidebar-content::-webkit-scrollbar-track {
-  background: transparent;
-}
 
-.sidebar-content::-webkit-scrollbar-thumb {
-  background: #cbd5e0;
-  border-radius: 2px;
-}
 
-.sidebar-content::-webkit-scrollbar-thumb:hover {
-  background: #a0aec0;
-}
-
-/* High Contrast Mode */
-@media (prefers-contrast: high) {
-  .dashboard-sidebar {
-    border-right: 2px solid #000;
-  }
-  
-  .menu-link {
-    border: 1px solid transparent;
-  }
-  
-  .menu-link:hover,
-  .menu-link.active {
-    border-color: #000;
-  }
-}
-
-/* Reduced Motion */
-@media (prefers-reduced-motion: reduce) {
-  .dashboard-sidebar,
-  .menu-link,
-  .user-profile,
-  .logout-btn,
-  .collapse-toggle,
-  .toggle-icon,
-  .menu-icon {
-    transition: none;
-    animation: none;
-  }
-  
-  .upgrade-card::before {
-    animation: none;
-  }
-}
-
-/* Print Styles */
-@media print {
-  .dashboard-sidebar {
-    display: none;
-  }
-}

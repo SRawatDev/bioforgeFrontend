@@ -76,6 +76,7 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
     }
   };
   const userId = localStorage.getItem("_id") || null;
+
   return (
     <>
 
@@ -109,8 +110,6 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
               src={defaultConfig?.imagePath + userInfo?.profile_img}
               alt="Profil Fotoğrafı"
             />
-          </div>
-          <div className="profile-info">
             <h1
               id="username "
               className="editprofile"
@@ -124,8 +123,11 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
             >
               @{userInfo?.username}{" "}
             </h1>
+          </div>
+          <div className="profile-info">
             <p
               id="bio"
+                 className="editprofile"
               style={{
                 fontFamily: userInfo?.theme?.fontFamily,
                 textAlign:"left",
@@ -176,7 +178,7 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
                 to={link.linkUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="link-card"
+                className="link-card newlink-card"
                 onClick={() => handleClickSubmit(link._id)}
                 style={{
                   '--card-bg': userInfo?.theme?.is_colorImage || '#333',

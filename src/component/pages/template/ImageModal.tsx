@@ -9,38 +9,9 @@ interface CardProps {
    onClose: () => void;
 }
 const ImageModal = ({ image, title, description, category, onClose }:CardProps) => {
-  useEffect(() => {
-    document.body.style.overflow = 'hidden';
-    const handleEscape = (e:any) => {
-      if (e.key === 'Escape') {
-        onClose();
-      }
-    };
-
-    document.addEventListener('keydown', handleEscape);
-    return () => {
-      document.body.style.overflow = 'unset';
-      document.removeEventListener('keydown', handleEscape);
-    };
-  }, [onClose]);
-
-  const handleBackdropClick = (e:any) => {
-    if (e.target === e.currentTarget) {
-      onClose();
-    }
-  };
-
-  const handleDownload = () => {
-    const link = document.createElement('a');
-    link.href = image;
-    link.download = `${title.replace(/\s+/g, '-').toLowerCase()}.jpg`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
 
   return (
-    <div className="modal-backdrop" onClick={handleBackdropClick}>
+    <div className="modal-backdrop">
       <div className="modal-content">
         <div className="modal-header">
           <div className="modal-info">
@@ -64,7 +35,7 @@ const ImageModal = ({ image, title, description, category, onClose }:CardProps) 
             <p>{description}</p>
           </div>
           <div className="modal-actions">
-            <button className="modal-btn download-btn" onClick={handleDownload}>
+            <button className="modal-btn download-btn">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                 <polyline points="7,10 12,15 17,10"></polyline>

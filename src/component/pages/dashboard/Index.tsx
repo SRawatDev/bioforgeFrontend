@@ -41,7 +41,6 @@ const Index = () => {
   const { layout, id } = useParams();
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [loader, setLoader] = useState<boolean>(false);
-  const [isMobileView, setIsMobileView] = useState<boolean>(false);
   const navigate = useNavigate();
   const getUserDetail = async () => {
     if (!id) return;
@@ -71,12 +70,7 @@ const Index = () => {
   };
   useEffect(() => {
     getUserDetail();
-    const checkMobileView = () => {
-      setIsMobileView(window.innerWidth < 992);
-    };
-    checkMobileView();
-    window.addEventListener("resize", checkMobileView);
-    return () => window.removeEventListener("resize", checkMobileView);
+   
   }, [id]);
   return (
     <>
@@ -96,7 +90,7 @@ const Index = () => {
         </div>
 
         <div
-          className={`dashboard-preview ${isMobileView ? "mobile-mode" : ""}`}
+          className={`dashboard-preview mobile-mode`}
         >
           <div className="preview-header">
             <h3>Mobile Preview</h3>

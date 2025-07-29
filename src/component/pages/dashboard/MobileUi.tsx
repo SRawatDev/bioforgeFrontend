@@ -5,10 +5,9 @@ import { callAPIWithoutAuth } from '../../../utils/apicall.utils'
 import { apiUrls } from '../../../utils/api.utils'
 import { defaultConfig } from '../../../config'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { BiBorderRadius, BiLogoGmail } from 'react-icons/bi'
+import { BiLogoGmail } from 'react-icons/bi'
 import { socialPlatforms } from '../links/linksAddEdit'
 import axios from 'axios'
-import type { MdHeight } from 'react-icons/md'
 
 // ... (keep the existing interfaces)
 interface userInfo {
@@ -113,48 +112,48 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
     display: 'block'
   }
 
-  const headingStyle = {
-    fontSize: '1.5rem',
-    fontWeight: 'bold',
-    marginBottom: '0.5rem',
-    textAlign: 'center' as const,
-    background:
-      'linear-gradient(45deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3, #54a0ff)',
-    backgroundSize: '400% 400%',
-    WebkitBackgroundClip: 'text',
-    WebkitTextFillColor: 'transparent',
-    fontFamily: userInfo?.theme?.fontFamily,
-    color: `${
-      userInfo?.theme?.fontColor ? userInfo?.theme?.fontColor : 'white'
-    }`
-  }
+  // const headingStyle = {
+  //   fontSize: '1.5rem',
+  //   fontWeight: 'bold',
+  //   marginBottom: '0.5rem',
+  //   textAlign: 'center' as const,
+  //   background:
+  //     'linear-gradient(45deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3, #54a0ff)',
+  //   backgroundSize: '400% 400%',
+  //   WebkitBackgroundClip: 'text',
+  //   WebkitTextFillColor: 'transparent',
+  //   fontFamily: userInfo?.theme?.fontFamily,
+  //   color: `${
+  //     userInfo?.theme?.fontColor ? userInfo?.theme?.fontColor : 'white'
+  //   }`
+  // }
 
-  const bioStyle = {
-    fontSize: '1rem',
-    marginBottom: '0.5rem',
-    textAlign: 'start' as const,
-    lineHeight: '1.2'
-  }
+  // const bioStyle = {
+  //   fontSize: '1rem',
+  //   marginBottom: '0.5rem',
+  //   textAlign: 'start' as const,
+  //   lineHeight: '1.2'
+  // }
 
-  const linkCardStyle = {
-    ...getThemeStyles(true),
-    display: 'flex',
-    alignItems: 'center',
-    padding: '0.75rem 1rem',
-    borderRadius: '12px',
-    marginBottom: '1rem',
-    transition: 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
-    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.05)',
-    textDecoration: 'none'
-  }
+  // const linkCardStyle = {
+  //   ...getThemeStyles(true),
+  //   display: 'flex',
+  //   alignItems: 'center',
+  //   padding: '0.75rem 1rem',
+  //   borderRadius: '12px',
+  //   marginBottom: '1rem',
+  //   transition: 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
+  //   boxShadow: '0 2px 4px rgba(0, 0, 0, 0.05)',
+  //   textDecoration: 'none'
+  // }
 
-  const linkLogoStyle = {
-    width: '24px',
-    height: '24px',
-    marginRight: '1rem',
-    BiBorderRadius: '15px',
-    marginTop: '5.5px'
-  }
+  // const linkLogoStyle = {
+  //   width: '24px',
+  //   height: '24px',
+  //   marginRight: '1rem',
+  //   BiBorderRadius: '15px',
+  //   marginTop: '5.5px'
+  // }
 
   const socialLinksStyle = {
     display: 'flex',
@@ -165,6 +164,7 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
 
   const socialIconStyle = {
     fontSize: '1.5rem',
+    backgroundColor: 'transparent',
     color: userInfo?.theme?.fontColor || '#333'
   }
 

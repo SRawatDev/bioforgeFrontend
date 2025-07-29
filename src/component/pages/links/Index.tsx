@@ -12,11 +12,9 @@ import {
   Draggable,
   type DropResult
 } from '@hello-pangea/dnd'
-import { Link as RouterLink } from 'react-router-dom'
 import { MdOutlineEdit, MdDeleteOutline } from 'react-icons/md'
 import { TbStatusChange } from 'react-icons/tb'
 import { AiOutlineEye } from 'react-icons/ai'
-import { BsThreeDotsVertical } from 'react-icons/bs'
 import { socialPlatforms } from './linksAddEdit'
 import LinkShimmer from '../../LinkShimmer'
 import UserInfo from './UserInfo'
@@ -56,7 +54,7 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
   const [deleteOpen, setDeleteOpen] = useState(false)
   const [open, setOpen] = useState(false)
   const [linksInfo, setLinksInfo] = useState<LinkItem[]>([])
-  const [loader, setLoader] = useState(false)
+  const [loader, setloader] = useState(false)
   const [linkDetail, setLinkDetail] = useState<LinkItem>({
     _id: '',
     linkTitle: '',
@@ -67,7 +65,7 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
   })
 
   const Detail = async () => {
-    setLoader(true)
+    setloader(true)
     try {
       const response = await callAPI(
         apiUrls.getlinks,
@@ -75,7 +73,7 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
         'GET',
         {}
       )
-      setLoader(false)
+      setloader(false)
       if (response?.data?.status) {
         setLinksInfo(response.data.data || [])
         getUserDetail()
@@ -83,12 +81,12 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
         ErrorMessage(response?.data?.message)
       }
     } catch (err: any) {
-      setLoader(true)
+      setloader(true)
     }
   }
 
   const NonDetail = async () => {
-    setLoader(true)
+    setloader(true)
     try {
       const response = await callAPI(
         apiUrls.getlinks,
@@ -96,16 +94,15 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
         'GET',
         {}
       )
-      setLoader(false)
+      setloader(false)
       if (response?.data?.status) {
         setnonSocialData(response.data.data || [])
         getUserDetail()
-        
       } else {
         ErrorMessage(response?.data?.message)
       }
     } catch (err: any) {
-      setLoader(true)
+      setloader(true)
     }
   }
 
@@ -127,14 +124,14 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
 
   const confirmDelete = async (item: LinkItem) => {
     try {
-      setLoader(true)
+      setloader(true)
       const res = await callAPI(
         apiUrls.linkdelete,
         { _id: item._id },
         'POST',
         {}
       )
-      setLoader(false)
+      setloader(false)
       if (res?.data?.status) {
         SuccessMessage(res.data.message)
         setDeleteOpen(false)
@@ -145,20 +142,20 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
         ErrorMessage(res.data.message)
       }
     } catch (err: any) {
-      setLoader(true)
+      setloader(true)
     }
   }
 
   const confirmStatus = async (item: LinkItem) => {
     try {
-      setLoader(true)
+      setloader(true)
       const res = await callAPI(
         apiUrls.linkupdateStatus,
         { _id: item._id },
         'GET',
         {}
       )
-      setLoader(false)
+      setloader(false)
       if (res?.data?.status) {
         SuccessMessage(res.data.message)
         Detail()
@@ -168,7 +165,7 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
         ErrorMessage(res.data.message)
       }
     } catch (err: any) {
-      setLoader(true)
+      setloader(true)
     }
   }
 
@@ -183,16 +180,16 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
       is_index: index
     }))
     try {
-      setLoader(true)
+      setloader(true)
       await callAPI(apiUrls.updateindex, {}, 'POST', { items: updatedOrder })
-      setLoader(false)
+      setloader(false)
       await Detail()
       getUserDetail()
       SuccessMessage('Link order updated')
     } catch (err: any) {
       ErrorMessage(err.message || 'Failed to update order')
-      setLoader(true)
-    } 
+      setloader(true)
+    }
   }
 
   const handleUserInfo = (clickList: clicks[] = []) => {
@@ -205,7 +202,11 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
       <div className='links-page-content'>
         <div className='links-header'>
           <div className='links-logo'>
-            <img className='links-logo' src='/assets/logo12.png' alt='BioForge Logo' />
+            <img
+              className='links-logo'
+              src='/assets/logo12.png'
+              alt='BioForge Logo'
+            />
           </div>
           <div className='header-content'>
             <h1>Manage Your Links</h1>

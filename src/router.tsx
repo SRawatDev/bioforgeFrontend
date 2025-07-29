@@ -105,6 +105,11 @@ const routes: AppRoute[] = [
     path: '/dasboard',
     element: lazy(() => import('./component/pages/dashboard/DashboardSidebar'))
   },
+  {
+    guard: Authenticated,
+    path: '/dasboard/updateProfile',
+    element: lazy(() => import('./component/pages/dashboard/Main'))
+  },
 
   {
     path: '*',
@@ -112,7 +117,7 @@ const routes: AppRoute[] = [
   }
 ]
 
-export function RenderRout() {
+export function RenderRout () {
   return (
     <Router>
       <Suspense fallback={<LoadScreen />}>

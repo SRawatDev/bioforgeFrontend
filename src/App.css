@@ -504,7 +504,7 @@ body {
 
   justify-content: start;
   flex-wrap: wrap;
-    padding: 5px;
+  padding: 5px;
 }
 
 .link-card {
@@ -558,8 +558,6 @@ body {
   white-space: nowrap;
 }
 
-
-
 .links-title {
   text-align: center;
   font-size: 24px;
@@ -580,13 +578,13 @@ body {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
   gap: 16px;
   transition: background-color 0.4s ease, transform 0.3s ease;
-  background-color: var(--card-bg); 
+  background-color: var(--card-bg);
   color: var(--card-color);
   font-family: var(--card-font);
 }
 
-.link-card-title{
-  margin-top:8px;
+.link-card-title {
+  margin-top: 8px;
 }
 .link-card:hover {
   background-color: transparent;
@@ -1183,11 +1181,11 @@ input[type="file"] {
 }
 
 .user-info-content {
-    background: #fff;
-    padding:20px 29px;
-    border-radius: 10px;
-    max-height: 80vh;
-    overflow-y: auto;
+  background: #fff;
+  padding: 20px 29px;
+  border-radius: 10px;
+  max-height: 80vh;
+  overflow-y: auto;
 }
 
 .user-info-table {
@@ -1254,12 +1252,7 @@ input[type="color"] {
 /* Card base width (adjust for breakpoints if needed) */
 /* Base shimmer animation */
 .shimmer {
-  background: linear-gradient(
-    90deg,
-    #f0f0f0 25%,
-    #e0e0e0 50%,
-    #f0f0f0 75%
-  );
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
   border-radius: 4px;
@@ -1311,7 +1304,7 @@ input[type="color"] {
   border-radius: 50%;
   margin-left: 6px;
 }
-.mobile-email-button{
+.mobile-email-button {
   display: flex;
   align-items: anchor-center;
 }

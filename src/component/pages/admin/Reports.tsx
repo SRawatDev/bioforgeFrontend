@@ -21,7 +21,7 @@ interface ReportData {
 
 const Reports: React.FC = () => {
   const [reportData, setReportData] = useState<ReportData | null>(null)
-  const [loader, setLoader] = useState(false)
+  const [loader, setloader] = useState(false)
   const [dateRange, setDateRange] = useState('30') // days
 
   useEffect(() => {
@@ -29,7 +29,7 @@ const Reports: React.FC = () => {
   }, [dateRange])
 
   const fetchReportData = async () => {
-    setLoader(true)
+    setloader(true)
     try {
       const response = await callAPI(
         apiUrls.userReport,
@@ -37,15 +37,15 @@ const Reports: React.FC = () => {
         'GET',
         {}
       )
-      setLoader(false)
+      setloader(false)
       if (response?.data?.status) {
         setReportData(response.data.data)
       } else {
         ErrorMessage(response?.data?.message || 'Failed to fetch report data')
       }
     } catch (err: any) {
-      setLoader(true)
-    } 
+      setloader(true)
+    }
   }
 
   if (loader) return <LoadScreen />

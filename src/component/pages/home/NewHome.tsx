@@ -1,15 +1,12 @@
 import React, { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Lenis from '@studio-freight/lenis';
-import Navbar from '../../navbar/Navbar';;
 import { 
   FiArrowRight, 
   FiStar, 
   FiUsers, 
   FiZap, 
   FiSmartphone, 
-  FiTrendingUp,
-  FiCheck,
   FiPlay
 } from 'react-icons/fi';
 import './NewHome.css';

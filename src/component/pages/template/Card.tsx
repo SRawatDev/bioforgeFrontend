@@ -19,10 +19,7 @@ const Card = ({ themeName, themeImg, themeDiscription }: ThemeData) => {
     <>
       <div className={`card card`}>
         <div className="card-header">
-          <div className="card-actions">
-            <button type="button" className="action-btn favorite-btn">♡</button>
-            <button type="button" className="action-btn share-btn">⤴</button>
-          </div>
+          
         </div>
 
         <div className="card-image-container">
@@ -42,12 +39,7 @@ const Card = ({ themeName, themeImg, themeDiscription }: ThemeData) => {
           <p className="card-description">{themeDiscription}</p>
 
           <div className="card-footer">
-            <button type="button" className="preview-button">
-              <span>Preview</span>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M7 17L17 7M17 7H7M17 7V17" />
-              </svg>
-            </button>
+          
           </div>
         </div>
       </div>

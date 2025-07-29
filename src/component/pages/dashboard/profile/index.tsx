@@ -1,7 +1,5 @@
-// ,fontColor, is_colorImage is not apply/working
 import React, { useEffect, useState } from 'react'
 import ErrorMessage from '../../../../helpers/ErrorMessage'
-import { BsThreeDots } from 'react-icons/bs'
 import { callAPIWithoutAuth } from '../../../../utils/apicall.utils'
 import { apiUrls } from '../../../../utils/api.utils'
 import { defaultConfig } from '../../../../config'
@@ -43,10 +41,10 @@ const Index: React.FC = () => {
   const navigate = useNavigate()
   const id = useParams()
   const [userInfo, setUserInfo] = useState<userInfo | null>(null)
-  const [loader, setLoader] = useState<boolean>(false)
+  const [loader, setloader] = useState<boolean>(false)
 
   const getUserDetail = async () => {
-    setLoader(true)
+    setloader(true)
     try {
       const response = await callAPIWithoutAuth(
         apiUrls.getUserInfo,
@@ -54,7 +52,7 @@ const Index: React.FC = () => {
         'GET',
         {}
       )
-      setLoader(false)
+      setloader(false)
       if (!response?.data?.status) {
         navigate('/')
         ErrorMessage(response?.data?.data?.message)
@@ -62,7 +60,7 @@ const Index: React.FC = () => {
         setUserInfo(response?.data?.data[0])
       }
     } catch (err: any) {
-      setLoader(true)
+      setloader(true)
     }
   }
 
@@ -104,7 +102,6 @@ const Index: React.FC = () => {
     }
   }
 
-  const userId = localStorage.getItem('_id') || null
 
   return (
     <>
@@ -121,7 +118,7 @@ const Index: React.FC = () => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            padding: '20px',
+            padding: '0px',
             color: userInfo?.theme?.fontColor || '#1a1a1a'
           }}
         >
@@ -136,7 +133,7 @@ const Index: React.FC = () => {
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               backgroundRepeat: 'no-repeat',
-              borderRadius: '24px',
+
               boxShadow: '0 25px 50px rgba(0, 0, 0, 0.15)',
               border: '1px solid rgba(255, 255, 255, 0.3)',
               overflow: 'hidden',
@@ -144,7 +141,6 @@ const Index: React.FC = () => {
             }}
           >
             {/* Gradient Accent */}
-    
 
             {/* Header Section */}
             <div
@@ -209,8 +205,7 @@ const Index: React.FC = () => {
                   margin: '0 0 8px',
                   letterSpacing: '-0.8px',
                   backgroundColor:
-                    userInfo?.theme?.fontColor ||
-                    'rgba(255, 255, 255, 0.95)',
+                    userInfo?.theme?.fontColor || 'rgba(255, 255, 255, 0.95)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                   lineHeight: '-0.4'
@@ -221,13 +216,13 @@ const Index: React.FC = () => {
 
               <p
                 style={{
-                  fontSize: '26px',
+                  fontSize: '20px',
                   textAlign: 'start',
                   lineHeight: '1.6',
                   color: userInfo?.theme?.fontColor || '#111827',
 
                   margin: '0 0 24px',
-                  fontWeight: '400',
+                  fontWeight: '600',
                   maxWidth: '400px',
                   marginLeft: 'auto',
                   marginRight: 'auto'
@@ -269,7 +264,7 @@ const Index: React.FC = () => {
                       gap: '14px'
                     }}
                   >
-                    {userInfo.non_social.map((link, index) => (
+                    {userInfo.non_social.map((link) => (
                       <Link
                         key={link._id}
                         to={link.linkUrl}
@@ -326,7 +321,7 @@ const Index: React.FC = () => {
                           style={{
                             width: '48px',
                             height: '48px',
-                            borderRadius: '14px',
+                            borderRadius: '50%',
                             overflow: 'hidden',
                             flexShrink: 0,
                             background:
@@ -341,8 +336,9 @@ const Index: React.FC = () => {
                             src={defaultConfig?.imagePath + link.linkLogo}
                             alt={link.linkTitle}
                             style={{
-                              width: '28px',
-                              height: '28px',
+                              width: '48px',
+                              height: '48px',
+                              borderRadius: '50%',
                               objectFit: 'contain'
                             }}
                           />
@@ -420,6 +416,7 @@ const Index: React.FC = () => {
                             // borderRadius: '18px',
                             textDecoration: 'none',
                             fontSize: '22px',
+                            borderRadius: '50%',
                             transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                             boxShadow: '0 4px 6px rgba(164, 132, 132, 0.05)',
                             fontFamily: `${userInfo?.theme?.fontFamily}`,
@@ -430,7 +427,8 @@ const Index: React.FC = () => {
                               'translateY(-4px) scale(1.05)'
                             e.currentTarget.style.boxShadow =
                               '0 12px 30px rgba(0, 0, 0, 0.15)'
-                            e.currentTarget.style.backgroundColor = 'transparent'
+                            e.currentTarget.style.backgroundColor =
+                              'transparent'
                             // e.currentTarget.style.borderColor = '#3b82f6'
                           }}
                           onMouseLeave={e => {
@@ -439,7 +437,8 @@ const Index: React.FC = () => {
                             e.currentTarget.style.boxShadow =
                               '0 4px 6px rgba(0, 0, 0, 0.05)'
                             // e.currentTarget.style.borderColor = '#e5e7eb'
-                            e.currentTarget.style.backgroundColor ='transparent'
+                            e.currentTarget.style.backgroundColor =
+                              'transparent'
                           }}
                         >
                           {matchedPlatform && matchedPlatform.icon}

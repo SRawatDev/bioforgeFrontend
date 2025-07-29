@@ -42,10 +42,10 @@ const Index: React.FC = () => {
   const navigate = useNavigate()
   const id = useParams()
   const [userInfo, setUserInfo] = useState<userInfo | null>(null)
-  const [loader, setLoader] = useState<boolean>(false)
+  const [loader, setloader] = useState<boolean>(false)
 
   const getUserDetail = async () => {
-    setLoader(true)
+    setloader(true)
     try {
       const response = await callAPIWithoutAuth(
         apiUrls.getUserInfo,
@@ -53,7 +53,7 @@ const Index: React.FC = () => {
         'GET',
         {}
       )
-      setLoader(false)
+      setloader(false)
       if (!response?.data?.status) {
         navigate('/')
         ErrorMessage(response?.data?.data?.message)
@@ -61,7 +61,7 @@ const Index: React.FC = () => {
         setUserInfo(response?.data?.data[0])
       }
     } catch (err: any) {
-      setLoader(true)
+      setloader(true)
     }
   }
 

@@ -5,17 +5,13 @@ import { LogoutModal } from "../../../layout/Header";
 import SuccessMessage from "../../../helpers/Success";
 import { 
   IoClose, 
-  IoHomeOutline, 
   IoLinkOutline, 
   IoPersonOutline, 
   IoTrashOutline, 
   IoKeyOutline, 
   IoLogOutOutline,
-  IoSettingsOutline,
-  IoStatsChartOutline,
-  IoNotificationsOutline
 } from "react-icons/io5";
-import { FaUser, FaCrown } from "react-icons/fa";
+import { FaCrown } from "react-icons/fa";
 // import "./DashboardSidebar.css";
 
 interface SidebarProps {

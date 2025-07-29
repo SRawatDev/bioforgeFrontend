@@ -28,14 +28,14 @@ const Dashboard: React.FC = () => {
     totalClicks: 0
   })
   const [recentUsers, setRecentUsers] = useState<RecentUser[]>([])
-  const [loader, setLoader] = useState(false)
+  const [loader, setloader] = useState(false)
 
   useEffect(() => {
     fetchDashboardData()
   }, [])
 
   const fetchDashboardData = async () => {
-    setLoader(true)
+    setloader(true)
     try {
       const [statsResponse, usersResponse] = await Promise.all([
         callAPI(apiUrls.userReport, {}, 'GET', {}),
@@ -48,8 +48,8 @@ const Dashboard: React.FC = () => {
         setRecentUsers(usersResponse.data.data)
       }
     } catch (err: any) {
-      setLoader(false)
-    } 
+      setloader(false)
+    }
   }
 
   if (loader) return <LoadScreen />

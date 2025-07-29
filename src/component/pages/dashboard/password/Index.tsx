@@ -16,7 +16,7 @@ interface changepasswordInterface {
 }
 
 const Index = () => {
-  const [loader, setLoader] = useState<boolean>(false)
+  const [loader, setloader] = useState<boolean>(false)
   const [showPassword, setShowPassword] = useState({
     oldPassword: false,
     newPassword: false
@@ -76,7 +76,7 @@ const Index = () => {
       return
     }
 
-    setLoader(true)
+    setloader(true)
     try {
       const response = await callAPI(
         apiUrls.changePassword,
@@ -84,7 +84,7 @@ const Index = () => {
         'POST',
         changepasswordData
       )
-      setLoader(false)
+      setloader(false)
       if (!response?.data?.status) {
         ErrorMessage(response?.data?.message)
       } else {
@@ -92,7 +92,7 @@ const Index = () => {
         SuccessMessage(response?.data?.message)
       }
     } catch (err: any) {
-      setLoader(true)
+      setloader(true)
     }
   }
 
@@ -108,167 +108,168 @@ const Index = () => {
         >
           <IoMdArrowRoundBack />
         </Link> */}
-         {loader ? (
+        {loader ? (
           <LinkShimmer />
         ) : (
-        <div className='dashboard-layout'>
-          {/* Left side - Form */}
+          <div className='dashboard-layout'>
+            {/* Left side - Form */}
 
-          <div className='auth-form-container'>
-            <div className='auth-form-wrapper'>
-              {/* Logo */}
-              <div className='auth-logo'>
-                {/* <img src="/assets/logo12.png" alt="BioForge Logo" /> */}
-              </div>
-
-              {/* Header */}
-              <div className='auth-header'>
-                <div className='change-password-icon'>
-                  <FaKey />
+            <div className='auth-form-container'>
+              <div className='auth-form-wrapper'>
+                {/* Logo */}
+                <div className='auth-logo'>
+                  {/* <img src="/assets/logo12.png" alt="BioForge Logo" /> */}
                 </div>
-                <h1>Change Password</h1>
-                <p className='auth-subtitle'>
-                  Keep your account secure by updating your password regularly
-                </p>
-              </div>
 
-              {/* Security Tips */}
-              <div className='security-tips'>
-                <MdSecurity className='security-icon' />
-                <div className='tips-content'>
-                  <h4>Password Security Tips</h4>
-                  <ul>
-                    <li>Use at least 8 characters</li>
-                    <li>Include uppercase and lowercase letters</li>
-                    <li>Add numbers and special characters</li>
-                    <li>Avoid common words or personal information</li>
-                  </ul>
+                {/* Header */}
+                <div className='auth-header'>
+                  <div className='change-password-icon'>
+                    <FaKey />
+                  </div>
+                  <h1>Change Password</h1>
+                  <p className='auth-subtitle'>
+                    Keep your account secure by updating your password regularly
+                  </p>
                 </div>
-              </div>
 
-              {/* Form */}
-              <form onSubmit={handleSubmit} className='auth-form'>
-                <div className='form-group'>
-                  <div className='input-wrapper'>
-                    <div className='input-icon'>
-                      <FaLock />
+                {/* Security Tips */}
+                <div className='security-tips'>
+                  <MdSecurity className='security-icon' />
+                  <div className='tips-content'>
+                    <h4>Password Security Tips</h4>
+                    <ul>
+                      <li>Use at least 8 characters</li>
+                      <li>Include uppercase and lowercase letters</li>
+                      <li>Add numbers and special characters</li>
+                      <li>Avoid common words or personal information</li>
+                    </ul>
+                  </div>
+                </div>
+
+                {/* Form */}
+                <form onSubmit={handleSubmit} className='auth-form'>
+                  <div className='form-group'>
+                    <div className='input-wrapper'>
+                      <div className='input-icon'>
+                        <FaLock />
+                      </div>
+                      <InputField
+                        id='newPassword'
+                        label='Current Password'
+                        name='oldPassword'
+                        value={changepasswordData.oldPassword}
+                        onChange={handleChange}
+                        required
+                        type={showPassword.oldPassword ? 'text' : 'password'}
+                        placeholder='Enter your current password'
+                      />
+                      <button
+                        type='button'
+                        className='password-toggle'
+                        onClick={() =>
+                          setShowPassword(prev => ({
+                            ...prev,
+                            oldPassword: !prev.oldPassword
+                          }))
+                        }
+                      >
+                        {showPassword.oldPassword ? <FaEye /> : <FaLowVision />}
+                      </button>
                     </div>
-                    <InputField
-                      id='newPassword'
-                      label='Current Password'
-                      name='oldPassword'
-                      value={changepasswordData.oldPassword}
-                      onChange={handleChange}
-                      required
-                      type={showPassword.oldPassword ? 'text' : 'password'}
-                      placeholder='Enter your current password'
-                     
-                    />
-                    <button
-                      type='button'
-                      className='password-toggle'
-                      onClick={() =>
-                        setShowPassword(prev => ({
-                          ...prev,
-                          oldPassword: !prev.oldPassword
-                        }))
-                      }
+                  </div>
+
+                  <div className='form-group'>
+                    <div className='input-wrapper'>
+                      <InputField
+                        id='newPassword'
+                        label='New Password'
+                        name='newPassword'
+                        value={changepasswordData.newPassword}
+                        onChange={handleChange}
+                        required
+                        type={showPassword.newPassword ? 'text' : 'password'}
+                        placeholder='Enter your new password'
+                      />
+                      <div className='input-icon'>
+                        <FaKey />
+                      </div>
+                      <button
+                        type='button'
+                        className='password-toggle'
+                        onClick={() =>
+                          setShowPassword(prev => ({
+                            ...prev,
+                            newPassword: !prev.newPassword
+                          }))
+                        }
+                      >
+                        {showPassword.newPassword ? <FaEye /> : <FaLowVision />}
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Password strength indicator */}
+                  {changepasswordData.newPassword && (
+                    <div className='password-strength'>
+                      <div className='strength-bar'>
+                        <div
+                          className={`strength-fill ${getPasswordStrength(
+                            changepasswordData.newPassword
+                          )}`}
+                        ></div>
+                      </div>
+                      <span className='strength-text'>
+                        Password strength:{' '}
+                        {getPasswordStrength(changepasswordData.newPassword)}
+                      </span>
+                    </div>
+                  )}
+
+                  {/* Submit button */}
+                  <button
+                    type='submit'
+                    className='auth-button change-password-button'
+                  >
+                    <FaKey />
+                    Update Password
+                  </button>
+                </form>
+
+                {/* Footer links */}
+                <div className='auth-footer'>
+                  <p>
+                    Remember your password?{' '}
+                    <Link
+                      to={`/dashboard/index/${localStorage.getItem('_id')}`}
                     >
-                      {showPassword.oldPassword ? <FaEye /> : <FaLowVision />}
-                    </button>
-                  </div>
+                      <span className='auth-footer-text'>
+                        {' '}
+                        Back to dashboard
+                      </span>
+                    </Link>
+                  </p>
                 </div>
+              </div>
+            </div>
 
-                <div className='form-group'>
-                  <div className='input-wrapper'>
-            
-                    <InputField
-                      id='newPassword'
-                      label='New Password'
-                      name='newPassword'
-                      value={changepasswordData.newPassword}
-                      onChange={handleChange}
-                      required
-                      type={showPassword.newPassword ? 'text' : 'password'}
-                      placeholder='Enter your new password'
-                     
-                    />
-                            <div className='input-icon'>
-                      <FaKey />
-                    </div>
-                    <button
-                      type='button'
-                      className='password-toggle'
-                      onClick={() =>
-                        setShowPassword(prev => ({
-                          ...prev,
-                          newPassword: !prev.newPassword
-                        }))
-                      }
-                    >
-                      {showPassword.newPassword ? <FaEye /> : <FaLowVision />}
-                    </button>
-                  </div>
-                </div>
-
-                {/* Password strength indicator */}
-                {changepasswordData.newPassword && (
-                  <div className='password-strength'>
-                    <div className='strength-bar'>
-                      <div
-                        className={`strength-fill ${getPasswordStrength(
-                          changepasswordData.newPassword
-                        )}`}
-                      ></div>
-                    </div>
-                    <span className='strength-text'>
-                      Password strength:{' '}
-                      {getPasswordStrength(changepasswordData.newPassword)}
-                    </span>
-                  </div>
-                )}
-
-                {/* Submit button */}
-                <button
-                  type='submit'
-                  className='auth-button change-password-button'
-                >
-                  <FaKey />
-                  Update Password
-                </button>
-              </form>
-
-              {/* Footer links */}
-              <div className='auth-footer'>
+            {/* Right side - Image */}
+            <div className='auth-image-container'>
+              <div className='auth-image-overlay'>
+                <h2>Secure Your Account</h2>
                 <p>
-                  Remember your password?{' '}
-                  <Link to={`/dashboard/index/${localStorage.getItem('_id')}`}>
-                   <span className='auth-footer-text'> Back to dashboard</span>
-                  </Link>
+                  Regular password updates help keep your digital identity safe
+                  and secure from unauthorized access.
                 </p>
               </div>
+              <img
+                src='/assets/logo12.png'
+                alt='Background'
+                className='auth-background-image'
+              />
             </div>
           </div>
-
-          {/* Right side - Image */}
-          <div className='auth-image-container'>
-            <div className='auth-image-overlay'>
-              <h2>Secure Your Account</h2>
-              <p>
-                Regular password updates help keep your digital identity safe
-                and secure from unauthorized access.
-              </p>
-            </div>
-            <img
-              src='/assets/logo12.png'
-              alt='Background'
-              className='auth-background-image'
-            />
-          </div>
-        </div>
-       )}
+        )}
       </div>
-             
     </>
   )
 }

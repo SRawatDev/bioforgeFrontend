@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Lenis from '@studio-freight/lenis';
 import { 
   FiArrowRight, 
   FiStar, 
@@ -17,38 +16,8 @@ const NewHome: React.FC = () => {
     const isLoggedIn = localStorage.getItem("accessToken");
       const userId = localStorage.getItem("_id");
 
-  const lenisRef = useRef<Lenis | null>(null);
 
-  useEffect(() => {
-    // Initialize Lenis for smooth scrolling
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-     
-    });
-
-    lenisRef.current = lenis;
-
-    function raf(time: number) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-
-    requestAnimationFrame(raf);
-
-    return () => {
-      lenis.destroy();
-    };
-  }, []);
-const scrollToSection = (selector: string) => {
-  const element = document.querySelector(selector);
-  if (element) {
-    element.scrollIntoView({ 
-      behavior: 'smooth',
-      block: 'start'
-    });
-  }
-};
+ 
 
 
 
@@ -183,7 +152,7 @@ const scrollToSection = (selector: string) => {
             </div>
           </div>
           
-          <div className="scroll-indicator" onClick={() => scrollToSection('.features-section')}>
+          <div className="scroll-indicator">
             <div className="scroll-arrow"></div>
           </div>
         </section>

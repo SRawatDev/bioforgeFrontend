@@ -29,6 +29,7 @@ interface theme {
   fontFamily: string
   fontColor: string
   is_colorImage: string
+  themeDesign?: string
 }
 
 interface Link {
@@ -83,7 +84,7 @@ const Index: React.FC = () => {
 
   const handleClickSubmit = async (id: string) => {
     try {
-      
+
       const userId = localStorage.getItem('accessToken')
         ? localStorage.getItem('_id') || ''
         : ''
@@ -133,14 +134,14 @@ const Index: React.FC = () => {
         >
 
 
-                        {userId !== id.id && userId &&
+          {userId !== id.id && userId &&
 
-                            <BsThreeDots className='threedots' type="button"
-                                data-bs-toggle="offcanvas"
-                                data-bs-target="#offcanvasBottom"
-                                aria-controls="offcanvasBottom" />
-                        }
-               
+            <BsThreeDots className='threedots' type="button"
+              data-bs-toggle="offcanvas"
+              data-bs-target="#offcanvasBottom"
+              aria-controls="offcanvasBottom" />
+          }
+
 
           <div className="mobile-content">
             <div className="mobile-profile-header">
@@ -159,9 +160,9 @@ const Index: React.FC = () => {
                   }
                 </h1>
 
-                <p className="mobile-bio" style={{    textAlign:"left",}}>{userInfo?.bio}</p>
+                <p className="mobile-bio" style={{ textAlign: "left", }}>{userInfo?.bio}</p>
 
-                <p  className="mobile-email-button">
+                <p className="mobile-email-button">
                   <BiLogoGmail />
                   <span>{userInfo?.email}</span>
                 </p>
@@ -180,7 +181,7 @@ const Index: React.FC = () => {
                         to={link.linkUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="link-card"
+                        className={`link-card ${userInfo.theme.themeDesign || "round"}`}
                         onClick={() => handleClickSubmit(link._id)}
                         style={{
                           padding: "10px",

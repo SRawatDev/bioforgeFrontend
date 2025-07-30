@@ -522,6 +522,24 @@ body {
 #bio {
   text-align: start;
 }
+.links-list .sharp{
+  border-radius: none;
+}
+.links-list .round{
+  border-radius:30px;
+}
+.links-list .curved{
+  border-radius:10px;
+}
+.mobile-links-list .sharp{
+  border-radius: none;
+}
+.mobile-links-list .round{
+  border-radius:30px;
+}
+.mobile-links-list .curved{
+  border-radius:10px;
+}
 
 @media (max-width: 500px) {
   .link-card {

@@ -5,24 +5,18 @@ import { LogoutModal } from "../../../layout/Header";
 import SuccessMessage from "../../../helpers/Success";
 import { 
   IoClose, 
-  IoHomeOutline, 
   IoLinkOutline, 
   IoPersonOutline, 
   IoTrashOutline, 
   IoKeyOutline, 
   IoLogOutOutline,
-  IoSettingsOutline,
   IoStatsChartOutline,
-  IoNotificationsOutline
 } from "react-icons/io5";
-import { FaUser, FaCrown } from "react-icons/fa";
-// import "./DashboardSidebar.css";
-
+import { FaCrown } from "react-icons/fa";
 interface SidebarProps {
   isMobile?: boolean;
   onClose?: () => void;
 }
-
 const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose }) => {
   const navigate = useNavigate();
   const location = useLocation();

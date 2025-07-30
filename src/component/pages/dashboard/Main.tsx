@@ -32,6 +32,7 @@ interface Theme {
   fontFamily: string;
   is_colorImage: string;
   fontColor: string;
+  themeDesign?:string
 }
 interface UserInfo {
   _id: string;
@@ -52,6 +53,7 @@ interface Props {
   getUserDetails: () => void;
 }
 const Main: React.FC<Props> = ({ getUserDetails }) => {
+  
   const navigate = useNavigate();
   const { id } = useParams();
   const [loader, setLoader] = useState(false);
@@ -124,7 +126,7 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
       }
     } catch (err: any) {
       setLoader(true);
-     
+
     }
   };
 
@@ -212,6 +214,21 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
     setPreviewBanner(img);
     setUserInfo((prev) => ({ ...prev!, banner_img: img }));
   };
+const selectedDesign = (design: string) => {
+  setUserInfo((pre) => {
+    if (!pre) return pre; 
+    return {
+      ...pre,
+      theme: {
+        ...pre.theme,
+        themeDesign: design,
+      },
+    };
+  });
+};
+console.log("----------=============",userInfo)
+
+
 
 
   return (
@@ -284,56 +301,18 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
                 />
               </div>
             </div>
+            {/* --------------------new div theme  */}
             <div className="section-card">
               <div className="section-header">
-                <h3 className="section-title">Theme </h3>
+                <h3 className="section-title">Button Design </h3>
                 <p className="section-description">
-                  Upload a theme for your profile
+                  Choose you faviouarte Button design
                 </p>
               </div>
               <div className="static-banner-grid">
-                {themeimg.map((src, idx) => (
-                  <img
-                    key={idx}
-                    src={defaultConfig.imagePath + src.themeImg}
-                    alt={`Static Banner ${idx + 1}`}
-                    className={`static-banner-thumb  'selected' : ''}`}
-                    onClick={() => selectSelectedTheme(src.themeImg)}
-                  />
-                ))}
-              </div>
-              <div className="banner-upload-area">
-                <div className="banner-container">
-                  {previewBanner ? (
-                    <img
-                      className="banner-image"
-                      src={`${defaultConfig.imagePath + previewBanner}`}
-                      alt="Banner preview"
-                    />
-                  ) : (
-                    <div className="banner-placeholder">
-                      <FaCamera className="placeholder-icon" />
-                      <span>No Theme</span>
-                    </div>
-                  )}
-                  <div className="banner-overlay">
-                    <label
-                      htmlFor="bannerUploadInput"
-                      className="upload-button"
-                    >
-                      <FaCamera />
-                      <span>Change Theme</span>
-                    </label>
-                  </div>
-                </div>
-                <input
-                  id="bannerUploadInput"
-                  type="file"
-                  name="banner_img"
-                  accept="image/png,image/jpg,image/jpeg,image/avif"
-                  onChange={UploadBannerImage}
-                  className="file-input"
-                />
+                <span className={`static-banner-thumb text-center bg-light ${userInfo?.theme?.themeDesign==='curved'?"selected":""}`} onClick={()=>selectedDesign("curved")}>Curved</span>
+                <span className={`static-banner-thumb text-center bg-light ${userInfo?.theme?.themeDesign==='sharp'?"selected":""}`}onClick={()=>selectedDesign("sharp")}>Sharp</span>
+                <span className={`static-banner-thumb text-center bg-light ${userInfo?.theme?.themeDesign==='round'?"selected":""}`} onClick={()=>selectedDesign("round")}>Round</span>
               </div>
             </div>
             <div className="section-card">

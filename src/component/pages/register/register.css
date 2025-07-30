@@ -12,7 +12,7 @@
 .register-row {
     display: flex;
     width: 100%;
-    margin-top: 28px;
+    margin-top: 128px;
     margin-bottom: 0px;
     max-width: 800px;
     background: white;
@@ -466,6 +466,7 @@
     max-width: 500px;
     border-radius: 0.5rem;
     min-height: auto;
+    margin-top: 14%;
   }
 
   .register-col-left {

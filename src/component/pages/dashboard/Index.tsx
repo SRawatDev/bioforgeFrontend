@@ -190,7 +190,7 @@ const Index = () => {
                         backgroundColor: 'transparent',
                         cursor: 'pointer',
                         fontSize: '14px',
-                        color: copied ? '#4CAF50' : '#333',
+                        color: copied ? '#c92e88ff' : '#333',
                         borderBottom: '1px solid #f0f0f0'
                       }}
                       onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f8f9fa'}

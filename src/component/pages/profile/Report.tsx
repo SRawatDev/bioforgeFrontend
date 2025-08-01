@@ -1,10 +1,10 @@
 import React, { useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import ErrorMessage from '../../../../helpers/ErrorMessage'
-import SuccessMessage from '../../../../helpers/Success'
-import { callAPI } from '../../../../utils/apicall.utils'
-import { apiUrls } from '../../../../utils/api.utils'
-import LoadScreen from '../../../loaderScreen'
+import ErrorMessage from '../../../helpers/ErrorMessage'
+import SuccessMessage from '../../../helpers/Success'
+import { callAPI } from '../../../utils/apicall.utils'
+import { apiUrls } from '../../../utils/api.utils'
+import LoadScreen from '../../loaderScreen'
 
 interface Props {
   userName: string

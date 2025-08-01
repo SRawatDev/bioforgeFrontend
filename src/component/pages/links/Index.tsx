@@ -1,229 +1,229 @@
-import React, { useEffect, useState } from 'react'
-import { callAPI } from '../../../utils/apicall.utils'
-import ErrorMessage from '../../../helpers/ErrorMessage'
-import SuccessMessage from '../../../helpers/Success'
-import { apiUrls } from '../../../utils/api.utils'
-import { defaultConfig } from '../../../config'
-import { LinksAddEdit } from './linksAddEdit'
-import Delete from './Delete'
+import React, { useEffect, useState } from "react";
+import { callAPI } from "../../../utils/apicall.utils";
+import ErrorMessage from "../../../helpers/ErrorMessage";
+import SuccessMessage from "../../../helpers/Success";
+import { apiUrls } from "../../../utils/api.utils";
+import { defaultConfig } from "../../../config";
+import { LinksAddEdit } from "./linksAddEdit";
+import Delete from "./Delete";
 import {
   DragDropContext,
   Droppable,
   Draggable,
-  type DropResult
-} from '@hello-pangea/dnd'
-import { Link as RouterLink } from 'react-router-dom'
-import { MdOutlineEdit, MdDeleteOutline } from 'react-icons/md'
-import { TbStatusChange } from 'react-icons/tb'
-import { AiOutlineEye } from 'react-icons/ai'
-import { BsThreeDotsVertical } from 'react-icons/bs'
-import { socialPlatforms } from './linksAddEdit'
-import LinkShimmer from '../../LinkShimmer'
-import UserInfo from './UserInfo'
-// import './Link.css'
+  type DropResult,
+} from "@hello-pangea/dnd";
+import { MdOutlineEdit, MdDeleteOutline } from "react-icons/md";
+import { TbStatusChange } from "react-icons/tb";
+import { AiOutlineEye } from "react-icons/ai";
+import { socialPlatforms } from "./linksAddEdit";
+import LinkShimmer from "../../LinkShimmer";
+import UserInfo from "./UserInfo";
 
 interface LinkItem {
-  _id: string
-  linkTitle: string
-  linkUrl: string
-  linkLogo: string
-  status: string
-  type: string
-  clickCount?: number
-  clicks?: [clicks]
+  _id: string;
+  linkTitle: string;
+  linkUrl: string;
+  linkLogo: string;
+  status: string;
+  type: string;
+  clickCount?: number;
+  clicks?: [clicks];
 }
 
 interface getuser {
-  username?: string
-  count?: number
+  username?: string;
+  count?: number;
 }
 
 export interface clicks {
-  userInfo: getuser
-  ipAddress: string
-  count: string
+  userInfo: getuser;
+  ipAddress: string;
+  count: string;
 }
 
 interface Props {
-  getUserDetail: () => void
+  getUserDetail: () => void;
 }
 
 const Index: React.FC<Props> = ({ getUserDetail }) => {
-  const [openuserInfo, setopenuserInfo] = useState<boolean>(false)
-  const [userInfo, setUserInfo] = useState<clicks[]>([])
-  const [non_socialData, setnonSocialData] = useState<LinkItem[]>([])
-  const [action, setAction] = useState<'add' | 'edit'>('add')
-  const [deleteOpen, setDeleteOpen] = useState(false)
-  const [open, setOpen] = useState(false)
-  const [linksInfo, setLinksInfo] = useState<LinkItem[]>([])
-  const [loader, setLoader] = useState(false)
+  const [openuserInfo, setopenuserInfo] = useState<boolean>(false);
+  const [userInfo, setUserInfo] = useState<clicks[]>([]);
+  const [non_socialData, setnonSocialData] = useState<LinkItem[]>([]);
+  const [action, setAction] = useState<"add" | "edit">("add");
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [linksInfo, setLinksInfo] = useState<LinkItem[]>([]);
+  const [loader, setLoader] = useState(false);
   const [linkDetail, setLinkDetail] = useState<LinkItem>({
-    _id: '',
-    linkTitle: '',
-    linkUrl: '',
-    linkLogo: '',
-    status: '',
-    type: ''
-  })
+    _id: "",
+    linkTitle: "",
+    linkUrl: "",
+    linkLogo: "",
+    status: "",
+    type: "",
+  });
 
   const Detail = async () => {
-    setLoader(true)
+    setLoader(true);
     try {
       const response = await callAPI(
         apiUrls.getlinks,
-        { type: 'non_social' },
-        'GET',
+        { type: "non_social" },
+        "GET",
         {}
-      )
-      setLoader(false)
+      );
+      setLoader(false);
       if (response?.data?.status) {
-        setLinksInfo(response.data.data || [])
-        getUserDetail()
+        setLinksInfo(response.data.data || []);
+        getUserDetail();
       } else {
-        ErrorMessage(response?.data?.message)
+        ErrorMessage(response?.data?.message);
       }
     } catch (err: any) {
-      setLoader(true)
+      setLoader(true);
     }
-  }
+  };
 
   const NonDetail = async () => {
-    setLoader(true)
+    setLoader(true);
     try {
       const response = await callAPI(
         apiUrls.getlinks,
-        { type: 'social' },
-        'GET',
+        { type: "social" },
+        "GET",
         {}
-      )
-      setLoader(false)
+      );
+      setLoader(false);
       if (response?.data?.status) {
-        setnonSocialData(response.data.data || [])
-        getUserDetail()
-        
+        setnonSocialData(response.data.data || []);
+        getUserDetail();
       } else {
-        ErrorMessage(response?.data?.message)
+        ErrorMessage(response?.data?.message);
       }
     } catch (err: any) {
-      setLoader(true)
+      setLoader(true);
     }
-  }
+  };
 
   useEffect(() => {
-    Detail()
-    NonDetail()
-  }, [])
+    Detail();
+    NonDetail();
+  }, []);
 
   const handleEdit = (item: LinkItem) => {
-    setLinkDetail(item)
-    setOpen(true)
-    setAction('edit')
-  }
+    setLinkDetail(item);
+    setOpen(true);
+    setAction("edit");
+  };
 
   const handleDelete = (item: LinkItem) => {
-    setLinkDetail(item)
-    setDeleteOpen(true)
-  }
+    setLinkDetail(item);
+    setDeleteOpen(true);
+  };
 
   const confirmDelete = async (item: LinkItem) => {
     try {
-      setLoader(true)
+      setLoader(true);
       const res = await callAPI(
         apiUrls.linkdelete,
         { _id: item._id },
-        'POST',
+        "POST",
         {}
-      )
-      setLoader(false)
+      );
+      setLoader(false);
       if (res?.data?.status) {
-        SuccessMessage(res.data.message)
-        setDeleteOpen(false)
-        Detail()
-        getUserDetail()
-        NonDetail()
+        SuccessMessage(res.data.message);
+        setDeleteOpen(false);
+        Detail();
+        getUserDetail();
+        NonDetail();
       } else {
-        ErrorMessage(res.data.message)
+        ErrorMessage(res.data.message);
       }
     } catch (err: any) {
-      setLoader(true)
+      setLoader(true);
     }
-  }
+  };
 
   const confirmStatus = async (item: LinkItem) => {
     try {
-      setLoader(true)
+      setLoader(true);
       const res = await callAPI(
         apiUrls.linkupdateStatus,
         { _id: item._id },
-        'GET',
+        "GET",
         {}
-      )
-      setLoader(false)
+      );
+      setLoader(false);
       if (res?.data?.status) {
-        SuccessMessage(res.data.message)
-        Detail()
-        NonDetail()
-        getUserDetail()
+        SuccessMessage(res.data.message);
+        Detail();
+        NonDetail();
+        getUserDetail();
       } else {
-        ErrorMessage(res.data.message)
+        ErrorMessage(res.data.message);
       }
     } catch (err: any) {
-      setLoader(true)
+      setLoader(true);
     }
-  }
+  };
 
   const handleDragEnd = async (result: DropResult) => {
-    if (!result.destination) return
-    const reordered = Array.from(linksInfo)
-    const [movedItem] = reordered.splice(result.source.index, 1)
-    reordered.splice(result.destination.index, 0, movedItem)
-    setLinksInfo(reordered)
+    if (!result.destination) return;
+    const reordered = Array.from(linksInfo);
+    const [movedItem] = reordered.splice(result.source.index, 1);
+    reordered.splice(result.destination.index, 0, movedItem);
+    setLinksInfo(reordered);
     const updatedOrder = reordered.map((item, index) => ({
       _id: item._id,
-      is_index: index
-    }))
+      is_index: index,
+    }));
     try {
-      setLoader(true)
-      await callAPI(apiUrls.updateindex, {}, 'POST', { items: updatedOrder })
-      setLoader(false)
-      await Detail()
-      getUserDetail()
-      SuccessMessage('Link order updated')
+      setLoader(true);
+      await callAPI(apiUrls.updateindex, {}, "POST", { items: updatedOrder });
+      setLoader(false);
+      await Detail();
+      getUserDetail();
+      SuccessMessage("Link order updated");
     } catch (err: any) {
-      ErrorMessage(err.message || 'Failed to update order')
-      setLoader(true)
-    } 
-  }
+      ErrorMessage(err.message || "Failed to update order");
+      setLoader(true);
+    }
+  };
 
   const handleUserInfo = (clickList: clicks[] = []) => {
-    setUserInfo(clickList)
-    setopenuserInfo(true)
-  }
+    setUserInfo(clickList);
+    setopenuserInfo(true);
+  };
 
   return (
-    <div className='links-page-container'>
-      <div className='links-page-content'>
-        <div className='links-header'>
-          <div className='links-logo'>
-            <img className='links-logo' src='/assets/logo12.png' alt='BioForge Logo' />
+    <div className="links-page-container">
+      <div className="links-page-content">
+        <div className="links-header">
+          <div className="links-logo">
+            <img
+              className="links-logo"
+              src="/assets/logo.png"
+              alt="BioForge Logo"
+            />
           </div>
-          <div className='header-content'>
+          <div className="header-content">
             <h1>Manage Your Links</h1>
             <p>Add, edit, and organize your links to customize your profile</p>
           </div>
           <button
-            className='add-link-button'
+            className="add-link-button"
             onClick={() => {
-              setOpen(true)
-              setAction('add')
+              setOpen(true);
+              setAction("add");
               setLinkDetail({
-                _id: '',
-                linkTitle: '',
-                linkUrl: '',
-                linkLogo: '',
-                status: '',
-                type: ''
-              })
+                _id: "",
+                linkTitle: "",
+                linkUrl: "",
+                linkLogo: "",
+                status: "",
+                type: "",
+              });
             }}
           >
             Add New Link
@@ -233,20 +233,18 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
         {loader ? (
           <LinkShimmer />
         ) : (
-          <div className='links-sections'>
-            {/* Non-Social Links Section */}
+          <div className="links-sections">
             {linksInfo.length > 0 && (
-              <div className='links-section'>
-                <div className='section-header'>
+              <div className="links-section">
+                <div className="section-header">
                   <h2>Regular Links</h2>
                   <p>Drag to reorder your links</p>
                 </div>
-
                 <DragDropContext onDragEnd={handleDragEnd}>
-                  <Droppable droppableId='links-list'>
-                    {provided => (
+                  <Droppable droppableId="links-list">
+                    {(provided) => (
                       <div
-                        className='links-list'
+                        className="links-list"
                         ref={provided.innerRef}
                         {...provided.droppableProps}
                       >
@@ -256,17 +254,16 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
                             draggableId={item._id}
                             index={index}
                           >
-                            {provided => (
+                            {(provided) => (
                               <div
-                                className={`link-item ${
-                                  item.status !== 'active' ? 'inactive' : ''
-                                }`}
+                                className={`link-item ${item.status !== "active" ? "inactive" : ""
+                                  }`}
                                 ref={provided.innerRef}
                                 {...provided.draggableProps}
                                 {...provided.dragHandleProps}
                               >
-                                <div className='link-item-content'>
-                                  <div className='link-item-icon'>
+                                <div className="link-item-content">
+                                  <div className="link-item-icon">
                                     <img
                                       src={
                                         defaultConfig.imagePath + item.linkLogo
@@ -275,18 +272,18 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
                                     />
                                   </div>
 
-                                  <div className='link-item-details'>
+                                  <div className="link-item-details">
                                     <h3
                                       onClick={() =>
                                         handleUserInfo(item?.clicks)
                                       }
-                                      className='link-title'
+                                      className="link-title"
                                     >
                                       {item.linkTitle}
                                     </h3>
-                                    <p className='link-url'>{item.linkUrl}</p>
-                                    <div className='link-stats'>
-                                      <span className='link-clicks'>
+                                    <p className="link-url">{item.linkUrl}</p>
+                                    <div className="link-stats">
+                                      <span className="link-clicks">
                                         {item.clickCount || 0} clicks
                                       </span>
                                       <span
@@ -297,29 +294,29 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
                                     </div>
                                   </div>
 
-                                  <div className='link-item-actions'>
+                                  <div className="link-item-actions">
                                     <button
-                                      className='action-button view-button'
+                                      className="action-button view-button"
                                       onClick={() =>
-                                        window.open(item.linkUrl, '_blank')
+                                        window.open(item.linkUrl, "_blank")
                                       }
                                     >
                                       <AiOutlineEye />
                                     </button>
                                     <button
-                                      className='action-button status-button'
+                                      className="action-button status-button"
                                       onClick={() => confirmStatus(item)}
                                     >
                                       <TbStatusChange />
                                     </button>
                                     <button
-                                      className='action-button edit-button'
+                                      className="action-button edit-button"
                                       onClick={() => handleEdit(item)}
                                     >
                                       <MdOutlineEdit />
                                     </button>
                                     <button
-                                      className='action-button delete-button'
+                                      className="action-button delete-button"
                                       onClick={() => handleDelete(item)}
                                     >
                                       <MdDeleteOutline />
@@ -338,32 +335,64 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
               </div>
             )}
 
-            {/* Social Links Section */}
+            {linksInfo.length === 0 &&
+              non_socialData.length === 0 &&
+              !loader && (
+                <div className="no-links">
+                  <div className="no-links-content">
+                    <h3>No Links Added Yet</h3>
+                    <p>
+                      Add your first link to get started with your BioForge
+                      profile
+                    </p>
+                    <button
+                      className="add-link-button"
+                      onClick={() => {
+                        setOpen(true);
+                        setAction("add");
+                        setLinkDetail({
+                          _id: "",
+                          linkTitle: "",
+                          linkUrl: "",
+                          linkLogo: "",
+                          status: "",
+                          type: "",
+                        });
+                      }}
+                    >
+                      Add Your First Link
+                    </button>
+                  </div>
+                </div>
+              )}
+          </div>
+        )}
+        {loader ? (
+          <LinkShimmer />
+        ) : (
+          <>
             {non_socialData.length > 0 && (
-              <div className='links-section'>
-                <div className='section-header'>
+              <div className="links-section">
+                <div className="section-header">
                   <h2>Social Media Links</h2>
                   <p>Connect your social profiles</p>
                 </div>
-
-                <div className='links-list social-links-list'>
-                  {non_socialData.map(item => {
+                <div className="links-list social-links-list">
+                  {non_socialData.map((item) => {
                     const matchedPlatform = socialPlatforms.find(
-                      platform =>
+                      (platform) =>
                         platform.label.toLowerCase() ===
                         item.linkTitle.toLowerCase()
-                    )
-
+                    );
                     return (
                       <div
                         key={item._id}
-                        className={`link-item ${
-                          item.status !== 'active' ? 'inactive' : ''
-                        }`}
+                        className={`link-item ${item.status !== "active" ? "inactive" : ""
+                          }`}
                       >
-                        <div className='link-item-content'>
-                          <div className='link-item-icon social-icon'>
-                            {matchedPlatform && item.type === 'social' ? (
+                        <div className="link-item-content">
+                          <div className="link-item-icon social-icon">
+                            {matchedPlatform && item.type === "social" ? (
                               matchedPlatform.icon
                             ) : (
                               <img
@@ -373,16 +402,16 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
                             )}
                           </div>
 
-                          <div className='link-item-details'>
+                          <div className="link-item-details">
                             <h3
                               onClick={() => handleUserInfo(item?.clicks)}
-                              className='link-title'
+                              className="link-title"
                             >
                               {item.linkTitle}
                             </h3>
-                            <p className='link-url'>{item.linkUrl}</p>
-                            <div className='link-stats'>
-                              <span className='link-clicks'>
+                            <p className="link-url">{item.linkUrl}</p>
+                            <div className="link-stats">
+                              <span className="link-clicks">
                                 {item.clickCount || 0} clicks
                               </span>
                               <span className={`link-status ${item.status}`}>
@@ -391,29 +420,29 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
                             </div>
                           </div>
 
-                          <div className='link-item-actions'>
+                          <div className="link-item-actions">
                             <button
-                              className='action-button view-button'
+                              className="action-button view-button"
                               onClick={() =>
-                                window.open(item.linkUrl, '_blank')
+                                window.open(item.linkUrl, "_blank")
                               }
                             >
                               <AiOutlineEye />
                             </button>
                             <button
-                              className='action-button status-button'
+                              className="action-button status-button"
                               onClick={() => confirmStatus(item)}
                             >
                               <TbStatusChange />
                             </button>
                             <button
-                              className='action-button edit-button'
+                              className="action-button edit-button"
                               onClick={() => handleEdit(item)}
                             >
                               <MdOutlineEdit />
                             </button>
                             <button
-                              className='action-button delete-button'
+                              className="action-button delete-button"
                               onClick={() => handleDelete(item)}
                             >
                               <MdDeleteOutline />
@@ -421,41 +450,12 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
                           </div>
                         </div>
                       </div>
-                    )
+                    );
                   })}
                 </div>
               </div>
             )}
-
-            {linksInfo.length === 0 && non_socialData.length === 0 && !loader && (
-              <div className='no-links'>
-                <div className='no-links-content'>
-                  <h3>No Links Added Yet</h3>
-                  <p>
-                    Add your first link to get started with your BioForge
-                    profile
-                  </p>
-                  <button
-                    className='add-link-button'
-                    onClick={() => {
-                      setOpen(true)
-                      setAction('add')
-                      setLinkDetail({
-                        _id: '',
-                        linkTitle: '',
-                        linkUrl: '',
-                        linkLogo: '',
-                        status: '',
-                        type: ''
-                      })
-                    }}
-                  >
-                    Add Your First Link
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
+          </>
         )}
       </div>
 
@@ -481,7 +481,7 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
         action={action}
       />
     </div>
-  )
-}
+  );
+};
 
-export default Index
+export default Index;

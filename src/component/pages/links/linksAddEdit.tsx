@@ -122,6 +122,13 @@ export const LinksAddEdit: React.FC<Props> = ({ open, onClose, Detail, linkDetai
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if(link.type=='social' && link.linkTitle===""){
+      ErrorMessage("Please select linktitle")
+      return
+    }else if(link.type=='non_social' &&link.linkLogo===""){
+       ErrorMessage("Please upload custom Logo")
+      return
+    }
     setLoader(true);
     try {
       const endpoint = action === 'edit' ? apiUrls.linkupdate : apiUrls.addlinks;

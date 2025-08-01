@@ -52,19 +52,19 @@ const scrollToSection = (selector: string) => {
     {
       name: "Sarah Johnson",
       role: "Content Creator",
-      image: "/assets/testimonial1.jpg",
+      image: "/assets/girlimage.jpg",
       text: "BioForge transformed my online presence. The templates are stunning and so easy to customize!"
     },
     {
       name: "Mike Chen",
       role: "Entrepreneur",
-      image: "/assets/testimonial2.jpg",
+      image: "/assets/closeup-young-hispanic-man-casuals-studio.jpg",
       text: "Perfect for showcasing my business links. The analytics feature helps me understand my audience better."
     },
     {
       name: "Emma Davis",
       role: "Artist",
-      image: "/assets/testimonial3.jpg",
+      image: "/assets/handsome-young-guy-with-glasses-posing.jpg",
       text: "As an artist, I needed something beautiful and unique. BioForge delivered exactly what I was looking for."
     }
   ];
@@ -118,7 +118,7 @@ const scrollToSection = (selector: string) => {
                 </button>
                 
                 <button 
-                  className="btn btn-secondary btn-large"
+                  className="btn newbtn-secondary btn-large"
                   onClick={() => navigate('/landingPage')}
                 >
                   <FiPlay className="btn-icon" />
@@ -282,7 +282,7 @@ const scrollToSection = (selector: string) => {
                   <FiArrowRight className="btn-icon" />
                 </button>
                 <button 
-                  className="btn btn-secondary btn-large"
+                  className="btn newbtn-secondary btn-large"
                   onClick={() => navigate('/landingPage')}
                 >
                   Explore Templates

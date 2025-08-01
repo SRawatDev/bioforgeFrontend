@@ -16,6 +16,7 @@ import { defaultConfig } from "../../../config";
 import LoadScreen from "../../loaderScreen";
 import SuccessMessage from "../../../helpers/Success";
 import "./Main.css";
+import Updateprofileshimmer from "../../Updateprofileshimmer";
 const fontOptions = [
   "Times New Roman",
   "Georgia",
@@ -26,13 +27,15 @@ const fontOptions = [
   "Playfair Display",
   "Source Sans Pro",
   "cursive",
+  "system-ui",
+  "sans-serif",
 ];
 interface Theme {
   themeType: string;
   fontFamily: string;
   is_colorImage: string;
   fontColor: string;
-  themeDesign?:string
+  themeDesign?: string;
 }
 interface UserInfo {
   _id: string;
@@ -53,7 +56,6 @@ interface Props {
   getUserDetails: () => void;
 }
 const Main: React.FC<Props> = ({ getUserDetails }) => {
-  
   const navigate = useNavigate();
   const { id } = useParams();
   const [loader, setLoader] = useState(false);
@@ -126,7 +128,6 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
       }
     } catch (err: any) {
       setLoader(true);
-
     }
   };
 
@@ -214,266 +215,269 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
     setPreviewBanner(img);
     setUserInfo((prev) => ({ ...prev!, banner_img: img }));
   };
-const selectedDesign = (design: string) => {
-  setUserInfo((pre) => {
-    if (!pre) return pre; 
-    return {
-      ...pre,
-      theme: {
-        ...pre.theme,
-        themeDesign: design,
-      },
-    };
-  });
-};
-console.log("----------=============",userInfo)
-
-
-
+  const selectedDesign = (design: string) => {
+    setUserInfo((pre) => {
+      if (!pre) return pre;
+      return {
+        ...pre,
+        theme: {
+          ...pre.theme,
+          themeDesign: design,
+        },
+      };
+    });
+  };
 
   return (
     <>
-      {loader && <LoadScreen />}
-      <div className="profile-update-wrapper">
-        <div className="profile-container">
-          <div className="profile-header">
-            <div className="header-content">
-              <h1 className="profile-title">
-                <FaEdit className="title-icon" />
-                Edit Profile
-              </h1>
-              <p className="profile-subtitle">
-                Customize your profile appearance and information
-              </p>
+      {loader ? (
+        <Updateprofileshimmer />
+      ) : (
+        <div className="profile-update-wrapper">
+          <div className="profile-container">
+            <div className="profile-header">
+              <div className="header-content">
+                <h1 className="profile-title">
+                  <FaEdit className="title-icon" />
+                  Edit Profile
+                </h1>
+                <p className="profile-subtitle">
+                  Customize your profile appearance and information
+                </p>
+              </div>
             </div>
-          </div>
 
-          <form className="profile-form" onSubmit={handleSubmit}>
-            <div className="section-card">
-              <div className="section-header">
-                <h3 className="section-title">Theme </h3>
-                <p className="section-description">
-                  Upload a theme for your profile
-                </p>
-              </div>
-              <div className="static-banner-grid">
-                {themeimg.map((src, idx) => (
-                  <img
-                    key={idx}
-                    src={defaultConfig.imagePath + src.themeImg}
-                    alt={`Static Banner ${idx + 1}`}
-                    className={`static-banner-thumb  'selected' : ''}`}
-                    onClick={() => selectSelectedTheme(src.themeImg)}
-                  />
-                ))}
-              </div>
-              <div className="banner-upload-area">
-                <div className="banner-container">
-                  {previewBanner ? (
-                    <img
-                      className="banner-image"
-                      src={`${defaultConfig.imagePath + previewBanner}`}
-                      alt="Banner preview"
-                    />
-                  ) : (
-                    <div className="banner-placeholder">
-                      <FaCamera className="placeholder-icon" />
-                      <span>No Theme</span>
-                    </div>
-                  )}
-                  <div className="banner-overlay">
-                    <label
-                      htmlFor="bannerUploadInput"
-                      className="upload-button"
-                    >
-                      <FaCamera />
-                      <span>Change Theme</span>
-                    </label>
-                  </div>
+            <form className="profile-form" onSubmit={handleSubmit}>
+              <div className="section-card">
+                <div className="section-header">
+                  <h3 className="section-title">Theme </h3>
                 </div>
-                <input
-                  id="bannerUploadInput"
-                  type="file"
-                  name="banner_img"
-                  accept="image/png,image/jpg,image/jpeg,image/avif"
-                  onChange={UploadBannerImage}
-                  className="file-input"
-                />
-              </div>
-            </div>
-            {/* --------------------new div theme  */}
-            <div className="section-card">
-              <div className="section-header">
-                <h3 className="section-title">Button Design </h3>
-                <p className="section-description">
-                  Choose you faviouarte Button design
-                </p>
-              </div>
-              <div className="static-banner-grid">
-                <span className={`static-banner-thumb text-center bg-light ${userInfo?.theme?.themeDesign==='curved'?"selected":""}`} onClick={()=>selectedDesign("curved")}>Curved</span>
-                <span className={`static-banner-thumb text-center bg-light ${userInfo?.theme?.themeDesign==='sharp'?"selected":""}`}onClick={()=>selectedDesign("sharp")}>Sharp</span>
-                <span className={`static-banner-thumb text-center bg-light ${userInfo?.theme?.themeDesign==='round'?"selected":""}`} onClick={()=>selectedDesign("round")}>Round</span>
-              </div>
-            </div>
-            <div className="section-card">
-              <div className="section-header">
-                <h3 className="section-title">Profile Picture</h3>
-                <p className="section-description">Upload your profile photo</p>
-              </div>
-              <div className="profile-upload-area">
-                <div className="profile-image-container">
-                  <div
-                    className="profile-avatar"
-                    style={{
-                      backgroundImage: previewProfile
-                        ? `url(${defaultConfig.imagePath + previewProfile})`
-                        : "none",
-                    }}
-                  >
-                    {!previewProfile && (
-                      <FaUser className="avatar-placeholder" />
+                <div className="static-banner-grid">
+                  {themeimg.map((src, idx) => (
+                    <img
+                      key={idx}
+                      src={defaultConfig.imagePath + src.themeImg}
+                      alt={`Static Banner ${idx + 1}`}
+                      className={`static-banner-thumb  'selected' : ''}`}
+                      onClick={() => selectSelectedTheme(src.themeImg)}
+                    />
+                  ))}
+                </div>
+                <div className="banner-upload-area">
+                  <div className="banner-container">
+                    {previewBanner ? (
+                      <img
+                        className="banner-image"
+                        src={`${defaultConfig.imagePath + previewBanner}`}
+                        alt="Banner preview"
+                      />
+                    ) : (
+                      <div className="banner-placeholder">
+                        <FaCamera className="placeholder-icon" />
+                        <span>No Theme</span>
+                      </div>
                     )}
-                    <div className="profile-overlay">
+                    <div className="banner-overlay">
                       <label
-                        htmlFor="profileUploadInput"
-                        className="profile-upload-btn"
+                        htmlFor="bannerUploadInput"
+                        className="upload-button"
                       >
                         <FaCamera />
+                        <span>Change Theme</span>
                       </label>
                     </div>
                   </div>
+                  <input
+                    id="bannerUploadInput"
+                    type="file"
+                    name="banner_img"
+                    accept="image/png,image/jpg,image/jpeg,image/avif"
+                    onChange={UploadBannerImage}
+                    className="file-input"
+                  />
                 </div>
-                <input
-                  id="profileUploadInput"
-                  type="file"
-                  name="profile_img"
-                  accept="image/png,image/jpg,image/jpeg"
-                  onChange={UploadProfileImage}
-                  className="file-input"
-                />
               </div>
-            </div>
-            <div className="section-card">
-              <div className="section-header">
-                <h3 className="section-title">About You</h3>
-                <p className="section-description">
-                  Tell others about yourself
-                </p>
-              </div>
-              <div className="form-group">
-                <label htmlFor="bio" className="field-label">
-                  Bio
-                </label>
-                <textarea
-                  id="bio"
-                  name="bio"
-                  value={userInfo?.bio || ""}
-                  onChange={handleChange}
-                  placeholder="Write a brief description about yourself..."
-                  rows={4}
-                  className="bio-textarea"
-                />
-              </div>
-            </div>
-            <div className="section-card">
-              <div className="section-header">
-                <h3 className="section-title">
-                  <FaPalette className="section-icon" />
-                  Theme & Appearance
-                </h3>
-                <p className="section-description">
-                  Customize your profile's visual style
-                </p>
-              </div>
-
-              <div className="theme-grid">
-                <div className="form-group">
-                  <label htmlFor="fontFamily" className="field-label">
-                    <FaFont className="label-icon" />
-                    Font Style
-                  </label>
-                  <select
-                    id="fontFamily"
-                    name="fontFamily"
-                    value={userInfo?.theme?.fontFamily || ""}
-                    onChange={handleChange}
-                    className="select-field"
+              <div className="section-card">
+                <div className="section-header">
+                  <h3 className="section-title">Button Design </h3>
+                </div>
+                <div className="static-banner-grid">
+                  <span
+                    className={`static-banner-thumb text-center bg-light ${userInfo?.theme?.themeDesign === "curved"
+                        ? "selected"
+                        : ""
+                      }`}
+                    onClick={() => selectedDesign("curved")}
                   >
-                    <option value="">Select Font</option>
-                    {fontOptions.map((font) => (
-                      <option
-                        key={font}
-                        value={font}
-                        style={{ fontFamily: font }}
-                      >
-                        {font}
-                      </option>
-                    ))}
-                  </select>
+                    Curved
+                  </span>
+                  <span
+                    className={`static-banner-thumb text-center bg-light ${userInfo?.theme?.themeDesign === "sharp" ? "selected" : ""
+                      }`}
+                    onClick={() => selectedDesign("sharp")}
+                  >
+                    Sharp
+                  </span>
+                  <span
+                    className={`static-banner-thumb text-center bg-light ${userInfo?.theme?.themeDesign === "round" ? "selected" : ""
+                      }`}
+                    onClick={() => selectedDesign("round")}
+                  >
+                    Round
+                  </span>
                 </div>
-
-                <div className="form-group">
-                  <label htmlFor="fontColor" className="field-label">
-                    Font Color
-                  </label>
-                  <div className="color-input-wrapper">
-                    <input
-                      type="color"
-                      id="fontColor"
-                      name="fontColor"
-                      value={userInfo?.theme?.fontColor || "#000000"}
-                      onChange={handleChange}
-                      className="color-input"
-                    />
-                    <span
-                      className="color-preview"
-                      style={{ backgroundColor: userInfo?.theme?.fontColor }}
-                    ></span>
-                  </div>
+              </div>
+              <div className="section-card">
+                <div className="section-header">
+                  <h3 className="section-title">Profile Picture</h3>
                 </div>
-
-                <div className="form-group">
-                  <label htmlFor="is_colorImage" className="field-label">
-                    Theme Color
-                  </label>
-                  <div className="color-input-wrapper">
-                    <input
-                      type="color"
-                      id="is_colorImage"
-                      name="is_colorImage"
-                      value={userInfo?.theme?.is_colorImage || "#ffffff"}
-                      onChange={handleChange}
-                      className="color-input"
-                    />
-                    <span
-                      className="color-preview"
+                <div className="profile-upload-area">
+                  <div className="profile-image-container">
+                    <div
+                      className="profile-avatar"
                       style={{
-                        backgroundColor: userInfo?.theme?.is_colorImage,
+                        backgroundImage: previewProfile
+                          ? `url(${defaultConfig.imagePath + previewProfile})`
+                          : "none",
                       }}
-                    ></span>
+                    >
+                      {!previewProfile && (
+                        <FaUser className="avatar-placeholder" />
+                      )}
+                      <div className="profile-overlay">
+                        <label
+                          htmlFor="profileUploadInput"
+                          className="profile-upload-btn"
+                        >
+                          <FaCamera />
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <input
+                    id="profileUploadInput"
+                    type="file"
+                    name="profile_img"
+                    accept="image/png,image/jpg,image/jpeg"
+                    onChange={UploadProfileImage}
+                    className="file-input"
+                  />
+                </div>
+              </div>
+              <div className="section-card">
+                <div className="section-header">
+                  <h3 className="section-title">About You</h3>
+                </div>
+                <div className="form-group">
+                  <label htmlFor="bio" className="field-label">
+                    Bio
+                  </label>
+                  <textarea
+                    id="bio"
+                    name="bio"
+                    value={userInfo?.bio || ""}
+                    onChange={handleChange}
+                    placeholder="Write a brief description about yourself..."
+                    rows={4}
+                    className="bio-textarea"
+                  />
+                </div>
+              </div>
+              <div className="section-card">
+                <div className="section-header">
+                  <h3 className="section-title">
+                    <FaPalette className="section-icon" />
+                    Theme & Appearance
+                  </h3>
+                </div>
+
+                <div className="theme-grid">
+                  <div className="form-group">
+                    <label htmlFor="fontFamily" className="field-label">
+                      Font Style
+                    </label>
+                    <select
+                      id="fontFamily"
+                      name="fontFamily"
+                      value={userInfo?.theme?.fontFamily || ""}
+                      onChange={handleChange}
+                      className="select-field"
+                    >
+                      <option value="">Select Font</option>
+                      {fontOptions.map((font) => (
+                        <option
+                          key={font}
+                          value={font}
+                          style={{ fontFamily: font }}
+                        >
+                          {font}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="fontColor" className="field-label">
+                      Font Color
+                    </label>
+                    <div className="color-input-wrapper">
+                      <input
+                        type="color"
+                        id="fontColor"
+                        name="fontColor"
+                        value={userInfo?.theme?.fontColor || "#000000"}
+                        onChange={handleChange}
+                        className="color-input"
+                      />
+                      <span
+                        className="color-preview"
+                        style={{ backgroundColor: userInfo?.theme?.fontColor }}
+                      ></span>
+                    </div>
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="is_colorImage" className="field-label">
+                      Theme Color
+                    </label>
+                    <div className="color-input-wrapper">
+                      <input
+                        type="color"
+                        id="is_colorImage"
+                        name="is_colorImage"
+                        value={userInfo?.theme?.is_colorImage || "#ffffff"}
+                        onChange={handleChange}
+                        className="color-input"
+                      />
+                      <span
+                        className="color-preview"
+                        style={{
+                          backgroundColor: userInfo?.theme?.is_colorImage,
+                        }}
+                      ></span>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
 
-            {/* Action Buttons */}
-            <div className="form-actions">
-              <button type="submit" className="save-button">
-                <FaSave className="button-icon" />
-                Save Changes
-              </button>
-              <button
-                type="button"
-                className="cancel-button"
-                onClick={handleCancel}
-              >
-                <FaTimes className="button-icon" />
-                Cancel
-              </button>
-            </div>
-          </form>
+              <div className="form-actions">
+                <button type="submit" className="save-button">
+                  <FaSave className="button-icon" />
+                  Save Changes
+                </button>
+                <button
+                  type="button"
+                  className="cancel-button"
+                  onClick={handleCancel}
+                >
+                  <FaTimes className="button-icon" />
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 };

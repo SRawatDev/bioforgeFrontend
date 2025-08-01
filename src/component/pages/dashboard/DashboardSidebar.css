@@ -1,5 +1,4 @@
 .dashboard-sidebar {
-  width: 353px;
   height: 100vh;
   background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
   border-right: 1px solid #e2e8f0;
@@ -9,6 +8,7 @@
   left: 0;
   top: 0;
   z-index: 1000;
+  scrollbar-width: none;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
@@ -72,17 +72,14 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 16px;
-  background: linear-gradient(150deg, #8bbedf 0%, #d8e2eb 100%);
+  padding: 4px;
+  background: #6366f1;
   border-radius: 16px;
   border: 1px solid #e2e8f0;
   transition: all 0.2s ease;
 }
 
-.user-profile:hover {
-  background: linear-gradient(135deg, #edf2f7 0%, #e2e8f0 100%);
-  transform: translateY(-1px);
-}
+
 
 .avatar-container {
   position: relative;
@@ -90,8 +87,8 @@
 }
 
 .user-avatar {
-  width: 48px;
-  height: 48px;
+  width: 70x;
+  height: 70px;
   border-radius: 50%;
   object-fit: cover;
   border: 3px solid white;
@@ -161,7 +158,7 @@
   align-items: center;
   gap: 4px;
   font-size: 11px;
-  color: #718096;
+  color: white;
 }
 
 .stat-item svg {

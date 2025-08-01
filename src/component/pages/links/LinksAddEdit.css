@@ -34,7 +34,7 @@
 .modal-header {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
-  padding: 30px;
+  padding: 10px;
   display: flex;
   align-items: center;
   gap: 20px;
@@ -81,7 +81,7 @@
   transform: rotate(90deg);
 }
 .modal-body {
-  padding: 30px;
+  padding: 20px;
   max-height: calc(90vh - 120px);
 }
 .link-form {
@@ -289,6 +289,7 @@ form{
 }
 .form-actions {
   display: flex;
+  margin: 0;
   gap: 15px;
   justify-content: flex-end;
   border-top: 1px solid #e2e8f0;
@@ -308,23 +309,7 @@ form{
   color: white;
   box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
 }
-.btn-primary:hover {
-  background: linear-gradient(45deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3, #54a0ff);
-  transform: translateY(-1px);
-  color: #000000;
-  font-size: large;
-  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
-  font-size: large;
-  font-weight: bold;
-  font-family: 'Arial', sans-serif;
-  font-size: 18px;
-  font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
-  
-}
+
 .btn-secondary {
   background: #f7fafc;
   color: #4a5568;

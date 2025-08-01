@@ -6,6 +6,7 @@ import { defaultConfig } from "../../../config";
 import { Link, useNavigate} from "react-router-dom";
 import { BiLogoGmail } from "react-icons/bi";
 import { socialPlatforms } from "../links/linksAddEdit";
+import "./mobilePreview.css"
 import axios from "axios";
 interface userInfo {
   _id: string;
@@ -122,21 +123,7 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
             >
               @{userInfo?.username}{" "}
             </h1>
-            <p
-              id="bio"
-                 className="editprofile"
-              style={{
-                fontFamily: userInfo?.theme?.fontFamily,
-                textAlign:"left",
-                color: `${userInfo?.theme?.fontColor
-                  ? userInfo?.theme?.fontColor
-                  : "white"
-                  }`,
-              }}
-            >
-              {userInfo?.bio}
-            </p>
-            <div className="contactEmail">
+               <div className="contactEmail">
 
               <p
                 style={{
@@ -152,6 +139,21 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
                   <p>{userInfo?.email}</p></p>
               </p>
             </div>
+            <p
+              id="bio"
+                 className="editprofile"
+              style={{
+                fontFamily: userInfo?.theme?.fontFamily,
+                textAlign:"left",
+                color: `${userInfo?.theme?.fontColor
+                  ? userInfo?.theme?.fontColor
+                  : "white"
+                  }`,
+              }}
+            >
+              {userInfo?.bio}
+            </p>
+         
           </div>
           <div className="edit-form" id="editForm">
             <input

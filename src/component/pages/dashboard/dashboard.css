@@ -22,7 +22,6 @@ html.lenis {
   width: 100%;
   height: 100vh;
   overflow: hidden;
-  background-color: #f5f7fa;
 }
 
 /* Sidebar Styles */
@@ -44,20 +43,20 @@ html.lenis {
   flex: 1;
   height: 100vh;
   overflow-y: auto;
-  background-color: #f5f7fa;
   position: relative;
+  scrollbar-width: none
 }
 
 .dashboard-main-content {
-  padding: 20px;
+
   min-height: 100%;
-  margin-left: 321px;
-  background: #b99b876b;
+
+
 }
 
 /* Mobile Preview Section */
 .dashboard-preview {
-  width: 380px;
+  width: 30%;
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -168,31 +167,9 @@ html.lenis {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
-/* Custom Scrollbar Styling */
-.dashboard-main-area::-webkit-scrollbar,
-.dashboard-sidebar::-webkit-scrollbar,
-.dashboard-preview::-webkit-scrollbar {
-  width: 6px;
-}
 
-.dashboard-main-area::-webkit-scrollbar-track,
-.dashboard-sidebar::-webkit-scrollbar-track,
-.dashboard-preview::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
 
-.dashboard-main-area::-webkit-scrollbar-thumb,
-.dashboard-sidebar::-webkit-scrollbar-thumb,
-.dashboard-preview::-webkit-scrollbar-thumb {
-  background: #c1c1c1;
-  border-radius: 3px;
-}
 
-.dashboard-main-area::-webkit-scrollbar-thumb:hover,
-.dashboard-sidebar::-webkit-scrollbar-thumb:hover,
-.dashboard-preview::-webkit-scrollbar-thumb:hover {
-  background: #a1a1a1;
-}
 
 /* Mobile Navigation Controls */
 .mobile-nav-toggle {
@@ -620,9 +597,8 @@ html.lenis {
 
 .preview-actions {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 10px;
+  align-items: end;
+
 }
 
 .preview-actions p {
@@ -637,7 +613,7 @@ html.lenis {
     align-items: center;
     gap: 9px;
     padding: 5px 15px;
-    background-color: #4a90e2;
+    background-color:#6366f1;
     color: white;
     border: none;
     border-radius: 24px;
@@ -661,13 +637,13 @@ html.lenis {
 /* Mobile mode adjustments */
 .dashboard-preview.mobile-mode .preview-actions {
   flex-direction: column;
-  align-items: flex-start;
   gap: 10px;
 }
 
 .dashboard-preview.mobile-mode .share-profile-button {
   width: 100%;
   justify-content: center;
+  background: #6366f1;
 }
 
 @media (max-width: 768px) {
@@ -684,10 +660,10 @@ html.lenis {
 }
 
 
-/* Touch-friendly form elements for mobile */
+
 @media (max-width: 768px) {
   input, select, textarea, button {
-    font-size: 16px !important; /* Prevents iOS zoom on focus */
+    font-size: 16px !important; 
   }
   
   .form-control {
@@ -848,6 +824,7 @@ html.lenis {
     width: 60%;
     height: calc(100vh - 80px);
     overflow-y: auto;
+    scrollbar-width: none;
   }
   
   .dashboard-preview {

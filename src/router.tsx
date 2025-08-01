@@ -27,7 +27,7 @@ const routes: AppRoute[] = [
   {
     guard: Guest,
     path: '/login',
-    element: lazy(() => import('./component/pages/login/login'))
+    element: lazy(() => import('./component/pages/login/Index'))
   },
   {
     layout: Header,
@@ -46,13 +46,14 @@ const routes: AppRoute[] = [
   },
   {
     path: '/dashboard/profile/:id',
-    element: lazy(() => import('./component/pages/dashboard/profile/index'))
+    element: lazy(() => import('./component/pages/profile/index'))
   },
   {
     guard: Authenticated,
     path: '/dashboard/profile/:id',
     element: lazy(() => import('./component/pages/dashboard/Index'))
   },
+  
   {
     guard: Authenticated,
     layout: Header,
@@ -67,7 +68,7 @@ const routes: AppRoute[] = [
   {
     guard: Authenticated,
     path: '/dashboard/changepassword/:id',
-    element: lazy(() => import('./component/pages/dashboard/password/Index'))
+    element: lazy(() => import('./component/pages/password/Index'))
   },
   {
     guard: Authenticated,
@@ -89,12 +90,6 @@ const routes: AppRoute[] = [
     layout: Header,
     path: '/admin/reports',
     element: lazy(() => import('./component/pages/admin/Reports'))
-  },
-  {
-    guard: Authenticated,
-    layout: Header,
-    path: '/settings',
-    element: lazy(() => import('./component/pages/settings/Index'))
   },
   {
     guard: Authenticated,

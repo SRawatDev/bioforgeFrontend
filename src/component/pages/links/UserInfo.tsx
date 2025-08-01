@@ -22,8 +22,9 @@ interface Props {
 
 const UserInfo: React.FC<Props> = ({ userInfo, onClose, visible }) => {
     if (!visible) return null;
-
-    const totalClicks = userInfo.reduce((sum, info) => sum + parseInt(info.count || '0'), 0);
+    const totalClick1 = userInfo.reduce((sum, info) => sum + parseInt(info.count || '0'), 0);
+    const totalClicks2 = userInfo.reduce(  (sum, info) => sum + parseInt(String(info?.userInfo?.count || '0')),  0 );
+    const totalClicks = totalClick1 + totalClicks2
     const uniqueUsers = userInfo.filter(info => info.userInfo?.username).length;
     const anonymousClicks = userInfo.filter(info => !info.userInfo?.username).length;
 
@@ -142,11 +143,11 @@ const UserInfo: React.FC<Props> = ({ userInfo, onClose, visible }) => {
                                                         )}
                                                     </div>
                                                     <div className="user-info">
-                                                        <span className="username">
-                                                            {info?.userInfo?.username || 'Anonymous User'}
+                                                        <span className="username" style={{color:"black",fontSize:"18px"}}>
+                                                            {info?.userInfo?.username || 'Anonymous User '}
                                                         </span>
                                                         <span className="user-type">
-                                                            {info?.userInfo?.username ? 'Registered' : 'Guest'}
+                                                            {info?.userInfo?.username ? ' (Registered)' : ' (Guest)'}
                                                         </span>
                                                     </div>
                                                 </div>
@@ -164,7 +165,7 @@ const UserInfo: React.FC<Props> = ({ userInfo, onClose, visible }) => {
                                                         {info.count || info?.userInfo?.count || 0}
                                                     </span>
                                                     <div className="click-bar">
-                                                        <div 
+                                                        <div
                                                             className="click-fill"
                                                             style={{
                                                                 width: `${Math.min((parseInt(info.count || '0') / Math.max(totalClicks, 1)) * 100, 100)}%`

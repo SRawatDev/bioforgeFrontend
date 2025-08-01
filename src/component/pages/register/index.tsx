@@ -5,11 +5,9 @@ import ErrorMessage from "../../../helpers/ErrorMessage";
 import { apiUrls } from "../../../utils/api.utils";
 import SuccessMessage from "../../../helpers/Success";
 import LoadScreen from "../../loaderScreen";
-import { FaEyeSlash, FaEye, FaUser, FaLock } from "react-icons/fa";
+import { FaEyeSlash, FaEye } from "react-icons/fa";
 import { IoMdArrowRoundBack } from "react-icons/io";
-import { HiMail } from "react-icons/hi";
-import "./register.css";
-
+import Formbutton from "../../form/Formbutton";
 interface RegisterInterface {
   username: string;
   email: string;
@@ -26,7 +24,7 @@ const Register: React.FC = () => {
     password?: string;
     confirmPassword?: string;
   }>({});
-  
+
   const [register, setRegister] = useState<RegisterInterface>({
     username: "",
     email: "",
@@ -39,50 +37,6 @@ const Register: React.FC = () => {
     confirmPassword: false,
   });
 
-  const validateForm = (): boolean => {
-    const errors: {
-      username?: string;
-      email?: string;
-      password?: string;
-      confirmPassword?: string;
-    } = {};
-
-    // Username validation
-    if (!register.username.trim()) {
-      errors.username = "Username is required";
-    } else if (register.username.length < 3) {
-      errors.username = "Username must be at least 3 characters";
-    } else if (!/^[a-zA-Z0-9_]+$/.test(register.username)) {
-      errors.username = "Username can only contain letters, numbers, and underscores";
-    }
-
-    // Email validation
-    if (!register.email) {
-      errors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(register.email)) {
-      errors.email = "Please enter a valid email address";
-    }
-
-    // Password validation
-    if (!register.password) {
-      errors.password = "Password is required";
-    } else if (register.password.length < 6) {
-      errors.password = "Password must be at least 6 characters";
-    } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(register.password)) {
-      errors.password = "Password must contain at least one uppercase letter, one lowercase letter, and one number";
-    }
-
-    // Confirm password validation
-    if (!register.confirmPassword) {
-      errors.confirmPassword = "Please confirm your password";
-    } else if (register.password !== register.confirmPassword) {
-      errors.confirmPassword = "Passwords do not match";
-    }
-
-    setFormErrors(errors);
-    return Object.keys(errors).length === 0;
-  };
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setRegister((prev) => ({
@@ -90,22 +44,19 @@ const Register: React.FC = () => {
       [name]: value,
     }));
 
-    // Clear error for the field being edited
     if (formErrors[name as keyof typeof formErrors]) {
-      setFormErrors(prev => ({
+      setFormErrors((prev) => ({
         ...prev,
-        [name]: undefined
+        [name]: undefined,
       }));
     }
   };
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    if (!validateForm()) {
-      return;
+    if(register.confirmPassword!==register.password) {
+      ErrorMessage("Confirm password and password should be same")
+      return 
     }
-
     setLoader(true);
     try {
       const { confirmPassword, ...registerData } = register;
@@ -115,7 +66,7 @@ const Register: React.FC = () => {
         "POST",
         registerData
       );
-      
+
       setLoader(false);
       if (!response?.data?.status) {
         ErrorMessage(response?.data?.message || "Registration failed");
@@ -126,172 +77,157 @@ const Register: React.FC = () => {
           password: "",
           confirmPassword: "",
         });
-        SuccessMessage(response?.data?.message || "Account created successfully! Please sign in.");
+        SuccessMessage(
+          response?.data?.message ||
+          "Account created successfully! Please sign in."
+        );
         navigate("/login");
       }
     } catch (err: any) {
       setLoader(true);
-      
     }
   };
 
-  const togglePasswordVisibility = (field: 'password' | 'confirmPassword') => {
-    setShowPassword(prev => ({
+  const togglePasswordVisibility = (field: "password" | "confirmPassword") => {
+    setShowPassword((prev) => ({
       ...prev,
-      [field]: !prev[field]
+      [field]: !prev[field],
     }));
   };
 
   return (
     <>
       {loader && <LoadScreen />}
-      
+
       <div className="register-container gradient-form">
-        {/* Back Button */}
-        <Link 
-          to="/" 
+        <Link
+          to="/"
           className="back-button-register"
           aria-label="Go back to login"
         >
           <IoMdArrowRoundBack className="back-icon" />
-          <span className="back-button-register-text">Back to Home</span>
         </Link>
 
         <div className="register-row">
-          {/* Left Column - Registration Form */}
           <div className="register-col-left">
             <div className="register-form-wrapper">
-              {/* Logo and Header */}
               <div className="register-header">
-                <img 
+                <img
                   src="/assets/logo.png"
-                  className="register-logo" 
-                  alt="BioForge Logo" 
+                  className="register-logo"
+                  alt="BioForge Logo"
                 />
                 <h4 className="register-title">Join The BioForge Community</h4>
               </div>
 
-              <p className="register-subtitle">Create your account to get started</p>
+              <p className="register-subtitle">
+                Create your account to get started
+              </p>
 
-              {/* Registration Form */}
               <form onSubmit={handleSubmit} className="register-form">
-                {/* Username Input */}
                 <div className="register-input-wrapper">
-                  {/* <FaUser className="input-icon" /> */}
                   <input
                     type="text"
                     name="username"
                     value={register.username}
                     onChange={handleChange}
-                    className={`register-input ${formErrors.username ? 'error' : ''}`}
+                    className={`register-input ${formErrors.username ? "error" : ""
+                      }`}
                     placeholder=" "
                     id="username"
+                    required
                   />
-                  <label htmlFor="username" className="register-label">Username</label>
-                  {formErrors.username && (
-                    <div className="register-error">{formErrors.username}</div>
-                  )}
+                  <label htmlFor="username" className="register-label">
+                    Username
+                  </label>
                 </div>
-
-                {/* Email Input */}
                 <div className="register-input-wrapper">
-                  {/* <HiMail className="input-icon" /> */}
                   <input
                     type="email"
                     name="email"
                     value={register.email}
                     onChange={handleChange}
-                    className={`register-input ${formErrors.email ? 'error' : ''}`}
+                    className={`register-input ${formErrors.email ? "error" : ""
+                      }`}
                     placeholder=" "
                     id="email"
+                    required
                   />
-                  <label htmlFor="email" className="register-label">Email address</label>
-                  {formErrors.email && (
-                    <div className="register-error">{formErrors.email}</div>
-                  )}
+                  <label htmlFor="email" className="register-label">
+                    Email address
+                  </label>
                 </div>
 
-                {/* Password Input */}
                 <div className="register-input-wrapper">
-                  {/* <FaLock className="input-icon" /> */}
                   <input
                     type={showPassword.password ? "text" : "password"}
                     name="password"
                     value={register.password}
                     onChange={handleChange}
-                    className={`register-input ${formErrors.password ? 'error' : ''}`}
+                    className={`register-input ${formErrors.password ? "error" : ""
+                      }`}
                     placeholder=" "
                     id="password"
+                      required
                   />
-                  <label htmlFor="password" className="register-label">Password</label>
+                  <label htmlFor="password" className="register-label">
+                    Password
+                  </label>
                   <button
                     type="button"
-                    onClick={() => togglePasswordVisibility('password')}
+                    onClick={() => togglePasswordVisibility("password")}
                     className="password-toggle"
-                    aria-label={showPassword.password ? "Hide password" : "Show password"}
+                    aria-label={
+                      showPassword.password ? "Hide password" : "Show password"
+                    }
                   >
                     {showPassword.password ? <FaEyeSlash /> : <FaEye />}
                   </button>
-                  {formErrors.password && (
-                    <div className="register-error">{formErrors.password}</div>
-                  )}
                 </div>
-
-                {/* Confirm Password Input */}
                 <div className="register-input-wrapper">
-                  {/* <FaLock className="input-icon" /> */}
                   <input
                     type={showPassword.confirmPassword ? "text" : "password"}
                     name="confirmPassword"
                     value={register.confirmPassword}
                     onChange={handleChange}
-                    className={`register-input ${formErrors.confirmPassword ? 'error' : ''}`}
+                    className={`register-input ${formErrors.confirmPassword ? "error" : ""
+                      }`}
                     placeholder=" "
                     id="confirmPassword"
+                      required
                   />
-                  <label htmlFor="confirmPassword" className="register-label">Confirm Password</label>
+                  <label htmlFor="confirmPassword" className="register-label">
+                    Confirm Password
+                  </label>
                   <button
                     type="button"
-                    onClick={() => togglePasswordVisibility('confirmPassword')}
+                    onClick={() => togglePasswordVisibility("confirmPassword")}
                     className="password-toggle"
-                    aria-label={showPassword.confirmPassword ? "Hide password" : "Show password"}
+                    aria-label={
+                      showPassword.confirmPassword
+                        ? "Hide password"
+                        : "Show password"
+                    }
                   >
                     {showPassword.confirmPassword ? <FaEyeSlash /> : <FaEye />}
                   </button>
-                  {formErrors.confirmPassword && (
-                    <div className="register-error">{formErrors.confirmPassword}</div>
-                  )}
                 </div>
-
-                {/* Terms and Conditions */}
                 <div className="terms-section">
                   <p className="terms-text">
                     By creating an account, you agree to our{" "}
-                    <Link to="/terms" className="terms-link">Terms of Service</Link>
-                    {" "}and{" "}
-                    <Link to="/privacy" className="terms-link">Privacy Policy</Link>
+                    <Link to="/terms" className="terms-link">
+                      Terms of Service
+                    </Link>{" "}
+                    and{" "}
+                    <Link to="/privacy" className="terms-link">
+                      Privacy Policy
+                    </Link>
                   </p>
                 </div>
-
-                {/* Sign Up Button */}
                 <div className="register-actions">
-                  <button
-                    type="submit"
-                    disabled={loader}
-                    className="register-btn-primary gradient-custom-2"
-                  >
-                    {loader ? (
-                      <div className="register-loading">
-                        <div className="spinner"></div>
-                        Creating Account...
-                      </div>
-                    ) : (
-                      "Create Account"
-                    )}
-                  </button>
+                  <Formbutton text={"Create Account"} />
                 </div>
 
-                {/* Sign In Section */}
                 <div className="register-signin-section">
                   <div className="signin-text-wrapper">
                     <p className="signin-text">Already have an account?</p>
@@ -314,32 +250,42 @@ const Register: React.FC = () => {
               <div className="register-right-text">
                 <h4 className="right-title">Start Your Digital Journey</h4>
                 <p className="right-description">
-                  Join thousands of creators, professionals, and brands who use BioForge 
-                  to craft beautiful, personalized bio pages. Showcase your digital identity 
-                  with style and connect with your audience like never before.
+                  Join thousands of creators, professionals, and brands who use
+                  BioForge to craft beautiful, personalized bio pages. Showcase
+                  your digital identity with style and connect with your
+                  audience like never before.
                 </p>
-                
+
                 {/* Benefits list */}
                 <div className="benefits-list">
                   <div className="benefit-item">
                     <div className="benefit-number">1</div>
                     <div className="benefit-content">
                       <h5>Choose Your Template</h5>
-                      <p>Select from our collection of beautiful, mobile-first templates</p>
+                      <p>
+                        Select from our collection of beautiful, mobile-first
+                        templates
+                      </p>
                     </div>
                   </div>
                   <div className="benefit-item">
                     <div className="benefit-number">2</div>
                     <div className="benefit-content">
                       <h5>Customize Your Page</h5>
-                      <p>Add your links, customize colors, and make it uniquely yours</p>
+                      <p>
+                        Add your links, customize colors, and make it uniquely
+                        yours
+                      </p>
                     </div>
                   </div>
                   <div className="benefit-item">
                     <div className="benefit-number">3</div>
                     <div className="benefit-content">
                       <h5>Share & Grow</h5>
-                      <p>Get your unique link and start building your digital presence</p>
+                      <p>
+                        Get your unique link and start building your digital
+                        presence
+                      </p>
                     </div>
                   </div>
                 </div>

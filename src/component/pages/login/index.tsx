@@ -1,190 +1,247 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { callAPIWithoutAuth } from "../../../utils/apicall.utils";
 import ErrorMessage from "../../../helpers/ErrorMessage";
-import InputField from "../../form/InputField";
 import { apiUrls } from "../../../utils/api.utils";
 import SuccessMessage from "../../../helpers/Success";
 import LoadScreen from "../../loaderScreen";
-import { FaEyeLowVision } from "react-icons/fa6";
-import { FaEye } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { FaEyeSlash, FaEye } from "react-icons/fa";
 import { IoMdArrowRoundBack } from "react-icons/io";
-import "./Login.css";
-interface RegisterInterface {
+import Formbutton from "../../form/Formbutton";
+interface LoginInterface {
   email: string;
   password: string;
 }
 
-const Login: React.FC = () => {
-   const [passwordhide, setpasswordHide] = useState<boolean>(true);
+const Index: React.FC = () => {
+  const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
   const [loader, setLoader] = useState<boolean>(false);
+  const [formErrors, setFormErrors] = useState<{ email?: string; password?: string }>({});
   const navigate = useNavigate();
-  const [login, setLogin] = useState<RegisterInterface>({
+
+  const [loginData, setLoginData] = useState<LoginInterface>({
     email: "",
     password: "",
   });
+
+
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setLogin((prev) => ({
+    setLoginData((prev) => ({
       ...prev,
       [name]: value,
     }));
+
+    if (formErrors[name as keyof typeof formErrors]) {
+      setFormErrors(prev => ({
+        ...prev,
+        [name]: undefined
+      }));
+    }
   };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+
+
     setLoader(true);
     try {
-      const response = await callAPIWithoutAuth(
-        apiUrls.login,
-        {},
-        "POST",
-        login
-      );
+      const response = await callAPIWithoutAuth(apiUrls.login, {}, "POST", loginData);
       setLoader(false);
+
       if (!response?.data?.status) {
-        ErrorMessage(response?.data?.message);
+        ErrorMessage(response?.data?.message || "Login failed");
       } else {
-        localStorage.setItem("_id", response?.data?.data?.id);
-        localStorage.setItem("accessToken", response?.data?.data?.token);
-        localStorage.setItem("type", response?.data?.data?.type);
-        localStorage.setItem("username", response?.data?.data?.username);
-        localStorage.setItem("profile_img", response?.data?.data?.profile_img);
-        if (response?.data?.data?.type === "user") {
-          navigate(`/dashboard/profile/${localStorage.getItem("_id")}`);
+        const userData = response.data.data;
+        localStorage.setItem("_id", userData.id);
+        localStorage.setItem("accessToken", userData.token);
+        localStorage.setItem("type", userData.type);
+        localStorage.setItem("username", userData.username);
+        localStorage.setItem("profile_img", userData.profile_img || "");
+        if (userData.type === "user") {
+          navigate(`/dashboard/index/${userData.id}`, { replace: true });
         } else {
           navigate("/admin/DashBoard");
         }
-        SuccessMessage(response?.data?.message);
+        SuccessMessage(response.data.message);
       }
     } catch (err: any) {
-     
       setLoader(true);
+
     }
+  };
+
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
   };
   return (
     <>
       {loader && <LoadScreen />}
-      <div className="container-parent" style={{ 
-        background: 'linear-gradient(to bottom right, #3b82f6, #8b5cf6)',
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
-      }}>
-        <Link to={"/"} style={{ position: 'absolute', top: '20px', left: '20px', color: 'white' }}>
-          <IoMdArrowRoundBack className="backbutton" style={{ fontSize: '24px' }} />
+
+      <div className="register-container gradient-form">
+        <Link
+          to="/"
+          className="back-button-register"
+          aria-label="Go back to login"
+        >
+          <IoMdArrowRoundBack className="back-icon" />
         </Link>
-        <div className="container-register" style={{
-          background: 'white',
-          borderRadius: '8px',
-          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-          padding: '40px',
-          width: '100%',
-          maxWidth: '400px'
-        }}>
-          <div className="container-inner">
-            <div className="icon-box" style={{ textAlign: 'center', marginBottom: '20px' }}>
-              <img src="/assets/logo.png" alt="Logo" height={50} />
+
+        <div className="register-row">
+          <div className="register-col-left">
+            <div className="register-form-wrapper">
+              <div className="register-header">
+                <img
+                  src="/assets/logo.png"
+                  className="register-logo"
+                  alt="BioForge Logo"
+                />
+                <h4 className="register-title">Join The BioForge Community</h4>
+              </div>
+              <form onSubmit={handleSubmit} className="register-form">
+
+                <div className="register-input-wrapper">
+                  <input
+                    type="email"
+                    name="email"
+                    value={loginData.email}
+                    onChange={handleChange}
+                    className={`register-input ${formErrors.email ? "error" : ""
+                      }`}
+                    placeholder=" "
+                    id="email"
+                    required
+                  />
+                  <label htmlFor="email" className="register-label">
+                    Email address
+                  </label>
+                </div>
+
+                <div className="register-input-wrapper">
+                  <input
+                    type={passwordVisible ? "text" : "password"}
+                    name="password"
+                    value={loginData.password}
+                    onChange={handleChange}
+                    className={`register-input ${formErrors.password ? "error" : ""
+                      }`}
+                    placeholder=" "
+                    id="password"
+                    required
+
+                  />
+                  <label htmlFor="password" className="register-label">
+                    Password
+                  </label>
+                  <button
+                    type="button"
+                    onClick={togglePasswordVisibility}
+                    className="password-toggle"
+                    aria-label={
+                      passwordVisible ? "Hide password" : "Show password"
+                    }
+                  >
+                    {passwordVisible ? <FaEyeSlash /> : <FaEye />}
+                  </button>
+                </div>
+
+                <div className="terms-section">
+                  <p className="terms-text">
+                    By creating an account, you agree to our{" "}
+                    <Link to="/terms" className="terms-link">
+                      Terms of Service
+                    </Link>{" "}
+                    and{" "}
+                    <Link to="/privacy" className="terms-link">
+                      Privacy Policy
+                    </Link>
+                  </p>
+                </div>
+                <div className="register-actions">
+                  <Formbutton text={"Login"} />
+                </div>
+
+                <div className="register-signin-section">
+                  <div className="signin-text-wrapper">
+                    <p className="signin-text">Don't have an account?</p>
+                    <button
+                      type="button"
+                      onClick={() => navigate("/register")}
+                      className="register-btn-outline"
+                    >
+                      Create Account
+                    </button>
+
+                  </div>
+                </div>
+              </form>
             </div>
-            <h2 style={{ 
-              textAlign: 'center', 
-              marginBottom: '20px', 
-              color: '#1f2937',
-              fontSize: '24px',
-              fontWeight: 'bold'
-            }}>Sign In to Your Account</h2>
-            <form onSubmit={handleSubmit}>
-              <div className="form-group" style={{ marginBottom: '20px' }}>
-                <InputField
-                  label="Email"
-                  type="email"
-                  name="email"
-                  value={login.email}
-                  onChange={handleChange}
-                  required
-                  style={{
-                    width: '100%',
-                    padding: '10px',
-                    borderRadius: '4px',
-                    border: '1px solid #d1d5db'
-                  }}
-                />
+          </div>
+
+          <div className="register-col-right">
+            <div className="register-right-content gradient-custom-2">
+              <div className="register-right-text">
+                <h4 className="right-title">Start Your Digital Journey</h4>
+                <p className="right-description">
+                  Join thousands of creators, professionals, and brands who use
+                  BioForge to craft beautiful, personalized bio pages. Showcase
+                  your digital identity with style and connect with your
+                  audience like never before.
+                </p>
+
+                {/* Benefits list */}
+                <div className="benefits-list">
+                  <div className="benefit-item">
+                    <div className="benefit-number">1</div>
+                    <div className="benefit-content">
+                      <h5>Choose Your Template</h5>
+                      <p>
+                        Select from our collection of beautiful, mobile-first
+                        templates
+                      </p>
+                    </div>
+                  </div>
+                  <div className="benefit-item">
+                    <div className="benefit-number">2</div>
+                    <div className="benefit-content">
+                      <h5>Customize Your Page</h5>
+                      <p>
+                        Add your links, customize colors, and make it uniquely
+                        yours
+                      </p>
+                    </div>
+                  </div>
+                  <div className="benefit-item">
+                    <div className="benefit-number">3</div>
+                    <div className="benefit-content">
+                      <h5>Share & Grow</h5>
+                      <p>
+                        Get your unique link and start building your digital
+                        presence
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Stats */}
+                <div className="stats-section">
+                  <div className="stat-item">
+                    <div className="stat-number">10K+</div>
+                    <div className="stat-label">Active Users</div>
+                  </div>
+                  <div className="stat-item">
+                    <div className="stat-number">50+</div>
+                    <div className="stat-label">Templates</div>
+                  </div>
+                  <div className="stat-item">
+                    <div className="stat-number">99.9%</div>
+                    <div className="stat-label">Uptime</div>
+                  </div>
+                </div>
               </div>
-              <div className="form-group position-relative" style={{ marginBottom: '20px' }}>
-                <InputField
-                  label="Password"
-                  name="password"
-                  value={login.password}
-                  onChange={handleChange}
-                  required
-                  type={passwordhide ? "password" : "text"}
-                  style={{
-                    width: '100%',
-                    padding: '10px',
-                    borderRadius: '4px',
-                    border: '1px solid #d1d5db'
-                  }}
-                />
-                {passwordhide ? (
-                  <FaEyeLowVision
-                    onClick={() => setpasswordHide(false)}
-                    className="position-absolute"
-                    style={{
-                      right: "10px",
-                      top: "50%",
-                      transform: "translateY(-50%)",
-                      cursor: "pointer",
-                      color: "#999",
-                    }}
-                  />
-                ) : (
-                  <FaEye
-                    className="position-absolute"
-                    onClick={() => setpasswordHide(true)}
-                    style={{
-                      right: "10px",
-                      top: "50%",
-                      transform: "translateY(-50%)",
-                      cursor: "pointer",
-                      color: "#999",
-                    }}
-                  />
-                )}
-              </div>
-              <button type="submit" className="button" style={{
-                width: '100%',
-                padding: '10px',
-                borderRadius: '4px',
-                background: 'linear-gradient(to right, #3b82f6, #8b5cf6)',
-                color: 'white',
-                border: 'none',
-                cursor: 'pointer',
-                fontWeight: 'bold',
-                transition: 'opacity 0.3s'
-              }}>
-                Sign In
-              </button>
-            </form>
-            <br />
-            <button
-              type="button"
-              className="button"
-              onClick={() => navigate("/register")}
-              style={{
-                width: '100%',
-                padding: '10px',
-                borderRadius: '4px',
-                background: '#f3f4f6',
-                color: '#4b5563',
-                border: 'none',
-                cursor: 'pointer',
-                fontWeight: 'bold',
-                transition: 'background 0.3s'
-              }}
-            >
-              Sign Up
-            </button>
+            </div>
           </div>
         </div>
       </div>
@@ -192,4 +249,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default Index;

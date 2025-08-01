@@ -9,28 +9,35 @@ import { FaLowVision, FaEye } from "react-icons/fa";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import Formbutton from "../../form/Formbutton";
 interface changepasswordInterface {
-  password: string;
+  oldPassword: string;
+  newPassword: string;
 }
+
 const Index = () => {
   const [loader, setLoader] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState({
-    password: false,
+    oldPassword: false,
+    newPassword: false,
   });
   const navigate = useNavigate();
   const [changepasswordData, setchangepasswordData] =
-    useState<changepasswordInterface>({ password: "" });
-
+    useState<changepasswordInterface>({
+      oldPassword: "",
+      newPassword: "",
+    });
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setchangepasswordData((pre) => ({ ...pre, [name]: value }));
+    setchangepasswordData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoader(true);
     try {
       const response = await callAPI(
-        apiUrls.accountDelete,
+        apiUrls.changePassword,
         {},
         "POST",
         changepasswordData
@@ -39,8 +46,7 @@ const Index = () => {
       if (!response?.data?.status) {
         ErrorMessage(response?.data?.message);
       } else {
-        navigate(`/`);
-        localStorage.clear();
+        navigate(`/dashboard/index/${localStorage.getItem("_id")}`);
         SuccessMessage(response?.data?.message);
       }
     } catch (err: any) {
@@ -52,11 +58,11 @@ const Index = () => {
     <>
       {loader && <LoadScreen />}
       <div className="register-container gradient-form">
-      <Link
-               to= {`/dashboard/index/${localStorage.getItem("_id")}`}
-               className="back-button-register"
-               aria-label="Go back to login"
-             >
+        <Link
+          to= {`/dashboard/index/${localStorage.getItem("_id")}`}
+          className="back-button-register"
+          aria-label="Go back to login"
+        >
           <IoMdArrowRoundBack className="back-icon" />
         </Link>
 
@@ -69,21 +75,46 @@ const Index = () => {
                   className="register-logo"
                   alt="BioForge Logo"
                 />
-                <h4 className="register-title">Delete You Bioforge Account</h4>
+                <h4 className="register-title">Change Your Bioforge Password</h4>
               </div>
               <form onSubmit={handleSubmit} className="register-form">
-                
                 <div className="register-input-wrapper">
                   <input
-                    name="password"
-                    value={changepasswordData.password}
+                    name="oldPassword"
+                    value={changepasswordData.oldPassword}
+                    onChange={handleChange}
+                    className={`register-input`}
+                    required
+                    type={showPassword.oldPassword ? "text" : "password"}
+                    placeholder=""
+                    
+                  />
+                  <label htmlFor="password" className="register-label">
+                    Old Password
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setShowPassword((prev) => ({
+                        ...prev,
+                        oldPassword: !prev.oldPassword,
+                      }))
+                    }
+                    className="password-toggle"
+                  >
+                    {showPassword.oldPassword ? <FaEye /> : <FaLowVision />}
+                  </button>
+                </div>
+                <div className="register-input-wrapper">
+                  <input
+                    name="newPassword"
+                    value={changepasswordData.newPassword}
                     onChange={handleChange}
                     required
-                    type={showPassword.password ? "text" : "password"}
+                    type={showPassword.newPassword ? "text" : "password"}
                     placeholder=""
                     className={`register-input`}
                     id="password"
-                  
                   />
                   <label htmlFor="password" className="register-label">
                     Password
@@ -91,25 +122,26 @@ const Index = () => {
                   <button
                     type="button"
                     onClick={() =>
-                        setShowPassword((prev) => ({
-                          ...prev,
-                          password: !prev.password,
-                        }))
-                      }
+                      setShowPassword((prev) => ({
+                        ...prev,
+                        newPassword: !prev.newPassword,
+                      }))
+                    }
                     className="password-toggle"
                   >
-                   {showPassword.password ? <FaEye /> : <FaLowVision />}
+                    {showPassword.newPassword ? <FaEye /> : <FaLowVision />}
                   </button>
                 </div>
 
-           
+              
                 <div className="register-actions">
                   <Formbutton text={"Submit"} />
                 </div>
 
                 <div className="register-signin-section">
                   <div className="signin-text-wrapper">
-                    <button
+                  
+                   <button
                       type="button"
                       onClick={() => navigate(`/dashboard/index/${localStorage.getItem("_id")}`)}
                       className="register-btn-outline"

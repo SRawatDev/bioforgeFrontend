@@ -1,7 +1,5 @@
 import React, { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Lenis from '@studio-freight/lenis';
-import Navbar from '../../navbar/Navbar';;
 import { 
   FiArrowRight, 
   FiStar, 
@@ -86,9 +84,9 @@ const scrollToSection = (selector: string) => {
         {/* Hero Section */}
         <section className="hero-section">
           <div className="hero-background">
-            <div className="gradient-orb orb-1"></div>
+            {/* <div className="gradient-orb orb-1"></div>
             <div className="gradient-orb orb-2"></div>
-            <div className="gradient-orb orb-3"></div>
+            <div className="gradient-orb orb-3"></div> */}
           </div>
           
           <div className="container d-flex" >

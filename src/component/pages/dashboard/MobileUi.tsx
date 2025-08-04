@@ -80,171 +80,181 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
 
       <section
         id="phone-preview-container"
-        style={{ height: "100%" }}
-
+        style={{ height: "100%", }}
         aria-label="Mobile preview of Linktree"
       >
         <div
           className="profile-container"
           style={{
-    
-            backgroundImage: `url(${defaultConfig?.imagePath + userInfo?.banner_img})`,
+            position: "relative",
             height: "100%",
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat',
-            overflow:"scroll",
+            overflow: "scroll",
             fontFamily: userInfo?.theme?.fontFamily,
-            color: `${userInfo?.theme?.fontColor
-              ? userInfo?.theme?.fontColor
-              : "white"
-              }`,
+            backgroundImage: `url(${defaultConfig?.imagePath + userInfo?.banner_img})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+            color: userInfo?.theme?.fontColor || "white",
           }}
         >
-        
-          <div className="profile-picture">
-            <img
-              id="profileImage"
-              src={defaultConfig?.imagePath + userInfo?.profile_img}
-              alt="Profil Fotoğrafı"
-            />
-          </div>
-          <div className="profile-info">
-            <h1
-              id="username "
-              className="editprofile"
-              style={{
-                fontFamily: userInfo?.theme?.fontFamily,
-                color: `${userInfo?.theme?.fontColor
-                  ? userInfo?.theme?.fontColor
-                  : "white"
-                  }`,
-              }}
-            >
-              @{userInfo?.username}{" "}
-            </h1>
-               <div className="contactEmail">
+          <div
+            className="blurred-background"
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "80vh",
+              backdropFilter: "blur(3px)",
+              WebkitBackdropFilter: "blur(3px)",
 
-              <p
+              zIndex: 1
+            }}
+
+          ></div>
+
+
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              backgroundColor: "rgba(0, 0, 0, 0.4)",
+              zIndex: 1,
+            }}
+          ></div>
+
+
+          <div className="content-wrapper" style={{ position: "relative", zIndex: 2 }}>
+            <div className="profile-picture">
+              <img
+                id="profileImage"
+                src={defaultConfig?.imagePath + userInfo?.profile_img}
+                alt="Profil Fotoğrafı"
+              />
+            </div>
+
+            <div className="profile-info">
+              <h1
+                id="username"
+                className="editprofile"
                 style={{
                   fontFamily: userInfo?.theme?.fontFamily,
-                  color: `${userInfo?.theme?.fontColor
-                    ? userInfo?.theme?.fontColor
-                    : "white"
-                    }`,
+                  color: userInfo?.theme?.fontColor || "white",
                 }}
               >
-                <p className="mobile-email-button">
-                  <BiLogoGmail />
-                  <p>{userInfo?.email}</p></p>
-              </p>
-            </div>
-            <p
-              id="bio"
-                 className="editprofile"
-              style={{
-                fontFamily: userInfo?.theme?.fontFamily,
-                textAlign:"left",
-                color: `${userInfo?.theme?.fontColor
-                  ? userInfo?.theme?.fontColor
-                  : "white"
-                  }`,
-              }}
-            >
-              {userInfo?.bio}
-            </p>
-         
-          </div>
-          <div className="edit-form" id="editForm">
-            <input
-              type="text"
-              id="editUsername"
-              placeholder="Adınızı girin"
-            />
-            <textarea
-              id="editBio"
-              style={{ fontFamily: `${userInfo?.theme?.fontFamily}` }}
-              placeholder="Hakkınızda bir şeyler yazın.."
-              rows={3}
-              defaultValue={""}
-            />
-          </div>
+                @{userInfo?.username}
+              </h1>
 
-          <div className="links-list">
-            {userInfo?.non_social.map((link) => (
-              <Link
-                key={link._id}
-                to={link.linkUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`link-card ${userInfo.theme.themeDesign || "round"}`}
-                onClick={() => handleClickSubmit(link._id)}
-                style={{
-                  '--card-bg': userInfo?.theme?.is_colorImage || '#333',
-                  '--card-color': userInfo?.theme?.fontColor || 'white',
-                  '--card-font': userInfo?.theme?.fontFamily || 'sans-serif',
-                  
-                   
-                } as React.CSSProperties}
-              >
-                <img
-                  src={defaultConfig?.imagePath + link.linkLogo}
-                  alt={link.linkTitle}
-                  className="link-logo"
-                />
-                <span
-                  className={`link-card-title `}
+              <div className="contactEmail">
+                <p
                   style={{
                     fontFamily: userInfo?.theme?.fontFamily,
-                    color: `${userInfo?.theme?.fontColor
-                      ? userInfo?.theme?.fontColor
-                      : "white"
-                      }`,
-              
+                    color: userInfo?.theme?.fontColor || "white",
                   }}
                 >
-                  {link.linkTitle}
-                </span>
-              </Link>
-            ))}
-          </div>
-          <div className="spcial-links-list d-flex  justify-content-center gap-2">
-            {userInfo?.social.map((link) => {
-              const matchedPlatform = socialPlatforms.find(
-                (platform) =>
-                  platform.label.toLowerCase() ===
-                  link.linkTitle.toLowerCase()
-              );
-              return (
-                <>
+                  <p className="mobile-email-button">
+                    <BiLogoGmail />
+                    <p>{userInfo?.email}</p>
+                  </p>
+                </p>
+              </div>
+
+              <p
+                id="bio"
+                className="editprofile"
+                style={{
+                  fontFamily: userInfo?.theme?.fontFamily,
+                  textAlign: "left",
+                  color: userInfo?.theme?.fontColor || "white",
+                }}
+              >
+                {userInfo?.bio}
+              </p>
+            </div>
+
+            <div className="edit-form" id="editForm">
+              <input type="text" id="editUsername" placeholder="Adınızı girin" />
+              <textarea
+                id="editBio"
+                style={{ fontFamily: userInfo?.theme?.fontFamily }}
+                placeholder="Hakkınızda bir şeyler yazın.."
+                rows={3}
+                defaultValue={""}
+              />
+            </div>
+
+            <div className="links-list">
+              {userInfo?.non_social.map((link) => (
+                <Link
+                  key={link._id}
+                  to={link.linkUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`link-card ${userInfo.theme.themeDesign || "round"}`}
+                  onClick={() => handleClickSubmit(link._id)}
+                  style={{
+                    "--card-bg": userInfo?.theme?.is_colorImage || "#333",
+                    "--card-color": userInfo?.theme?.fontColor || "white",
+                    "--card-font": userInfo?.theme?.fontFamily || "sans-serif",
+                  } as React.CSSProperties}
+                >
+                  <img
+                    src={defaultConfig?.imagePath + link.linkLogo}
+                    alt={link.linkTitle}
+                    className="link-logo"
+                  />
+                  <span
+                    className="link-card-title"
+                    style={{
+                      fontFamily: userInfo?.theme?.fontFamily,
+                      color: userInfo?.theme?.fontColor || "white",
+                    }}
+                  >
+                    {link.linkTitle}
+                  </span>
+                </Link>
+              ))}
+            </div>
+
+            <div className="spcial-links-list d-flex justify-content-center gap-2">
+              {userInfo?.social.map((link) => {
+                const matchedPlatform = socialPlatforms.find(
+                  (platform) =>
+                    platform.label.toLowerCase() === link.linkTitle.toLowerCase()
+                );
+                return (
                   <Link
                     key={link._id}
                     to={link.linkUrl}
                     target="_blank"
-                    style={{ color: "black" }}
                     rel="noopener noreferrer"
                     className="link-card-social"
                     onClick={() => handleClickSubmit(link._id)}
+                    style={{ color: "black" }}
                   >
                     {matchedPlatform && (
                       <span
                         className="social-icon"
                         style={{
-                          fontFamily: `${userInfo?.theme?.fontFamily}`,
-                          color: `${userInfo?.theme?.fontColor ? userInfo?.theme?.fontColor : "white"}`,
-                          gap: 0
+                          fontFamily: userInfo?.theme?.fontFamily,
+                          color: userInfo?.theme?.fontColor || "white",
+                          gap: 0,
                         }}
                       >
                         {matchedPlatform.icon}
                       </span>
                     )}
                   </Link>
-                </>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
         </div>
       </section>
+
 
     </>
   );

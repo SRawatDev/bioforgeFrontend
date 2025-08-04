@@ -1,161 +1,160 @@
-import React, { useEffect, useState } from "react";
-import ErrorMessage from "../../../helpers/ErrorMessage";
-import { callAPIWithoutAuth } from "../../../utils/apicall.utils";
-import { apiUrls } from "../../../utils/api.utils";
-import { defaultConfig } from "../../../config";
-import { Link, useNavigate } from "react-router-dom";
-import { BiLogoGmail } from "react-icons/bi";
-import { socialPlatforms } from "../links/linksAddEdit";
-import "./mobilePreview.css"
-import axios from "axios";
+import React, { useEffect, useState } from 'react'
+import ErrorMessage from '../../../helpers/ErrorMessage'
+import { callAPIWithoutAuth } from '../../../utils/apicall.utils'
+import { apiUrls } from '../../../utils/api.utils'
+import { defaultConfig } from '../../../config'
+import { Link, useNavigate } from 'react-router-dom'
+import { BiLogoGmail } from 'react-icons/bi'
+import { socialPlatforms } from '../links/linksAddEdit'
+import './mobilePreview.css'
+import axios from 'axios'
 interface userInfo {
-  _id: string;
-  username: string;
-  email: string;
-  social: Link[];
-  non_social: Link[];
-  bio: string;
-  banner_img: string;
-  profile_img: string;
-  theme: theme;
+  _id: string
+  username: string
+  email: string
+  social: Link[]
+  non_social: Link[]
+  bio: string
+  banner_img: string
+  profile_img: string
+  theme: theme
 }
 interface theme {
-  fontFamily: string;
-  is_colorImage: string;
-  fontColor: string;
+  fontFamily: string
+  is_colorImage: string
+  fontColor: string
   themeDesign?: string
 }
 interface Link {
-  linkTitle: string;
-  linkUrl: string;
-  linkLogo: string;
-  is_index: number;
-  _id: string;
+  linkTitle: string
+  linkUrl: string
+  linkLogo: string
+  is_index: number
+  _id: string
 }
 interface MobileUiProps {
-  userInfo: userInfo | null;
+  userInfo: userInfo | null
 }
 export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
-  const [ip, setIp] = useState<string>("");
-  const navigate = useNavigate();
+  const [ip, setIp] = useState<string>('')
+  const navigate = useNavigate()
   const getUserIp = async () => {
     try {
-      const response = await axios.get("https://api.ipify.org/?format=json");
-      setIp(response.data.ip);
+      const response = await axios.get('https://api.ipify.org/?format=json')
+      setIp(response.data.ip)
     } catch (error: any) {
-      ErrorMessage(error.message || "Something went wrong");
+      ErrorMessage(error.message || 'Something went wrong')
     }
-  };
+  }
   useEffect(() => {
-    getUserIp();
-  }, [ip]);
-
-
+    getUserIp()
+  }, [ip])
 
   const handleClickSubmit = async (id: string) => {
     try {
-      const userId = localStorage.getItem("accessToken")
-        ? localStorage.getItem("_id") || ""
-        : "";
+      const userId = localStorage.getItem('accessToken')
+        ? localStorage.getItem('_id') || ''
+        : ''
       const payload = {
         userId,
-        ipAddress: userId ? "" : ip,
-      };
+        ipAddress: userId ? '' : ip
+      }
       const response = await callAPIWithoutAuth(
-        apiUrls.linkClicked + "/" + id,
+        apiUrls.linkClicked + '/' + id,
         {},
-        "POST",
+        'POST',
         payload
-      );
+      )
       if (!response?.data?.status) {
-        navigate("/");
-        ErrorMessage(response?.data?.data?.message);
+        navigate('/')
+        ErrorMessage(response?.data?.data?.message)
       }
     } catch (error: any) {
-      ErrorMessage(error.message || "Something went wrong");
+      ErrorMessage(error.message || 'Something went wrong')
     }
-  };
+  }
   return (
     <>
-
       <section
-        id="phone-preview-container"
-        style={{ height: "100%", }}
-        aria-label="Mobile preview of Linktree"
+        id='phone-preview-container'
+        style={{ height: '100%' }}
+        aria-label='Mobile preview of Linktree'
       >
         <div
-          className="profile-container"
+          className='profile-container'
           style={{
-            position: "relative",
-            height: "100%",
-            overflow: "scroll",
+            position: 'relative',
+            height: '100%',
+            overflow: 'scroll',
             fontFamily: userInfo?.theme?.fontFamily,
-            backgroundImage: `url(${defaultConfig?.imagePath + userInfo?.banner_img})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-            color: userInfo?.theme?.fontColor || "white",
+            backgroundImage: `url(${
+              defaultConfig?.imagePath + userInfo?.banner_img
+            })`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+            color: userInfo?.theme?.fontColor || 'white'
           }}
         >
           <div
-            className="blurred-background"
+            className='blurred-background'
             style={{
-              position: "absolute",
+              position: 'absolute',
               top: 0,
               left: 0,
-              width: "100%",
-              height: "80vh",
-              backdropFilter: "blur(3px)",
-              WebkitBackdropFilter: "blur(3px)",
+              width: '100vh',
+              maxHeight: '100vh',
+              backdropFilter: 'blur(3px)',
+              WebkitBackdropFilter: 'blur(3px)',
 
               zIndex: 1
             }}
-
           ></div>
-
 
           <div
             style={{
-              position: "absolute",
+              position: 'absolute',
               top: 0,
               left: 0,
-              width: "100%",
-              height: "100%",
-              backgroundColor: "rgba(0, 0, 0, 0.4)",
-              zIndex: 1,
+              width: '100%',
+              height: '100%',
+              backgroundColor: 'rgba(0, 0, 0, 0.4)',
+              zIndex: 1
             }}
           ></div>
 
-
-          <div className="content-wrapper" style={{ position: "relative", zIndex: 2 }}>
-            <div className="profile-picture">
+          <div
+            className='content-wrapper'
+            style={{ position: 'relative', zIndex: 2 }}
+          >
+            <div className='profile-picture'>
               <img
-                id="profileImage"
+                id='profileImage'
                 src={defaultConfig?.imagePath + userInfo?.profile_img}
-                alt="Profil Fotoğrafı"
+                alt='Profil Fotoğrafı'
               />
             </div>
 
-            <div className="profile-info">
+            <div className='profile-info'>
               <h1
-                id="username"
-                className="editprofile"
+                id='username'
+                className='editprofile'
                 style={{
                   fontFamily: userInfo?.theme?.fontFamily,
-                  color: userInfo?.theme?.fontColor || "white",
+                  color: userInfo?.theme?.fontColor || 'white'
                 }}
               >
                 @{userInfo?.username}
               </h1>
 
-              <div className="contactEmail">
+              <div className='contactEmail'>
                 <p
                   style={{
                     fontFamily: userInfo?.theme?.fontFamily,
-                    color: userInfo?.theme?.fontColor || "white",
+                    color: userInfo?.theme?.fontColor || 'white'
                   }}
                 >
-                  <p className="mobile-email-button">
+                  <p className='mobile-email-button'>
                     <BiLogoGmail />
                     <p>{userInfo?.email}</p>
                   </p>
@@ -163,54 +162,62 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
               </div>
 
               <p
-                id="bio"
-                className="editprofile"
+                id='bio'
+                className='editprofile'
                 style={{
                   fontFamily: userInfo?.theme?.fontFamily,
-                  textAlign: "left",
-                  color: userInfo?.theme?.fontColor || "white",
+                  textAlign: 'left',
+                  color: userInfo?.theme?.fontColor || 'white'
                 }}
               >
                 {userInfo?.bio}
               </p>
             </div>
 
-            <div className="edit-form" id="editForm">
-              <input type="text" id="editUsername" placeholder="Adınızı girin" />
+            <div className='edit-form' id='editForm'>
+              <input
+                type='text'
+                id='editUsername'
+                placeholder='Adınızı girin'
+              />
               <textarea
-                id="editBio"
+                id='editBio'
                 style={{ fontFamily: userInfo?.theme?.fontFamily }}
-                placeholder="Hakkınızda bir şeyler yazın.."
+                placeholder='Hakkınızda bir şeyler yazın..'
                 rows={3}
-                defaultValue={""}
+                defaultValue={''}
               />
             </div>
 
-            <div className="links-list">
-              {userInfo?.non_social.map((link) => (
+            <div className='links-list'>
+              {userInfo?.non_social.map(link => (
                 <Link
                   key={link._id}
                   to={link.linkUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`link-card ${userInfo.theme.themeDesign || "round"}`}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  className={`link-card ${
+                    userInfo.theme.themeDesign || 'round'
+                  }`}
                   onClick={() => handleClickSubmit(link._id)}
-                  style={{
-                    "--card-bg": userInfo?.theme?.is_colorImage || "#333",
-                    "--card-color": userInfo?.theme?.fontColor || "white",
-                    "--card-font": userInfo?.theme?.fontFamily || "sans-serif",
-                  } as React.CSSProperties}
+                  style={
+                    {
+                      '--card-bg': userInfo?.theme?.is_colorImage || '#333',
+                      '--card-color': userInfo?.theme?.fontColor || 'white',
+                      '--card-font': userInfo?.theme?.fontFamily || 'sans-serif'
+                    } as React.CSSProperties
+                  }
                 >
                   <img
                     src={defaultConfig?.imagePath + link.linkLogo}
                     alt={link.linkTitle}
-                    className="link-logo"
+                    className='link-logo'
                   />
                   <span
-                    className="link-card-title"
+                    className='link-card-title'
                     style={{
                       fontFamily: userInfo?.theme?.fontFamily,
-                      color: userInfo?.theme?.fontColor || "white",
+                      color: userInfo?.theme?.fontColor || 'white'
                     }}
                   >
                     {link.linkTitle}
@@ -219,43 +226,42 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
               ))}
             </div>
 
-            <div className="spcial-links-list d-flex justify-content-center gap-2">
-              {userInfo?.social.map((link) => {
+            <div className='spcial-links-list d-flex justify-content-center gap-2'>
+              {userInfo?.social.map(link => {
                 const matchedPlatform = socialPlatforms.find(
-                  (platform) =>
-                    platform.label.toLowerCase() === link.linkTitle.toLowerCase()
-                );
+                  platform =>
+                    platform.label.toLowerCase() ===
+                    link.linkTitle.toLowerCase()
+                )
                 return (
                   <Link
                     key={link._id}
                     to={link.linkUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="link-card-social"
+                    target='_blank'
+                    rel='noopener noreferrer'
+                    className='link-card-social'
                     onClick={() => handleClickSubmit(link._id)}
-                    style={{ color: "black" }}
+                    style={{ color: 'black' }}
                   >
                     {matchedPlatform && (
                       <span
-                        className="social-icon"
+                        className='social-icon'
                         style={{
                           fontFamily: userInfo?.theme?.fontFamily,
-                          color: userInfo?.theme?.fontColor || "white",
-                          gap: 0,
+                          color: userInfo?.theme?.fontColor || 'white',
+                          gap: 0
                         }}
                       >
                         {matchedPlatform.icon}
                       </span>
                     )}
                   </Link>
-                );
+                )
               })}
             </div>
           </div>
         </div>
       </section>
-
-
     </>
-  );
-};
+  )
+}

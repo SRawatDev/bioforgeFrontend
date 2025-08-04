@@ -1594,13 +1594,13 @@ body {
 .section-header h2 {
   font-size: 20px;
   font-weight: 600;
-  color: #0f172a;
+  color: white;
   margin-bottom: 5px;
 }
 
 .section-header p {
   font-size: 18px;
-  color: #2d2929 !important;
+  color: white !important;
 }
 
 /* Links List */

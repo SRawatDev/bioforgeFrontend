@@ -229,8 +229,8 @@ const scrollToSection = (selector: string) => {
         <section className="testimonials-section">
           <div className="container">
             <div className="section-header">
-              <h2 className="section-title">What Our Users Say</h2>
-              <p className="section-subtitle">
+              <h2 className="section-title newsection">What Our Users Say</h2>
+              <p className="section-subtitle newsection">
                 Join thousands of creators who trust BioForge
               </p>
             </div>
@@ -280,7 +280,8 @@ const scrollToSection = (selector: string) => {
                   <FiArrowRight className="btn-icon" />
                 </button>
                 <button 
-                  className="btn newbtn-secondary btn-large"
+                style={{background:"#00000024",color:"black"}}
+                  className="btn newbtn-secondary btn-large "
                   onClick={() => navigate('/landingPage')}
                 >
                   Explore Templates

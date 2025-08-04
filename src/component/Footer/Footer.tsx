@@ -13,23 +13,23 @@ export const Footer: React.FC = () => {
           <div className="footer-links">
             <div className="footer-column">
               <h4>Product</h4>
-              <Link to="/landingPage">Templates</Link>
-              <Link to="/features">Features</Link>
-              <Link to="/pricing">Pricing</Link>
+              <Link to="/">Templates</Link>
+              <Link to="/">Features</Link>
+              <Link to="/">Pricing</Link>
             </div>
 
             <div className="footer-column">
               <h4>Company</h4>
-              <Link to="/about">About</Link>
-              <Link to="/contact">Contact</Link>
-              <Link to="/blog">Blog</Link>
+              <Link to="/">About</Link>
+              <Link to="/">Contact</Link>
+              <Link to="/">Blog</Link>
             </div>
 
             <div className="footer-column">
               <h4>Support</h4>
-              <Link to="/help">Help Center</Link>
-              <Link to="/privacy">Privacy</Link>
-              <Link to="/terms">Terms</Link>
+              <Link to="/">Help Center</Link>
+              <Link to="/">Privacy</Link>
+              <Link to="/">Terms</Link>
             </div>
           </div>
         </div>

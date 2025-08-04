@@ -56,12 +56,7 @@ const LandingPage = () => {
     <>
       <div className="landing-page">
         <section className="gallery-section">
-          <div className="section-header">
-            <h2 className="section-title">Choose themes</h2>
-            <p className="section-subtitle">
-              Click preview to explore each landscape in detail
-            </p>
-          </div>
+        
 
           <div className="cards-grid">
             {loader ? (

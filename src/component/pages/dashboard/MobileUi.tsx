@@ -34,8 +34,9 @@ interface Link {
 }
 interface MobileUiProps {
   userInfo: userInfo | null;
+  newUserData: userInfo | null;
 }
-export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
+export const MobileUi: React.FC<MobileUiProps> = ({ userInfo ,newUserData}) => {
   const [ip, setIp] = useState<string>("");
   const navigate = useNavigate();
   const getUserIp = async () => {
@@ -102,7 +103,7 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
               top: 0,
               left: 0,
               width: "100%",
-              height: "80vh",
+              height: "100%",
               backdropFilter: "blur(3px)",
               WebkitBackdropFilter: "blur(3px)",
 
@@ -188,13 +189,13 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
             </div>
 
             <div className="links-list">
-              {Array.isArray(userInfo?.non_social) && userInfo?.non_social.map((link) => (
+              {Array.isArray(newUserData?.non_social) && newUserData?.non_social.map((link) => (
                 <Link
                   key={link._id}
                   to={link.linkUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`link-card ${userInfo.theme.themeDesign || "round"
+                  className={`link-card ${userInfo?.theme?.themeDesign || "round"
                     }`}
                   onClick={() => handleClickSubmit(link._id)}
                   style={
@@ -225,7 +226,7 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
             </div>
 
             <div className="spcial-links-list d-flex justify-content-center gap-2">
-              {Array.isArray(userInfo?.social) &&userInfo?.social.map((link) => {
+              {Array.isArray(newUserData?.social) &&newUserData?.social.map((link) => {
                 const matchedPlatform = socialPlatforms.find(
                   (platform) =>
                     platform.label.toLowerCase() ===

@@ -14,7 +14,7 @@ import { useDispatch } from "react-redux";
 import ErrorMessage from "../../../helpers/ErrorMessage";
 import { defaultConfig } from "../../../config";
 import SuccessMessage from "../../../helpers/Success";
-import { addData } from "../../../redux/Slice";
+import { addData, clearData } from "../../../redux/Slice";
 import "./Main.css";
 import Updateprofileshimmer from "../../Updateprofileshimmer";
 import { useSelector } from "react-redux";
@@ -138,10 +138,14 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
         const user = response?.data?.data[0];
         if (!storeData || Object.keys(storeData).length === 0) {
           dispatch(addData(user));
+          setUserInfo(user);
+          setPreviewProfile(user.profile_img || null);
+          setPreviewBanner(user.banner_img || null);
+        }else{
+          setUserInfo(storeData);
+          setPreviewProfile(storeData.profile_img || null);
+          setPreviewBanner(storeData.banner_img || null);
         }
-        setUserInfo(user);
-        setPreviewProfile(user.profile_img || null);
-        setPreviewBanner(user.banner_img || null);
       }
     } catch (err: any) {
       setLoader(true);
@@ -152,6 +156,7 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
     if (id) {
       getUserDetail();
     }
+
     getheme();
   }, [id]);
 
@@ -174,7 +179,7 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
             ...prev,
             profile_img: uploadedUrl,
           };
-
+      
           dispatch(addData(updated));
           return updated;
         });
@@ -225,6 +230,7 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
 
   const handleCancel = () => {
     navigate(`/dashboard/index/${localStorage.getItem("_id")}`);
+    dispatch(clearData())
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -235,7 +241,7 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
         apiUrls.updateProfile,
         {},
         "POST",
-        storeData || {}
+        userInfo || {}
       );
       setLoader(false);
       if (!response?.data?.status) {

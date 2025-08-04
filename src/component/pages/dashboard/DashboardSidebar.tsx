@@ -4,19 +4,16 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { LogoutModal } from "../../../layout/Header";
 import SuccessMessage from "../../../helpers/Success";
 import {
-  IoClose,
   IoLinkOutline,
   IoPersonOutline,
   IoTrashOutline,
   IoKeyOutline,
   IoLogOutOutline,
-  IoStatsChartOutline,
 } from "react-icons/io5";
-import { FaCrown } from "react-icons/fa";
 import "./DashboardSidebar.css";
 import "./dashboard.css";
 import { useDispatch } from "react-redux";
-import { addData, clearData } from "../../../redux/Slice";
+import {  clearData } from "../../../redux/Slice";
 interface SidebarProps {
   isMobile?: boolean;
   onClose?: () => void;

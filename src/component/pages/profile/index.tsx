@@ -164,7 +164,7 @@ const Index: React.FC = () => {
   ></div>
 
   {/* Foreground content */}
-  <div style={{ position: "relative", zIndex: 2 }}>
+  <div style={{ position: "relative", zIndex: 2,width: "100%" }}>
     <div className="mobile-profile-header">
       <div className="mobile-avatar">
         <img

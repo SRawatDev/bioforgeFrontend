@@ -4,7 +4,7 @@ const SuccessMessage = (message: string) => {
   setTimeout(
     () =>
       toast.success(message, {
-        position: "top-center",
+        position: "top-right",
         autoClose: 2000,
         theme: "colored",
         hideProgressBar: false,

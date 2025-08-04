@@ -215,7 +215,7 @@ const Index = () => {
             <div className="device-frame">
               <div className="device-status-bar"></div>
               <div className="device-content">
-                {loader ? <ProfileShimmer /> : <MobileUi userInfo={storeData} />}
+                {loader ? <ProfileShimmer /> : <MobileUi userInfo={storeData} newUserData={userInfo}/>}
               </div>
               <div className="device-home-button"></div>
             </div>

@@ -237,7 +237,7 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
             {linksInfo.length > 0 && (
               <div className="links-section">
                 <div className="section-header">
-                  <h2>Regular Links</h2>
+                  <h2 className="pt-10">Regular Links</h2>
                   <p>Drag to reorder your links</p>
                 </div>
                 <DragDropContext onDragEnd={handleDragEnd}>

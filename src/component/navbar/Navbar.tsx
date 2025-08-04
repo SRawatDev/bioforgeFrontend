@@ -18,14 +18,14 @@ const Navbar: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   const userId = localStorage.getItem("_id");
   return (
     <>
-      <nav
+      {/* <nav
         className="navbar"
         style={{ backgroundColor: "red", minHeight: "70px" }}
       >
         <div className="navbar-container">
           <div className="navbar-left">
             <div className="navbar-logo">
-              <span className="logo-text">BioForge</span>
+            
             </div>
           </div>
           <div
@@ -67,7 +67,69 @@ const Navbar: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
             </div>
           </div>
         </div>
+      </nav> */}
+      <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+        <div className="container" style={{ padding: "15px" }}>
+          <a className="navbar-brand fw-bold" href="#" style={{ fontSize: "24px" }}>
+            BioForge
+          </a>
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#mainNavbar"
+            aria-controls="mainNavbar"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span className="navbar-toggler-icon" />
+          </button>
+          <div className="collapse navbar-collapse" id="mainNavbar">
+            <ul className="navbar-nav ms-auto">
+              <li className="nav-item" style={{padding:"0px 10px 5px 2px"}}>
+                <Link className="nav-link active text-dark" to={"/"}>
+                  Home
+                </Link>
+              </li>
+              <li className="nav-item"style={{padding:"0px 10px 5px 2px"}} >
+                <Link className="nav-link text-dark" to={"/landingPage"}>
+                  Theme
+                </Link>
+              </li>
+
+             {!isLoggedIn ?(
+              <>
+               <li className="nav-item" style={{padding:"0px 10px 5px 2px"}}>
+                <Link className="nav-link text-dark" to={"/login"}>
+                  Login
+                </Link>
+              </li>
+              <li className="nav-item" style={{padding:"0px 10px 5px 2px"}}>
+                <Link className="btn btn-primary newbton" style={{padding:"6px 28px 6px 28px"}} to={"/register"} >
+                  Signup
+                </Link>
+              </li>
+              </>
+              ):( <li
+                 className="nav-item d-flex"
+                  onClick={() => navigate(`/dashboard/index/${userId}`)}
+                  style={{background:"#7162f3",padding:"5px 13px 6px 16px",borderRadius:"10px"}}
+                >
+                  <img
+                    src={profileImg}
+                    alt="Profile"
+                    className="home-header-avatar"
+                  />
+                  <Link to={`/dashboard/index/${userId}`} className="nav-link text-dark">Dashboard</Link>
+                </li>)
+             }
+            </ul>
+          </div>
+        </div>
       </nav>
+{/* background: #7162f3;
+    padding: 5px 13px 6px 16px;
+    border-radius: 10px; */}
       {children}
     </>
   );

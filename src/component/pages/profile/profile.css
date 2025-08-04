@@ -389,7 +389,7 @@
 .mobile-link-icon {
   width: 28px;
   height: 28px;
-  border-radius: 6px;
+  border-radius: 20px;
   object-fit: cover;
 }
 
@@ -569,6 +569,7 @@
   .mobile-link-icon {
     width: 32px;
     height: 32px;
+
   }
   
   .mobile-link-title {

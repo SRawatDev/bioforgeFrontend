@@ -203,7 +203,7 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
           <div className="links-logo">
             <img
               className="links-logo"
-              src="/assets/logo.png"
+              src="/assets/logo12.png"
               alt="BioForge Logo"
             />
           </div>

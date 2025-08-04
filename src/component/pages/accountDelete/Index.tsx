@@ -65,7 +65,7 @@ const Index = () => {
             <div className="register-form-wrapper">
               <div className="register-header">
                 <img
-                  src="/assets/logo.png"
+                  src="/assets/logo12.png"
                   className="register-logo"
                   alt="BioForge Logo"
                 />

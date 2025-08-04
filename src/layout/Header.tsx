@@ -32,7 +32,7 @@ const Header: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
         <>
             <div className='mainheader d-flex justify-content-center '>
                 <div className='toplogo d-flex justify-content-between'>
-                    <img src="/assets/logo.png" alt="Logo" height={150} />
+                    <img src="/assets/logo12.png" alt="Logo" height={150} />
                 </div>
 
                 <button
@@ -54,7 +54,7 @@ const Header: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
             >
                 <div className="offcanvas-header">
                     <div className='toplogo d-flex justify-content-between'>
-                        <img src="/assets/logo.png" alt="Logo" height={30} />
+                        <img src="/assets/logo12.png" alt="Logo" height={30} />
                     </div>
                     <button
                         type="button"

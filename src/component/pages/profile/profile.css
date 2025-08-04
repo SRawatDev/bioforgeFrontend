@@ -22,11 +22,11 @@
   height: 100%;
   object-fit: cover;
 }
-.mobile-email-button{
+.mobile-email-button {
   display: flex;
   font-size: 20px;
   gap: 10px;
-  margin-bottom:0px;
+  margin-bottom: 0px;
 }
 
 .mobile-menu-dots {
@@ -108,12 +108,10 @@
   line-height: 1.5;
 
   margin-bottom: 16px;
-  
-  margin-bottom:0px;
+
+  margin-bottom: 0px;
   opacity: 0.85;
 }
-
-
 
 /* Links Section */
 .mobile-links {
@@ -227,8 +225,14 @@
 
 /* Animations */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .mobile-content {
@@ -346,8 +350,6 @@
   opacity: 0.85;
 }
 
-
-
 /* Links Section */
 .mobile-links {
   width: 100%;
@@ -460,8 +462,14 @@
 
 /* Animations */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .mobile-content {
@@ -474,23 +482,23 @@
     background-color: #121212;
     color: #f5f5f5;
   }
-  
+
   .mobile-avatar img {
     border-color: #333;
   }
-  
+
   .mobile-link-item {
     background-color: rgba(255, 255, 255, 0.08);
   }
-  
+
   .mobile-link-item:active {
     background-color: rgba(255, 255, 255, 0.15);
   }
-  
+
   .mobile-social-icon {
     background-color: rgba(255, 255, 255, 0.08);
   }
-  
+
   .mobile-social-icon:active {
     background-color: rgba(255, 255, 255, 0.15);
   }
@@ -502,32 +510,28 @@
     width: 100px;
     height: 100px;
   }
-  
+
   .mobile-username {
     font-size: 20px;
   }
-  
-  
-  
 
-  
   .mobile-section-title {
     font-size: 16px;
   }
-  
+
   .mobile-link-item {
     padding: 12px;
   }
-  
+
   .mobile-link-icon {
     width: 24px;
     height: 24px;
   }
-  
+
   .mobile-link-title {
-  font-size: 20px;
+    font-size: 20px;
   }
-  
+
   .mobile-social-icon {
     width: 42px;
     height: 42px;
@@ -540,41 +544,40 @@
   .mobile-banner {
     height: 220px;
   }
-  
+
   .mobile-avatar img {
     width: 140px;
     height: 140px;
   }
-  
+
   .mobile-username {
     font-size: 28px;
   }
-  
+
   .mobile-bio {
     max-width: 80%;
     margin-left: auto;
     margin-right: auto;
   }
-  
 
-  
   .mobile-section-title {
     font-size: 20px;
   }
-  
+
   .mobile-link-item {
     padding: 16px;
   }
-  
+
   .mobile-link-icon {
     width: 32px;
     height: 32px;
+    border-radius: 20px;
   }
-  
+
   .mobile-link-title {
-  font-size: 20px;
+    font-size: 20px;
   }
-  
+
   .mobile-social-icon {
     width: 54px;
     height: 54px;
@@ -584,9 +587,15 @@
 
 /* Loading animation */
 @keyframes pulse {
-  0% { opacity: 0.6; }
-  50% { opacity: 1; }
-  100% { opacity: 0.6; }
+  0% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.6;
+  }
 }
 
 .mobile-profile.loading {

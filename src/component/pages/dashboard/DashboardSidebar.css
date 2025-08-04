@@ -79,8 +79,6 @@
   transition: all 0.2s ease;
 }
 
-
-
 .avatar-container {
   position: relative;
   flex-shrink: 0;
@@ -284,6 +282,9 @@
   border-top: 1px solid #f1f5f9;
   background: white;
   position: relative;
+  position: absolute;
+  bottom: 0;
+  width: 300px;
 }
 
 .upgrade-card {
@@ -298,16 +299,19 @@
 }
 
 .upgrade-card::before {
-  content: '';
+  content: "";
   position: absolute;
   top: -50%;
   left: -50%;
   width: 200%;
   height: 200%;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.1) 0%,
+    transparent 70%
+  );
   animation: shimmer 3s infinite;
 }
-
 
 .upgrade-content {
   position: relative;
@@ -483,7 +487,7 @@
   .dashboard-sidebar {
     width: 260px;
   }
-  
+
   .dashboard-sidebar.collapsed {
     width: 70px;
   }
@@ -495,23 +499,23 @@
     max-width: 320px;
     transform: translateX(-100%);
   }
-  
+
   .dashboard-sidebar.mobile-sidebar.show {
     transform: translateX(0);
   }
-  
+
   .sidebar-header {
     padding: 20px;
   }
-  
+
   .sidebar-content {
     padding: 0 16px;
   }
-  
+
   .sidebar-footer {
     padding: 16px;
   }
-  
+
   .collapse-toggle {
     display: none;
   }
@@ -521,46 +525,42 @@
   .dashboard-sidebar {
     max-width: 280px;
   }
-  
+
   .sidebar-header {
     padding: 16px;
   }
-  
+
   .user-profile {
     padding: 12px;
   }
-  
+
   .user-avatar {
     width: 40px;
     height: 40px;
   }
-  
+
   .username {
     font-size: 14px;
   }
-  
+
   .menu-link {
     padding: 10px 12px;
     font-size: 13px;
   }
-  
+
   .menu-icon {
     font-size: 16px;
   }
-  
+
   .upgrade-card {
     padding: 16px;
   }
-  
+
   .upgrade-card h6 {
     font-size: 13px;
   }
-  
+
   .upgrade-card p {
     font-size: 11px;
   }
 }
-
-
-
-

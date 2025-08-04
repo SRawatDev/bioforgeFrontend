@@ -151,21 +151,20 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose }) => {
                     </Link>
                   </li>
                 ))}
-                <Link
-                to={""}
-                  className="menu-link"
-                  onClick={handleLogoutClick}
-                  title={isCollapsed ? "Logout" : ""}
-                >
-                  
-                  <span className="menu-icon"><IoLogOutOutline  /></span>
-                  <span className="menu-text">Logout</span>
-                </Link>
               </ul>
             </div>
+               
           </div>
         </div>
-        <div className="sidebar-footer"></div>
+        <div className="sidebar-footer">  <button
+            className="logout-btn"
+            onClick={handleLogoutClick}
+            title={isCollapsed ? "Logout" : ''}
+          >
+            <IoLogOutOutline className="menu-icon" />
+            {!isCollapsed && <span>Logout</span>}
+          </button>
+         </div>
       </nav>
 
       {isMobile && <div className="sidebar-backdrop" onClick={onClose}></div>}

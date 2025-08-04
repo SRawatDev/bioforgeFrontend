@@ -10,7 +10,9 @@ import { useEffect, useState } from "react";
 import ErrorMessage from "../../../helpers/ErrorMessage";
 import ProfileShimmer from "../../ProfileShimmer";
 import { FaCheck, FaCopy, FaShareAlt } from "react-icons/fa";
-import { TbRuler } from "react-icons/tb";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { addData } from "../../../redux/Slice";
 interface Theme {
   fontFamily: string;
   is_colorImage: string;
@@ -38,9 +40,11 @@ interface UserInfo {
 }
 
 const Index = () => {
+  const dispatch = useDispatch()
   const { layout, id } = useParams();
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [showShareOptions, setShowShareOptions] = useState<boolean>(false)
+  const storeData = useSelector((state: any) => state?.userInfo?.data);
   const [copied, setCopied] = useState<boolean>(false)
   const [loader, setLoader] = useState<boolean>(false);
   const navigate = useNavigate();
@@ -59,6 +63,10 @@ const Index = () => {
         navigate("/");
         ErrorMessage(response?.data?.data?.message || "Invalid user");
       } else {
+
+        if (!storeData || Object.keys(storeData).length === 0) {
+          dispatch(addData(response?.data?.data[0]))
+        }
         setUserInfo(response?.data?.data[0]);
       }
     } catch (err: any) {
@@ -110,7 +118,7 @@ const Index = () => {
   return (
     <>
       <div className="dashboard-layout">
-          <DashboardSidebar />
+        <DashboardSidebar />
         <div className="dashboard-main-area">
           <div className="dashboard-main-content">
             {layout === "updateProfile" ? (
@@ -149,7 +157,7 @@ const Index = () => {
                       boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
                       zIndex: 1000,
                       minWidth: '180px',
-                           marginLeft:"232px",
+                      marginLeft: "232px",
                       marginTop: '4px'
                     }}
                   >
@@ -167,7 +175,7 @@ const Index = () => {
                         fontSize: '14px',
                         color: copied ? '#4CAF50' : '#333',
                         borderBottom: '1px solid #f0f0f0',
-                   
+
                       }}
                       onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f8f9fa'}
                       onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
@@ -207,7 +215,7 @@ const Index = () => {
             <div className="device-frame">
               <div className="device-status-bar"></div>
               <div className="device-content">
-                {loader ? <ProfileShimmer /> : <MobileUi userInfo={userInfo} />}
+                {loader ? <ProfileShimmer /> : <MobileUi userInfo={storeData} />}
               </div>
               <div className="device-home-button"></div>
             </div>

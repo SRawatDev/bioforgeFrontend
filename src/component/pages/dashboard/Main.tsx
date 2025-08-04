@@ -6,17 +6,18 @@ import {
   FaCamera,
   FaUser,
   FaPalette,
-  FaFont,
   FaSave,
   FaTimes,
 } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import ErrorMessage from "../../../helpers/ErrorMessage";
 import { defaultConfig } from "../../../config";
-import LoadScreen from "../../loaderScreen";
 import SuccessMessage from "../../../helpers/Success";
+import { addData } from "../../../redux/Slice";
 import "./Main.css";
 import Updateprofileshimmer from "../../Updateprofileshimmer";
+import { useSelector } from "react-redux";
 const fontOptions = [
   "Times New Roman",
   "Georgia",
@@ -56,13 +57,16 @@ interface Props {
   getUserDetails: () => void;
 }
 const Main: React.FC<Props> = ({ getUserDetails }) => {
+  const dispatch = useDispatch()
   const navigate = useNavigate();
   const { id } = useParams();
   const [loader, setLoader] = useState(false);
   const [previewProfile, setPreviewProfile] = useState<string | null>(null);
+  const storeData = useSelector((state: any) => state?.userInfo?.data);
   const [themeimg, setTheme] = useState<ThemeData[]>([]);
   const [previewBanner, setPreviewBanner] = useState<string | null>(null);
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+  console.log("===============", storeData)
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -70,25 +74,35 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
     >
   ) => {
     const { name, value } = e.target;
+
     setUserInfo((prev) => {
       if (!prev) return prev;
+
+      let updated: UserInfo;
+
       if (
         ["themeType", "fontFamily", "is_colorImage", "fontColor"].includes(name)
       ) {
-        return {
+        updated = {
           ...prev,
           theme: {
             ...prev.theme,
             [name]: value,
           },
         };
+      } else {
+        updated = {
+          ...prev,
+          [name]: value,
+        };
       }
-      return {
-        ...prev,
-        [name]: value,
-      };
+
+      // ✅ Dispatch with updated state inside the updater function
+      dispatch(addData(updated));
+      return updated;
     });
   };
+
   const getheme = async () => {
     setLoader(true);
     try {
@@ -122,6 +136,9 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
         ErrorMessage(response?.data?.message);
       } else {
         const user = response?.data?.data[0];
+        if (!storeData || Object.keys(storeData).length === 0) {
+          dispatch(addData(user));
+        }
         setUserInfo(user);
         setPreviewProfile(user.profile_img || null);
         setPreviewBanner(user.banner_img || null);
@@ -150,7 +167,18 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
       setLoader(false);
       if (apiResponse.data.status) {
         const uploadedUrl = apiResponse.data.data;
-        setUserInfo((prev) => ({ ...prev!, profile_img: uploadedUrl }));
+        setUserInfo((prev) => {
+          if (!prev) return prev;
+
+          const updated = {
+            ...prev,
+            profile_img: uploadedUrl,
+          };
+
+          dispatch(addData(updated));
+          return updated;
+        });
+
         setPreviewProfile(uploadedUrl);
         e.target.value = "";
       } else {
@@ -173,7 +201,18 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
       setLoader(false);
       if (apiResponse.data.status) {
         const uploadedUrl = apiResponse.data.data;
-        setUserInfo((prev) => ({ ...prev!, banner_img: uploadedUrl }));
+        setUserInfo((prev) => {
+          if (!prev) return prev;
+
+          const updated = {
+            ...prev,
+            banner_img: uploadedUrl,
+          };
+
+          dispatch(addData(updated)); // ✅ Sync Redux
+          return updated;
+        });
+
         setPreviewBanner(uploadedUrl);
         e.target.value = "";
       } else {
@@ -196,7 +235,7 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
         apiUrls.updateProfile,
         {},
         "POST",
-        userInfo || {}
+        storeData || {}
       );
       setLoader(false);
       if (!response?.data?.status) {
@@ -213,20 +252,37 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
   };
   const selectSelectedTheme = (img: string) => {
     setPreviewBanner(img);
-    setUserInfo((prev) => ({ ...prev!, banner_img: img }));
+
+    setUserInfo((prev) => {
+      if (!prev) return prev;
+
+      const updated = {
+        ...prev,
+        banner_img: img,
+      };
+
+      dispatch(addData(updated));
+      return updated;
+    });
   };
+
   const selectedDesign = (design: string) => {
     setUserInfo((pre) => {
       if (!pre) return pre;
-      return {
+
+      const updated = {
         ...pre,
         theme: {
           ...pre.theme,
           themeDesign: design,
         },
       };
+
+      dispatch(addData(updated));
+      return updated;
     });
   };
+
 
   return (
     <>
@@ -304,8 +360,8 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
                 <div className="static-banner-grid">
                   <span
                     className={`static-banner-thumb text-center bg-light ${userInfo?.theme?.themeDesign === "curved"
-                        ? "selected"
-                        : ""
+                      ? "selected"
+                      : ""
                       }`}
                     onClick={() => selectedDesign("curved")}
                   >

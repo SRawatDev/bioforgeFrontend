@@ -59,7 +59,7 @@ const Index = () => {
       {loader && <LoadScreen />}
       <div className="register-container gradient-form">
         <Link
-          to= {`/dashboard/index/${localStorage.getItem("_id")}`}
+          to= {`/dashboard/updateProfile/${localStorage.getItem("_id")}`}
           className="back-button-register"
           aria-label="Go back to login"
         >
@@ -143,7 +143,7 @@ const Index = () => {
                   
                    <button
                       type="button"
-                      onClick={() => navigate(`/dashboard/index/${localStorage.getItem("_id")}`)}
+                      onClick={() => navigate(`/dashboard/updateProfile/${localStorage.getItem("_id")}`)}
                       className="register-btn-outline"
                     >
                      Back to DashBoard

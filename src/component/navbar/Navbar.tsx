@@ -112,7 +112,7 @@ const Navbar: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
               </>
               ):( <li
                  className="nav-item d-flex"
-                  onClick={() => navigate(`/dashboard/index/${userId}`)}
+                  onClick={() => navigate(`/dashboard/updateProfile/${userId}`)}
                   style={{background:"#7162f3",padding:"5px 13px 6px 16px",borderRadius:"10px"}}
                 >
                   <img

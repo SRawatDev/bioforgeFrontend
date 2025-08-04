@@ -6,7 +6,7 @@ import { defaultConfig } from "../../../config";
 import { Link, useNavigate } from "react-router-dom";
 import { BiLogoGmail } from "react-icons/bi";
 import { socialPlatforms } from "../links/linksAddEdit";
-import "./mobilePreview.css"
+import "./mobilePreview.css";
 import axios from "axios";
 interface userInfo {
   _id: string;
@@ -23,7 +23,7 @@ interface theme {
   fontFamily: string;
   is_colorImage: string;
   fontColor: string;
-  themeDesign?: string
+  themeDesign?: string;
 }
 interface Link {
   linkTitle: string;
@@ -50,8 +50,6 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
     getUserIp();
   }, [ip]);
 
-
-
   const handleClickSubmit = async (id: string) => {
     try {
       const userId = localStorage.getItem("accessToken")
@@ -77,10 +75,9 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
   };
   return (
     <>
-
       <section
         id="phone-preview-container"
-        style={{ height: "100%", }}
+        style={{ height: "100%" }}
         aria-label="Mobile preview of Linktree"
       >
         <div
@@ -90,7 +87,8 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
             height: "100%",
             overflow: "scroll",
             fontFamily: userInfo?.theme?.fontFamily,
-            backgroundImage: `url(${defaultConfig?.imagePath + userInfo?.banner_img})`,
+            backgroundImage: `url(${defaultConfig?.imagePath + userInfo?.banner_img
+              })`,
             backgroundSize: "cover",
             backgroundPosition: "center",
             backgroundRepeat: "no-repeat",
@@ -108,12 +106,9 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
               backdropFilter: "blur(3px)",
               WebkitBackdropFilter: "blur(3px)",
 
-              zIndex: 1
+              zIndex: 1,
             }}
-
           ></div>
-
-
           <div
             style={{
               position: "absolute",
@@ -126,8 +121,10 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
             }}
           ></div>
 
-
-          <div className="content-wrapper" style={{ position: "relative", zIndex: 2 }}>
+          <div
+            className="content-wrapper"
+            style={{ position: "relative", zIndex: 2 }}
+          >
             <div className="profile-picture">
               <img
                 id="profileImage"
@@ -176,7 +173,11 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
             </div>
 
             <div className="edit-form" id="editForm">
-              <input type="text" id="editUsername" placeholder="Adınızı girin" />
+              <input
+                type="text"
+                id="editUsername"
+                placeholder="Adınızı girin"
+              />
               <textarea
                 id="editBio"
                 style={{ fontFamily: userInfo?.theme?.fontFamily }}
@@ -187,19 +188,23 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
             </div>
 
             <div className="links-list">
-              {userInfo?.non_social.map((link) => (
+              {Array.isArray(userInfo?.non_social) && userInfo?.non_social.map((link) => (
                 <Link
                   key={link._id}
                   to={link.linkUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`link-card ${userInfo.theme.themeDesign || "round"}`}
+                  className={`link-card ${userInfo.theme.themeDesign || "round"
+                    }`}
                   onClick={() => handleClickSubmit(link._id)}
-                  style={{
-                    "--card-bg": userInfo?.theme?.is_colorImage || "#333",
-                    "--card-color": userInfo?.theme?.fontColor || "white",
-                    "--card-font": userInfo?.theme?.fontFamily || "sans-serif",
-                  } as React.CSSProperties}
+                  style={
+                    {
+                      "--card-bg": userInfo?.theme?.is_colorImage || "#333",
+                      "--card-color": userInfo?.theme?.fontColor || "white",
+                      "--card-font":
+                        userInfo?.theme?.fontFamily || "sans-serif",
+                    } as React.CSSProperties
+                  }
                 >
                   <img
                     src={defaultConfig?.imagePath + link.linkLogo}
@@ -220,10 +225,11 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
             </div>
 
             <div className="spcial-links-list d-flex justify-content-center gap-2">
-              {userInfo?.social.map((link) => {
+              {Array.isArray(userInfo?.social) &&userInfo?.social.map((link) => {
                 const matchedPlatform = socialPlatforms.find(
                   (platform) =>
-                    platform.label.toLowerCase() === link.linkTitle.toLowerCase()
+                    platform.label.toLowerCase() ===
+                    link.linkTitle.toLowerCase()
                 );
                 return (
                   <Link
@@ -254,8 +260,6 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
           </div>
         </div>
       </section>
-
-
     </>
   );
 };

@@ -27,6 +27,7 @@ export interface Theme {
     fontFamily?:    string;
     is_colorImage?: string;
     fontColor?:     string;
+    themeDesign?:     string;
 }
 
 

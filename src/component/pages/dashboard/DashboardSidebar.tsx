@@ -15,6 +15,8 @@ import {
 import { FaCrown } from "react-icons/fa";
 import "./DashboardSidebar.css";
 import "./dashboard.css";
+import { useDispatch } from "react-redux";
+import { addData, clearData } from "../../../redux/Slice";
 interface SidebarProps {
   isMobile?: boolean;
   onClose?: () => void;
@@ -24,6 +26,7 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose }) => {
   const location = useLocation();
   const [showLogout, setShowLogout] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const storedata=useDispatch()
 
   const handleLogoutClick = () => {
     if (isMobile && onClose) {
@@ -33,8 +36,10 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose }) => {
   };
 
   const handleLogoutConfirm = () => {
+    
     SuccessMessage("Logout successfully");
     localStorage.clear();
+    storedata(clearData())
     setShowLogout(false);
     navigate("/login");
   };

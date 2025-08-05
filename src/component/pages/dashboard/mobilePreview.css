@@ -1,14 +1,20 @@
-/* Mobile Device Frame */
-/* Share button styles */
+
 .share-button-container {
   display: flex;
   justify-content: center;
   margin-bottom: 15px;
 }
+.blur-overlay {
+  position: fixed;
+  inset: 0;              
+  background-color: rgba(255,255,255,0); 
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 1;
+}
 .content-wrapper {
-  background: rgb(255 255 255 / 0%);
-    backdrop-filter: blur(3px);
-    -webkit-backdrop-filter: blur(3px);
+  position: relative;
+  z-index: 2;            
 }
 .share-profile-button {
   display: flex;

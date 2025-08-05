@@ -76,6 +76,17 @@ const Index = () => {
   const openProfileInNewTab = () => {
     if (userInfo && userInfo._id) {
       window.open(`/dashboard/profile/${userInfo._id}`, "_blank");
+      try {
+        setTimeout(() => {
+          setCopied(false)
+          setShowShareOptions(false)
+        }, 2000)
+      } catch (err) {
+        setTimeout(() => {
+          setCopied(false)
+          setShowShareOptions(false)
+        }, 2000)
+      }
     }
   };
   useEffect(() => {

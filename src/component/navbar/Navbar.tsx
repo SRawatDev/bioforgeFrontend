@@ -113,14 +113,15 @@ const Navbar: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
               ):( <li
                  className="nav-item d-flex"
                   onClick={() => navigate(`/dashboard/updateProfile/${userId}`)}
-                  style={{background:"#7162f3",padding:"5px 13px 6px 16px",borderRadius:"10px"}}
+                  style={{background:"#7162f3",padding:"5px 13px 6px 16px",borderRadius:"10px" ,cursor: "pointer"}}
                 >
                   <img
                     src={profileImg}
                     alt="Profile"
                     className="home-header-avatar"
                   />
-                  <Link to={`/dashboard/index/${userId}`} className="nav-link text-dark">Dashboard</Link>
+                  <Link to={`/dashboard/index/${userId}`} className="nav-link text-dark">
+                  <span style={{ color :"white" }}>Dashboard</span></Link>
                 </li>)
              }
             </ul>

@@ -338,9 +338,9 @@
 .username {
   font-weight: 500;
   color: white;
-  font-size: 20px;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
+  font-size: 18px;
+  /* word-wrap: break-word;
+  overflow-wrap: break-word; */
 }
 
 .user-type {

@@ -118,7 +118,7 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo, newUserData }) => 
               zIndex: 1
             }}
           ></div>
-
+          <div className="blur-overlay"></div>
           <div
             className="content-wrapper"
             style={{

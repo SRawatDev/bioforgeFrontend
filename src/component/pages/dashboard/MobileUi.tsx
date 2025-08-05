@@ -36,7 +36,7 @@ interface MobileUiProps {
   userInfo: userInfo | null;
   newUserData: userInfo | null;
 }
-export const MobileUi: React.FC<MobileUiProps> = ({ userInfo ,newUserData}) => {
+export const MobileUi: React.FC<MobileUiProps> = ({ userInfo, newUserData }) => {
   const [ip, setIp] = useState<string>("");
   const navigate = useNavigate();
   const getUserIp = async () => {
@@ -104,10 +104,7 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo ,newUserData}) => {
               left: 0,
               width: "100%",
               height: "100%",
-              backdropFilter: "blur(3px)",
-              WebkitBackdropFilter: "blur(3px)",
 
-              zIndex: 1,
             }}
           ></div>
           <div
@@ -124,7 +121,12 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo ,newUserData}) => {
 
           <div
             className="content-wrapper"
-            style={{ position: "relative", zIndex: 2 }}
+            style={{
+              position: "relative", backdropFilter: "blur(3px)",
+              WebkitBackdropFilter: "blur(3px)",
+
+              zIndex: 1,
+            }}
           >
             <div className="profile-picture">
               <img
@@ -226,7 +228,7 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo ,newUserData}) => {
             </div>
 
             <div className="spcial-links-list d-flex justify-content-center gap-2">
-              {Array.isArray(newUserData?.social) &&newUserData?.social.map((link) => {
+              {Array.isArray(newUserData?.social) && newUserData?.social.map((link) => {
                 const matchedPlatform = socialPlatforms.find(
                   (platform) =>
                     platform.label.toLowerCase() ===

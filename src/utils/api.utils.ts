@@ -1,8 +1,8 @@
 export const apiUrls = {
     register: "api/v1/register",
     login: "api/v1/login",
-    getUserInfo: "api/v1/getUserInfo",
-    getUserInfotoken: "api/v1/getUserInfotoken",
+    getUserInfoPublic: "api/v1/getUserInfo",
+    getUserInfo: "api/v1/getUserInfotoken",
     getlinks: "api/v1/get-links",
     addlinks: "api/v1/add-links",
     linkupdate: "api/v1/link-update",

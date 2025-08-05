@@ -4,7 +4,7 @@ import DashboardSidebar from "./DashboardSidebar";
 import Main from "./Main";
 import { MobileUi } from "./MobileUi";
 import ManageLinks from "../links/Index";
-import { callAPIWithoutAuth } from "../../../utils/apicall.utils";
+import { callAPI, callAPIWithoutAuth } from "../../../utils/apicall.utils";
 import { apiUrls } from "../../../utils/api.utils";
 import { useEffect, useState } from "react";
 import ErrorMessage from "../../../helpers/ErrorMessage";
@@ -52,7 +52,7 @@ const Index = () => {
     if (!id) return;
     setLoader(true);
     try {
-      const response = await callAPIWithoutAuth(
+      const response = await callAPI(
         apiUrls.getUserInfo,
         { _id: id },
         "GET",

@@ -125,7 +125,7 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
   const getUserDetail = async () => {
     setLoader(true)
     try {
-      const response = await callAPIWithoutAuth(
+      const response = await callAPI(
         apiUrls.getUserInfo,
         { _id: id },
         'GET',

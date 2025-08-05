@@ -103,7 +103,7 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
               top: 0,
               left: 0,
               width: '100vh',
-              maxHeight: '100vh',
+              height: '100vh',
               backdropFilter: 'blur(3px)',
               WebkitBackdropFilter: 'blur(3px)',
 

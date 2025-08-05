@@ -125,7 +125,7 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
   const getUserDetail = async () => {
     setLoader(true)
     try {
-      const response = await callAPIWithoutAuth(
+      const response = await callAPI(
         apiUrls.getUserInfo,
         { _id: id },
         'GET',
@@ -367,12 +367,11 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
                 </div>
                  <div className='static-button-grid'>
                   <span
-                    className={`static-button-thumb text-center bg-light ${
-                      userInfo?.theme?.themeDesign === 'curved'
-                        ? 'selected'
-                        : ''
-                    }`}
-                    onClick={() => selectedDesign('curved')}
+                    className={`static-banner-thumb text-center bg-light ${userInfo?.theme?.themeDesign === "curved"
+                      ? "selected"
+                      : ""
+                      }`}
+                    onClick={() => selectedDesign("curved")}
                   >
                     Curved
                   </span>

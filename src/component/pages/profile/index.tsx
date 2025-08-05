@@ -50,7 +50,7 @@ const Index: React.FC = () => {
     setLoader(true);
     try {
       const response = await callAPIWithoutAuth(
-        apiUrls.getUserInfo,
+        apiUrls.getUserInfoPublic,
         { _id: id.id },
         "GET",
         {}

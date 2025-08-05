@@ -52,11 +52,11 @@ const Index = () => {
     <>
       {loader && <LoadScreen />}
       <div className="register-container gradient-form">
-      <Link
-               to= {`/dashboard/index/${localStorage.getItem("_id")}`}
-               className="back-button-register"
-               aria-label="Go back to login"
-             >
+        <Link
+          to={`/dashboard/updateProfile/${localStorage.getItem("_id")}`}
+          className="back-button-register"
+          aria-label="Go back to login"
+        >
           <IoMdArrowRoundBack className="back-icon" />
         </Link>
 
@@ -72,7 +72,7 @@ const Index = () => {
                 <h4 className="register-title">Delete You Bioforge Account</h4>
               </div>
               <form onSubmit={handleSubmit} className="register-form">
-                
+
                 <div className="register-input-wrapper">
                   <input
                     name="password"
@@ -83,7 +83,7 @@ const Index = () => {
                     placeholder=""
                     className={`register-input`}
                     id="password"
-                  
+
                   />
                   <label htmlFor="password" className="register-label">
                     Password
@@ -91,18 +91,16 @@ const Index = () => {
                   <button
                     type="button"
                     onClick={() =>
-                        setShowPassword((prev) => ({
-                          ...prev,
-                          password: !prev.password,
-                        }))
-                      }
+                      setShowPassword((prev) => ({
+                        ...prev,
+                        password: !prev.password,
+                      }))
+                    }
                     className="password-toggle"
                   >
-                   {showPassword.password ? <FaEye /> : <FaLowVision />}
+                    {showPassword.password ? <FaEye /> : <FaLowVision />}
                   </button>
                 </div>
-
-           
                 <div className="register-actions">
                   <Formbutton text={"Submit"} />
                 </div>
@@ -111,10 +109,10 @@ const Index = () => {
                   <div className="signin-text-wrapper">
                     <button
                       type="button"
-                      onClick={() => navigate(`/dashboard/index/${localStorage.getItem("_id")}`)}
+                      onClick={() => navigate(`/dashboard/updateProfile/${localStorage.getItem("_id")}`)}
                       className="register-btn-outline"
                     >
-                     Back to DashBoard
+                      Back to DashBoard
                     </button>
                   </div>
                 </div>

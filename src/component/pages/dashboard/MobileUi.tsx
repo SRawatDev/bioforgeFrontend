@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react'
-import ErrorMessage from '../../../helpers/ErrorMessage'
-import { callAPIWithoutAuth } from '../../../utils/apicall.utils'
-import { apiUrls } from '../../../utils/api.utils'
-import { defaultConfig } from '../../../config'
-import { Link, useNavigate } from 'react-router-dom'
-import { BiLogoGmail } from 'react-icons/bi'
-import { socialPlatforms } from '../links/linksAddEdit'
-import './mobilePreview.css'
-import axios from 'axios'
+import React, { useEffect, useState } from "react";
+import ErrorMessage from "../../../helpers/ErrorMessage";
+import { callAPIWithoutAuth } from "../../../utils/apicall.utils";
+import { apiUrls } from "../../../utils/api.utils";
+import { defaultConfig } from "../../../config";
+import { Link, useNavigate } from "react-router-dom";
+import { BiLogoGmail } from "react-icons/bi";
+import { socialPlatforms } from "../links/linksAddEdit";
+import "./mobilePreview.css";
+import axios from "axios";
 interface userInfo {
   _id: string
   username: string
@@ -20,10 +20,10 @@ interface userInfo {
   theme: theme
 }
 interface theme {
-  fontFamily: string
-  is_colorImage: string
-  fontColor: string
-  themeDesign?: string
+  fontFamily: string;
+  is_colorImage: string;
+  fontColor: string;
+  themeDesign?: string;
 }
 interface Link {
   linkTitle: string
@@ -33,11 +33,12 @@ interface Link {
   _id: string
 }
 interface MobileUiProps {
-  userInfo: userInfo | null
+  userInfo: userInfo | null;
+  newUserData: userInfo | null;
 }
-export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
-  const [ip, setIp] = useState<string>('')
-  const navigate = useNavigate()
+export const MobileUi: React.FC<MobileUiProps> = ({ userInfo ,newUserData}) => {
+  const [ip, setIp] = useState<string>("");
+  const navigate = useNavigate();
   const getUserIp = async () => {
     try {
       const response = await axios.get('https://api.ipify.org/?format=json')
@@ -47,8 +48,8 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
     }
   }
   useEffect(() => {
-    getUserIp()
-  }, [ip])
+    getUserIp();
+  }, [ip]);
 
   const handleClickSubmit = async (id: string) => {
     try {
@@ -76,9 +77,9 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
   return (
     <>
       <section
-        id='phone-preview-container'
-        style={{ height: '100%' }}
-        aria-label='Mobile preview of Linktree'
+        id="phone-preview-container"
+        style={{ height: "100%" }}
+        aria-label="Mobile preview of Linktree"
       >
         <div
           className='profile-container'
@@ -87,13 +88,12 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
             height: '100%',
             overflow: 'scroll',
             fontFamily: userInfo?.theme?.fontFamily,
-            backgroundImage: `url(${
-              defaultConfig?.imagePath + userInfo?.banner_img
-            })`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat',
-            color: userInfo?.theme?.fontColor || 'white'
+            backgroundImage: `url(${defaultConfig?.imagePath + userInfo?.banner_img
+              })`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+            color: userInfo?.theme?.fontColor || "white",
           }}
         >
           <div
@@ -102,15 +102,14 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
               position: 'absolute',
               top: 0,
               left: 0,
-              width: '100vh',
-              height: '100vh',
-              backdropFilter: 'blur(3px)',
-              WebkitBackdropFilter: 'blur(3px)',
+              width: "100%",
+              height: "100%",
+              backdropFilter: "blur(3px)",
+              WebkitBackdropFilter: "blur(3px)",
 
-              zIndex: 1
+              zIndex: 1,
             }}
           ></div>
-
           <div
             style={{
               position: 'absolute',
@@ -124,10 +123,10 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
           ></div>
 
           <div
-            className='content-wrapper'
-            style={{ position: 'relative', zIndex: 2 }}
+            className="content-wrapper"
+            style={{ position: "relative", zIndex: 2 }}
           >
-            <div className='profile-picture'>
+            <div className="profile-picture">
               <img
                 id='profileImage'
                 src={defaultConfig?.imagePath + userInfo?.profile_img}
@@ -174,11 +173,11 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
               </p>
             </div>
 
-            <div className='edit-form' id='editForm'>
+            <div className="edit-form" id="editForm">
               <input
-                type='text'
-                id='editUsername'
-                placeholder='Adınızı girin'
+                type="text"
+                id="editUsername"
+                placeholder="Adınızı girin"
               />
               <textarea
                 id='editBio'
@@ -189,22 +188,22 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
               />
             </div>
 
-            <div className='links-list'>
-              {userInfo?.non_social.map(link => (
+            <div className="links-list">
+              {Array.isArray(newUserData?.non_social) && newUserData?.non_social.map((link) => (
                 <Link
                   key={link._id}
                   to={link.linkUrl}
-                  target='_blank'
-                  rel='noopener noreferrer'
-                  className={`link-card ${
-                    userInfo.theme.themeDesign || 'round'
-                  }`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`link-card ${userInfo?.theme?.themeDesign || "round"
+                    }`}
                   onClick={() => handleClickSubmit(link._id)}
                   style={
                     {
-                      '--card-bg': userInfo?.theme?.is_colorImage || '#333',
-                      '--card-color': userInfo?.theme?.fontColor || 'white',
-                      '--card-font': userInfo?.theme?.fontFamily || 'sans-serif'
+                      "--card-bg": userInfo?.theme?.is_colorImage || "#333",
+                      "--card-color": userInfo?.theme?.fontColor || "white",
+                      "--card-font":
+                        userInfo?.theme?.fontFamily || "sans-serif",
                     } as React.CSSProperties
                   }
                 >
@@ -226,13 +225,13 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo }) => {
               ))}
             </div>
 
-            <div className='spcial-links-list d-flex justify-content-center gap-2'>
-              {userInfo?.social.map(link => {
+            <div className="spcial-links-list d-flex justify-content-center gap-2">
+              {Array.isArray(newUserData?.social) &&newUserData?.social.map((link) => {
                 const matchedPlatform = socialPlatforms.find(
-                  platform =>
+                  (platform) =>
                     platform.label.toLowerCase() ===
                     link.linkTitle.toLowerCase()
-                )
+                );
                 return (
                   <Link
                     key={link._id}

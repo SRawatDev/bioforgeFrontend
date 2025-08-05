@@ -27,6 +27,7 @@ export interface Theme {
     fontFamily?:    string;
     is_colorImage?: string;
     fontColor?:     string;
+    themeDesign?:     string;
 }
 
 
@@ -45,8 +46,11 @@ const Slice = createSlice({
     addData: (state, action: PayloadAction<Welcome>) => {
       state.data = action.payload;
     },
+    clearData: (state) => {
+      state.data = {};
+    },
   },
 });
 
-export const { addData } = Slice.actions;
+export const { addData ,clearData} = Slice.actions;
 export default Slice.reducer;

@@ -25,6 +25,7 @@ interface Link {
   linkUrl: string;
   linkLogo: string;
   type: string;
+  protectedLinks?:string
 }
 
 export const socialPlatforms = [
@@ -37,7 +38,7 @@ export const socialPlatforms = [
 
 export const LinksAddEdit: React.FC<Props> = ({ open, onClose, Detail, linkDetail, action, NonDetail }) => {
   const [loader, setLoader] = useState(false);
-  const [link, setLink] = useState<Link>({ linkTitle: '', linkUrl: '', linkLogo: '', type: 'social' });
+  const [link, setLink] = useState<Link>({ linkTitle: '', linkUrl: '', linkLogo: '', type: 'social',protectedLinks:"public" });
   const [preview, setPreview] = useState<string | null>(null);
   const [dragActive, setDragActive] = useState(false);
 
@@ -269,6 +270,40 @@ export const LinksAddEdit: React.FC<Props> = ({ open, onClose, Detail, linkDetai
                     required
                     placeholder={link.type === 'social' ? `Enter your ${link.linkTitle || 'social'} profile URL` : 'https://example.com'}
                   />
+                </div>
+              </div>
+              <div className="form-section">
+                <div className="input-group" >
+                   <label htmlFor='protectedLinks' className='field-label'>
+                      Protect You Links
+                    </label>
+                    <select
+                      id='protectedLinks'
+                      name='protectedLinks'
+                      value={link?.protectedLinks}
+                      onChange={handleChange}
+                      className='select-field'
+                      style={{borderRadius:"10px",padding:"10px"}}
+                    >
+                   
+                        <option
+                          key={"public"}
+                          value={"public"}
+                          
+                        
+                        >
+                          Public
+                        </option>
+                        <option
+                          key={"private"}
+                          value={"private"}
+                        
+                        >
+                          private
+                        </option>
+              
+                    </select>
+
                 </div>
               </div>
 

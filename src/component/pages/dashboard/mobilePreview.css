@@ -5,7 +5,11 @@
   justify-content: center;
   margin-bottom: 15px;
 }
-
+.content-wrapper {
+  background: rgb(255 255 255 / 0%);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+}
 .share-profile-button {
   display: flex;
   align-items: center;

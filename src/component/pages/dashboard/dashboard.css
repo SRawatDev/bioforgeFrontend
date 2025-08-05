@@ -68,12 +68,17 @@ html.lenis {
   transition: all 0.3s ease;
 }
 
-/* Preview Header */
+
 .preview-header {
   text-align: center;
   margin-bottom: 20px;
   padding-bottom: 15px;
   border-bottom: 1px solid #eaeaea;
+   display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  align-items: center; 
 }
 
 .preview-header h3 {

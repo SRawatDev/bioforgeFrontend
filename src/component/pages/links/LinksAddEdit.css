@@ -20,6 +20,7 @@
   width: 100%;
   max-height: 90vh;
   animation: modalSlideIn 0.3s ease-out;
+  overflow: hidden;
 }
 @keyframes modalSlideIn {
   from {

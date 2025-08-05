@@ -1,5 +1,203 @@
 /* updateProfile.css */
+/* Fixed CSS for static-banner-grid and banner-upload-area */
 
+.static-banner-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  gap: 1rem;
+  width: 67%;
+  margin-bottom: 1.5rem;
+  align-items: center; /* Added for vertical alignment */
+  
+}
+.static-button-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  align-items: center; /* Added for vertical alignment */
+}
+
+.static-banner-thumb {
+  width: 100%;
+  height: 60px;
+  display: flex;
+  object-fit: cover;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border-color 0.3s ease;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 1px 1px 5px 2px #00000057;
+}
+.static-button-thumb {
+  width: 100%;
+  height: 60px;
+  display: flex;
+  object-fit: cover;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border-color 0.3s ease;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 1px 1px 5px 2px #00000057;
+}
+
+.static-banner-thumb:hover {
+  border-color: #6366f1;
+}
+
+.static-banner-thumb.selected {
+  border-color: #4f46e5;
+}
+.static-button-thumb:hover {
+  border-color: #6366f1;
+}
+
+.static-button-thumb.selected {
+  border-color: #4f46e5;
+}
+
+/* Fixed Banner Upload Section */
+.banner-upload-area {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+ 
+}
+
+.banner-container {
+  position: relative;
+  width: 100%;
+  max-width: 400px; /* Added max-width for better control */
+  height: 200px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: linear-gradient(45deg, #f8fafc, #e2e8f0);
+  border: 2px dashed #cbd5e1;
+  transition: all 0.3s ease;
+  display: flex;
+  margin-top: 0;
+ 
+}
+
+.banner-container:hover {
+  border-color: #6366f1;
+  transform: scale(1.02);
+}
+
+.banner-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Changed from scale-down to contain for better fitting */
+  border-radius: 10px; /* Slight border radius to match container */
+}
+.static-banner-selection{
+  display: flex;
+  /* justify-content: center;
+  text-align: center; */
+}
+.banner-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #9ca3af;
+  gap: 0.5rem;
+}
+
+.placeholder-icon {
+  font-size: 2rem;
+  opacity: 0.6;
+}
+
+.banner-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: 10px;
+}
+
+.banner-container:hover .banner-overlay {
+  opacity: 1;
+}
+
+.upload-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: white;
+  color: #1f2937;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.upload-button:hover {
+  background: #f8fafc;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+
+.banner-image.fill {
+  object-fit:cover
+
+}
+
+
+.banner-image.fit-with-padding {
+  object-fit: scale-down;
+  padding: 10px;
+}
+
+@media (max-width: 768px) {
+  .banner-container {
+    height: 150px;
+    max-width: 100%;
+  }
+  
+  .static-banner-grid {
+    grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+    gap: 0.8rem;
+  }
+  
+  .static-banner-thumb {
+    height: 50px;
+  }
+  .static-button-thumb {
+    height: 50px;
+  }
+}
+
+@media (max-width: 480px) {
+  .banner-container {
+    height: 120px;
+  }
+  
+  .static-banner-grid {
+    grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+    gap: 0.6rem;
+  }
+  
+  .static-banner-thumb {
+    height: 40px;
+  }
+  .static-button-thumb {
+    height: 40px;
+  }
+}
 .profile-update-wrapper {
   min-height: 100vh;
   padding: 2rem 1rem;
@@ -39,7 +237,9 @@
 
 .header-content {
   position: relative;
-  z-index: 1;
+  
+  justify-content: center;
+  text-align: start;
 }
 
 .profile-title {
@@ -510,35 +710,13 @@
   outline-offset: 2px;
 }
 
-.static-banner-grid {
+/* .static-banner-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
   gap: 1rem;
   margin-bottom: 1.5rem;
-}
+} */
 
-.static-banner-thumb {
-    width: 100%;
-    height: 60px;
-    display: flex
-;
-    object-fit: cover;
-    border-radius: 8px;
-    cursor: pointer;
-    border: 2px solid transparent;
-    transition: border-color 0.3s ease;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 1px 1px 5px 2px #00000057;
-}
-
-.static-banner-thumb:hover {
-  border-color: #6366f1;
-}
-
-.static-banner-thumb.selected {
-  border-color: #4f46e5;
-}
 
 .themeUpload {
   text-align: center;

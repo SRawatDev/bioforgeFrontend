@@ -60,13 +60,13 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose }) => {
     },
 
     {
-      path: `/dashboard/changepassword/${localStorage.getItem("_id")}`,
+      path: `/dashboard/changepassword`,
       label: "Change Password",
       icon: <IoKeyOutline />,
       category: "main",
     },
     {
-      path: "/deleteAccount",
+      path: "/dashboard/deleteAccount",
       label: "Delete Account",
       icon: <IoTrashOutline />,
       category: "main",

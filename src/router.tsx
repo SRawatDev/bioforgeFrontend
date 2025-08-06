@@ -67,12 +67,12 @@ const routes: AppRoute[] = [
   },
   {
     guard: Authenticated,
-    path: '/dashboard/changepassword/:id',
+    path: '/dashboard/changepassword',
     element: lazy(() => import('./component/pages/password/Index'))
   },
   {
     guard: Authenticated,
-    path: '/deleteAccount',
+    path: '/dashboard/deleteAccount',
     element: lazy(() => import('./component/pages/accountDelete/Index'))
   },
   {

@@ -218,8 +218,10 @@ const Index: React.FC = () => {
   const SharePopup: React.FC<{
     profileUrl: string
     linkTitle: string
+    linkUrl: string
+    
     onClose: () => void
-  }> = ({ profileUrl, linkTitle, onClose }) => {
+  }> = ({ profileUrl, linkTitle,linkUrl, onClose }) => {
     const platformIcons = [
       {
         name: 'Twitter',
@@ -629,7 +631,8 @@ const Index: React.FC = () => {
           {showSharePopup && selectedShareLink && (
             <SharePopup
               profileUrl={`${window.location.origin}/${userInfo?.username}`}
-              linkTitle={selectedShareLink.linkUrl}
+              linkTitle={selectedShareLink.linkTitle}
+              linkUrl={selectedShareLink.linkUrl}
               onClose={() => {
                 setShowSharePopup(false)
                 setSelectedShareLink(null)

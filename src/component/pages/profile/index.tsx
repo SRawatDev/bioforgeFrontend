@@ -7,6 +7,7 @@ import { apiUrls } from '../../../utils/api.utils'
 import { defaultConfig } from '../../../config'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import {
+  BiLink,
   BiLogoGmail,
   BiLogoTwitter,
   BiLogoFacebook,
@@ -17,10 +18,10 @@ import { socialPlatforms } from '../links/linksAddEdit'
 import ProfileShimmer from '../../ProfileShimmer'
 import { TbLockPassword, TbEye, TbX } from 'react-icons/tb'
 import { FiUnlock } from 'react-icons/fi'
-import { FiCopy } from 'react-icons/fi'; // Ensure this is imported
+import { FiCopy } from 'react-icons/fi'
 import axios from 'axios'
 import { Report } from './Report'
-import { toast } from 'react-toastify';
+import { toast } from 'react-toastify'
 import './profile.css'
 
 interface userInfo {
@@ -199,6 +200,7 @@ const Index: React.FC = () => {
     const encodedUrl = encodeURIComponent(profileUrl)
     const encodedTitle = encodeURIComponent(linkTitle)
     switch (platform.toLowerCase()) {
+      
       case 'twitter':
         return `https://twitter.com/intent/tweet?url=${encodedUrl}&text=Check%20out%20this%20link:%20${encodedTitle}`
       case 'facebook':
@@ -219,10 +221,11 @@ const Index: React.FC = () => {
     profileUrl: string
     linkTitle: string
     linkUrl: string
-    
+
     onClose: () => void
-  }> = ({ profileUrl, linkTitle,linkUrl, onClose }) => {
+  }> = ({ profileUrl, linkTitle, linkUrl, onClose }) => {
     const platformIcons = [
+      
       {
         name: 'Twitter',
         icon: <BiLogoTwitter style={{ color: '#1DA1F2' }} />
@@ -246,38 +249,38 @@ const Index: React.FC = () => {
     ]
     return (
       <div className='share-popup-overlay' onClick={onClose}>
-  <div className='share-popup' onClick={e => e.stopPropagation()}>
-    <div className='share-popup-header'>
-      <h3>Share this link</h3>
-      <TbX className='close-icon' onClick={onClose} />
-    </div>
-    <div className='share-popup-content'>
-      {/* Copy Link Button */}
-      {/* <button
-        className='share-platform'
-        onClick={() => {
-          navigator.clipboard.writeText(profileUrl);
-          alert('Link copied to clipboard!'); // You can replace this with a toast notification
-        }}
-      >
-        <FiCopy className='share-icon' />
-        <span>Copy Link</span>
-      // </button> */}
-      {platformIcons.map(platform => (
-        <a
-          key={platform.name}
-          href={generateShareUrl(platform.name, profileUrl, linkTitle)}
-          target='_blank'
-          rel='noopener noreferrer'
-          className='share-platform'
-        >
-          {platform.icon}
-          <span>{platform.name}</span>
-        </a>
-      ))}
-    </div>
-  </div>
-</div>
+        <div className='share-popup' onClick={e => e.stopPropagation()}>
+          <div className='share-popup-header'>
+            <h3>Share this link</h3>
+            <TbX className='close-icon' onClick={onClose} />
+          </div>
+          <div className='share-popup-content'>
+            {/* Copy Link Button */}
+            <button
+              className='share-platform'
+              onClick={() => {
+                navigator.clipboard.writeText(linkUrl)
+                alert('Link copied to clipboard!') // You can replace this with a toast notification
+              }}
+            >
+              <BiLink className='share-icon' />
+              <span>Copy</span>
+            </button>
+            {platformIcons.map(platform => (
+              <a
+                key={platform.name}
+                href={generateShareUrl(platform.name, profileUrl, linkTitle)}
+                target='_blank'
+                rel='noopener noreferrer'
+                className='share-platform'
+              >
+                {platform.icon}
+                <span>{platform.name}</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
     )
   }
 
@@ -377,65 +380,67 @@ const Index: React.FC = () => {
                       //       : ''
                       //   }`}
                       // >
-                        <div
-                          className={`link-card ${
-                            userInfo.theme.themeDesign || 'round'
-                          } ${
-                            link.protectedLinks === 'private' &&
-                            !unlockedLinks.has(link._id)
-                              ? 'locked-link'
-                              : ''
-                          }`}
-                          onClick={e => handleLinkClick(link, e)}
-                          style={{
-                              padding: '10px',
-                              '--card-bg':
-                                userInfo?.theme?.is_colorImage || '#333',
-                              '--card-color':
-                                userInfo?.theme?.fontColor || 'white',
-                              '--card-font':
-                                userInfo?.theme?.fontFamily || 'sans-serif',
-                              cursor: 'pointer'
-                            } as React.CSSProperties}
-                        >
-                          <div className='link-content'>
-                            <img
-                              src={defaultConfig?.imagePath + link.linkLogo}
-                              alt={link.linkTitle}
-                              className='mobile-link-icon'
-                            />
-                            <span className='mobile-link-title'>
-                              {link.linkTitle}
-                            </span>
-                          </div>
-                          {link.protectedLinks === 'private' &&
-                            !unlockedLinks.has(link._id) && (
-                              <div className='private-link-indicator'>
-                                <TbLockPassword className='lock-icon-small' />
-                              </div>
-                            )}
-                          {link.protectedLinks === 'private' &&
-                            unlockedLinks.has(link._id) && (
-                              <div className='unlocked-link-indicator'>
-                                <FiUnlock className='unlock-icon-small' />
-                              </div>
-                            )}
-                          {/* <Link
+                      <div
+                        className={`link-card ${
+                          userInfo.theme.themeDesign || 'round'
+                        } ${
+                          link.protectedLinks === 'private' &&
+                          !unlockedLinks.has(link._id)
+                            ? 'locked-link'
+                            : ''
+                        }`}
+                        onClick={e => handleLinkClick(link, e)}
+                        style={
+                          {
+                            padding: '10px',
+                            '--card-bg':
+                              userInfo?.theme?.is_colorImage || '#333',
+                            '--card-color':
+                              userInfo?.theme?.fontColor || 'white',
+                            '--card-font':
+                              userInfo?.theme?.fontFamily || 'sans-serif',
+                            cursor: 'pointer'
+                          } as React.CSSProperties
+                        }
+                      >
+                        <div className='link-content'>
+                          <img
+                            src={defaultConfig?.imagePath + link.linkLogo}
+                            alt={link.linkTitle}
+                            className='mobile-link-icon'
+                          />
+                          <span className='mobile-link-title'>
+                            {link.linkTitle}
+                          </span>
+                        </div>
+                        {link.protectedLinks === 'private' &&
+                          !unlockedLinks.has(link._id) && (
+                            <div className='private-link-indicator'>
+                              <TbLockPassword className='lock-icon-small' />
+                            </div>
+                          )}
+                        {link.protectedLinks === 'private' &&
+                          unlockedLinks.has(link._id) && (
+                            <div className='unlocked-link-indicator'>
+                              <FiUnlock className='unlock-icon-small' />
+                            </div>
+                          )}
+                        {/* <Link
                             key={link._id}
                             to={link.linkUrl}
                             target='_blank'
                           > */}
-                            <BsThreeDots
-                              className='share-icon'
-                              onClick={e => {
-                                e.stopPropagation() // Prevent triggering link click
-                                setSelectedShareLink(link)
-                                setShowSharePopup(true)
-                              }}
-                              style={{ cursor: 'pointer', marginLeft: '10px' }}
-                            />
-                          {/* </Link> */}
-                        </div>
+                        <BsThreeDots
+                          className='share-icon'
+                          onClick={e => {
+                            e.stopPropagation() // Prevent triggering link click
+                            setSelectedShareLink(link)
+                            setShowSharePopup(true)
+                          }}
+                          style={{ cursor: 'pointer', marginLeft: '10px' }}
+                        />
+                        {/* </Link> */}
+                      </div>
                       // </Link>
                     ))}
                   </div>
@@ -513,12 +518,14 @@ const Index: React.FC = () => {
                   >
                     Join
                   </span>
-                  <span  style={{
+                  <span
+                    style={{
                       fontFamily: userInfo?.theme?.fontFamily,
                       background: userInfo?.theme?.is_colorImage || '#333',
                       color: userInfo?.theme?.fontColor || '#fbbf24'
-                    }}>
-                  {userInfo?.username}
+                    }}
+                  >
+                    {userInfo?.username}
                   </span>
                   {localStorage.getItem('accessToken') && userId === id.id}
                   <span

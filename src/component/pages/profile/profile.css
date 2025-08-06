@@ -1121,7 +1121,7 @@ scrollbar-width:none;
 .share-icon {
   overflow: hidden;
   font-size: 1.2rem;
-  color: var(--card-color, #fff);
+  color: var(--card-color, #575555);
 }
 
 .link-card {

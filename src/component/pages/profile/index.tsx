@@ -251,7 +251,7 @@ const Index: React.FC = () => {
     </div>
     <div className='share-popup-content'>
       {/* Copy Link Button */}
-      <button
+      {/* <button
         className='share-platform'
         onClick={() => {
           navigator.clipboard.writeText(profileUrl);
@@ -260,7 +260,7 @@ const Index: React.FC = () => {
       >
         <FiCopy className='share-icon' />
         <span>Copy Link</span>
-      </button>
+      // </button> */}
       {platformIcons.map(platform => (
         <a
           key={platform.name}
@@ -365,16 +365,16 @@ const Index: React.FC = () => {
                 {userInfo?.non_social && userInfo.non_social.length > 0 && (
                   <div className='mobile-links-list'>
                     {userInfo.non_social.map(link => (
-                      <Link
-                        key={link._id}
-                        to={link.linkUrl}
-                        target='_blank'
-                        className={`link-card-wrapper ${
-                          link.protectedLinks === 'private'
-                            ? 'private-link'
-                            : ''
-                        }`}
-                      >
+                      // <Link
+                      //   key={link._id}
+                      //   to={link.linkUrl}
+                      //   target='_blank'
+                      //   className={`link-card-wrapper ${
+                      //     link.protectedLinks === 'private'
+                      //       ? 'private-link'
+                      //       : ''
+                      //   }`}
+                      // >
                         <div
                           className={`link-card ${
                             userInfo.theme.themeDesign || 'round'
@@ -418,11 +418,11 @@ const Index: React.FC = () => {
                                 <FiUnlock className='unlock-icon-small' />
                               </div>
                             )}
-                          <Link
+                          {/* <Link
                             key={link._id}
                             to={link.linkUrl}
                             target='_blank'
-                          >
+                          > */}
                             <BsThreeDots
                               className='share-icon'
                               onClick={e => {
@@ -432,9 +432,9 @@ const Index: React.FC = () => {
                               }}
                               style={{ cursor: 'pointer', marginLeft: '10px' }}
                             />
-                          </Link>
+                          {/* </Link> */}
                         </div>
-                      </Link>
+                      // </Link>
                     ))}
                   </div>
                 )}
@@ -491,7 +491,7 @@ const Index: React.FC = () => {
                   </div>
                 )}
               </div>
-              <div>
+              <div className='d-flex justify-content-center mt-4'>
                 <button
                   type='button'
                   className='link-join-biofoge'
@@ -511,7 +511,13 @@ const Index: React.FC = () => {
                   >
                     Join
                   </span>
-                  @{userInfo?.username}
+                  <span  style={{
+                      fontFamily: userInfo?.theme?.fontFamily,
+                      background: userInfo?.theme?.is_colorImage || '#333',
+                      color: userInfo?.theme?.fontColor || '#fbbf24'
+                    }}>
+                  {userInfo?.username}
+                  </span>
                   {localStorage.getItem('accessToken') && userId === id.id}
                   <span
                     className='link-join-text'
@@ -623,7 +629,7 @@ const Index: React.FC = () => {
           {showSharePopup && selectedShareLink && (
             <SharePopup
               profileUrl={`${window.location.origin}/${userInfo?.username}`}
-              linkTitle={selectedShareLink.linkTitle}
+              linkTitle={selectedShareLink.linkUrl}
               onClose={() => {
                 setShowSharePopup(false)
                 setSelectedShareLink(null)

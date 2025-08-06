@@ -744,20 +744,17 @@
   font-size: 12px;
 }
 .link-join-biofoge {
-  padding: 14px 26px;
-  border-radius: 40px;
-  font-weight: 600;
-  font-size: 20px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  border: none;
-  justify-content: center;
-  align-items: center;
-  margin: 20px 0px 0px 40px;
-  width: auto;
+    padding: 10px 16px 14px 16px;
+    border-radius: 40px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    border: none;
+    justify-content: center;
+    align-items: baseline;
+    width: auto;
 }
 
 .link-join-text {
@@ -1099,9 +1096,11 @@
 
 .share-popup-content {
   display: flex;
-  flex-wrap: wrap;
   gap: 15px;
-  justify-content: center;
+  overflow-x: auto;
+padding: 19px 16px 11px 14px;
+scrollbar-width:none;
+
 }
 
 .share-platform {

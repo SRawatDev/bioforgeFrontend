@@ -1462,3 +1462,23 @@ li.has-dropdown1 span {
 .newsection{
   color: white !important;
 }
+.privateLinkLable{
+  font-weight: 500;
+  font-size: 17px;
+}
+.privateseletected{
+  color: red;
+  
+}
+.publicselected{
+  color:blue;
+
+}
+.passwordProfile{
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    margin-bottom: 10px;
+    margin-right: 11px;
+    z-index: 10;
+}

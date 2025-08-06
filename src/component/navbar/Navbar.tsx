@@ -18,56 +18,7 @@ const Navbar: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   const userId = localStorage.getItem("_id");
   return (
     <>
-      {/* <nav
-        className="navbar"
-        style={{ backgroundColor: "red", minHeight: "70px" }}
-      >
-        <div className="navbar-container">
-          <div className="navbar-left">
-            <div className="navbar-logo">
-            
-            </div>
-          </div>
-          <div
-            className={`navbar-links-container ${
-              isMobileMenuOpen ? "active" : ""
-            }`}
-          >
-            <div className="navbar-links">
-              <Link to={"/"} className="navbar-link">
-                Home
-              </Link>
-              <Link to={"/landingPage"} className="navbar-link">
-                Theme
-              </Link>
-            </div>
-            <div className="navbar-right">
-              {!isLoggedIn ? (
-                <>
-                  <Link to={"/login"} className="btn newbtn-secondary btn-large">
-                    SignIn
-                  </Link>
-                  <Link to={"/register"} className="btn newbtn-secondary btn-large">
-                    Signup
-                  </Link>
-                </>
-              ) : (
-                <div
-                  className="home-header-profile "
-                  onClick={() => navigate(`/dashboard/index/${userId}`)}
-                >
-                  <img
-                    src={profileImg}
-                    alt="Profile"
-                    className="home-header-avatar"
-                  />
-                  <span className="home-header-name">Dashboard</span>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      </nav> */}
+     
       <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
         <div className="container" style={{ padding: "15px" }}>
           <a className="navbar-brand fw-bold" href="#" style={{ fontSize: "24px" }}>

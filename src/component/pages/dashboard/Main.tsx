@@ -8,6 +8,8 @@ import {
   FaPalette,
   FaSave,
   FaTimes,
+  FaEyeSlash,
+  FaEye,
 } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -45,6 +47,7 @@ interface UserInfo {
   bio: string
   banner_img: string
   profile_img: string
+  protectedLinksPassword?: string,
   theme: Theme
 }
 export interface ThemeData {
@@ -66,8 +69,7 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
   const [themeimg, setTheme] = useState<ThemeData[]>([]);
   const [previewBanner, setPreviewBanner] = useState<string | null>(null);
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
-  console.log("===============", storeData)
-
+  const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
@@ -141,7 +143,7 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
           setUserInfo(user);
           setPreviewProfile(user.profile_img || null);
           setPreviewBanner(user.banner_img || null);
-        }else{
+        } else {
           setUserInfo(storeData);
           setPreviewProfile(storeData.profile_img || null);
           setPreviewBanner(storeData.banner_img || null);
@@ -179,7 +181,7 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
             ...prev,
             profile_img: uploadedUrl,
           };
-      
+
           dispatch(addData(updated));
           return updated;
         });
@@ -231,6 +233,7 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
   const handleCancel = () => {
     navigate(`/dashboard/index/${localStorage.getItem("_id")}`);
     dispatch(clearData())
+
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -249,6 +252,7 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
       } else {
         localStorage.setItem('profile_img', userInfo?.profile_img || '')
         navigate(`/dashboard/updateProfile/${localStorage.getItem('_id')}`)
+
         getUserDetails()
         SuccessMessage(response?.data?.message)
       }
@@ -288,7 +292,9 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
       return updated;
     });
   };
-
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
+  };
 
   return (
     <>
@@ -315,57 +321,57 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
                   <h3 className='section-title'>Theme</h3>
                 </div>
                 <div className='static-banner-selection'>
-                <div className='static-banner-grid'>
-                  {themeimg.map((src, idx) => (
-                    <img
-                      key={idx}
-                      src={defaultConfig.imagePath + src.themeImg}
-                      alt={`Static Banner ${idx + 1}`}
-                      className={`static-banner-thumb  'selected' : ''}`}
-                      onClick={() => selectSelectedTheme(src.themeImg)}
-                    />
-                  ))}
-                </div>
-                <div className='banner-upload-area'>
-                  <div className='banner-container'>
-                    {previewBanner ? (
+                  <div className='static-banner-grid'>
+                    {themeimg.map((src, idx) => (
                       <img
-                        className='banner-image fill'
-                        src={`${defaultConfig.imagePath + previewBanner}`}
-                        alt='Banner preview'
+                        key={idx}
+                        src={defaultConfig.imagePath + src.themeImg}
+                        alt={`Static Banner ${idx + 1}`}
+                        className={`static-banner-thumb  'selected' : ''}`}
+                        onClick={() => selectSelectedTheme(src.themeImg)}
                       />
-                    ) : (
-                      <div className='banner-placeholder'>
-                        <FaCamera className='placeholder-icon' />
-                        <span>No Theme</span>
-                      </div>
-                    )}
-                    <div className='banner-overlay'>
-                      <label
-                        htmlFor='bannerUploadInput'
-                        className='upload-button'
-                      >
-                        <FaCamera />
-                        <span>Change Theme</span>
-                      </label>
-                    </div>
+                    ))}
                   </div>
-                  <input
-                    id='bannerUploadInput'
-                    type='file'
-                    name='banner_img'
-                    accept='image/png,image/jpg,image/jpeg,image/avif'
-                    onChange={UploadBannerImage}
-                    className='file-input'
-                  />
-                </div>
+                  <div className='banner-upload-area'>
+                    <div className='banner-container'>
+                      {previewBanner ? (
+                        <img
+                          className='banner-image fill'
+                          src={`${defaultConfig.imagePath + previewBanner}`}
+                          alt='Banner preview'
+                        />
+                      ) : (
+                        <div className='banner-placeholder'>
+                          <FaCamera className='placeholder-icon' />
+                          <span>No Theme</span>
+                        </div>
+                      )}
+                      <div className='banner-overlay'>
+                        <label
+                          htmlFor='bannerUploadInput'
+                          className='upload-button'
+                        >
+                          <FaCamera />
+                          <span>Change Theme</span>
+                        </label>
+                      </div>
+                    </div>
+                    <input
+                      id='bannerUploadInput'
+                      type='file'
+                      name='banner_img'
+                      accept='image/png,image/jpg,image/jpeg,image/avif'
+                      onChange={UploadBannerImage}
+                      className='file-input'
+                    />
+                  </div>
                 </div>
               </div>
               <div className='section-card'>
                 <div className='section-header'>
                   <h3 className='section-title'>Button Design </h3>
                 </div>
-                 <div className='static-button-grid'>
+                <div className='static-button-grid'>
                   <span
                     className={`static-banner-thumb text-center bg-light ${userInfo?.theme?.themeDesign === "curved"
                       ? "selected"
@@ -376,17 +382,15 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
                     Curved
                   </span>
                   <span
-                    className={`static-button-thumb text-center bg-light ${
-                      userInfo?.theme?.themeDesign === 'sharp' ? 'selected' : ''
-                    }`}
+                    className={`static-button-thumb text-center bg-light ${userInfo?.theme?.themeDesign === 'sharp' ? 'selected' : ''
+                      }`}
                     onClick={() => selectedDesign('sharp')}
                   >
                     Sharp
                   </span>
                   <span
-                    className={`static-button-thumb text-center bg-light ${
-                      userInfo?.theme?.themeDesign === 'round' ? 'selected' : ''
-                    }`}
+                    className={`static-button-thumb text-center bg-light ${userInfo?.theme?.themeDesign === 'round' ? 'selected' : ''
+                      }`}
                     onClick={() => selectedDesign('round')}
                   >
                     Round
@@ -523,6 +527,41 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
                       ></span>
                     </div>
                   </div>
+                </div>
+              </div>
+              <div className='section-card'>
+                <div className='section-header'>
+                  <h3 className='section-title'>
+                    {/* <FaPalette className='section-icon' /> */}
+                    Protect Your Private Links
+                  </h3>
+                </div>
+
+                <div className="register-input-wrapper">
+                  <input
+                    type={passwordVisible ? "text" : "password"}
+                    name="protectedLinksPassword"
+                    value={userInfo?.protectedLinksPassword}
+                    onChange={handleChange}
+                    className={`register-input`}
+                    placeholder=" "
+                    id="protectedLinksPassword"
+                    required
+
+                  />
+                  <label htmlFor="protectedLinksPassword" className="register-label">
+                    Password
+                  </label>
+                  <button
+                    type="button"
+                    onClick={togglePasswordVisibility}
+                    className="password-toggle"
+                    aria-label={
+                      passwordVisible ? "Hide password" : "Show password"
+                    }
+                  >
+                    {passwordVisible ? <FaEyeSlash /> : <FaEye />}
+                  </button>
                 </div>
               </div>
 

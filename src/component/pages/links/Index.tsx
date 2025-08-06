@@ -26,6 +26,7 @@ interface LinkItem {
   linkLogo: string;
   status: string;
   type: string;
+  protectedLinks?:string,
   clickCount?: number;
   clicks?: [clicks];
 }
@@ -277,9 +278,9 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
                                       onClick={() =>
                                         handleUserInfo(item?.clicks)
                                       }
-                                      className="link-title"
+                                      className="link-title d-flex gap-2"
                                     >
-                                      {item.linkTitle}
+                                                  {item.linkTitle}<p className={`privateLinkLable ${item.protectedLinks==='private'?"privateseletected":"publicselected"}`}>{item.protectedLinks?item.protectedLinks:"public"}</p>
                                     </h3>
                                     <p className="link-url">{item.linkUrl}</p>
                                     <div className="link-stats">
@@ -405,9 +406,10 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
                           <div className="link-item-details">
                             <h3
                               onClick={() => handleUserInfo(item?.clicks)}
-                              className="link-title"
+                              className="link-title d-flex gap-2"
                             >
-                              {item.linkTitle}
+                                                                                   {item.linkTitle}<p className={`privateLinkLable ${item.protectedLinks==='private'?"privateseletected":"publicselected"}`}>{item.protectedLinks?item.protectedLinks:"public"}</p>
+
                             </h3>
                             <p className="link-url">{item.linkUrl}</p>
                             <div className="link-stats">

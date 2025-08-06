@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import ErrorMessage from '../../../helpers/ErrorMessage'
-import SuccessMessage from '../../../helpers/Success'
 import { BsThreeDots } from 'react-icons/bs'
 import { callAPIWithoutAuth } from '../../../utils/apicall.utils'
 import { apiUrls } from '../../../utils/api.utils'
@@ -15,13 +14,11 @@ import {
 } from 'react-icons/bi'
 import { socialPlatforms } from '../links/linksAddEdit'
 import ProfileShimmer from '../../ProfileShimmer'
-import { TbLockPassword, TbEye, TbX } from 'react-icons/tb'
-import { FiUnlock } from 'react-icons/fi'
-import { FiCopy } from 'react-icons/fi'; // Ensure this is imported
+import { TbLockPassword,TbX } from 'react-icons/tb'
 import axios from 'axios'
 import { Report } from './Report'
-import { toast } from 'react-toastify';
 import './profile.css'
+import { MdPhonelinkSetup } from 'react-icons/md'
 
 interface userInfo {
   _id: string
@@ -60,40 +57,28 @@ const Index: React.FC = () => {
   const [showPasswordModal, setShowPasswordModal] = useState<boolean>(false)
   const [password, setPassword] = useState<string>('')
   const [selectedLink, setSelectedLink] = useState<Link | null>(null)
-  const [passwordLoading, setPasswordLoading] = useState<boolean>(false)
-  const [showPasswordIcon, setShowPasswordIcon] = useState<boolean>(false)
-  const [unlockedLinks, setUnlockedLinks] = useState<Set<string>>(new Set())
   const [showSharePopup, setShowSharePopup] = useState<boolean>(false)
   const [selectedShareLink, setSelectedShareLink] = useState<Link | null>(null)
 
-  const getUserDetail = async () => {
+  const getUserDetail = async (header?: string) => {
     setLoader(true)
     try {
       const response = await callAPIWithoutAuth(
         apiUrls.getUserInfoPublic,
-        { _id: id.id },
+        { _id: id.id, protectedLinksPassword: header },
         'GET',
         {}
       )
       setLoader(false)
       if (!response?.data?.status) {
-        navigate('/')
-        ErrorMessage(response?.data?.data?.message)
+        ErrorMessage(response?.data?.message)
       } else {
         const userData = response?.data?.data[0]
         setUserInfo(userData)
-        const hasPrivateLinks =
-          userData?.non_social?.some(
-            (link: Link) => link.protectedLinks === 'private'
-          ) ||
-          userData?.social?.some(
-            (link: Link) => link.protectedLinks === 'private'
-          )
-        setShowPasswordIcon(hasPrivateLinks)
+     
       }
     } catch (err: any) {
       setLoader(false)
-      ErrorMessage('Failed to load profile')
     }
   }
 
@@ -136,49 +121,19 @@ const Index: React.FC = () => {
   }
 
   const handleLinkClick = (link: Link, event: React.MouseEvent) => {
-    if (link.protectedLinks === 'private' && !unlockedLinks.has(link._id)) {
+   
       event.preventDefault()
       setSelectedLink(link)
       setShowPasswordModal(true)
       return
-    }
-    handleClickSubmit(link._id)
+  
   }
 
   const handlePasswordSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!password.trim() || !selectedLink) {
-      ErrorMessage('Please enter a password')
-      return
-    }
-    setPasswordLoading(true)
-    try {
-      const response = await callAPIWithoutAuth(
-        apiUrls.getUserInfoPublic,
-        {
-          linkId: selectedLink._id,
-          password: password
-        },
-        'POST',
-        {}
-      )
-      setPasswordLoading(false)
-      if (response?.data?.status) {
-        SuccessMessage('Password verified! Redirecting...')
-        setUnlockedLinks(prev => new Set(prev).add(selectedLink._id))
-        setShowPasswordModal(false)
-        setPassword('')
-        handleClickSubmit(selectedLink._id)
-        setTimeout(() => {
-          window.open(selectedLink.linkUrl, '_blank', 'noopener noreferrer')
-        }, 500)
-      } else {
-        ErrorMessage(response?.data?.message || 'Invalid password')
-      }
-    } catch (error: any) {
-      setPasswordLoading(false)
-      ErrorMessage('Failed to verify password')
-    }
+    getUserDetail(password)
+    closePasswordModal()
+
   }
 
   const closePasswordModal = () => {
@@ -219,9 +174,10 @@ const Index: React.FC = () => {
     profileUrl: string
     linkTitle: string
     linkUrl: string
-    
+
     onClose: () => void
-  }> = ({ profileUrl, linkTitle,linkUrl, onClose }) => {
+  }> = ({ profileUrl, linkTitle, linkUrl, onClose }) => {
+    console.log("==", linkUrl)
     const platformIcons = [
       {
         name: 'Twitter',
@@ -246,14 +202,14 @@ const Index: React.FC = () => {
     ]
     return (
       <div className='share-popup-overlay' onClick={onClose}>
-  <div className='share-popup' onClick={e => e.stopPropagation()}>
-    <div className='share-popup-header'>
-      <h3>Share this link</h3>
-      <TbX className='close-icon' onClick={onClose} />
-    </div>
-    <div className='share-popup-content'>
-      {/* Copy Link Button */}
-      {/* <button
+        <div className='share-popup' onClick={e => e.stopPropagation()}>
+          <div className='share-popup-header'>
+            <h3>Share this link</h3>
+            <TbX className='close-icon' onClick={onClose} />
+          </div>
+          <div className='share-popup-content'>
+            {/* Copy Link Button */}
+            {/* <button
         className='share-platform'
         onClick={() => {
           navigator.clipboard.writeText(profileUrl);
@@ -263,21 +219,21 @@ const Index: React.FC = () => {
         <FiCopy className='share-icon' />
         <span>Copy Link</span>
       // </button> */}
-      {platformIcons.map(platform => (
-        <a
-          key={platform.name}
-          href={generateShareUrl(platform.name, profileUrl, linkTitle)}
-          target='_blank'
-          rel='noopener noreferrer'
-          className='share-platform'
-        >
-          {platform.icon}
-          <span>{platform.name}</span>
-        </a>
-      ))}
-    </div>
-  </div>
-</div>
+            {platformIcons.map(platform => (
+              <a
+                key={platform.name}
+                href={generateShareUrl(platform.name, profileUrl, linkTitle)}
+                target='_blank'
+                rel='noopener noreferrer'
+                className='share-platform'
+              >
+                {platform.icon}
+                <span>{platform.name}</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
     )
   }
 
@@ -318,9 +274,8 @@ const Index: React.FC = () => {
                 left: 0,
                 width: '100%',
                 height: '100%',
-                backgroundImage: `url(${
-                  defaultConfig?.imagePath + userInfo?.banner_img
-                })`,
+                backgroundImage: `url(${defaultConfig?.imagePath + userInfo?.banner_img
+                  })`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat',
@@ -367,76 +322,43 @@ const Index: React.FC = () => {
                 {userInfo?.non_social && userInfo.non_social.length > 0 && (
                   <div className='mobile-links-list'>
                     {userInfo.non_social.map(link => (
-                      // <Link
-                      //   key={link._id}
-                      //   to={link.linkUrl}
-                      //   target='_blank'
-                      //   className={`link-card-wrapper ${
-                      //     link.protectedLinks === 'private'
-                      //       ? 'private-link'
-                      //       : ''
-                      //   }`}
-                      // >
-                        <div
-                          className={`link-card ${
-                            userInfo.theme.themeDesign || 'round'
-                          } ${
-                            link.protectedLinks === 'private' &&
-                            !unlockedLinks.has(link._id)
-                              ? 'locked-link'
-                              : ''
+
+                      <div
+                        className={`link-card ${userInfo.theme.themeDesign || 'round'
                           }`}
-                          onClick={e => handleLinkClick(link, e)}
-                          style={{
-                              padding: '10px',
-                              '--card-bg':
-                                userInfo?.theme?.is_colorImage || '#333',
-                              '--card-color':
-                                userInfo?.theme?.fontColor || 'white',
-                              '--card-font':
-                                userInfo?.theme?.fontFamily || 'sans-serif',
-                              cursor: 'pointer'
-                            } as React.CSSProperties}
-                        >
-                          <div className='link-content'>
-                            <img
-                              src={defaultConfig?.imagePath + link.linkLogo}
-                              alt={link.linkTitle}
-                              className='mobile-link-icon'
-                            />
-                            <span className='mobile-link-title'>
-                              {link.linkTitle}
-                            </span>
-                          </div>
-                          {link.protectedLinks === 'private' &&
-                            !unlockedLinks.has(link._id) && (
-                              <div className='private-link-indicator'>
-                                <TbLockPassword className='lock-icon-small' />
-                              </div>
-                            )}
-                          {link.protectedLinks === 'private' &&
-                            unlockedLinks.has(link._id) && (
-                              <div className='unlocked-link-indicator'>
-                                <FiUnlock className='unlock-icon-small' />
-                              </div>
-                            )}
-                          {/* <Link
-                            key={link._id}
-                            to={link.linkUrl}
-                            target='_blank'
-                          > */}
-                            <BsThreeDots
-                              className='share-icon'
-                              onClick={e => {
-                                e.stopPropagation() // Prevent triggering link click
-                                setSelectedShareLink(link)
-                                setShowSharePopup(true)
-                              }}
-                              style={{ cursor: 'pointer', marginLeft: '10px' }}
-                            />
-                          {/* </Link> */}
+                        onClick={e => handleLinkClick(link, e)}
+                        style={{
+                          padding: '10px',
+                          '--card-bg':
+                            userInfo?.theme?.is_colorImage || '#333',
+                          '--card-color':
+                            userInfo?.theme?.fontColor || 'white',
+                          '--card-font':
+                            userInfo?.theme?.fontFamily || 'sans-serif',
+                          cursor: 'pointer'
+                        } as React.CSSProperties}
+                      >
+                        <div className='link-content'>
+                          <img
+                            src={defaultConfig?.imagePath + link.linkLogo}
+                            alt={link.linkTitle}
+                            className='mobile-link-icon'
+                          />
+                          <span className='mobile-link-title'>
+                            {link.linkTitle}
+                          </span>
                         </div>
-                      // </Link>
+                        <BsThreeDots
+                          className='share-icon'
+                          onClick={e => {
+                            e.stopPropagation()
+                            setSelectedShareLink(link)
+                            setShowSharePopup(true)
+                          }}
+                          style={{ cursor: 'pointer', marginLeft: '10px' }}
+                        />
+                      </div>
+
                     ))}
                   </div>
                 )}
@@ -455,19 +377,10 @@ const Index: React.FC = () => {
                             key={link._id}
                             to={link.linkUrl}
                             target='_blank'
-                            className={`social-link-wrapper ${
-                              link.protectedLinks === 'private'
-                                ? 'private-link'
-                                : ''
-                            }`}
+                            className={`social-link-wrapper `}
                           >
                             <div
-                              className={`link-card-social ${
-                                link.protectedLinks === 'private' &&
-                                !unlockedLinks.has(link._id)
-                                  ? 'locked-link'
-                                  : ''
-                              }`}
+                              className={`link-card-social`}
                               onClick={e => handleLinkClick(link, e)}
                               style={{ color: 'black', cursor: 'pointer' }}
                             >
@@ -481,10 +394,7 @@ const Index: React.FC = () => {
                               >
                                 {matchedPlatform && matchedPlatform.icon}
                               </span>
-                              {link.protectedLinks === 'private' &&
-                                !unlockedLinks.has(link._id) && (
-                                  <TbLockPassword className='lock-icon-overlay' />
-                                )}
+
                             </div>
                           </Link>
                         )
@@ -513,12 +423,12 @@ const Index: React.FC = () => {
                   >
                     Join
                   </span>
-                  <span  style={{
-                      fontFamily: userInfo?.theme?.fontFamily,
-                      background: userInfo?.theme?.is_colorImage || '#333',
-                      color: userInfo?.theme?.fontColor || '#fbbf24'
-                    }}>
-                  {userInfo?.username}
+                  <span style={{
+                    fontFamily: userInfo?.theme?.fontFamily,
+                    background: userInfo?.theme?.is_colorImage || '#333',
+                    color: userInfo?.theme?.fontColor || '#fbbf24'
+                  }}>
+                    {userInfo?.username}
                   </span>
                   {localStorage.getItem('accessToken') && userId === id.id}
                   <span
@@ -540,7 +450,7 @@ const Index: React.FC = () => {
             onClick={handlePasswordIconClick}
             title='Click to view private links'
           >
-            <TbLockPassword
+            <MdPhonelinkSetup
               className='passwordProfile blinking-icon'
               style={
                 {
@@ -593,7 +503,8 @@ const Index: React.FC = () => {
                         onChange={e => setPassword(e.target.value)}
                         placeholder='Enter password to access link'
                         className='password-input'
-                        disabled={passwordLoading}
+
+                        required
                       />
                     </div>
                     <div className='modal-actions'>
@@ -601,26 +512,16 @@ const Index: React.FC = () => {
                         type='button'
                         onClick={closePasswordModal}
                         className='cancel-button'
-                        disabled={passwordLoading}
+
                       >
                         Cancel
                       </button>
                       <button
                         type='submit'
                         className='submit-button'
-                        disabled={passwordLoading || !password.trim()}
+
                       >
-                        {passwordLoading ? (
-                          <>
-                            <div className='loading-spinner'></div>
-                            Verifying...
-                          </>
-                        ) : (
-                          <>
-                            <FiUnlock />
-                            Access Link
-                          </>
-                        )}
+                        submit
                       </button>
                     </div>
                   </form>

@@ -6,6 +6,7 @@ import { apiUrls } from '../../../utils/api.utils'
 import { defaultConfig } from '../../../config'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import {
+  BiLink,
   BiLogoGmail,
   BiLogoTwitter,
   BiLogoFacebook,
@@ -19,6 +20,7 @@ import axios from 'axios'
 import { Report } from './Report'
 import './profile.css'
 import { MdPhonelinkSetup } from 'react-icons/md'
+import { FaCopy } from 'react-icons/fa'
 
 interface userInfo {
   _id: string
@@ -154,6 +156,7 @@ const Index: React.FC = () => {
     const encodedUrl = encodeURIComponent(profileUrl)
     const encodedTitle = encodeURIComponent(linkTitle)
     switch (platform.toLowerCase()) {
+      
       case 'twitter':
         return `https://twitter.com/intent/tweet?url=${encodedUrl}&text=Check%20out%20this%20link:%20${encodedTitle}`
       case 'facebook':
@@ -177,8 +180,8 @@ const Index: React.FC = () => {
 
     onClose: () => void
   }> = ({ profileUrl, linkTitle, linkUrl, onClose }) => {
-    console.log("==", linkUrl)
     const platformIcons = [
+      
       {
         name: 'Twitter',
         icon: <BiLogoTwitter style={{ color: '#1DA1F2' }} />
@@ -209,16 +212,18 @@ const Index: React.FC = () => {
           </div>
           <div className='share-popup-content'>
             {/* Copy Link Button */}
-            {/* <button
-        className='share-platform'
-        onClick={() => {
-          navigator.clipboard.writeText(profileUrl);
-          alert('Link copied to clipboard!'); // You can replace this with a toast notification
-        }}
-      >
-        <FiCopy className='share-icon' />
-        <span>Copy Link</span>
-      // </button> */}
+            <button
+            style={{border:"none"}}
+              className='share-platform'
+              onClick={() => {
+                navigator.clipboard.writeText(linkUrl)
+                alert('Link copied to clipboard!') // You can replace this with a toast notification
+              }}
+            >
+              <FaCopy className='share-platform'/>
+              {/* <BiLink className='share-icon' /> */}
+              <span>Copy</span>
+            </button>
             {platformIcons.map(platform => (
               <a
                 key={platform.name}

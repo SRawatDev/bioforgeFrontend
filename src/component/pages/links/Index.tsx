@@ -15,10 +15,11 @@ import {
 import { MdOutlineEdit, MdDeleteOutline } from "react-icons/md";
 import { TbStatusChange } from "react-icons/tb";
 import { AiOutlineEye } from "react-icons/ai";
+import { FiLink2, FiUsers, FiBarChart } from "react-icons/fi";
 import { socialPlatforms } from "./linksAddEdit";
 import LinkShimmer from "../../LinkShimmer";
 import UserInfo from "./UserInfo";
-
+import './links.css'
 interface LinkItem {
   _id: string;
   linkTitle: string;
@@ -26,9 +27,9 @@ interface LinkItem {
   linkLogo: string;
   status: string;
   type: string;
-  protectedLinks?:string,
+  protectedLinks?: string;
   clickCount?: number;
-  clicks?: [clicks];
+  clicks?: clicks[];
 }
 
 interface getuser {
@@ -64,6 +65,7 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
     type: "",
   });
 
+  // Fetch regular links (non-social)
   const Detail = async () => {
     setLoader(true);
     try {
@@ -81,10 +83,12 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
         ErrorMessage(response?.data?.message);
       }
     } catch (err: any) {
-      setLoader(true);
+      setLoader(false);
+      ErrorMessage("Failed to fetch links");
     }
   };
 
+  // Fetch social media links
   const NonDetail = async () => {
     setLoader(true);
     try {
@@ -102,7 +106,8 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
         ErrorMessage(response?.data?.message);
       }
     } catch (err: any) {
-      setLoader(true);
+      setLoader(false);
+      ErrorMessage("Failed to fetch social links");
     }
   };
 
@@ -142,7 +147,8 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
         ErrorMessage(res.data.message);
       }
     } catch (err: any) {
-      setLoader(true);
+      setLoader(false);
+      ErrorMessage("Failed to delete link");
     }
   };
 
@@ -165,20 +171,24 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
         ErrorMessage(res.data.message);
       }
     } catch (err: any) {
-      setLoader(true);
+      setLoader(false);
+      ErrorMessage("Failed to update status");
     }
   };
 
   const handleDragEnd = async (result: DropResult) => {
     if (!result.destination) return;
+    
     const reordered = Array.from(linksInfo);
     const [movedItem] = reordered.splice(result.source.index, 1);
     reordered.splice(result.destination.index, 0, movedItem);
     setLinksInfo(reordered);
+    
     const updatedOrder = reordered.map((item, index) => ({
       _id: item._id,
       is_index: index,
     }));
+    
     try {
       setLoader(true);
       await callAPI(apiUrls.updateindex, {}, "POST", { items: updatedOrder });
@@ -187,8 +197,8 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
       getUserDetail();
       SuccessMessage("Link order updated");
     } catch (err: any) {
+      setLoader(false);
       ErrorMessage(err.message || "Failed to update order");
-      setLoader(true);
     }
   };
 
@@ -197,48 +207,100 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
     setopenuserInfo(true);
   };
 
+  // Calculate total stats
+  const totalLinks = linksInfo.length + non_socialData.length;
+  const totalClicks = [...linksInfo, ...non_socialData].reduce(
+    (sum, item) => sum + (item.clickCount || 0),
+    0
+  );
+  const activeLinks = [...linksInfo, ...non_socialData].filter(
+    (item) => item.status === "active"
+  ).length;
+
   return (
     <div className="links-page-container">
       <div className="links-page-content">
+        {/* Enhanced Header Section */}
         <div className="links-header">
-          <div className="links-logo">
-            <img
-              className="links-logo"
-              src="/assets/logo.png"
-              alt="BioForge Logo"
-            />
+          <div className="header-top">
+            <div className="header-brand">
+              <img
+                className="links-logo"
+                src="/assets/logo.png"
+                alt="BioForge Logo"
+              />
+              <div className="brand-text">
+                <h1>Link Management</h1>
+                <p>Organize and customize your digital presence</p>
+              </div>
+            </div>
+            
+            <button
+              className="add-link-button primary-button"
+              onClick={() => {
+                setOpen(true);
+                setAction("add");
+                setLinkDetail({
+                  _id: "",
+                  linkTitle: "",
+                  linkUrl: "",
+                  linkLogo: "",
+                  status: "",
+                  type: "",
+                });
+              }}
+            >
+              <FiLink2 className="button-icon" />
+              Add New Link
+            </button>
           </div>
-          <div className="header-content">
-            <h1>Manage Your Links</h1>
-            <p>Add, edit, and organize your links to customize your profile</p>
+
+          {/* Stats Cards */}
+          <div className="stats-container">
+            <div className="stat-card">
+              <div className="stat-icon">
+                <FiLink2 />
+              </div>
+              <div className="stat-info">
+                <h3>{totalLinks}</h3>
+                <p>Total Links</p>
+              </div>
+            </div>
+            
+            <div className="stat-card">
+              <div className="stat-icon">
+                <FiBarChart />
+              </div>
+              <div className="stat-info">
+                <h3>{totalClicks}</h3>
+                <p>Total Clicks</p>
+              </div>
+            </div>
+            
+            <div className="stat-card">
+              <div className="stat-icon">
+                <FiUsers />
+              </div>
+              <div className="stat-info">
+                <h3>{activeLinks}</h3>
+                <p>Active Links</p>
+              </div>
+            </div>
           </div>
-          <button
-            className="add-link-button"
-            onClick={() => {
-              setOpen(true);
-              setAction("add");
-              setLinkDetail({
-                _id: "",
-                linkTitle: "",
-                linkUrl: "",
-                linkLogo: "",
-                status: "",
-                type: "",
-              });
-            }}
-          >
-            Add New Link
-          </button>
         </div>
 
         {loader ? (
           <LinkShimmer />
         ) : (
           <div className="links-sections">
+            {/* Regular Links Section */}
             {linksInfo.length > 0 && (
               <div className="links-section">
                 <div className="section-header">
-                  <h2 className="pt-10">Regular Links</h2>
+                  <div className="section-title">
+                    <h2>Regular Links</h2>
+                    <span className="links-count">{linksInfo.length}</span>
+                  </div>
                   <p>Drag to reorder your links</p>
                 </div>
                 <DragDropContext onDragEnd={handleDragEnd}>
@@ -257,8 +319,9 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
                           >
                             {(provided) => (
                               <div
-                                className={`link-item ${item.status !== "active" ? "inactive" : ""
-                                  }`}
+                                className={`link-item ${
+                                  item.status !== "active" ? "inactive" : ""
+                                }`}
                                 ref={provided.innerRef}
                                 {...provided.draggableProps}
                                 {...provided.dragHandleProps}
@@ -274,14 +337,25 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
                                   </div>
 
                                   <div className="link-item-details">
-                                    <h3
-                                      onClick={() =>
-                                        handleUserInfo(item?.clicks)
-                                      }
-                                      className="link-title d-flex gap-2"
-                                    >
-                                                  {item.linkTitle}<p className={`privateLinkLable ${item.protectedLinks==='private'?"privateseletected":"publicselected"}`}>{item.protectedLinks?item.protectedLinks:"public"}</p>
-                                    </h3>
+                                    <div className="link-title-container">
+                                      <h3
+                                        onClick={() =>
+                                          handleUserInfo(item?.clicks)
+                                        }
+                                        className="link-title"
+                                      >
+                                        {item.linkTitle}
+                                      </h3>
+                                      <span
+                                        className={`privacy-badge ${
+                                          item.protectedLinks === "private"
+                                            ? "private-badge"
+                                            : "public-badge"
+                                        }`}
+                                      >
+                                        {item.protectedLinks || "public"}
+                                      </span>
+                                    </div>
                                     <p className="link-url">{item.linkUrl}</p>
                                     <div className="link-stats">
                                       <span className="link-clicks">
@@ -301,24 +375,28 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
                                       onClick={() =>
                                         window.open(item.linkUrl, "_blank")
                                       }
+                                      title="View Link"
                                     >
                                       <AiOutlineEye />
                                     </button>
                                     <button
                                       className="action-button status-button"
                                       onClick={() => confirmStatus(item)}
+                                      title="Toggle Status"
                                     >
                                       <TbStatusChange />
                                     </button>
                                     <button
                                       className="action-button edit-button"
                                       onClick={() => handleEdit(item)}
+                                      title="Edit Link"
                                     >
                                       <MdOutlineEdit />
                                     </button>
                                     <button
                                       className="action-button delete-button"
                                       onClick={() => handleDelete(item)}
+                                      title="Delete Link"
                                     >
                                       <MdDeleteOutline />
                                     </button>
@@ -336,46 +414,14 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
               </div>
             )}
 
-            {linksInfo.length === 0 &&
-              non_socialData.length === 0 &&
-              !loader && (
-                <div className="no-links">
-                  <div className="no-links-content">
-                    <h3>No Links Added Yet</h3>
-                    <p>
-                      Add your first link to get started with your BioForge
-                      profile
-                    </p>
-                    <button
-                      className="add-link-button"
-                      onClick={() => {
-                        setOpen(true);
-                        setAction("add");
-                        setLinkDetail({
-                          _id: "",
-                          linkTitle: "",
-                          linkUrl: "",
-                          linkLogo: "",
-                          status: "",
-                          type: "",
-                        });
-                      }}
-                    >
-                      Add Your First Link
-                    </button>
-                  </div>
-                </div>
-              )}
-          </div>
-        )}
-        {loader ? (
-          <LinkShimmer />
-        ) : (
-          <>
+            {/* Social Media Links Section */}
             {non_socialData.length > 0 && (
               <div className="links-section">
                 <div className="section-header">
-                  <h2>Social Media Links</h2>
+                  <div className="section-title">
+                    <h2>Social Media Links</h2>
+                    <span className="links-count">{non_socialData.length}</span>
+                  </div>
                   <p>Connect your social profiles</p>
                 </div>
                 <div className="links-list social-links-list">
@@ -388,8 +434,9 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
                     return (
                       <div
                         key={item._id}
-                        className={`link-item ${item.status !== "active" ? "inactive" : ""
-                          }`}
+                        className={`link-item ${
+                          item.status !== "active" ? "inactive" : ""
+                        }`}
                       >
                         <div className="link-item-content">
                           <div className="link-item-icon social-icon">
@@ -404,13 +451,23 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
                           </div>
 
                           <div className="link-item-details">
-                            <h3
-                              onClick={() => handleUserInfo(item?.clicks)}
-                              className="link-title d-flex gap-2"
-                            >
-                                                                                   {item.linkTitle}<p className={`privateLinkLable ${item.protectedLinks==='private'?"privateseletected":"publicselected"}`}>{item.protectedLinks?item.protectedLinks:"public"}</p>
-
-                            </h3>
+                            <div className="link-title-container">
+                              <h3
+                                onClick={() => handleUserInfo(item?.clicks)}
+                                className="link-title"
+                              >
+                                {item.linkTitle}
+                              </h3>
+                              <span
+                                className={`privacy-badge ${
+                                  item.protectedLinks === "private"
+                                    ? "private-badge"
+                                    : "public-badge"
+                                }`}
+                              >
+                                {item.protectedLinks || "public"}
+                              </span>
+                            </div>
                             <p className="link-url">{item.linkUrl}</p>
                             <div className="link-stats">
                               <span className="link-clicks">
@@ -428,24 +485,28 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
                               onClick={() =>
                                 window.open(item.linkUrl, "_blank")
                               }
+                              title="View Link"
                             >
                               <AiOutlineEye />
                             </button>
                             <button
                               className="action-button status-button"
                               onClick={() => confirmStatus(item)}
+                              title="Toggle Status"
                             >
                               <TbStatusChange />
                             </button>
                             <button
                               className="action-button edit-button"
                               onClick={() => handleEdit(item)}
+                              title="Edit Link"
                             >
                               <MdOutlineEdit />
                             </button>
                             <button
                               className="action-button delete-button"
                               onClick={() => handleDelete(item)}
+                              title="Delete Link"
                             >
                               <MdDeleteOutline />
                             </button>
@@ -457,10 +518,47 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
                 </div>
               </div>
             )}
-          </>
+
+            {/* Empty State */}
+            {linksInfo.length === 0 &&
+              non_socialData.length === 0 &&
+              !loader && (
+                <div className="no-links">
+                  <div className="no-links-content">
+                    <div className="empty-state-icon">
+                      <FiLink2 />
+                    </div>
+                    <h3>No Links Added Yet</h3>
+                    <p>
+                      Add your first link to get started with your BioForge
+                      profile and start building your digital presence.
+                    </p>
+                    <button
+                      className="add-link-button primary-button"
+                      onClick={() => {
+                        setOpen(true);
+                        setAction("add");
+                        setLinkDetail({
+                          _id: "",
+                          linkTitle: "",
+                          linkUrl: "",
+                          linkLogo: "",
+                          status: "",
+                          type: "",
+                        });
+                      }}
+                    >
+                      <FiLink2 className="button-icon" />
+                      Add Your First Link
+                    </button>
+                  </div>
+                </div>
+              )}
+          </div>
         )}
       </div>
 
+      {/* Modals */}
       <UserInfo
         userInfo={userInfo}
         visible={openuserInfo}

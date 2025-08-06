@@ -242,7 +242,7 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo, newUserData }) => 
                     rel="noopener noreferrer"
                     className="link-card-social"
                     onClick={() => handleClickSubmit(link._id)}
-                    style={{ color: "black" }}
+                    // style={{ color: "black" }}
                   >
                     {matchedPlatform && (
                       <span

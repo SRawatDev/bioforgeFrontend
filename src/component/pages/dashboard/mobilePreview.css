@@ -16,6 +16,9 @@
   position: relative;
   z-index: 2;            
 }
+.link-card-social {
+  background: transparent;
+}
 .share-profile-button {
   display: flex;
   align-items: center;

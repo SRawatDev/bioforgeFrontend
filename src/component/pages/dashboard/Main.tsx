@@ -233,7 +233,7 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
   const handleCancel = () => {
     navigate(`/dashboard/index/${localStorage.getItem("_id")}`);
     dispatch(clearData())
-  
+
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -252,7 +252,7 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
       } else {
         localStorage.setItem('profile_img', userInfo?.profile_img || '')
         navigate(`/dashboard/updateProfile/${localStorage.getItem('_id')}`)
-       
+
         getUserDetails()
         SuccessMessage(response?.data?.message)
       }

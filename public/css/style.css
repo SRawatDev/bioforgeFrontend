@@ -1829,10 +1829,10 @@ html.lenis {
   object-fit: cover;
 }
 
-.social-icon {
+/* .social-icon {
   font-size: 24px;
-  /* color: #6366f1; */
-}
+  color: #6366f1;
+} */
 
 .link-item-details {
   flex: 1;

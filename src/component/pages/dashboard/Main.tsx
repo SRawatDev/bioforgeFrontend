@@ -214,7 +214,7 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
             banner_img: uploadedUrl,
           };
 
-          dispatch(addData(updated)); // ✅ Sync Redux
+          dispatch(addData(updated)); 
           return updated;
         });
 

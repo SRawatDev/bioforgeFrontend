@@ -100,7 +100,8 @@ export const Report: React.FC<Props> = ({ userName }) => {
             ></textarea>
 
             <div className='text-end mt-3'>
-              <button type='submit' className='btn btn-primary'>
+              <button type='submit' className='btn btn-primary' style={{ width:'100%', justifyContent:'center',fontSize:'24px' }}>
+
                 Submit
               </button>
             </div>

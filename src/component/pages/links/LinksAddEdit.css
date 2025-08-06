@@ -86,6 +86,7 @@
   max-height: calc(90vh - 120px);
   overflow-y: auto;
   overflow-x:hidden;
+  scrollbar-width: none;
 }
 .link-form {
   display: flex;

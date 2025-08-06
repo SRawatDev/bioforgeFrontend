@@ -118,7 +118,7 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo, newUserData }) => 
               zIndex: 1,
             }}
           ></div>
-
+          <div className="blur-overlay"></div>
           <div
             className="content-wrapper"
             style={{
@@ -242,7 +242,7 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo, newUserData }) => 
                     rel="noopener noreferrer"
                     className="link-card-social"
                     onClick={() => handleClickSubmit(link._id)}
-                    style={{ color: "black" }}
+                    // style={{ color: "black" }}
                   >
                     {matchedPlatform && (
                       <span

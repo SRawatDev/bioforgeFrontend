@@ -134,7 +134,7 @@
 }
 
 .stat-card.total-clicks .stat-icon {
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #ffc107, #dcaa14);
 }
 
 .stat-card.unique-users .stat-icon {
@@ -166,13 +166,13 @@
   margin: 0 0 4px 0;
   font-size: 24px;
   font-weight: 700;
-  color: #2d3748;
+  color: #fefefe;
   word-wrap: break-word;
 }
 
 .stat-content p {
   margin: 0;
-  color: #718096;
+  color: #f9fafb;
   font-size: 14px;
   word-wrap: break-word;
 }
@@ -242,6 +242,7 @@
   overflow: auto;
   border: 1px solid #e2e8f0;
   flex: 1;
+  scrollbar-width: none;
 }
 
 .analytics-table {
@@ -316,8 +317,8 @@
 }
 
 .user-avatar {
-    width: 63px;
-    height: 62px;
+  width: 63px;
+  height: 62px;
   border-radius: 50%;
   background: #edf2f7;
   display: flex;
@@ -329,7 +330,6 @@
 }
 
 .user-info {
-
   flex-direction: column;
   min-width: 0;
   flex: 1;
@@ -338,9 +338,9 @@
 .username {
   font-weight: 500;
   color: white;
-  font-size: 20px;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
+  font-size: 18px;
+  /* word-wrap: break-word;
+  overflow-wrap: break-word; */
 }
 
 .user-type {
@@ -425,13 +425,13 @@
   .user-info-overlay {
     padding: 15px;
   }
-  
+
   .stats-grid {
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     gap: 15px;
     padding: 25px;
   }
-  
+
   .analytics-table {
     min-width: 550px;
   }
@@ -871,7 +871,7 @@
   .stat-card {
     border: 1px solid #000;
   }
-  
+
   .analytics-table th,
   .analytics-table td {
     border: 1px solid #000;
@@ -891,4 +891,3 @@
     transition: none;
   }
 }
-

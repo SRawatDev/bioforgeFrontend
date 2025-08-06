@@ -942,11 +942,13 @@ input[type="file"] {
 }
 
 .threedots {
-  position: absolute;
-  color: white;
-  top: 3px;
-  right: 11px;
-  font-size: xx-large;
+    position: absolute;
+    color: white;
+    top: 3px;
+    z-index: 10;
+    right: 14px;
+    font-size: xx-large;
+    top: 1%;
 }
 
 .backbutton {

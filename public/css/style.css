@@ -1,7 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&display=swap');
- body{
+@import url("https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&display=swap");
+body {
   font-family: "Archivo", sans-serif !important;
- }
+}
 html.lenis {
   height: auto;
 }
@@ -127,7 +127,7 @@ html.lenis {
 }
 
 .hero-title {
-  font-size: 60px  !important;
+  font-size: 60px !important;
 
   font-weight: 700;
   line-height: 1.2;
@@ -743,13 +743,12 @@ html.lenis {
   .hero-title {
     font-size: 2.5rem;
   }
-  .navbar-container{
+  .navbar-container {
     gap: 0px;
   }
-  .btn{
+  .btn {
     padding: 7px 16px !important;
   }
-
 
   .hero-subtitle {
     font-size: 1.1rem;
@@ -1046,6 +1045,11 @@ html.lenis {
 }
 
 /* ******************************************************************register*********************************** */
+/* ******************************************************************links*********************************** */
+
+
+
+/* ******************************************************************links*********************************** */
 /* Main Container */
 .register-container {
   min-height: 100%;
@@ -1090,8 +1094,6 @@ html.lenis {
 .back-icon {
   color: #fdfdfd;
 }
-
-
 
 /* Left Column */
 .register-col-left {
@@ -1142,7 +1144,7 @@ html.lenis {
 
 .register-input-wrapper {
   position: relative;
-  margin-bottom: 0.500rem;
+  margin-bottom: 0.5rem;
 }
 
 .input-icon {
@@ -1526,14 +1528,14 @@ html.lenis {
     font-size: 0.75rem;
   }
 }
-.links-page-container {
+/* .links-page-container {
   min-height: 100vh;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   display: flex;
   align-items: center;
   padding: 40px 20px;
   font-family: "Poppins", sans-serif;
-}
+} */
 
 .links-page-content {
   width: 100%;
@@ -1570,14 +1572,14 @@ html.lenis {
 .header-content h1 {
   font-size: 28px;
   font-weight: 700;
-  color: white;
+  color: #f8f8f8;
   margin-bottom: 5px;
   word-wrap: break-word;
   overflow-wrap: break-word;
 }
 
 .header-content p {
-  color: white;
+  color: #fff8f8;
   margin: 0;
   word-wrap: break-word;
   overflow-wrap: break-word;
@@ -1712,12 +1714,6 @@ html.lenis {
   }
 }
 
-
-
-
-
-
-
 /* Focus States for Accessibility */
 .links-header *:focus {
   outline: 2px solid #667eea;
@@ -1730,7 +1726,7 @@ html.lenis {
     flex-direction: column;
     gap: 15px;
   }
-  
+
   .links-logo img {
     height: 100px;
     width: 100px;
@@ -1760,8 +1756,6 @@ html.lenis {
   box-shadow: 0 6px 10px rgba(99, 102, 241, 0.3);
 }
 
-
-
 .links-section {
   margin-bottom: 40px;
 }
@@ -1776,7 +1770,7 @@ html.lenis {
   font-size: 20px;
   font-weight: 600;
   color: black;
-  margin-bottom: 5px;
+  margin: 41px 0px 5px 0px;
 }
 
 .section-header p {
@@ -1789,7 +1783,6 @@ html.lenis {
   display: flex;
   gap: 8px;
   flex-direction: column;
-
 }
 
 .link-item {
@@ -1814,7 +1807,7 @@ html.lenis {
 .link-item-content {
   display: flex;
   align-items: center;
-  padding:3px 10px 4px 14px ;
+  padding: 3px 10px 4px 14px;
 }
 
 .link-item-icon {
@@ -1838,8 +1831,7 @@ html.lenis {
 
 .social-icon {
   font-size: 24px;
-  color: #6366f1;
-
+  /* color: #6366f1; */
 }
 
 .link-item-details {
@@ -2103,7 +2095,7 @@ html.lenis {
 .home-header-name {
   font-size: 16px;
   font-weight: 500;
-  color: white
+  color: white;
 }
 .home-header-profile {
   display: flex;
@@ -2114,7 +2106,6 @@ html.lenis {
   border-radius: 10px;
   transition: background-color 0.2s ease, box-shadow 0.2s ease;
 }
-
 
 /* Footer */
 .footer {

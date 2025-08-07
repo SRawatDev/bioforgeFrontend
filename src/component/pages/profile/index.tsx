@@ -153,6 +153,7 @@ const Index: React.FC = () => {
     profileUrl: string,
     linkTitle: string
   ) => {
+    console.log("-=-=-=",profileUrl)
     const encodedUrl = encodeURIComponent(profileUrl)
     const encodedTitle = encodeURIComponent(linkTitle)
     switch (platform.toLowerCase()) {
@@ -227,11 +228,12 @@ const Index: React.FC = () => {
             {platformIcons.map(platform => (
               <a
                 key={platform.name}
-                href={generateShareUrl(platform.name, profileUrl, linkTitle)}
+                href={generateShareUrl(platform.name, linkUrl, linkTitle)}
                 target='_blank'
                 rel='noopener noreferrer'
                 className='share-platform'
               >
+                {/* {linkUrl} */}
                 {platform.icon}
                 <span>{platform.name}</span>
               </a>

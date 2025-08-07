@@ -246,7 +246,7 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo, newUserData }) => 
                   >
                     {matchedPlatform && (
                       <span
-                        className="social-icon"
+                        className="social-icons"
                         style={{
                           fontFamily: userInfo?.theme?.fontFamily,
                           color: userInfo?.theme?.fontColor || "white",

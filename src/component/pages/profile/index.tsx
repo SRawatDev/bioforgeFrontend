@@ -414,6 +414,7 @@ const Index: React.FC = () => {
                 <button
                   type='button'
                   className='link-join-biofoge'
+                  onClick={()=>navigate("/")}
                   style={{
                     fontFamily: userInfo?.theme?.fontFamily,
                     background: userInfo?.theme?.is_colorImage || '#333',

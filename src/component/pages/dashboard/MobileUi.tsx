@@ -226,7 +226,6 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo, newUserData }) => 
                 </Link>
               ))}
             </div>
-
             <div className="spcial-links-list d-flex justify-content-center gap-2">
               {Array.isArray(newUserData?.social) && newUserData?.social.map((link) => {
                 const matchedPlatform = socialPlatforms.find(
@@ -246,7 +245,7 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo, newUserData }) => 
                   >
                     {matchedPlatform && (
                       <span
-                        className="social-icon"
+                        className="social-icons"
                         style={{
                           fontFamily: userInfo?.theme?.fontFamily,
                           color: userInfo?.theme?.fontColor || "white",

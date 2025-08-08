@@ -24,6 +24,7 @@ interface LinkItem {
   _id: string;
   linkTitle: string;
   linkUrl: string;
+  videoId:string,
   linkLogo: string;
   status: string;
   type: string;
@@ -59,6 +60,7 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
   const [linkDetail, setLinkDetail] = useState<LinkItem>({
     _id: "",
     linkTitle: "",
+    videoId:"",
     linkUrl: "",
     linkLogo: "",
     status: "",
@@ -207,7 +209,6 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
     setopenuserInfo(true);
   };
 
-  // Calculate total stats
   const totalLinks = linksInfo.length + non_socialData.length;
   const totalClicks = [...linksInfo, ...non_socialData].reduce(
     (sum, item) => sum + (item.clickCount || 0),
@@ -244,6 +245,7 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
                   _id: "",
                   linkTitle: "",
                   linkUrl: "",
+                    videoId:"",
                   linkLogo: "",
                   status: "",
                   type: "",
@@ -545,6 +547,7 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
                           linkLogo: "",
                           status: "",
                           type: "",
+                            videoId:"",
                         });
                       }}
                     >

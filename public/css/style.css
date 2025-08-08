@@ -1785,14 +1785,7 @@ html.lenis {
   flex-direction: column;
 }
 
-.link-item {
-  background-color: white;
-  border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-  transition: all 0.3s ease;
-  border: 1px solid #eaeaea;
-  overflow: hidden;
-}
+
 
 .link-item:hover {
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
@@ -1829,10 +1822,10 @@ html.lenis {
   object-fit: cover;
 }
 
-.social-icon {
+/* .social-icon {
   font-size: 24px;
-  /* color: #6366f1; */
-}
+  color: #6366f1;
+} */
 
 .link-item-details {
   flex: 1;

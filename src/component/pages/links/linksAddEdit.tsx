@@ -25,7 +25,8 @@ interface Link {
   linkUrl: string;
   linkLogo: string;
   type: string;
-  protectedLinks?:string
+  videoId?: string,
+  protectedLinks?: string
 }
 
 export const socialPlatforms = [
@@ -35,12 +36,40 @@ export const socialPlatforms = [
   { label: 'LinkedIn', value: 'linkedin', icon: <FaLinkedinIn size={24} />, color: '#0A66C2' },
   { label: 'YouTube', value: 'youtube', icon: <FaYoutube size={24} />, color: '#FF0000' },
 ];
+interface videoInterface {
+  _id: string;
+  videoTitle: string;
+  videoLink: string;
+  status: string;
+
+}
 
 export const LinksAddEdit: React.FC<Props> = ({ open, onClose, Detail, linkDetail, action, NonDetail }) => {
+  const [video, setVideo] = useState<videoInterface[]>([])
   const [loader, setLoader] = useState(false);
-  const [link, setLink] = useState<Link>({ linkTitle: '', linkUrl: '', linkLogo: '', type: 'social',protectedLinks:"public" });
+  const [link, setLink] = useState<Link>({ linkTitle: '', linkUrl: '', linkLogo: '', type: 'social', protectedLinks: "public", videoId: "", });
   const [preview, setPreview] = useState<string | null>(null);
   const [dragActive, setDragActive] = useState(false);
+  const videoDetail = async () => {
+    setLoader(true);
+    try {
+      const response = await callAPI(
+        apiUrls.getAllVideo,
+        { status: "active" },
+        "GET",
+        {}
+      );
+      setLoader(false);
+      if (response?.data?.status) {
+        setVideo(response.data.data || []);
+      } else {
+        ErrorMessage(response?.data?.message);
+      }
+    } catch (err: any) {
+      setLoader(false);
+      ErrorMessage("Failed to fetch social links");
+    }
+  };
 
   useEffect(() => {
     if (open) {
@@ -48,12 +77,12 @@ export const LinksAddEdit: React.FC<Props> = ({ open, onClose, Detail, linkDetai
         setLink(linkDetail);
         setPreview(linkDetail?.linkLogo || null);
       } else if (action === 'add') {
-        setLink({ linkTitle: '', linkUrl: '', linkLogo: '', type: 'social' });
+        setLink({ linkTitle: '', linkUrl: '', linkLogo: '', type: 'social', videoId: "", });
         setPreview(null);
       }
     }
+    videoDetail()
   }, [open, action, linkDetail]);
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     if (name === 'linkTitle' && link.type === 'social') {
@@ -88,7 +117,7 @@ export const LinksAddEdit: React.FC<Props> = ({ open, onClose, Detail, linkDetai
     e.preventDefault();
     e.stopPropagation();
     setDragActive(false);
-    
+
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
       handleFileUpload(e.dataTransfer.files[0]);
     }
@@ -110,7 +139,7 @@ export const LinksAddEdit: React.FC<Props> = ({ open, onClose, Detail, linkDetai
       }
     } catch (err) {
       setLoader(true);
-     
+
     }
   };
 
@@ -123,12 +152,15 @@ export const LinksAddEdit: React.FC<Props> = ({ open, onClose, Detail, linkDetai
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if(link.type=='social' && link.linkTitle===""){
+    if (link.type == 'social' && link.linkTitle === "") {
       ErrorMessage("Please select linktitle")
       return
-    }else if(link.type=='non_social' &&link.linkLogo===""){
-       ErrorMessage("Please upload custom Logo")
+    } else if (link.type == 'non_social' && link.linkLogo === "") {
+      ErrorMessage("Please upload custom Logo")
       return
+    }
+    if(link.videoId==""){
+      delete link.videoId
     }
     setLoader(true);
     try {
@@ -149,7 +181,7 @@ export const LinksAddEdit: React.FC<Props> = ({ open, onClose, Detail, linkDetai
       }
     } catch (err: any) {
       setLoader(true);
-     }
+    }
   };
 
   if (!open) return null;
@@ -274,41 +306,42 @@ export const LinksAddEdit: React.FC<Props> = ({ open, onClose, Detail, linkDetai
               </div>
               <div className="form-section">
                 <div className="input-group" >
-                   <label htmlFor='protectedLinks' className='field-label'>
-                      Protect You Links
-                    </label>
-                    <select
-                      id='protectedLinks'
-                      name='protectedLinks'
-                      value={link?.protectedLinks}
-                      onChange={handleChange}
-                      className='select-field'
-                      style={{borderRadius:"10px",padding:"10px"}}
+                  <label htmlFor='protectedLinks' className='field-label'>
+                    Protect You Links
+                  </label>
+                  <select
+                    id='protectedLinks'
+                    name='protectedLinks'
+                    value={link?.protectedLinks}
+                    onChange={handleChange}
+                    className='select-field'
+                    style={{ borderRadius: "10px", padding: "10px" }}
+                  >
+
+                    <option
+                      key={"public"}
+                      value={"public"}
+
+
                     >
-                   
-                        <option
-                          key={"public"}
-                          value={"public"}
-                          
-                        
-                        >
-                          Public
-                        </option>
-                        <option
-                          key={"private"}
-                          value={"private"}
-                        
-                        >
-                          private
-                        </option>
-              
-                    </select>
+                      Public
+                    </option>
+                    <option
+                      key={"private"}
+                      value={"private"}
+
+                    >
+                      private
+                    </option>
+
+                  </select>
 
                 </div>
               </div>
 
               {/* Image Upload for Non-Social */}
               {link.type !== 'social' && (
+
                 <div className="form-section">
                   <label className="form-label">
                     <FaImage className="label-icon" />
@@ -353,6 +386,38 @@ export const LinksAddEdit: React.FC<Props> = ({ open, onClose, Detail, linkDetai
                   </div>
                 </div>
               )}
+              {link.type !== 'social' && <div className="form-section">
+                <div className="input-group" >
+                  <label htmlFor='protectedLinks' className='field-label'>
+                   Add Video
+                  </label>
+                  <select
+                    id='videoId'
+                    name='videoId'
+                    value={link?.videoId}
+                    onChange={handleChange}
+                    className='select-field'
+                    style={{ borderRadius: "10px", padding: "10px" }}
+                  >
+                    <option
+                      key={""}
+                      value={""}
+                    >
+                      select
+                    </option>
+                    {
+                      video?.map((item) => (<option
+                        key={item._id}
+                        value={item._id}
+                      >
+                        {item.videoTitle}
+                      </option>))
+                    }
+
+                  </select>
+
+                </div>
+              </div>}
 
               {/* Preview Section */}
               {(link.linkTitle || link.linkUrl) && (

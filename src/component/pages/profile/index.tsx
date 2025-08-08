@@ -15,11 +15,11 @@ import {
 } from 'react-icons/bi'
 import { socialPlatforms } from '../links/linksAddEdit'
 import ProfileShimmer from '../../ProfileShimmer'
-import { TbLockPassword,TbX } from 'react-icons/tb'
+import { TbLockPassword, TbX } from 'react-icons/tb'
 import axios from 'axios'
 import { Report } from './Report'
 import './profile.css'
-import { MdPhonelinkSetup } from 'react-icons/md'
+import { MdOutlineSecurity, MdPhonelinkSetup } from 'react-icons/md'
 import { FaCopy } from 'react-icons/fa'
 
 interface userInfo {
@@ -77,7 +77,6 @@ const Index: React.FC = () => {
       } else {
         const userData = response?.data?.data[0]
         setUserInfo(userData)
-     
       }
     } catch (err: any) {
       setLoader(false)
@@ -93,6 +92,15 @@ const Index: React.FC = () => {
     }
   }
 
+  const isLoggedIn = localStorage.getItem('accessToken')
+
+  const handleButtonClick = () => {
+    if (!isLoggedIn) {
+      navigate('/login')
+    } else {
+      navigate(`/dashboard/index/${userId}`)
+    }
+  }
   useEffect(() => {
     getUserDetail()
     getUserIp()
@@ -123,19 +131,16 @@ const Index: React.FC = () => {
   }
 
   const handleLinkClick = (link: Link, event: React.MouseEvent) => {
-   
-      event.preventDefault()
-      setSelectedLink(link)
-      setShowPasswordModal(true)
-      return
-  
+    event.preventDefault()
+    setSelectedLink(link)
+    setShowPasswordModal(true)
+    return
   }
 
   const handlePasswordSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     getUserDetail(password)
     closePasswordModal()
-
   }
 
   const closePasswordModal = () => {
@@ -147,17 +152,15 @@ const Index: React.FC = () => {
   const handlePasswordIconClick = () => {
     setShowPasswordModal(true)
   }
-
   const generateShareUrl = (
     platform: string,
-    profileUrl: string,
+    linkUrl: string, // Use the actual linkUrl instead of profileUrl
     linkTitle: string
   ) => {
-    console.log("-=-=-=",profileUrl)
-    const encodedUrl = encodeURIComponent(profileUrl)
+    const encodedUrl = encodeURIComponent(linkUrl)
     const encodedTitle = encodeURIComponent(linkTitle)
+
     switch (platform.toLowerCase()) {
-      
       case 'twitter':
         return `https://twitter.com/intent/tweet?url=${encodedUrl}&text=Check%20out%20this%20link:%20${encodedTitle}`
       case 'facebook':
@@ -165,7 +168,8 @@ const Index: React.FC = () => {
       case 'linkedin':
         return `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`
       case 'whatsapp':
-        return `https://wa.me/?text=Check%20out%20this%20link:%20${encodedTitle}%20${encodedUrl}`
+        // Use WhatsApp app URL scheme for mobile, fallback to web
+        return `whatsapp://send?text=Check%20out%20this%20link:%20${encodedTitle}%20${encodedUrl}`
       case 'email':
         return `mailto:?subject=Check%20out%20this%20link&body=Check%20out%20this%20link:%20${encodedTitle}%20${encodedUrl}`
       default:
@@ -178,11 +182,9 @@ const Index: React.FC = () => {
     profileUrl: string
     linkTitle: string
     linkUrl: string
-
     onClose: () => void
   }> = ({ profileUrl, linkTitle, linkUrl, onClose }) => {
     const platformIcons = [
-      
       {
         name: 'Twitter',
         icon: <BiLogoTwitter style={{ color: '#1DA1F2' }} />
@@ -204,6 +206,67 @@ const Index: React.FC = () => {
         icon: <BiLogoGmail style={{ color: '#D14836' }} />
       }
     ]
+
+    // Mobile-friendly clipboard copy function
+    const copyToClipboard = async (text: string) => {
+      try {
+        // Modern clipboard API (works on HTTPS and newer browsers)
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(text)
+          alert('Link copied to clipboard!')
+          return
+        }
+
+        // Fallback for mobile and older browsers
+        const textArea = document.createElement('textarea')
+        textArea.value = text
+        textArea.style.position = 'fixed'
+        textArea.style.left = '-999999px'
+        textArea.style.top = '-999999px'
+        document.body.appendChild(textArea)
+        textArea.focus()
+        textArea.select()
+
+        try {
+          document.execCommand('copy')
+          alert('Link copied to clipboard!')
+        } catch (err) {
+          console.error('Failed to copy: ', err)
+          // Last resort - show the link for manual copying
+          prompt('Copy this link:', text)
+        } finally {
+          document.body.removeChild(textArea)
+        }
+      } catch (err) {
+        console.error('Failed to copy: ', err)
+        // Show the link for manual copying
+        prompt('Copy this link:', text)
+      }
+    }
+
+    const handlePlatformClick = (platformName: string, shareUrl: string) => {
+      if (platformName.toLowerCase() === 'whatsapp') {
+        // Try to open WhatsApp app first, fallback to web
+        const appUrl = shareUrl
+        const webUrl = `https://wa.me/?text=Check%20out%20this%20link:%20${encodeURIComponent(
+          linkTitle
+        )}%20${encodeURIComponent(linkUrl)}`
+
+        // Create a temporary link to test if app opens
+        const link = document.createElement('a')
+        link.href = appUrl
+        link.click()
+
+        // Fallback to web after a short delay if app doesn't open
+        setTimeout(() => {
+          window.open(webUrl, '_blank', 'noopener,noreferrer')
+        }, 1000)
+      } else {
+        // For other platforms, open in new tab
+        window.open(shareUrl, '_blank', 'noopener,noreferrer')
+      }
+    }
+
     return (
       <div className='share-popup-overlay' onClick={onClose}>
         <div className='share-popup' onClick={e => e.stopPropagation()}>
@@ -214,29 +277,56 @@ const Index: React.FC = () => {
           <div className='share-popup-content'>
             {/* Copy Link Button */}
             <button
-            style={{border:"none"}}
               className='share-platform'
-              onClick={() => {
-                navigator.clipboard.writeText(linkUrl)
-                alert('Link copied to clipboard!') // You can replace this with a toast notification
+              style={{
+                border: 'none',
+                background: 'transparent',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '12px',
+                width: '100%',
+                textAlign: 'left'
+              }}
+              onClick={e => {
+                e.preventDefault()
+                e.stopPropagation()
+                copyToClipboard(linkUrl)
               }}
             >
-              <FaCopy className='share-platform'/>
-              {/* <BiLink className='share-icon' /> */}
-              <span>Copy</span>
+              <FaCopy style={{ fontSize: '18px' }} />
+              <span>Copy Link</span>
             </button>
+
             {platformIcons.map(platform => (
-              <a
+              <button
                 key={platform.name}
-                href={generateShareUrl(platform.name, linkUrl, linkTitle)}
-                target='_blank'
-                rel='noopener noreferrer'
                 className='share-platform'
+                style={{
+                  border: 'none',
+                  background: 'transparent',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  padding: '12px',
+                  width: '100%',
+                  textAlign: 'left'
+                }}
+                onClick={e => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  handlePlatformClick(
+                    platform.name,
+                    generateShareUrl(platform.name, linkUrl, linkTitle)
+                  )
+                }}
               >
                 {/* {linkUrl} */}
                 {platform.icon}
                 <span>{platform.name}</span>
-              </a>
+              </button>
             ))}
           </div>
         </div>
@@ -281,12 +371,13 @@ const Index: React.FC = () => {
                 left: 0,
                 width: '100%',
                 height: '100%',
-                backgroundImage: `url(${defaultConfig?.imagePath + userInfo?.banner_img
-                  })`,
+                backgroundImage: `url(${
+                  defaultConfig?.imagePath + userInfo?.banner_img
+                })`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat',
-                filter: 'blur(3px)',
+                filter: 'blur(8px)',
                 zIndex: 0
               }}
             ></div>
@@ -329,21 +420,23 @@ const Index: React.FC = () => {
                 {userInfo?.non_social && userInfo.non_social.length > 0 && (
                   <div className='mobile-links-list'>
                     {userInfo.non_social.map(link => (
-
                       <div
-                        className={`link-card ${userInfo.theme.themeDesign || 'round'
-                          }`}
-                        onClick={e => handleLinkClick(link, e)}
-                        style={{
-                          padding: '10px',
-                          '--card-bg':
-                            userInfo?.theme?.is_colorImage || '#333',
-                          '--card-color':
-                            userInfo?.theme?.fontColor || 'white',
-                          '--card-font':
-                            userInfo?.theme?.fontFamily || 'sans-serif',
-                          cursor: 'pointer'
-                        } as React.CSSProperties}
+                        className={`link-card ${
+                          userInfo.theme.themeDesign || 'round'
+                        }`}
+                        // onClick={e => handleLinkClick(link, e)}
+                        style={
+                          {
+                            padding: '10px',
+                            '--card-bg':
+                              userInfo?.theme?.is_colorImage || '#333',
+                            '--card-color':
+                              userInfo?.theme?.fontColor || 'white',
+                            '--card-font':
+                              userInfo?.theme?.fontFamily || 'sans-serif',
+                            cursor: 'pointer'
+                          } as React.CSSProperties
+                        }
                       >
                         <div className='link-content'>
                           <img
@@ -365,7 +458,6 @@ const Index: React.FC = () => {
                           style={{ cursor: 'pointer', marginLeft: '10px' }}
                         />
                       </div>
-
                     ))}
                   </div>
                 )}
@@ -388,7 +480,7 @@ const Index: React.FC = () => {
                           >
                             <div
                               className={`link-card-social`}
-                              onClick={e => handleLinkClick(link, e)}
+                              // onClick={e => handleLinkClick(link, e)}
                               style={{ color: 'black', cursor: 'pointer' }}
                             >
                               <span
@@ -401,7 +493,6 @@ const Index: React.FC = () => {
                               >
                                 {matchedPlatform && matchedPlatform.icon}
                               </span>
-
                             </div>
                           </Link>
                         )
@@ -411,10 +502,10 @@ const Index: React.FC = () => {
                 )}
               </div>
               <div className='d-flex justify-content-center mt-4'>
-                <button
+             <button
                   type='button'
                   className='link-join-biofoge'
-                  onClick={()=>navigate("/")}
+ onClick={handleButtonClick}
                   style={{
                     fontFamily: userInfo?.theme?.fontFamily,
                     background: userInfo?.theme?.is_colorImage || '#333',
@@ -458,7 +549,7 @@ const Index: React.FC = () => {
             onClick={handlePasswordIconClick}
             title='Click to view private links'
           >
-            <MdPhonelinkSetup
+            <MdOutlineSecurity
               className='passwordProfile blinking-icon'
               style={
                 {
@@ -482,22 +573,7 @@ const Index: React.FC = () => {
                 }}
               >
                 <div className='modal-content'>
-                  {selectedLink && (
-                    <div className='selected-link-info'>
-                      <img
-                        src={defaultConfig?.imagePath + selectedLink.linkLogo}
-                        alt={selectedLink.linkTitle}
-                        className='modal-link-icon'
-                      />
-                      <p>
-                        You're trying to access:{' '}
-                        <strong>{selectedLink.linkTitle}</strong>
-                      </p>
-                      <p className='privacy-notice'>
-                        This link is password protected
-                      </p>
-                    </div>
-                  )}
+                 
                   <form
                     onSubmit={handlePasswordSubmit}
                     className='password-form'
@@ -511,7 +587,6 @@ const Index: React.FC = () => {
                         onChange={e => setPassword(e.target.value)}
                         placeholder='Enter password to access link'
                         className='password-input'
-
                         required
                       />
                     </div>
@@ -520,15 +595,10 @@ const Index: React.FC = () => {
                         type='button'
                         onClick={closePasswordModal}
                         className='cancel-button'
-
                       >
                         Cancel
                       </button>
-                      <button
-                        type='submit'
-                        className='submit-button'
-
-                      >
+                      <button type='submit' className='submit-button'>
                         submit
                       </button>
                     </div>

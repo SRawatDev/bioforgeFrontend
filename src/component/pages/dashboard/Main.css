@@ -1,6 +1,3 @@
-/* updateProfile.css */
-/* Fixed CSS for static-banner-grid and banner-upload-area */
-
 .static-banner-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));

@@ -19,6 +19,10 @@ interface userInfo {
   profile_img: string;
   theme: theme;
 }
+interface videoInterface {
+  _id?: string,
+  videoLink?: string
+}
 interface theme {
   fontFamily: string;
   is_colorImage: string;
@@ -30,6 +34,7 @@ interface Link {
   linkUrl: string;
   linkLogo: string;
   is_index: number;
+  video?: videoInterface
   _id: string;
 }
 interface MobileUiProps {
@@ -74,6 +79,20 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo, newUserData }) => 
       ErrorMessage(error.message || "Something went wrong");
     }
   };
+  const getYouTubeEmbedUrl = (url: string) => {
+    try {
+      const urlObj = new URL(url);
+      if (urlObj.hostname.includes("youtu.be")) {
+        return `https://www.youtube.com/embed/${urlObj.pathname.slice(1)}`;
+      } else if (urlObj.hostname.includes("youtube.com")) {
+        const videoId = urlObj.searchParams.get("v");
+        return `https://www.youtube.com/embed/${videoId}`;
+      }
+    } catch {
+      return null;
+    }
+  };
+  console.log("=-=-userInfo", userInfo)
   return (
     <>
       <section
@@ -192,6 +211,8 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo, newUserData }) => 
 
             <div className="links-list">
               {Array.isArray(newUserData?.non_social) && newUserData?.non_social.map((link) => (
+                <>
+                
                 <Link
                   key={link._id}
                   to={link.linkUrl}
@@ -223,10 +244,26 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo, newUserData }) => 
                   >
                     {link.linkTitle}
                   </span>
+                  
+
+
+
                 </Link>
+                {getYouTubeEmbedUrl(link?.video?.videoLink || "") ? (
+                    <iframe
+                      width="250"
+                      height="150"
+                      src={getYouTubeEmbedUrl(link?.video?.videoLink || "") || ""}
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    ></iframe>
+                  ) : (
+                    <p className="link-url">{link?.video?.videoLink || ""}</p>
+                  )}
+                </>
               ))}
             </div>
-
             <div className="spcial-links-list d-flex justify-content-center gap-2">
               {Array.isArray(newUserData?.social) && newUserData?.social.map((link) => {
                 const matchedPlatform = socialPlatforms.find(
@@ -242,7 +279,7 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo, newUserData }) => 
                     rel="noopener noreferrer"
                     className="link-card-social"
                     onClick={() => handleClickSubmit(link._id)}
-                    // style={{ color: "black" }}
+                  // style={{ color: "black" }}
                   >
                     {matchedPlatform && (
                       <span

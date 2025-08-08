@@ -12,11 +12,16 @@ import ProfileShimmer from "../../ProfileShimmer";
 import { FaCheck, FaCopy, FaShareAlt } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
+import Video from "../video/Index"
 import { addData } from "../../../redux/Slice";
 interface Theme {
   fontFamily: string;
   is_colorImage: string;
   fontColor: string;
+}
+interface videoInterface{
+  _id?:string,
+  videoLink?:string
 }
 
 interface Link {
@@ -25,6 +30,7 @@ interface Link {
   linkLogo: string;
   is_index: number;
   _id: string;
+  video?:videoInterface
 }
 
 interface UserInfo {
@@ -75,7 +81,7 @@ const Index = () => {
   };
   const openProfileInNewTab = () => {
     if (userInfo && userInfo._id) {
-      window.open(`/dashboard/profile/${userInfo._id}`, "_blank");
+      window.open(`/profile/${userInfo._id}`, "_blank");
       try {
         setTimeout(() => {
           setCopied(false)
@@ -122,6 +128,16 @@ const Index = () => {
   const handleShareClick = () => {
     setShowShareOptions(!showShareOptions)
   }
+const getLayour = (layout: string) => {
+  if (layout === 'updateProfile') {
+    return <Main getUserDetails={getUserDetail} />
+  } else if (layout === 'Video') {
+    return <Video getUserDetail={getUserDetail}/>
+  } else {
+    return <ManageLinks getUserDetail={getUserDetail} />
+  }
+};
+
 
 
 
@@ -132,11 +148,13 @@ const Index = () => {
         <DashboardSidebar />
         <div className="dashboard-main-area">
           <div className="dashboard-main-content">
-            {layout === "updateProfile" ? (
+            {/* {layout === "updateProfile" ? (
               <Main getUserDetails={getUserDetail} />
             ) : (
               <ManageLinks getUserDetail={getUserDetail} />
-            )}
+            )} */}
+          {getLayour(layout ?? "updateProfile")}
+
           </div>
         </div>
 
@@ -226,7 +244,7 @@ const Index = () => {
             <div className="device-frame">
               <div className="device-status-bar"></div>
               <div className="device-content">
-                {loader ? <ProfileShimmer /> : <MobileUi userInfo={storeData} newUserData={userInfo}/>}
+                {loader ? <ProfileShimmer /> : <MobileUi userInfo={storeData} newUserData={userInfo} />}
               </div>
               <div className="device-home-button"></div>
             </div>

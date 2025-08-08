@@ -60,12 +60,8 @@ const Index: React.FC = () => {
         localStorage.setItem("type", userData.type);
         localStorage.setItem("username", userData.username);
         localStorage.setItem("profile_img", userData.profile_img || "");
-        if (userData.type === "user") {
-          navigate(`/dashboard/index/${userData.id}`, { replace: true });
-        } else {
-          navigate("/admin/DashBoard");
-        }
         SuccessMessage(response.data.message);
+        navigate(`/dashboard/index/${userData.id}`, { replace: true });
       }
     } catch (err: any) {
       setLoader(true);

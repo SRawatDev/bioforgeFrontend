@@ -18,6 +18,11 @@ export const apiUrls = {
     getAllUser: "api/admin/v1/getUser",
     userStatusUpdate: "api/admin/v1/userStatusUpdate",
     admindeleteUser: "api/admin/v1/deleteUser",
-    getAlltheme:"api/v1/getAll-theme"
+    getAlltheme:"api/v1/getAll-theme",
+    getAllVideo:"api/v1/getAll-video",
+    addVideo:"api/v1/add-video",
+    updateVideo:"api/v1/update-video",
+    statusVideo:"api/v1/status-video",
+    deleteVideo:"api/v1/delete-video",
 
 };

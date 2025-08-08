@@ -401,13 +401,7 @@
   margin-top: 16px;
 }
 
-.mobile-social-icons {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 16px;
-  margin-top: 16px;
-}
+
 
 .mobile-social-icon {
   display: flex;

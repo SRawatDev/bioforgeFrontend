@@ -19,7 +19,7 @@ import { TbLockPassword, TbX } from 'react-icons/tb'
 import axios from 'axios'
 import { Report } from './Report'
 import './profile.css'
-import { MdPhonelinkSetup } from 'react-icons/md'
+import { MdOutlineSecurity, MdPhonelinkSetup } from 'react-icons/md'
 import { FaCopy } from 'react-icons/fa'
 
 interface userInfo {
@@ -323,6 +323,7 @@ const Index: React.FC = () => {
                   )
                 }}
               >
+                {/* {linkUrl} */}
                 {platform.icon}
                 <span>{platform.name}</span>
               </button>
@@ -376,7 +377,7 @@ const Index: React.FC = () => {
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat',
-                filter: 'blur(3px)',
+                filter: 'blur(8px)',
                 zIndex: 0
               }}
             ></div>
@@ -558,7 +559,7 @@ const Index: React.FC = () => {
             onClick={handlePasswordIconClick}
             title='Click to view private links'
           >
-            <MdPhonelinkSetup
+            <MdOutlineSecurity
               className='passwordProfile blinking-icon'
               style={
                 {
@@ -582,22 +583,7 @@ const Index: React.FC = () => {
                 }}
               >
                 <div className='modal-content'>
-                  {selectedLink && (
-                    <div className='selected-link-info'>
-                      <img
-                        src={defaultConfig?.imagePath + selectedLink.linkLogo}
-                        alt={selectedLink.linkTitle}
-                        className='modal-link-icon'
-                      />
-                      <p>
-                        You're trying to access:{' '}
-                        <strong>{selectedLink.linkTitle}</strong>
-                      </p>
-                      <p className='privacy-notice'>
-                        This link is password protected
-                      </p>
-                    </div>
-                  )}
+                 
                   <form
                     onSubmit={handlePasswordSubmit}
                     className='password-form'

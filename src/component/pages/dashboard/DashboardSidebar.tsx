@@ -9,16 +9,20 @@ import {
   IoTrashOutline,
   IoKeyOutline,
   IoLogOutOutline,
+  IoVideocam,
 } from "react-icons/io5";
 import "./DashboardSidebar.css";
 import "./dashboard.css";
 import { useDispatch } from "react-redux";
 import {  clearData } from "../../../redux/Slice";
+import { FaVideo } from "react-icons/fa";
 interface SidebarProps {
   isMobile?: boolean;
   onClose?: () => void;
+  children?: React.ReactNode
 }
-const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose }) => {
+// React.FC<{ children?: React.ReactNode }>
+const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose,children }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [showLogout, setShowLogout] = useState(false);
@@ -58,7 +62,12 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose }) => {
       icon: <IoLinkOutline />,
       category: "main",
     },
-
+    {
+      path: `/dashboard/Video/${localStorage.getItem("_id")}`,
+      label: "Manage Video",
+      icon: <IoVideocam />,
+      category: "main",
+    },
     {
       path: `/dashboard/changepassword`,
       label: "Change Password",
@@ -93,6 +102,7 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose }) => {
 
   return (
     <>
+    <div className="Main-Navbar-section d-flex">
       <nav className="sidebardashboard bg-white">
         
         <div className="sidebar-header">
@@ -177,6 +187,8 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose }) => {
           onConfirm={handleLogoutConfirm}
         />
       )}
+      {children}
+      </div>
     </>
   );
 };

@@ -10,6 +10,7 @@ import LoadScreen from './component/loaderScreen'
 import Authenticated from './guard/Authenticated'
 import Guest from './guard/Guest'
 import Header from './component/navbar/Navbar'
+import NewHeader from './component/pages/dashboard/DashboardSidebar'
 interface AppRoute {
   path: string
   element: LazyExoticComponent<ComponentType<any>>
@@ -45,7 +46,7 @@ const routes: AppRoute[] = [
     element: lazy(() => import('./component/pages/template/landingPage'))
   },
   {
-    path: '/dashboard/profile/:id',
+    path: '/profile/:id',
     element: lazy(() => import('./component/pages/profile/index'))
   },
   {
@@ -71,6 +72,7 @@ const routes: AppRoute[] = [
     element: lazy(() => import('./component/pages/password/Index'))
   },
   {
+    // layout:NewHeader,
     guard: Authenticated,
     path: '/dashboard/deleteAccount',
     element: lazy(() => import('./component/pages/accountDelete/Index'))

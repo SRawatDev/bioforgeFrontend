@@ -249,7 +249,8 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo, newUserData }) => 
 
 
                 </Link>
-                {getYouTubeEmbedUrl(link?.video?.videoLink || "") ? (
+                {
+                  link?.video?.videoLink &&(
                     <iframe
                       width="250"
                       height="150"
@@ -257,10 +258,8 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo, newUserData }) => 
                       frameBorder="0"
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                       allowFullScreen
-                    ></iframe>
-                  ) : (
-                    <p className="link-url">{link?.video?.videoLink || ""}</p>
-                  )}
+                    ></iframe>)
+                  }
                 </>
               ))}
             </div>

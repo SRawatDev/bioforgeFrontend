@@ -34,6 +34,10 @@ interface userInfo {
   theme: theme
 }
 
+interface videoInterface {
+  _id?: string,
+  videoLink?: string
+}
 interface theme {
   fontFamily: string
   fontColor: string
@@ -48,6 +52,7 @@ interface Link {
   is_index: number
   _id: string
   protectedLinks?: string
+  video?:videoInterface
 }
 
 const Index: React.FC = () => {
@@ -266,6 +271,20 @@ const Index: React.FC = () => {
         window.open(shareUrl, '_blank', 'noopener,noreferrer')
       }
     }
+      const getYouTubeEmbedUrl = (url: string) => {
+    try {
+      const urlObj = new URL(url);
+      if (urlObj.hostname.includes("youtu.be")) {
+        return `https://www.youtube.com/embed/${urlObj.pathname.slice(1)}`;
+      } else if (urlObj.hostname.includes("youtube.com")) {
+        const videoId = urlObj.searchParams.get("v");
+        return `https://www.youtube.com/embed/${videoId}`;
+      }
+    } catch {
+      return null;
+    }
+  };
+  console.log("=-=-userInfo", userInfo)
 
     return (
       <div className='share-popup-overlay' onClick={onClose}>
@@ -335,7 +354,20 @@ const Index: React.FC = () => {
   }
 
   const userId = localStorage.getItem('_id') || null
-
+  const getYouTubeEmbedUrl = (url: string) => {
+    try {
+      const urlObj = new URL(url);
+      if (urlObj.hostname.includes("youtu.be")) {
+        return `https://www.youtube.com/embed/${urlObj.pathname.slice(1)}`;
+      } else if (urlObj.hostname.includes("youtube.com")) {
+        const videoId = urlObj.searchParams.get("v");
+        return `https://www.youtube.com/embed/${videoId}`;
+      }
+    } catch {
+      return null;
+    }
+  };
+  console.log("=-=-userInfo", userInfo)
   return (
     <>
       {loader ? (
@@ -420,6 +452,7 @@ const Index: React.FC = () => {
                 {userInfo?.non_social && userInfo.non_social.length > 0 && (
                   <div className='mobile-links-list'>
                     {userInfo.non_social.map(link => (
+                      <>
                       <div
                         className={`link-card ${
                           userInfo.theme.themeDesign || 'round'
@@ -430,7 +463,7 @@ const Index: React.FC = () => {
                             padding: '10px',
                             '--card-bg':
                               userInfo?.theme?.is_colorImage || '#333',
-                            '--card-color':
+                              '--card-color':
                               userInfo?.theme?.fontColor || 'white',
                             '--card-font':
                               userInfo?.theme?.fontFamily || 'sans-serif',
@@ -458,6 +491,18 @@ const Index: React.FC = () => {
                           style={{ cursor: 'pointer', marginLeft: '10px' }}
                         />
                       </div>
+                         {
+                  link?.video?.videoLink &&(
+                    <iframe
+                      width="100%"
+                      height="150"
+                      src={getYouTubeEmbedUrl(link?.video?.videoLink || "") || ""}
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    ></iframe>)
+                  }
+                    </>
                     ))}
                   </div>
                 )}

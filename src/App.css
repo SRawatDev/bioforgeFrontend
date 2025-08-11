@@ -1482,3 +1482,10 @@ li.has-dropdown1 span {
     margin-right: 11px;
     z-index: 10;
 }
+.css-1gak8h1-MuiToolbar-root-MuiTablePagination-toolbar{
+  display: flex !important;
+        align-items: baseline !important;
+}
+.sublinkeitem{
+  padding: 5px !important;
+}

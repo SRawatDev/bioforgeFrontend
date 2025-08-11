@@ -4,16 +4,19 @@ import ErrorMessage from "../../../helpers/ErrorMessage";
 import SuccessMessage from "../../../helpers/Success";
 import { apiUrls } from "../../../utils/api.utils";
 import Delete from "./Delete";
+import { Link } from "react-router-dom";
 import { MdOutlineEdit, MdDeleteOutline } from "react-icons/md";
 import { TbStatusChange } from "react-icons/tb";
 import { AiOutlineEye } from "react-icons/ai";
 import { FiLink2, FiUsers, FiBarChart } from "react-icons/fi";
 import LinkShimmer from "../../LinkShimmer";
 import { VideoAddEdit } from "./VideoAddEdit";
+import { defaultConfig } from "../../../config";
 interface LinkItem {
-    _id: string;
-    videoTitle: string;
-    videoLink: string;
+    _id?: string;
+    title: string;
+    image: string;
+    link: string;
     status: string;
 
 }
@@ -28,17 +31,16 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
     const [loader, setLoader] = useState(false);
     const [linkDetail, setLinkDetail] = useState<LinkItem>({
         _id: "",
-        videoTitle: "",
-        videoLink: "",
-        status: ""
+        title: "",
+        image: "",
+        status: "",
+        link: ""
     });
-
-    // Fetch regular links (non-social)
     const Detail = async () => {
         setLoader(true);
         try {
             const response = await callAPI(
-                apiUrls.getAllVideo,
+                apiUrls.getlinkCategory,
                 {},
                 "GET",
                 {}
@@ -74,7 +76,7 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
         try {
             setLoader(true);
             const res = await callAPI(
-                apiUrls.deleteVideo,
+                apiUrls.deletelinkCategory,
                 { _id: item._id },
                 "DELETE",
                 {}
@@ -97,7 +99,7 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
         try {
             setLoader(true);
             const res = await callAPI(
-                apiUrls.statusVideo,
+                apiUrls.statuslinkCategory,
                 { _id: item._id },
                 "GET",
                 {}
@@ -117,19 +119,7 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
 
 
 
-    const getYouTubeEmbedUrl = (url: string) => {
-        try {
-            const urlObj = new URL(url);
-            if (urlObj.hostname.includes("youtu.be")) {
-                return `https://www.youtube.com/embed/${urlObj.pathname.slice(1)}`;
-            } else if (urlObj.hostname.includes("youtube.com")) {
-                const videoId = urlObj.searchParams.get("v");
-                return `https://www.youtube.com/embed/${videoId}`;
-            }
-        } catch {
-            return null;
-        }
-    };
+    
 
     const inactive = non_socialData.filter(item => item.status === "inactive").length;
     const active = non_socialData.filter(item => item.status !== "inactive").length;
@@ -147,7 +137,7 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
                                 alt="BioForge Logo"
                             />
                             <div className="brand-text">
-                                <h1>Video Management</h1>
+                                <h1>Product Management</h1>
                             </div>
                         </div>
 
@@ -158,18 +148,18 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
                                 setAction("add");
                                 setLinkDetail({
                                     _id: "",
-                                    videoTitle: "",
-                                    videoLink: "",
-                                    status: ""
+                                    title: "",
+                                    image: "",
+                                    status: "",
+                                    link: ""
                                 });
                             }}
                         >
                             <FiLink2 className="button-icon" />
-                            Add New Video
+                            Add New Product
                         </button>
                     </div>
 
-                    {/* Stats Cards */}
                     <div className="stats-container">
                         <div className="stat-card">
                             <div className="stat-icon">
@@ -222,15 +212,22 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
                                             >
                                                 <div className="link-item-content">
 
+                                                    <div className="link-item-icon social-icon">
 
+                                                        <img
+                                                            src={defaultConfig.imagePath + item.image}
+                                                            alt={item.title}
+                                                        />
+
+                                                    </div>
                                                     <div className="link-item-details">
                                                         <div className="link-title-container">
                                                             <h3
-                                                                className="link-title d-flex gap-2"
+                                                                className="link-title "
                                                             >
-                                                                {item.videoTitle}
+                                                                {item.title}
                                                                 <span
-                                                                    className={`link-status ${item.status}`}
+                                                                    className={`ms-2 link-status ${item.status}`}
                                                                 >
                                                                     {item.status}
                                                                 </span>
@@ -240,7 +237,7 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
 
 
                                                         <div className="link-stats">
-
+                                                            <Link to={`${item.link}`} target="blank"> {item.link}</Link>
 
                                                         </div>
                                                     </div>
@@ -249,7 +246,7 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
                                                         <button
                                                             className="action-button view-button"
                                                             onClick={() =>
-                                                                window.open(item.videoLink, "_blank")
+                                                                window.open(item.link, "_blank")
                                                             }
                                                             title="View Link"
                                                         >
@@ -279,19 +276,7 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
                                                     </div>
 
                                                 </div>
-                                                {getYouTubeEmbedUrl(item.videoLink) ? (
-                                                    <iframe
-                                                        width="250"
-                                                        height="150"
-                                                        src={getYouTubeEmbedUrl(item.videoLink) || ""}
-                                                        title={item.videoTitle}
-                                                        frameBorder="0"
-                                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                                        allowFullScreen
-                                                    ></iframe>
-                                                ) : (
-                                                    <p className="link-url">{item.videoLink}</p>
-                                                )}
+
                                             </div>
                                         );
                                     })}
@@ -319,9 +304,11 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
                                                 setAction("add");
                                                 setLinkDetail({
                                                     _id: "",
-                                                    videoLink: "",
-                                                    videoTitle: "",
-                                                    status: ""
+                                                    title: "",
+                                                    image: "",
+                                                    status: "",
+                                                    link: ""
+
                                                 });
                                             }}
                                         >
@@ -342,9 +329,9 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
                 linkDetail={linkDetail}
             />
 
-          
+
             <VideoAddEdit
-              NonDetail={Detail} 
+                NonDetail={Detail}
                 open={open}
                 onClose={() => setOpen(false)}
                 Detail={Detail}

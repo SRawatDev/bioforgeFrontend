@@ -15,11 +15,12 @@ import {
 } from 'react-icons/bi'
 import { socialPlatforms } from '../links/linksAddEdit'
 import ProfileShimmer from '../../ProfileShimmer'
-import { TbLockPassword, TbX } from 'react-icons/tb'
+import {  TbX } from 'react-icons/tb'
 import axios from 'axios'
 import { Report } from './Report'
 import './profile.css'
-import { MdOutlineSecurity, MdPhonelinkSetup } from 'react-icons/md'
+import { MdOutlineSecurity} from 'react-icons/md';
+import { FaLock } from "react-icons/fa";
 import { FaCopy } from 'react-icons/fa'
 
 interface userInfo {
@@ -443,7 +444,15 @@ const Index: React.FC = () => {
                           } as React.CSSProperties
                         }
                       >
-                        <div className='link-content'>
+                        <Link
+                          className='link-content'
+                          to={link.linkUrl}
+                          target='_blank'
+                          style={{
+                            color: userInfo?.theme?.fontColor || 'white',
+                            textDecoration: 'none'
+                          }}
+                        >
                           <img
                             src={defaultConfig?.imagePath + link.linkLogo}
                             alt={link.linkTitle}
@@ -452,7 +461,7 @@ const Index: React.FC = () => {
                           <span className='mobile-link-title'>
                             {link.linkTitle}
                           </span>
-                        </div>
+                        </Link>
                         <BsThreeDots
                           className='share-icon'
                           onClick={e => {
@@ -519,10 +528,10 @@ const Index: React.FC = () => {
                 )}
               </div>
               <div className='d-flex justify-content-center mt-4'>
-             <button
+                <button
                   type='button'
                   className='link-join-biofoge'
- onClick={handleButtonClick}
+                  onClick={handleButtonClick}
                   style={{
                     fontFamily: userInfo?.theme?.fontFamily,
                     background: userInfo?.theme?.is_colorImage || '#333',
@@ -539,11 +548,13 @@ const Index: React.FC = () => {
                   >
                     Join
                   </span>
-                  <span style={{
-                    fontFamily: userInfo?.theme?.fontFamily,
-                    background: userInfo?.theme?.is_colorImage || '#333',
-                    color: userInfo?.theme?.fontColor || '#fbbf24'
-                  }}>
+                  <span
+                    style={{
+                      fontFamily: userInfo?.theme?.fontFamily,
+                      background: userInfo?.theme?.is_colorImage || '#333',
+                      color: userInfo?.theme?.fontColor || '#fbbf24'
+                    }}
+                  >
                     {userInfo?.username}
                   </span>
                   {localStorage.getItem('accessToken') && userId === id.id}
@@ -566,7 +577,7 @@ const Index: React.FC = () => {
             onClick={handlePasswordIconClick}
             title='Click to view private links'
           >
-            <MdOutlineSecurity
+            <FaLock
               className='passwordProfile blinking-icon'
               style={
                 {

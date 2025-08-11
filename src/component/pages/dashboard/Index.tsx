@@ -4,7 +4,7 @@ import DashboardSidebar from "./DashboardSidebar";
 import Main from "./Main";
 import { MobileUi } from "./MobileUi";
 import ManageLinks from "../links/Index";
-import { callAPI, callAPIWithoutAuth } from "../../../utils/apicall.utils";
+import { callAPI, } from "../../../utils/apicall.utils";
 import { apiUrls } from "../../../utils/api.utils";
 import { useEffect, useState } from "react";
 import ErrorMessage from "../../../helpers/ErrorMessage";

@@ -136,12 +136,7 @@ const Index: React.FC = () => {
     }
   }
 
-  const handleLinkClick = (link: Link, event: React.MouseEvent) => {
-    event.preventDefault()
-    setSelectedLink(link)
-    setShowPasswordModal(true)
-    return
-  }
+
 
   const handlePasswordSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -212,18 +207,13 @@ const Index: React.FC = () => {
         icon: <BiLogoGmail style={{ color: '#D14836' }} />
       }
     ]
-
-    // Mobile-friendly clipboard copy function
     const copyToClipboard = async (text: string) => {
       try {
-        // Modern clipboard API (works on HTTPS and newer browsers)
         if (navigator.clipboard && window.isSecureContext) {
           await navigator.clipboard.writeText(text)
           alert('Link copied to clipboard!')
           return
         }
-
-        // Fallback for mobile and older browsers
         const textArea = document.createElement('textarea')
         textArea.value = text
         textArea.style.position = 'fixed'
@@ -238,55 +228,32 @@ const Index: React.FC = () => {
           alert('Link copied to clipboard!')
         } catch (err) {
           console.error('Failed to copy: ', err)
-          // Last resort - show the link for manual copying
           prompt('Copy this link:', text)
         } finally {
           document.body.removeChild(textArea)
         }
       } catch (err) {
         console.error('Failed to copy: ', err)
-        // Show the link for manual copying
         prompt('Copy this link:', text)
       }
     }
 
     const handlePlatformClick = (platformName: string, shareUrl: string) => {
       if (platformName.toLowerCase() === 'whatsapp') {
-        // Try to open WhatsApp app first, fallback to web
         const appUrl = shareUrl
         const webUrl = `https://wa.me/?text=Check%20out%20this%20link:%20${encodeURIComponent(
           linkTitle
         )}%20${encodeURIComponent(linkUrl)}`
-
-        // Create a temporary link to test if app opens
         const link = document.createElement('a')
         link.href = appUrl
         link.click()
-
-        // Fallback to web after a short delay if app doesn't open
         setTimeout(() => {
           window.open(webUrl, '_blank', 'noopener,noreferrer')
         }, 1000)
       } else {
-        // For other platforms, open in new tab
         window.open(shareUrl, '_blank', 'noopener,noreferrer')
       }
     }
-      const getYouTubeEmbedUrl = (url: string) => {
-    try {
-      const urlObj = new URL(url);
-      if (urlObj.hostname.includes("youtu.be")) {
-        return `https://www.youtube.com/embed/${urlObj.pathname.slice(1)}`;
-      } else if (urlObj.hostname.includes("youtube.com")) {
-        const videoId = urlObj.searchParams.get("v");
-        return `https://www.youtube.com/embed/${videoId}`;
-      }
-    } catch {
-      return null;
-    }
-  };
-  console.log("=-=-userInfo", userInfo)
-
     return (
       <div className='share-popup-overlay' onClick={onClose}>
         <div className='share-popup' onClick={e => e.stopPropagation()}>
@@ -355,20 +322,25 @@ const Index: React.FC = () => {
   }
 
   const userId = localStorage.getItem('_id') || null
-  const getYouTubeEmbedUrl = (url: string) => {
-    try {
-      const urlObj = new URL(url);
-      if (urlObj.hostname.includes("youtu.be")) {
-        return `https://www.youtube.com/embed/${urlObj.pathname.slice(1)}`;
-      } else if (urlObj.hostname.includes("youtube.com")) {
-        const videoId = urlObj.searchParams.get("v");
-        return `https://www.youtube.com/embed/${videoId}`;
-      }
-    } catch {
-      return null;
+   const getYouTubeEmbedUrl = (url: string) => {
+  try {
+    const urlObj = new URL(url);
+    let videoId = "";
+
+    if (urlObj.hostname.includes("youtu.be")) {
+      videoId = urlObj.pathname.slice(1);
+    } else if (urlObj.hostname.includes("youtube.com")) {
+      videoId = urlObj.searchParams.get("v") || "";
     }
-  };
-  console.log("=-=-userInfo", userInfo)
+
+    if (!videoId) return null;
+
+    // Minimal branding + no unrelated recommendations
+    return `https://www.youtube.com/embed/${videoId}?modestbranding=1&rel=0&controls=1`;
+  } catch {
+    return null;
+  }
+};
   return (
     <>
       {loader ? (

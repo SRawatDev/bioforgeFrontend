@@ -99,7 +99,6 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo, newUserData }) => 
   }
 };
 
-  console.log("=-=-userInfo", userInfo)
   return (
     <>
       <section
@@ -256,8 +255,10 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo, newUserData }) => 
 
 
                 </Link>
-                {getYouTubeEmbedUrl(link?.video?.videoLink || "") ? (
-                    <iframe
+
+                {getYouTubeEmbedUrl(link?.video?.videoLink || "") && (
+                <div>
+                  <iframe
                       width="250"
                       height="150"
                       src={getYouTubeEmbedUrl(link?.video?.videoLink || "") || ""}
@@ -265,9 +266,10 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo, newUserData }) => 
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                       allowFullScreen
                     ></iframe>
-                  ) : (
-                    <p className="link-url">{link?.video?.videoLink || ""}</p>
-                  )}
+                  </div>
+                  )
+                  
+                  }
                 </>
               ))}
             </div>

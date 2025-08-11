@@ -322,7 +322,7 @@ const Index: React.FC = () => {
   }
 
   const userId = localStorage.getItem('_id') || null
-   const getYouTubeEmbedUrl = (url: string) => {
+  const getYouTubeEmbedUrl = (url: string) => {
   try {
     const urlObj = new URL(url);
     let videoId = "";
@@ -430,7 +430,7 @@ const Index: React.FC = () => {
                         className={`link-card ${
                           userInfo.theme.themeDesign || 'round'
                         }`}
-                        // onClick={e => handleLinkClick(link, e)}
+                            onClick={()=>handleClickSubmit(link._id)}
                         style={
                           {
                             padding: '10px',
@@ -503,6 +503,7 @@ const Index: React.FC = () => {
                             to={link.linkUrl}
                             target='_blank'
                             className={`social-link-wrapper `}
+                            onClick={()=>handleClickSubmit(link._id)}
                           >
                             <div
                               className={`link-card-social`}

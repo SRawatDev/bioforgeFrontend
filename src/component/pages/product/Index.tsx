@@ -160,7 +160,6 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
                         </button>
                     </div>
 
-                    {/* Stats Cards */}
                     <div className="stats-container">
                         <div className="stat-card">
                             <div className="stat-icon">

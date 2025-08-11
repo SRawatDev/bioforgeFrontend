@@ -29,6 +29,9 @@ export const apiUrls = {
     updatelinkCategory:"api/v1/update-linkCategory",
     getlinkCategory:"api/v1/getAll-linkCategory",
     statuslinkCategory:"api/v1/status-linkCategory", 
-    deletelinkCategory:"api/v1/delete-linkCategory" 
+    deletelinkCategory:"api/v1/delete-linkCategory" ,
+    //subsciber
+    getAllsubscribe:"api/v1/getAll-subscribe" 
+
 
 };

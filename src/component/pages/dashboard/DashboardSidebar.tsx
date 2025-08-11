@@ -16,7 +16,7 @@ import "./dashboard.css";
 import { useDispatch } from "react-redux";
 import {  clearData } from "../../../redux/Slice";
 import { FaVideo } from "react-icons/fa";
-import { MdProductionQuantityLimits } from "react-icons/md";
+import { MdProductionQuantityLimits, MdUnsubscribe } from "react-icons/md";
 interface SidebarProps {
   isMobile?: boolean;
   onClose?: () => void;
@@ -73,6 +73,12 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose,children }
       path: `/dashboard/product/${localStorage.getItem("_id")}`,
       label: "Manage Product",
       icon: <MdProductionQuantityLimits />,
+      category: "main",
+    },
+    {
+      path: `/dashboard/subscribe/${localStorage.getItem("_id")}`,
+      label: "Subcriber",
+      icon: <MdUnsubscribe />,
       category: "main",
     },
     {

@@ -14,15 +14,16 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import Video from "../video/Index"
 import Product from "../product/Index"
+import Subsriber from "../subscribe/Index"
 import { addData } from "../../../redux/Slice";
 interface Theme {
   fontFamily: string;
   is_colorImage: string;
   fontColor: string;
 }
-interface videoInterface{
-  _id?:string,
-  videoLink?:string
+interface videoInterface {
+  _id?: string,
+  videoLink?: string
 }
 
 interface Link {
@@ -31,7 +32,7 @@ interface Link {
   linkLogo: string;
   is_index: number;
   _id: string;
-  video?:videoInterface
+  video?: videoInterface
 }
 
 interface UserInfo {
@@ -129,18 +130,22 @@ const Index = () => {
   const handleShareClick = () => {
     setShowShareOptions(!showShareOptions)
   }
-const getLayour = (layout: string) => {
-  if (layout === 'updateProfile') {
-    return <Main getUserDetails={getUserDetail} />
-  } else if (layout === 'Video') {
-    return <Video getUserDetail={getUserDetail}/>
-  } else if(layout === 'links'){
-    return <ManageLinks getUserDetail={getUserDetail} />
-  }else{
-    return <Product getUserDetail={getUserDetail}/>
+  const getLayour = (layout: string) => {
+    if (layout === 'updateProfile') {
+      return <Main getUserDetails={getUserDetail} />
+    } else if (layout === 'Video') {
+      return <Video getUserDetail={getUserDetail} />
+    } else if (layout === 'links') {
+      return <ManageLinks getUserDetail={getUserDetail} />
+    }
+    else if (layout === 'subscribe') {
+      return <Subsriber />
+    }
+    else {
+      return <Product getUserDetail={getUserDetail} />
 
-  }
-};
+    }
+  };
 
 
 
@@ -152,7 +157,7 @@ const getLayour = (layout: string) => {
         <DashboardSidebar />
         <div className="dashboard-main-area">
           <div className="dashboard-main-content">
-          {getLayour(layout ?? "updateProfile")}
+            {getLayour(layout ?? "updateProfile")}
 
           </div>
         </div>

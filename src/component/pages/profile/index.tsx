@@ -587,7 +587,8 @@ const Index: React.FC = () => {
                   color: userInfo?.theme?.fontColor || '#fbbf24',
                   cursor: 'pointer',
                   fontSize: '40px',
-                  top: '19%'
+                  top: '11%',
+                  
                 } as React.CSSProperties
               }
             />

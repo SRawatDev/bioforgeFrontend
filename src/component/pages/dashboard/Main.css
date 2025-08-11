@@ -196,11 +196,11 @@
   }
 }
 .profile-update-wrapper {
-  min-height: 100vh;
-  padding: 2rem 1rem;
+  /* min-height: 100vh;
+  padding: 2rem 1rem; */
   font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     sans-serif;
-  margin-left: 35px;
+  /* margin-left: 35px; */
 }
 
 .profile-container {
@@ -273,7 +273,6 @@
   background: white;
   border-radius: 16px;
   padding: 2rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   border: 1px solid #e5e7eb;
   transition: all 0.3s ease;
 }
@@ -579,8 +578,8 @@
   border-radius: 12px;
   font-weight: 600;
   font-size: 1rem;
-  cursor: pointer;
-  border: none;
+  /* cursor: pointer;
+  border: none; */
   transition: all 0.3s ease;
   min-width: 140px;
   justify-content: center;

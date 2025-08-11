@@ -401,8 +401,6 @@
   margin-top: 16px;
 }
 
-
-
 .mobile-social-icon {
   display: flex;
   align-items: center;
@@ -530,6 +528,25 @@
 
 /* Tablet adjustments */
 @media (min-width: 768px) {
+  .password-modal {
+    margin: 10px;
+    max-width: calc(100% - 20px);
+  }
+  .input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .cancel-button,
+  .submit-button {
+    width: 100%;
+    justify-content: center;
+  }
+  .modal-header,
+  .modal-content {
+    padding: 20px;
+    width: 400px;
+  }
   .mobile-banner {
     height: 220px;
   }
@@ -570,6 +587,119 @@
     width: 54px;
     height: 54px;
     font-size: 24px;
+  }
+  .passwordProfile {
+    color: rgb(255, 255, 255);
+    height: 40px;
+    width: 40px;
+    cursor: pointer;
+    font-size: 40px;
+    top: 19%;
+    left: 860px;
+  }
+  .blinking-icon {
+    animation: blink 2s infinite;
+    color: #fbbf24 !important;
+  }
+  .passwordProfile {
+    transition: all 0.3s ease;
+    display: block !important;
+    opacity: 1 !important;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    margin-bottom: 10px;
+    margin-right: 11px;
+    z-index: 10;
+  }
+}
+@media (min-width: 1024) {
+  .password-modal {
+    margin: 10px;
+    max-width: calc(100% - 20px);
+  }
+  .modal-header,
+  .modal-content {
+    padding: 20px;
+  }
+  .input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .cancel-button,
+  .submit-button {
+    width: 100%;
+    justify-content: center;
+  }
+  .modal-header,
+  .modal-content {
+    padding: 20px;
+    width: 400px;
+  }
+  .mobile-banner {
+    height: 220px;
+  }
+
+  .mobile-avatar img {
+    width: 140px;
+    height: 140px;
+  }
+
+  .mobile-username {
+    font-size: 28px;
+  }
+
+  .mobile-bio {
+    max-width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .mobile-section-title {
+    font-size: 20px;
+  }
+
+  .mobile-link-item {
+    padding: 16px;
+  }
+
+  .mobile-link-icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .mobile-link-title {
+    font-size: 20px;
+  }
+
+  .mobile-social-icon {
+    width: 54px;
+    height: 54px;
+    font-size: 24px;
+  }
+  .passwordProfile {
+    color: rgb(255, 255, 255);
+    height: 40px;
+    width: 40px;
+    cursor: pointer;
+    font-size: 40px;
+    top: 19%;
+    left: 990px;
+  }
+  .blinking-icon {
+    color: #fbbf24 !important;
+  }
+  .passwordProfile {
+    transition: all 0.3s ease;
+    display: block !important;
+    opacity: 1 !important;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    margin-bottom: 10px;
+    margin-right: 11px;
+    z-index: 10;
   }
 }
 
@@ -622,7 +752,6 @@
 }
 
 .blinking-icon {
-  animation: blinkAlert 2s infinite;
   color: #fbbf24 !important; /* Force bright color */
 }
 
@@ -738,17 +867,17 @@
   font-size: 12px;
 }
 .link-join-biofoge {
-    padding: 10px 16px 14px 16px;
-    border-radius: 40px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    border: none;
-    justify-content: center;
-    align-items: baseline;
-    width: auto;
+  padding: 10px 16px 14px 16px;
+  border-radius: 40px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  border: none;
+  justify-content: center;
+  align-items: baseline;
+  width: auto;
 }
 
 .link-join-text {
@@ -832,8 +961,7 @@
 .password-modal {
   background: linear-gradient(145deg, #ffffff, #f8fafc);
   border-radius: 20px;
-  width: 100%;
-  max-width: 400px;
+  width: 400px;
   box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
   animation: slideInModal 0.3s ease;
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -893,10 +1021,6 @@
   color: #374151;
 }
 
-.modal-content {
-  padding: 24px;
-}
-
 .selected-link-info {
   text-align: center;
   margin-bottom: 24px;
@@ -943,7 +1067,7 @@
 .password-form {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  /* gap: 20px; */
 }
 
 .input-group {
@@ -1091,9 +1215,8 @@
   display: flex;
   gap: 15px;
   overflow-x: auto;
-padding: 19px 16px 11px 14px;
-scrollbar-width:none;
-
+  padding: 19px 16px 11px 14px;
+  scrollbar-width: none;
 }
 
 .share-platform {
@@ -1137,8 +1260,13 @@ scrollbar-width:none;
   }
 
   .passwordProfile {
-    height: 28px !important;
-    width: 28px !important;
+    color: rgb(255, 255, 255);
+    height: 40px;
+    width: 40px;
+    cursor: pointer;
+    font-size: 40px;
+    top: 11%;
+    left: 360px;
   }
 
   .password-tooltip span {

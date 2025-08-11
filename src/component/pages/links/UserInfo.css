@@ -117,17 +117,7 @@
   flex-shrink: 0;
 }
 
-.stat-card {
-  background: white;
-  border-radius: 12px;
-  padding: 20px;
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease;
-  min-width: 0;
-}
+
 
 .stat-card:hover {
   transform: translateY(-2px);
@@ -779,11 +769,6 @@
 /* Additional responsive enhancements */
 .analytics-table tbody tr:last-child td {
   border-bottom: none;
-}
-
-.stat-card {
-  position: relative;
-  overflow: hidden;
 }
 
 .stat-card::before {

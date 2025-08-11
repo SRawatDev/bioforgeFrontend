@@ -56,7 +56,6 @@ html.lenis {
 
 /* Mobile Preview Section */
 .dashboard-preview {
-  width: 30%;
   height: 100vh;
   display: flex;
   flex-direction: column;

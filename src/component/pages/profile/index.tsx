@@ -15,11 +15,12 @@ import {
 } from 'react-icons/bi'
 import { socialPlatforms } from '../links/linksAddEdit'
 import ProfileShimmer from '../../ProfileShimmer'
-import { TbLockPassword, TbX } from 'react-icons/tb'
+import {  TbX } from 'react-icons/tb'
 import axios from 'axios'
 import { Report } from './Report'
 import './profile.css'
-import { MdOutlineSecurity, MdPhonelinkSetup } from 'react-icons/md'
+import { MdOutlineSecurity} from 'react-icons/md';
+import { FaLock } from "react-icons/fa";
 import { FaCopy } from 'react-icons/fa'
 
 interface userInfo {
@@ -604,7 +605,7 @@ const Index: React.FC = () => {
             onClick={handlePasswordIconClick}
             title='Click to view private links'
           >
-            <MdOutlineSecurity
+            <FaLock
               className='passwordProfile blinking-icon'
               style={
                 {

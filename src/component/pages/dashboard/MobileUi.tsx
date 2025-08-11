@@ -80,18 +80,25 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo, newUserData }) => 
     }
   };
   const getYouTubeEmbedUrl = (url: string) => {
-    try {
-      const urlObj = new URL(url);
-      if (urlObj.hostname.includes("youtu.be")) {
-        return `https://www.youtube.com/embed/${urlObj.pathname.slice(1)}`;
-      } else if (urlObj.hostname.includes("youtube.com")) {
-        const videoId = urlObj.searchParams.get("v");
-        return `https://www.youtube.com/embed/${videoId}`;
-      }
-    } catch {
-      return null;
+  try {
+    const urlObj = new URL(url);
+    let videoId = "";
+
+    if (urlObj.hostname.includes("youtu.be")) {
+      videoId = urlObj.pathname.slice(1);
+    } else if (urlObj.hostname.includes("youtube.com")) {
+      videoId = urlObj.searchParams.get("v") || "";
     }
-  };
+
+    if (!videoId) return null;
+
+    // Minimal branding + no unrelated recommendations
+    return `https://www.youtube.com/embed/${videoId}?modestbranding=1&rel=0&controls=1`;
+  } catch {
+    return null;
+  }
+};
+
   console.log("=-=-userInfo", userInfo)
   return (
     <>

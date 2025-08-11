@@ -79,6 +79,13 @@ export const VideoAddEdit: React.FC<Props> = ({ open, onClose, Detail, linkDetai
         ErrorMessage(response?.data?.message);
       } else {
         SuccessMessage(response?.data?.message);
+           setLink({
+        title: "",
+        image: "",
+        status: "active",
+        link: ""
+        });
+        setPreview("")
         Detail();
         NonDetail();
         onClose();

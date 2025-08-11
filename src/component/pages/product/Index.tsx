@@ -224,11 +224,11 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
                                                     <div className="link-item-details">
                                                         <div className="link-title-container">
                                                             <h3
-                                                                className="link-title d-flex gap-2"
+                                                                className="link-title "
                                                             >
                                                                 {item.title}
                                                                 <span
-                                                                    className={`link-status ${item.status}`}
+                                                                    className={`ms-2 link-status ${item.status}`}
                                                                 >
                                                                     {item.status}
                                                                 </span>

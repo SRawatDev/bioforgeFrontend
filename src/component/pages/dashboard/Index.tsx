@@ -13,6 +13,7 @@ import { FaCheck, FaCopy, FaShareAlt } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import Video from "../video/Index"
+import Product from "../product/Index"
 import { addData } from "../../../redux/Slice";
 interface Theme {
   fontFamily: string;
@@ -133,8 +134,11 @@ const getLayour = (layout: string) => {
     return <Main getUserDetails={getUserDetail} />
   } else if (layout === 'Video') {
     return <Video getUserDetail={getUserDetail}/>
-  } else {
+  } else if(layout === 'links'){
     return <ManageLinks getUserDetail={getUserDetail} />
+  }else{
+    return <Product getUserDetail={getUserDetail}/>
+
   }
 };
 
@@ -148,11 +152,6 @@ const getLayour = (layout: string) => {
         <DashboardSidebar />
         <div className="dashboard-main-area">
           <div className="dashboard-main-content">
-            {/* {layout === "updateProfile" ? (
-              <Main getUserDetails={getUserDetail} />
-            ) : (
-              <ManageLinks getUserDetail={getUserDetail} />
-            )} */}
           {getLayour(layout ?? "updateProfile")}
 
           </div>

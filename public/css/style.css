@@ -1781,7 +1781,6 @@ html.lenis {
 /* Links List */
 .links-list {
   display: flex;
-  gap: 8px;
   flex-direction: column;
 }
 

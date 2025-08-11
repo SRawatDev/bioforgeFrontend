@@ -16,6 +16,7 @@ import "./dashboard.css";
 import { useDispatch } from "react-redux";
 import {  clearData } from "../../../redux/Slice";
 import { FaVideo } from "react-icons/fa";
+import { MdProductionQuantityLimits } from "react-icons/md";
 interface SidebarProps {
   isMobile?: boolean;
   onClose?: () => void;
@@ -66,6 +67,12 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose,children }
       path: `/dashboard/Video/${localStorage.getItem("_id")}`,
       label: "Manage Video",
       icon: <IoVideocam />,
+      category: "main",
+    },
+    {
+      path: `/dashboard/product/${localStorage.getItem("_id")}`,
+      label: "Manage Product",
+      icon: <MdProductionQuantityLimits />,
       category: "main",
     },
     {

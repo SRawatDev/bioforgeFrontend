@@ -24,5 +24,11 @@ export const apiUrls = {
     updateVideo:"api/v1/update-video",
     statusVideo:"api/v1/status-video",
     deleteVideo:"api/v1/delete-video",
+    //product
+    addlinkCategory:"api/v1/add-linkCategory",
+    updatelinkCategory:"api/v1/update-linkCategory",
+    getlinkCategory:"api/v1/getAll-linkCategory",
+    statuslinkCategory:"api/v1/status-linkCategory", 
+    deletelinkCategory:"api/v1/delete-linkCategory" 
 
 };

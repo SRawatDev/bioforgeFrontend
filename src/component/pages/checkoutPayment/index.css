@@ -144,7 +144,9 @@ body {
   align-items: center;
   gap: 0.25rem;
 }
-
+.badge-icon {
+    color: #000000;
+}
 .card-header {
   text-align: center;
   margin-bottom: 2rem;

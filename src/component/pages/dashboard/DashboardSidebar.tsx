@@ -78,6 +78,12 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose,children }
       category: "main",
     },
     {
+      path: `/dashboard/checkoutpayment/${localStorage.getItem("_id")}`,
+      label: "Subcription",
+      icon: <MdUnsubscribe />,
+      category: "main",
+    },
+    {
       path: `/dashboard/changepassword`,
       label: "Change Password",
       icon: <RiLockPasswordFill />,

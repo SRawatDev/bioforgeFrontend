@@ -41,10 +41,6 @@ const routes: AppRoute[] = [
     element: lazy(() => import('./component/pages/template/Card'))
   },
   {
-    path: '/subscribepage',
-    element: lazy(() => import('./component/pages/checkoutPayment/Index'))
-  },
-  {
     path: '/landingPage',
     layout: Header,
     element: lazy(() => import('./component/pages/template/landingPage'))

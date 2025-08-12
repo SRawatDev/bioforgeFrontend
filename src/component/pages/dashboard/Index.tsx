@@ -12,9 +12,10 @@ import ProfileShimmer from "../../ProfileShimmer";
 import { FaCheck, FaCopy, FaShareAlt } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import Video from "../video/Index"
-import Product from "../product/Index"
-import Subsriber from "../subscribe/Index"
+import Video from "../video/Index";
+import Product from "../product/Index";
+import Subsriber from "../subscribe/Index";
+import Subcription from "../checkoutpayment/Index";
 import { addData } from "../../../redux/Slice";
 interface Theme {
   fontFamily: string;
@@ -140,6 +141,9 @@ const Index = () => {
     }
     else if (layout === 'subscribe') {
       return <Subsriber />
+    }
+    else if (layout === 'checkoutpayment') {
+      return <Subcription />
     }
     else {
       return <Product getUserDetail={getUserDetail} />

@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { callAPI } from "../../../utils/apicall.utils";
 import ErrorMessage from "../../../helpers/ErrorMessage";
 import { apiUrls } from "../../../utils/api.utils";
-import { FiLink2 } from "react-icons/fi";
+import { FiLink2, FiUsers, FiMail, FiSearch, FiX } from "react-icons/fi";
 import LinkShimmer from "../../LinkShimmer";
 import { TablePagination } from "@mui/material";
+import "./subscribe.css"; // Import the CSS file
 
 interface LinkItem {
   email?: string;
@@ -16,7 +17,37 @@ const Index: React.FC = () => {
   const [page, setPage] = useState<number>(1);
   const [paginatedItems, setPaginatedItems] = useState<number>(0);
   const [loader, setLoader] = useState(false);
-  const [search] = useState<string>(""); // optional search param
+  const [search, setSearch] = useState<string>(""); // Search state
+  const [searchInput, setSearchInput] = useState<string>(""); // Input field state
+  const [debounceTimer, setDebounceTimer] = useState<NodeJS.Timeout | null>(null);
+
+  // Debounced search function
+  const debouncedSearch = useCallback((searchTerm: string) => {
+    if (debounceTimer) {
+      clearTimeout(debounceTimer);
+    }
+    
+    const newTimer = setTimeout(() => {
+      setSearch(searchTerm);
+      setPage(1); // Reset to first page when searching
+    }, 500); // 500ms delay
+    
+    setDebounceTimer(newTimer);
+  }, [debounceTimer]);
+
+  // Handle search input change
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setSearchInput(value);
+    debouncedSearch(value);
+  };
+
+  // Clear search
+  const clearSearch = () => {
+    setSearchInput("");
+    setSearch("");
+    setPage(1);
+  };
 
   const Detail = async (
     newPage: number = 1,
@@ -35,7 +66,7 @@ const Index: React.FC = () => {
       if (response?.data?.status) {
 
         setnonSocialData(response?.data?.data?.subscribersEmail || []);
-        setPaginatedItems(response?.data?.data?.totalSubscriber || 0); // total items for pagination
+        setPaginatedItems(response?.data?.data?.totalSubscriber || 0); 
       } else {
         ErrorMessage(response?.data?.message);
       }
@@ -43,6 +74,14 @@ const Index: React.FC = () => {
       setLoader(false);
     }
   };
+
+  useEffect(() => {
+    return () => {
+      if (debounceTimer) {
+        clearTimeout(debounceTimer);
+      }
+    };
+  }, [debounceTimer]);
 
   useEffect(() => {
     Detail(page, rowsPerPage, search);
@@ -60,37 +99,75 @@ const Index: React.FC = () => {
   };
 
   return (
-    <div className="links-page-container">
-      <div className="links-page-content">
-        <div className="links-header">
+    <div className="subscribes-page-container">
+      <div className="subscribes-page-content">
+        <div className="subscribes-header">
           <div className="header-top">
             <div className="header-brand">
               <img
-                className="links-logo"
+                className="subscribes-logo"
                 src="/assets/logo.png"
                 alt="BioForge Logo"
               />
-            
+              <div className="brand-text">Subscribers</div>
             </div>
+            <div className="header-stats">
+              <div className="subscriber-count">
+                <h2>
+                  <FiUsers className="count-icon" />
+                  Total Subscribers: <span className="count-number">{paginatedItems}</span>
+                </h2>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div className="search-section">
+          <div className="search-container">
+            <div className="search-input-wrapper">
+              <FiSearch className="search-icon" />
+              <input
+                type="text"
+                className="search-input"
+                placeholder="Search subscribers by email..."
+                value={searchInput}
+                onChange={handleSearchChange}
+              />
+              {searchInput && (
+                <button 
+                  className="clear-search-btn"
+                  onClick={clearSearch}
+                  aria-label="Clear search"
+                >
+                  <FiX />
+                </button>
+              )}
+            </div>
+            {search && (
+              <div className="search-results-info">
+                <span>Showing results for: "<strong>{search}</strong>"</span>
+                <button onClick={clearSearch} className="clear-search-text">
+                  Clear search
+                </button>
+              </div>
+            )}
           </div>
         </div>
         {loader ? (
           <LinkShimmer />
         ) : (
-          <div className="links-sections">
+          <div className="subscribes-sections">
             {non_socialData.length > 0 && (
-              <div className="links-section">
-                <div className="links-list social-links-list gap-2">
+              <div className="subscribes-section">
+                <div className="subscribes-list social-subscribes-list gap-2">
                   {non_socialData.map((item, i) => (
-                    <div key={i} className="link-item active sublinkeitem">
-                      <div className="link-item-content">
-                        <div className="link-item-details">
-                          <div className="link-title-container">
-                            <div className=" d-flex justify-content-unset gap-2">
-
-                            <p>{i+1}:</p>
-                            <h3 className="link-title">{item.email}</h3>
-                            </div>
+                    <div key={i} className="subscribe-item active sublinkeitem">
+                      <div className="subscribe-item-content">
+                        <div className="subscribe-item-details">
+                          <div className="subscribe-title-container">
+                            <div className="serial-number">{i + 1}</div>
+                            <FiMail className="email-icon" />
+                            <h3 className="subscribe-title">{item.email}</h3>
                           </div>
                         </div>
                       </div>
@@ -115,12 +192,18 @@ const Index: React.FC = () => {
             )}
 
             {non_socialData.length === 0 && !loader && (
-              <div className="no-links">
-                <div className="no-links-content">
+              <div className="no-subscribes">
+                <div className="no-subscribes-content">
                   <div className="empty-state-icon">
-                    <FiLink2 />
+                    {search ? <FiSearch /> : <FiUsers />}
                   </div>
-                  <h3>No Subscriber</h3>
+                  <h3>{search ? `No results found for "${search}"` : "No Subscribers Yet"}</h3>
+                  <p>{search ? "Try adjusting your search terms or check the spelling." : "When users subscribe to your content, they'll appear here."}</p>
+                  {search && (
+                    <button className="clear-search-btn-large" onClick={clearSearch}>
+                      Clear Search
+                    </button>
+                  )}
                 </div>
               </div>
             )}

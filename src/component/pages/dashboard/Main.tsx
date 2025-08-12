@@ -560,7 +560,7 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
                       passwordVisible ? "Hide password" : "Show password"
                     }
                   >
-                    {passwordVisible ? <FaEyeSlash /> : <FaEye />}
+                    {passwordVisible ? <FaEye /> : <FaEyeSlash />}
                   </button>
                 </div>
               </div>

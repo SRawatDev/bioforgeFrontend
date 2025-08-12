@@ -169,7 +169,6 @@
 .links-list {
   display: flex;
   flex-direction: column;
-
 }
 .link-item {
   background: #fff;
@@ -255,12 +254,12 @@
 }
 
 .private-badge {
-  background: #fed7d7;
-  color: #c53030;
+  background: #efd9ce;
+  color: #e96710;
 }
 .public-badge {
-  background: #c6f6d5;
-  color: #2f855a;
+  background: #e6fffa;
+  color: #3182ce;
 }
 
 .link-url {

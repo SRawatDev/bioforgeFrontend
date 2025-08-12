@@ -94,7 +94,7 @@ export const VideoAddEdit: React.FC<Props> = ({ open, onClose, Detail, linkDetai
               {action === "edit" ? <MdEdit /> : <MdAdd />}
             </div>
             <div className="modal-title-section">
-              <h2>{action === "edit" ? "Edit" : "Add"} Link</h2>
+              <h2>{action === "edit" ? "Edit" : "Add"} Video</h2>
               <p>Connect your audience to your content</p>
             </div>
             <button className="modal-close-btn" onClick={onClose}>
@@ -119,7 +119,7 @@ export const VideoAddEdit: React.FC<Props> = ({ open, onClose, Detail, linkDetai
                 <div className="input-group">
                   <InputField
                     label="Video URL"
-                    name="videoLink" // ✅ Corrected
+                    name="videoLink" 
                     value={link.videoLink}
                     onChange={handleChange}
                     required
@@ -133,7 +133,7 @@ export const VideoAddEdit: React.FC<Props> = ({ open, onClose, Detail, linkDetai
                   Cancel
                 </button>
                 <button type="submit" className="btn-primary">
-                  {action === "edit" ? "Update Link" : "Add Link"}
+                  {action === "edit" ? "Update Video" : "Add Video"}
                 </button>
               </div>
             </form>

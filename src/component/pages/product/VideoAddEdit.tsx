@@ -128,14 +128,14 @@ const handleFileUpload = async (file: File) => {
     setLoader(false);
 
     if (apiResponse.data.status) {
-      const uploadedUrl = apiResponse.data.data; // URL from backend
-      setLink((prev) => ({ ...prev, image: uploadedUrl })); // ✅ correct property
+      const uploadedUrl = apiResponse.data.data; 
+      setLink((prev) => ({ ...prev, image: uploadedUrl })); 
       setPreview(uploadedUrl)
     } else {
       ErrorMessage(apiResponse?.data?.message);
     }
   } catch (err) {
-    setLoader(false); // ✅ fix
+    setLoader(false);
     ErrorMessage("Image upload failed");
   }
 };
@@ -157,7 +157,7 @@ const handleFileUpload = async (file: File) => {
               {action === "edit" ? <MdEdit /> : <MdAdd />}
             </div>
             <div className="modal-title-section">
-              <h2>{action === "edit" ? "Edit" : "Add"} Link</h2>
+              <h2>{action === "edit" ? "Edit" : "Add"} Product</h2>
               <p>Connect your audience to your content</p>
             </div>
             <button className="modal-close-btn" onClick={onClose}>
@@ -170,7 +170,7 @@ const handleFileUpload = async (file: File) => {
               <div className="form-section">
                 <div className="input-group">
                   <InputField
-                    label="Title"
+                    label="Product Title"
                     name="title"
                     value={link.title}
                     onChange={handleChange}
@@ -181,8 +181,8 @@ const handleFileUpload = async (file: File) => {
 
                 <div className="input-group">
                   <InputField
-                    label="URL"
-                    name="link" // ✅ Corrected
+                    label="Product URL"
+                    name="link" 
                     value={link.link}
                     onChange={handleChange}
                     required
@@ -239,7 +239,7 @@ const handleFileUpload = async (file: File) => {
                   Cancel
                 </button>
                 <button type="submit" className="btn-primary">
-                  {action === "edit" ? "Update Link" : "Add Link"}
+                  {action === "edit" ? "Update Product" : "Add Product"}
                 </button>
               </div>
             </form>

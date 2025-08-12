@@ -3,19 +3,15 @@ import { defaultConfig } from "../../../config";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { LogoutModal } from "../../../layout/Header";
 import SuccessMessage from "../../../helpers/Success";
-import {
-  IoLinkOutline,
-  IoPersonOutline,
-  IoTrashOutline,
-  IoKeyOutline,
-  IoLogOutOutline,
-  IoVideocam,
-} from "react-icons/io5";
+import {IoLogOut,IoVideocam} from "react-icons/io5";
+import { RiDeleteBin6Fill } from "react-icons/ri";
+import { PiLinkSimpleHorizontalBold } from "react-icons/pi";
+import { FaUser } from "react-icons/fa";
+import { RiLockPasswordFill } from "react-icons/ri";
 import "./DashboardSidebar.css";
 import "./dashboard.css";
 import { useDispatch } from "react-redux";
 import {  clearData } from "../../../redux/Slice";
-import { FaVideo } from "react-icons/fa";
 import { MdProductionQuantityLimits, MdUnsubscribe } from "react-icons/md";
 interface SidebarProps {
   isMobile?: boolean;
@@ -54,13 +50,13 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose,children }
     {
       path: `/dashboard/updateProfile/${localStorage.getItem("_id")}`,
       label: "Edit Profile",
-      icon: <IoPersonOutline />,
+      icon: <FaUser />,
       category: "main",
     },
     {
       path: `/dashboard/links/${localStorage.getItem("_id")}`,
       label: "Manage Links",
-      icon: <IoLinkOutline />,
+      icon: <PiLinkSimpleHorizontalBold />,
       category: "main",
     },
     {
@@ -84,13 +80,13 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose,children }
     {
       path: `/dashboard/changepassword`,
       label: "Change Password",
-      icon: <IoKeyOutline />,
+      icon: <RiLockPasswordFill />,
       category: "main",
     },
     {
       path: "/dashboard/deleteAccount",
       label: "Delete Account",
-      icon: <IoTrashOutline />,
+      icon: <RiDeleteBin6Fill />,
       category: "main",
     },
   ];
@@ -186,7 +182,7 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose,children }
             onClick={handleLogoutClick}
             title={isCollapsed ? "Logout" : ''}
           >
-            <IoLogOutOutline className="menu-icon" />
+            <IoLogOut className="menu-icon" />
             {!isCollapsed && <span>Logout</span>}
           </button>
          </div>

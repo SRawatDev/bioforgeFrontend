@@ -12,7 +12,8 @@ import "./DashboardSidebar.css";
 import "./dashboard.css";
 import { useDispatch } from "react-redux";
 import {  clearData } from "../../../redux/Slice";
-import { MdProductionQuantityLimits, MdUnsubscribe } from "react-icons/md";
+import { MdProductionQuantityLimits, MdUnsubscribe,MdSubscriptions } from "react-icons/md";
+
 interface SidebarProps {
   isMobile?: boolean;
   onClose?: () => void;
@@ -80,7 +81,7 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose,children }
     {
       path: `/dashboard/checkoutpayment/${localStorage.getItem("_id")}`,
       label: "Subcription",
-      icon: <MdUnsubscribe />,
+      icon: <MdSubscriptions />,
       category: "main",
     },
     {

@@ -649,42 +649,6 @@ body {
   }
 }
 
-/* Dark mode support (optional) */
-@media (prefers-color-scheme: dark) {
-  .subscribes-header,
-  .subscribes-sections {
-    background: rgba(30, 30, 30, 0.95);
-    color: #e2e8f0;
-  }
-
-  .subscribe-item {
-    background: rgba(45, 45, 45, 0.8);
-    border-color: rgba(75, 75, 75, 0.5);
-    color: #e2e8f0;
-  }
-
-  .subscribe-title {
-    color: #e2e8f0;
-  }
-
-  .bottom_nav {
-    background: rgba(45, 45, 45, 0.5);
-    border-color: rgba(75, 75, 75, 0.5);
-  }
-
-  .no-subscribes-content {
-    background: rgba(45, 45, 45, 0.8);
-    border-color: rgba(75, 75, 75, 0.5);
-  }
-
-  .no-subscribes h3 {
-    color: #e2e8f0;
-  }
-
-  .no-subscribes p {
-    color: #a0aec0;
-  }
-}
 
 /* Custom scrollbar */
 .subscribes-sections::-webkit-scrollbar {

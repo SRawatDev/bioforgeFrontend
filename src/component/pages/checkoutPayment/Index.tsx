@@ -13,7 +13,7 @@ interface PaymentState {
 }
 
 // API Service
-const API_BASE_URL = 'http://localhost:3004/api';
+const API_BASE_URL = 'https://bioforgebackend.onrender.com/api';
 
 const PaymentService = {
   async createCheckoutSession(planData: any) {

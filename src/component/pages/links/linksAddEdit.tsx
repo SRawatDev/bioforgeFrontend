@@ -533,7 +533,7 @@ export const LinksAddEdit: React.FC<Props> = ({
                     <label className='form-label'>Add Products</label>
                     <div
                       className='checkbox-group'
-                      style={{ maxHeight: '100px', overflowY: 'auto' }}
+                      style={{ maxHeight: '100px', overflowY: 'auto' ,scrollbarWidth: 'none'}}
                     >
                       {product?.map(item => (
                         <label key={item._id} className='checkbox-option'>

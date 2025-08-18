@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { callAPI } from "../../../utils/apicall.utils";
 import ErrorMessage from "../../../helpers/ErrorMessage";
 import { apiUrls } from "../../../utils/api.utils";
-import { useDebounce } from "use-debounce";
+import { useDebounce } from 'use-debounce';
 import { FiLink2, FiUsers, FiMail, FiSearch, FiX } from "react-icons/fi";
 import LinkShimmer from "../../LinkShimmer";
 import { TablePagination } from "@mui/material";

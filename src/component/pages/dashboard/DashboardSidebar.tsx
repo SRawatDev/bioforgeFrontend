@@ -185,7 +185,7 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose,children }
           </div>
         </div>
         <div className="sidebar-footer">  <button
-            className="logout-btns"
+            className="logout-btn"
             onClick={handleLogoutClick}
             title={isCollapsed ? "Logout" : ''}
           >

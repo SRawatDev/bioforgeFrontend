@@ -51,6 +51,154 @@
   justify-content: center;
   font-size: 24px;
 }
+/* Styling for the form section containing the products */
+.form-section {
+  margin-bottom: 1.5rem;
+}
+
+/* Styling for the input group wrapper */
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* Styling for form labels */
+.form-label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Styling for the checkbox group container */
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  background-color: #f9fafb;
+  max-height: 100px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #9ca3af #e5e7eb;
+}
+
+/* Custom scrollbar for WebKit browsers */
+.checkbox-group::-webkit-scrollbar {
+  width: 8px;
+}
+
+.checkbox-group::-webkit-scrollbar-track {
+  background: #e5e7eb;
+  border-radius: 10px;
+}
+
+.checkbox-group::-webkit-scrollbar-thumb {
+  background: #9ca3af;
+  border-radius: 10px;
+}
+
+.checkbox-group::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
+
+/* Styling for individual checkbox options */
+.checkbox-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: #374151;
+  cursor: pointer;
+}
+
+.checkbox-option input[type="checkbox"] {
+  width: 1.25rem;
+  height: 1.25rem;
+  accent-color: #3b82f6;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.checkbox-option input[type="checkbox"]:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+.checkbox-option:hover {
+  background-color: #e5e7eb;
+  border-radius: 6px;
+  padding: 0.25rem;
+}
+
+/* Styling for the selected products section */
+.selected-products {
+  margin-top: 1rem;
+}
+
+.selected-products ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.selected-products li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem;
+  background-color: #f3f4f6;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  color: #374151;
+}
+
+.selected-products li button {
+  background: none;
+  border: none;
+  color: #ef4444;
+  cursor: pointer;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+}
+
+.selected-products li button:hover {
+  color: #dc2626;
+}
+
+.selected-products li button svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .checkbox-group {
+    max-height: 150px;
+  }
+
+  .form-label {
+    font-size: 0.9rem;
+  }
+
+  .checkbox-option {
+    font-size: 0.85rem;
+  }
+
+  .selected-products li {
+    font-size: 0.85rem;
+  }
+}
 .modal-title-section {
   flex: 1;
 }

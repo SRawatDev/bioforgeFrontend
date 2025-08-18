@@ -637,7 +637,7 @@
 
 /* ------------------------------iphone */
 .sidebardashboard{
-    width: 300px;
+    width: 340px;
     box-shadow: -5px 14px 20px -2px #6366f1 !important;
     z-index: 10;
 }
@@ -1489,3 +1489,7 @@ li.has-dropdown1 span {
 .sublinkeitem{
   padding: 5px !important;
 }
+.css-7mt0f-MuiTablePagination-root{
+  overflow: unset !important;
+}
+

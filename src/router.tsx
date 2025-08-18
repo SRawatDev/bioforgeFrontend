@@ -50,6 +50,7 @@ const routes: AppRoute[] = [
     element: lazy(() => import('./component/pages/profile/index'))
   },
   {
+        layout:NewHeader,
     guard: Authenticated,
     path: '/dashboard/profile/:id',
     element: lazy(() => import('./component/pages/dashboard/Index'))
@@ -67,17 +68,20 @@ const routes: AppRoute[] = [
     element: lazy(() => import('./component/pages/links/Index'))
   },
   {
+        layout:NewHeader,
     guard: Authenticated,
     path: '/dashboard/changepassword',
     element: lazy(() => import('./component/pages/password/Index'))
   },
   {
-    // layout:NewHeader,
+
+    layout:NewHeader,
     guard: Authenticated,
     path: '/dashboard/deleteAccount',
     element: lazy(() => import('./component/pages/accountDelete/Index'))
   },
   {
+        layout:NewHeader,
     guard: Authenticated,
     path: '/dashboard/:layout/:id',
     element: lazy(() => import('./component/pages/dashboard/Index'))

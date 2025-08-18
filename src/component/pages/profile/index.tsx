@@ -382,7 +382,7 @@ const Index: React.FC = () => {
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat',
-                // filter: 'blur(8px)',
+                filter: 'blur(8px)',
                 zIndex: 0
               }}
             ></div>
@@ -394,7 +394,7 @@ const Index: React.FC = () => {
                 left: 0,
                 width: '100%',
                 height: '100%',
-                // backgroundColor: 'rgba(0, 0, 0, 0.4)',
+                backgroundColor: 'rgba(0, 0, 0, 0.4)',
                 zIndex: 1
               }}
             ></div>

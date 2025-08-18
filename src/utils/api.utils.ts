@@ -32,7 +32,15 @@ export const apiUrls = {
     deletelinkCategory:"api/v1/delete-linkCategory" ,
     //subsciber
     getAllsubscribe:"api/v1/getAll-subscribe",
-    createsession:"api/payment/create-checkout-session"
+    addSubsciber:"api/v1/add-subscribe",
+    createsession:"api/payment/create-checkout-session",
+    payment: {
+        createCheckoutSession: "api/payment/create-checkout-session",
+        subscription: "api/payment/subscription",
+        verifyPayment: "api/payment/verify-payment",
+        cancelSubscription: "api/payment/cancel-subscription",
+        history: "api/payment/history"
+    }
 
 
 };

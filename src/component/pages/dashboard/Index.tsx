@@ -1,6 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
 import "./dashboard.css";
-import DashboardSidebar from "./DashboardSidebar";
 import Main from "./Main";
 import { MobileUi } from "./MobileUi";
 import ManageLinks from "../links/Index";
@@ -15,7 +14,7 @@ import { useDispatch } from "react-redux";
 import Video from "../video/Index";
 import Product from "../product/Index";
 import Subsriber from "../subscribe/Index";
-import Subcription from "../checkoutpayment/Index";
+import Subcription from "../checkoutPayment/Index";
 import { addData } from "../../../redux/Slice";
 interface Theme {
   fontFamily: string;
@@ -158,7 +157,7 @@ const Index = () => {
   return (
     <>
       <div className="dashboard-layout">
-        <DashboardSidebar />
+        {/* <DashboardSidebar /> */}
         <div className="dashboard-main-area">
           <div className="dashboard-main-content">
             {getLayour(layout ?? "updateProfile")}

@@ -131,13 +131,6 @@
   outline-offset: 2px;
 }
 
-.checkbox-option:hover {
-  background-color: #e5e7eb;
-  border-radius: 6px;
-  padding: 0.25rem;
-}
-
-/* Styling for the selected products section */
 .selected-products {
   margin-top: 1rem;
 }

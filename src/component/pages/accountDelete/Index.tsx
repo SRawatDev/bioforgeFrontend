@@ -52,13 +52,7 @@ const Index = () => {
     <>
       {loader && <LoadScreen />}
       <div className="register-container gradient-form">
-        <Link
-          to={`/dashboard/updateProfile/${localStorage.getItem("_id")}`}
-          className="back-button-register"
-          aria-label="Go back to login"
-        >
-          <IoMdArrowRoundBack className="back-icon" />
-        </Link>
+       
 
         <div className="register-row">
           <div className="register-col-left">

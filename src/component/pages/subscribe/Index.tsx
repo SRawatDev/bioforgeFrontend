@@ -1,7 +1,8 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import { callAPI } from "../../../utils/apicall.utils";
 import ErrorMessage from "../../../helpers/ErrorMessage";
 import { apiUrls } from "../../../utils/api.utils";
+import { useDebounce } from 'use-debounce';
 import { FiLink2, FiUsers, FiMail, FiSearch, FiX } from "react-icons/fi";
 import LinkShimmer from "../../LinkShimmer";
 import { TablePagination } from "@mui/material";
@@ -17,29 +18,18 @@ const Index: React.FC = () => {
   const [page, setPage] = useState<number>(1);
   const [paginatedItems, setPaginatedItems] = useState<number>(0);
   const [loader, setLoader] = useState(false);
-  const [search, setSearch] = useState<string>(""); // Search state
-  const [searchInput, setSearchInput] = useState<string>(""); // Input field state
-  const [debounceTimer, setDebounceTimer] = useState<NodeJS.Timeout | null>(null);
 
-  // Debounced search function
-  const debouncedSearch = useCallback((searchTerm: string) => {
-    if (debounceTimer) {
-      clearTimeout(debounceTimer);
-    }
-    
-    const newTimer = setTimeout(() => {
-      setSearch(searchTerm);
-      setPage(1); // Reset to first page when searching
-    }, 500); // 500ms delay
-    
-    setDebounceTimer(newTimer);
-  }, [debounceTimer]);
+  const [search, setSearch] = useState<string>("");
+  const [searchInput, setSearchInput] = useState<string>("");
+  const [debouncedSearch] = useDebounce(searchInput, 500); 
+  useEffect(() => {
+    setSearch(debouncedSearch.trim());
+    setPage(1); 
+  }, [debouncedSearch]);
 
-  // Handle search input change
+  // Search change handler
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    setSearchInput(value);
-    debouncedSearch(value);
+    setSearchInput(event.target.value);
   };
 
   // Clear search
@@ -48,6 +38,8 @@ const Index: React.FC = () => {
     setSearch("");
     setPage(1);
   };
+
+
 
   const Detail = async (
     newPage: number = 1,
@@ -66,7 +58,7 @@ const Index: React.FC = () => {
       if (response?.data?.status) {
 
         setnonSocialData(response?.data?.data?.subscribersEmail || []);
-        setPaginatedItems(response?.data?.data?.totalSubscriber || 0); 
+        setPaginatedItems(response?.data?.data?.totalSubscriber || 0);
       } else {
         ErrorMessage(response?.data?.message);
       }
@@ -75,13 +67,7 @@ const Index: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    return () => {
-      if (debounceTimer) {
-        clearTimeout(debounceTimer);
-      }
-    };
-  }, [debounceTimer]);
+  ;
 
   useEffect(() => {
     Detail(page, rowsPerPage, search);
@@ -95,7 +81,7 @@ const Index: React.FC = () => {
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(1); 
+    setPage(1);
   };
 
   return (
@@ -121,7 +107,7 @@ const Index: React.FC = () => {
             </div>
           </div>
         </div>
-        
+
         <div className="search-section">
           <div className="search-container">
             <div className="search-input-wrapper">
@@ -134,7 +120,7 @@ const Index: React.FC = () => {
                 onChange={handleSearchChange}
               />
               {searchInput && (
-                <button 
+                <button
                   className="clear-search-btn"
                   onClick={clearSearch}
                   aria-label="Clear search"
@@ -178,16 +164,20 @@ const Index: React.FC = () => {
             )}
 
             {non_socialData.length > 0 && (
-              <div className="d-flex align-items-center justify-content-end bottom_nav">
-                <TablePagination
-                  rowsPerPageOptions={[5, 10, 15, 25, 100]}
-                  component="div"
-                  count={paginatedItems}
-                  rowsPerPage={rowsPerPage}
-                  page={page - 1}
-                  onPageChange={handleChangePage}
-                  onRowsPerPageChange={handleChangeRowsPerPage}
-                />
+              <div className="d-flex align-items-center justify-content-end ">
+                <nav aria-label="Page navigation example">
+                  <ul className="pagination">
+                    <TablePagination
+                      rowsPerPageOptions={[5, 10, 15, 25, 100]}
+                      component="div"
+                      count={paginatedItems}
+                      rowsPerPage={rowsPerPage}
+                      page={page - 1}
+                      onPageChange={handleChangePage}
+                      onRowsPerPageChange={handleChangeRowsPerPage}
+                    />
+                  </ul>
+                </nav>
               </div>
             )}
 

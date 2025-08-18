@@ -78,12 +78,12 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose,children }
       icon: <MdUnsubscribe />,
       category: "main",
     },
-    {
-      path: `/dashboard/checkoutpayment/${localStorage.getItem("_id")}`,
-      label: "Subcription",
-      icon: <MdSubscriptions />,
-      category: "main",
-    },
+    // {
+    //   path: `/dashboard/checkoutpayment/${localStorage.getItem("_id")}`,
+    //   label: "Subcription",
+    //   icon: <MdSubscriptions />,
+    //   category: "main",
+    // },
     {
       path: `/dashboard/changepassword`,
       label: "Change Password",
@@ -155,6 +155,8 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose,children }
           </div>
         </div>
 
+
+        
         <div className="sidebar-content">
           <div className="sidebar-menu">
             <div className="menu-section">
@@ -184,15 +186,16 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose,children }
                
           </div>
         </div>
-        <div className="sidebar-footer">  <button
-            className="logout-btn"
+            <button
+            className="logout-btns"
             onClick={handleLogoutClick}
             title={isCollapsed ? "Logout" : ''}
           >
             <IoLogOut className="menu-icon" />
             {!isCollapsed && <span>Logout</span>}
           </button>
-         </div>
+   
+
       </nav>
 
       {isMobile && <div className="sidebar-backdrop" onClick={onClose}></div>}

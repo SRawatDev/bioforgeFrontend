@@ -6,7 +6,6 @@ import { apiUrls } from '../../../utils/api.utils'
 import { defaultConfig } from '../../../config'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import {
-  BiLink,
   BiLogoGmail,
   BiLogoTwitter,
   BiLogoFacebook,
@@ -19,9 +18,9 @@ import { TbX } from 'react-icons/tb'
 import axios from 'axios'
 import { Report } from './Report'
 import './profile.css'
-import { MdOutlineSecurity } from 'react-icons/md'
 import { FaLock } from 'react-icons/fa'
 import { FaCopy } from 'react-icons/fa'
+import SuccessMessage from '../../../helpers/Success'
 
 interface userInfo {
   _id: string
@@ -67,7 +66,7 @@ const Index: React.FC = () => {
   const [selectedLink, setSelectedLink] = useState<Link | null>(null);
   const [showSharePopup, setShowSharePopup] = useState<boolean>(false);
   const [selectedShareLink, setSelectedShareLink] = useState<Link | null>(null);
-  
+
   // New subscription modal state - following same pattern as showPasswordModal
   const [showSubscriptionModal, setShowSubscriptionModal] = useState<boolean>(false);
   const [email, setEmail] = useState<string>('');
@@ -117,6 +116,7 @@ const Index: React.FC = () => {
   }, [])
 
   const handleClickSubmit = async (linkId: string) => {
+    setLoader(true)
     try {
       const userId = localStorage.getItem('accessToken')
         ? localStorage.getItem('_id') || ''
@@ -131,11 +131,15 @@ const Index: React.FC = () => {
         'POST',
         payload
       )
+      setLoader(false)
       if (!response?.data?.status) {
         navigate('/')
         ErrorMessage(response?.data?.data?.message)
+      }else{
+        SuccessMessage(response?.data?.message);
       }
     } catch (error: any) {
+      setLoader(false)
       console.error('Error tracking click:', error)
     }
   }
@@ -143,31 +147,27 @@ const Index: React.FC = () => {
 
   const handleSubscriptionSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setLoader(true)
     try {
       const payload = {
         email,
       };
-     
+
       const response = await callAPIWithoutAuth(
-        apiUrls.addSubsciber,
-        { _id: id.id }, 
+        apiUrls.addSubscriber,
+        { _id: id.id },
         'POST',
         payload
       );
+      setLoader(false)
+      closeSubscriptionModal();
       if (!response?.data?.status) {
-        if (response?.data?.message?.includes('already subscribed')) {
-          ErrorMessage('You are already subscribed to this user');
-        } else {
-          ErrorMessage(response?.data?.message || 'Subscription failed');
-        }
-      } else {
-        closeSubscriptionModal();
-        // Add success message
-        alert('Successfully subscribed!'); 
-        // SuccessMessage('Successfully subscribed!');
+        ErrorMessage(response?.data?.message);
+      }else{
+        SuccessMessage(response?.data?.message);
       }
     } catch (error: any) {
-      console.error('Error subscribing:', error);
+      setLoader(true)
       ErrorMessage(error.message || 'Something went wrong');
     }
   };
@@ -415,9 +415,8 @@ const Index: React.FC = () => {
                 left: 0,
                 width: '100%',
                 height: '100%',
-                backgroundImage: `url(${
-                  defaultConfig?.imagePath + userInfo?.banner_img
-                })`,
+                backgroundImage: `url(${defaultConfig?.imagePath + userInfo?.banner_img
+                  })`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat',
@@ -466,9 +465,8 @@ const Index: React.FC = () => {
                     {userInfo.non_social.map(link => (
                       <>
                         <div
-                          className={`link-card ${
-                            userInfo.theme.themeDesign || 'round'
-                          }`}
+                          className={`link-card ${userInfo.theme.themeDesign || 'round'
+                            }`}
                           onClick={() => handleClickSubmit(link._id)}
                           style={
                             {
@@ -569,7 +567,7 @@ const Index: React.FC = () => {
                   </div>
                 )}
               </div>
-              <div className='d-flex justify-content-center mt-4' style={{ display: 'flex',flexDirection: 'column', alignItems: 'center',gap: '10px' }}>
+              <div className='d-flex justify-content-center mt-4' style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
                 <button
                   type='button'
                   className='link-join-biofoge'
@@ -612,17 +610,17 @@ const Index: React.FC = () => {
                     on Bioforge
                   </span>
                 </button>
-                
+
                 {/* Updated Subscribe Button - same pattern as password icon */}
                 <button
                   type='button'
                   className='link-join-subscribe '
                   onClick={handleSubscriptionButtonClick}
                   style={{
-                      fontFamily: userInfo?.theme?.fontFamily,
-                      background: userInfo?.theme?.is_colorImage || '#333',
-                      color: userInfo?.theme?.fontColor || '#fbbf24'
-                    }}
+                    fontFamily: userInfo?.theme?.fontFamily,
+                    background: userInfo?.theme?.is_colorImage || '#333',
+                    color: userInfo?.theme?.fontColor || '#fbbf24'
+                  }}
                 >
                   Subscribe
                 </button>
@@ -643,12 +641,12 @@ const Index: React.FC = () => {
                   color: userInfo?.theme?.fontColor || '#fbbf24',
                   cursor: 'pointer',
                   fontSize: '40px',
-                  top: '11%'
+
                 } as React.CSSProperties
               }
             />
           </div>
-          
+
           {/* Password Modal - existing */}
           {showPasswordModal && (
             <div className='password-modal-overlay'>

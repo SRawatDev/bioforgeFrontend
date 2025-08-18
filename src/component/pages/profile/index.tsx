@@ -6,7 +6,6 @@ import { apiUrls } from '../../../utils/api.utils'
 import { defaultConfig } from '../../../config'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import {
-  BiLink,
   BiLogoGmail,
   BiLogoTwitter,
   BiLogoFacebook,
@@ -15,13 +14,13 @@ import {
 } from 'react-icons/bi'
 import { socialPlatforms } from '../links/linksAddEdit'
 import ProfileShimmer from '../../ProfileShimmer'
-import {  TbX } from 'react-icons/tb'
+import { TbX } from 'react-icons/tb'
 import axios from 'axios'
 import { Report } from './Report'
 import './profile.css'
-import { MdOutlineSecurity} from 'react-icons/md';
-import { FaLock } from "react-icons/fa";
+import { FaLock } from 'react-icons/fa'
 import { FaCopy } from 'react-icons/fa'
+import SuccessMessage from '../../../helpers/Success'
 
 interface userInfo {
   _id: string
@@ -36,7 +35,7 @@ interface userInfo {
 }
 
 interface videoInterface {
-  _id?: string,
+  _id?: string
   videoLink?: string
 }
 interface theme {
@@ -53,20 +52,24 @@ interface Link {
   is_index: number
   _id: string
   protectedLinks?: string
-  video?:videoInterface
+  video?: videoInterface
 }
 
 const Index: React.FC = () => {
-  const [ip, setIp] = useState<string>('')
-  const navigate = useNavigate()
-  const id = useParams()
-  const [userInfo, setUserInfo] = useState<userInfo | null>(null)
-  const [loader, setLoader] = useState<boolean>(false)
-  const [showPasswordModal, setShowPasswordModal] = useState<boolean>(false)
-  const [password, setPassword] = useState<string>('')
-  const [selectedLink, setSelectedLink] = useState<Link | null>(null)
-  const [showSharePopup, setShowSharePopup] = useState<boolean>(false)
-  const [selectedShareLink, setSelectedShareLink] = useState<Link | null>(null)
+  const [ip, setIp] = useState<string>('');
+  const navigate = useNavigate();
+  const id = useParams();
+  const [userInfo, setUserInfo] = useState<userInfo | null>(null);
+  const [loader, setLoader] = useState<boolean>(false);
+  const [showPasswordModal, setShowPasswordModal] = useState<boolean>(false);
+  const [password, setPassword] = useState<string>('');
+  const [selectedLink, setSelectedLink] = useState<Link | null>(null);
+  const [showSharePopup, setShowSharePopup] = useState<boolean>(false);
+  const [selectedShareLink, setSelectedShareLink] = useState<Link | null>(null);
+
+  // New subscription modal state - following same pattern as showPasswordModal
+  const [showSubscriptionModal, setShowSubscriptionModal] = useState<boolean>(false);
+  const [email, setEmail] = useState<string>('');
 
   const getUserDetail = async (header?: string) => {
     setLoader(true)
@@ -113,6 +116,7 @@ const Index: React.FC = () => {
   }, [])
 
   const handleClickSubmit = async (linkId: string) => {
+    setLoader(true)
     try {
       const userId = localStorage.getItem('accessToken')
         ? localStorage.getItem('_id') || ''
@@ -127,16 +131,46 @@ const Index: React.FC = () => {
         'POST',
         payload
       )
+      setLoader(false)
       if (!response?.data?.status) {
         navigate('/')
         ErrorMessage(response?.data?.data?.message)
+      }else{
+        SuccessMessage(response?.data?.message);
       }
     } catch (error: any) {
+      setLoader(false)
       console.error('Error tracking click:', error)
     }
   }
 
 
+  const handleSubscriptionSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setLoader(true)
+    try {
+      const payload = {
+        email,
+      };
+
+      const response = await callAPIWithoutAuth(
+        apiUrls.addSubscriber,
+        { _id: id.id },
+        'POST',
+        payload
+      );
+      setLoader(false)
+      closeSubscriptionModal();
+      if (!response?.data?.status) {
+        ErrorMessage(response?.data?.message);
+      }else{
+        SuccessMessage(response?.data?.message);
+      }
+    } catch (error: any) {
+      setLoader(true)
+      ErrorMessage(error.message || 'Something went wrong');
+    }
+  };
 
   const handlePasswordSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -150,12 +184,22 @@ const Index: React.FC = () => {
     setSelectedLink(null)
   }
 
+  const closeSubscriptionModal = () => {
+    setShowSubscriptionModal(false)
+    setEmail('')
+  }
+
   const handlePasswordIconClick = () => {
     setShowPasswordModal(true)
   }
+
+  const handleSubscriptionButtonClick = () => {
+    setShowSubscriptionModal(true)
+  }
+
   const generateShareUrl = (
     platform: string,
-    linkUrl: string, // Use the actual linkUrl instead of profileUrl
+    linkUrl: string,
     linkTitle: string
   ) => {
     const encodedUrl = encodeURIComponent(linkUrl)
@@ -169,7 +213,6 @@ const Index: React.FC = () => {
       case 'linkedin':
         return `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`
       case 'whatsapp':
-        // Use WhatsApp app URL scheme for mobile, fallback to web
         return `whatsapp://send?text=Check%20out%20this%20link:%20${encodedTitle}%20${encodedUrl}`
       case 'email':
         return `mailto:?subject=Check%20out%20this%20link&body=Check%20out%20this%20link:%20${encodedTitle}%20${encodedUrl}`
@@ -178,7 +221,6 @@ const Index: React.FC = () => {
     }
   }
 
-  // Share Popup Component
   const SharePopup: React.FC<{
     profileUrl: string
     linkTitle: string
@@ -262,7 +304,6 @@ const Index: React.FC = () => {
             <TbX className='close-icon' onClick={onClose} />
           </div>
           <div className='share-popup-content'>
-            {/* Copy Link Button */}
             <button
               className='share-platform'
               style={{
@@ -310,7 +351,6 @@ const Index: React.FC = () => {
                   )
                 }}
               >
-                {/* {linkUrl} */}
                 {platform.icon}
                 <span>{platform.name}</span>
               </button>
@@ -323,24 +363,23 @@ const Index: React.FC = () => {
 
   const userId = localStorage.getItem('_id') || null
   const getYouTubeEmbedUrl = (url: string) => {
-  try {
-    const urlObj = new URL(url);
-    let videoId = "";
+    try {
+      const urlObj = new URL(url)
+      let videoId = ''
 
-    if (urlObj.hostname.includes("youtu.be")) {
-      videoId = urlObj.pathname.slice(1);
-    } else if (urlObj.hostname.includes("youtube.com")) {
-      videoId = urlObj.searchParams.get("v") || "";
+      if (urlObj.hostname.includes('youtu.be')) {
+        videoId = urlObj.pathname.slice(1)
+      } else if (urlObj.hostname.includes('youtube.com')) {
+        videoId = urlObj.searchParams.get('v') || ''
+      }
+
+      if (!videoId) return null
+
+      return `https://www.youtube.com/embed/${videoId}?modestbranding=1&rel=0&controls=1`
+    } catch {
+      return null
     }
-
-    if (!videoId) return null;
-
-    // Minimal branding + no unrelated recommendations
-    return `https://www.youtube.com/embed/${videoId}?modestbranding=1&rel=0&controls=1`;
-  } catch {
-    return null;
   }
-};
   return (
     <>
       {loader ? (
@@ -376,9 +415,8 @@ const Index: React.FC = () => {
                 left: 0,
                 width: '100%',
                 height: '100%',
-                backgroundImage: `url(${
-                  defaultConfig?.imagePath + userInfo?.banner_img
-                })`,
+                backgroundImage: `url(${defaultConfig?.imagePath + userInfo?.banner_img
+                  })`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat',
@@ -426,64 +464,66 @@ const Index: React.FC = () => {
                   <div className='mobile-links-list'>
                     {userInfo.non_social.map(link => (
                       <>
-                      <div
-                        className={`link-card ${
-                          userInfo.theme.themeDesign || 'round'
-                        }`}
-                            onClick={()=>handleClickSubmit(link._id)}
-                        style={
-                          {
-                            padding: '10px',
-                            '--card-bg':
-                              userInfo?.theme?.is_colorImage || '#333',
+                        <div
+                          className={`link-card ${userInfo.theme.themeDesign || 'round'
+                            }`}
+                          onClick={() => handleClickSubmit(link._id)}
+                          style={
+                            {
+                              padding: '10px',
+                              '--card-bg':
+                                userInfo?.theme?.is_colorImage || '#333',
                               '--card-color':
-                              userInfo?.theme?.fontColor || 'white',
-                            '--card-font':
-                              userInfo?.theme?.fontFamily || 'sans-serif',
-                            cursor: 'pointer'
-                          } as React.CSSProperties
-                        }
-                      >
-                        <Link
-                          className='link-content'
-                          to={link.linkUrl}
-                          target='_blank'
-                          style={{
-                            color: userInfo?.theme?.fontColor || 'white',
-                            textDecoration: 'none'
-                          }}
+                                userInfo?.theme?.fontColor || 'white',
+                              '--card-font':
+                                userInfo?.theme?.fontFamily || 'sans-serif',
+                              cursor: 'pointer'
+                            } as React.CSSProperties
+                          }
                         >
-                          <img
-                            src={defaultConfig?.imagePath + link.linkLogo}
-                            alt={link.linkTitle}
-                            className='mobile-link-icon'
+                          <Link
+                            className='link-content'
+                            to={link.linkUrl}
+                            target='_blank'
+                            style={{
+                              color: userInfo?.theme?.fontColor || 'white',
+                              textDecoration: 'none'
+                            }}
+                          >
+                            <img
+                              src={defaultConfig?.imagePath + link.linkLogo}
+                              alt={link.linkTitle}
+                              className='mobile-link-icon'
+                            />
+                            <span className='mobile-link-title'>
+                              {link.linkTitle}
+                            </span>
+                          </Link>
+                          <BsThreeDots
+                            className='share-icon'
+                            onClick={e => {
+                              e.stopPropagation()
+                              setSelectedShareLink(link)
+                              setShowSharePopup(true)
+                            }}
+                            style={{ cursor: 'pointer', marginLeft: '10px' }}
                           />
-                          <span className='mobile-link-title'>
-                            {link.linkTitle}
-                          </span>
-                        </Link>
-                        <BsThreeDots
-                          className='share-icon'
-                          onClick={e => {
-                            e.stopPropagation()
-                            setSelectedShareLink(link)
-                            setShowSharePopup(true)
-                          }}
-                          style={{ cursor: 'pointer', marginLeft: '10px' }}
-                        />
-                      </div>
-                         {
-                  link?.video?.videoLink &&(
-                    <iframe
-                      width="100%"
-                      height="150"
-                      src={getYouTubeEmbedUrl(link?.video?.videoLink || "") || ""}
-                      frameBorder="0"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                    ></iframe>)
-                  }
-                    </>
+                        </div>
+                        {link?.video?.videoLink && (
+                          <iframe
+                            width='100%'
+                            height='150'
+                            src={
+                              getYouTubeEmbedUrl(
+                                link?.video?.videoLink || ''
+                              ) || ''
+                            }
+                            frameBorder='0'
+                            allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+                            allowFullScreen
+                          ></iframe>
+                        )}
+                      </>
                     ))}
                   </div>
                 )}
@@ -503,11 +543,10 @@ const Index: React.FC = () => {
                             to={link.linkUrl}
                             target='_blank'
                             className={`social-link-wrapper `}
-                            onClick={()=>handleClickSubmit(link._id)}
+                            onClick={() => handleClickSubmit(link._id)}
                           >
                             <div
                               className={`link-card-social`}
-                              // onClick={e => handleLinkClick(link, e)}
                               style={{ color: 'black', cursor: 'pointer' }}
                             >
                               <span
@@ -528,7 +567,7 @@ const Index: React.FC = () => {
                   </div>
                 )}
               </div>
-              <div className='d-flex justify-content-center mt-4'>
+              <div className='d-flex justify-content-center mt-4' style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
                 <button
                   type='button'
                   className='link-join-biofoge'
@@ -549,8 +588,8 @@ const Index: React.FC = () => {
                   >
                     Join
                   </span>
-                  <span 
-                  className='link-join-text'
+                  <span
+                    className='link-join-text'
                     style={{
                       fontFamily: userInfo?.theme?.fontFamily,
                       background: userInfo?.theme?.is_colorImage || '#333',
@@ -571,6 +610,20 @@ const Index: React.FC = () => {
                     on Bioforge
                   </span>
                 </button>
+
+                {/* Updated Subscribe Button - same pattern as password icon */}
+                <button
+                  type='button'
+                  className='link-join-subscribe '
+                  onClick={handleSubscriptionButtonClick}
+                  style={{
+                    fontFamily: userInfo?.theme?.fontFamily,
+                    background: userInfo?.theme?.is_colorImage || '#333',
+                    color: userInfo?.theme?.fontColor || '#fbbf24'
+                  }}
+                >
+                  Subscribe
+                </button>
               </div>
             </div>
           </div>
@@ -588,12 +641,13 @@ const Index: React.FC = () => {
                   color: userInfo?.theme?.fontColor || '#fbbf24',
                   cursor: 'pointer',
                   fontSize: '40px',
-                  top: '11%',
-                  
+
                 } as React.CSSProperties
               }
             />
           </div>
+
+          {/* Password Modal - existing */}
           {showPasswordModal && (
             <div className='password-modal-overlay'>
               <div
@@ -604,7 +658,6 @@ const Index: React.FC = () => {
                 }}
               >
                 <div className='modal-content'>
-                 
                   <form
                     onSubmit={handlePasswordSubmit}
                     className='password-form'
@@ -638,6 +691,52 @@ const Index: React.FC = () => {
               </div>
             </div>
           )}
+
+          {/* New Subscription Modal - same pattern as password modal */}
+          {showSubscriptionModal && (
+            <div className='password-modal-overlay'>
+              <div
+                className='password-modal'
+                style={{
+                  fontFamily: userInfo?.theme?.fontFamily,
+                  color: userInfo?.theme?.fontColor || '#333'
+                }}
+              >
+                <div className='modal-content'>
+                  <form
+                    onSubmit={handleSubscriptionSubmit}
+                    className='password-form'
+                  >
+                    <div className='input-group'>
+                      <label htmlFor='email'>Email:</label>
+                      <input
+                        type='email'
+                        id='email'
+                        value={email}
+                        onChange={e => setEmail(e.target.value)}
+                        placeholder='Enter your email to subscribe'
+                        className='password-input'
+                        required
+                      />
+                    </div>
+                    <div className='modal-actions'>
+                      <button
+                        type='button'
+                        onClick={closeSubscriptionModal}
+                        className='cancel-button'
+                      >
+                        Cancel
+                      </button>
+                      <button type='submit' className='submit-button'>
+                        Subscribe
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          )}
+
           {showSharePopup && selectedShareLink && (
             <SharePopup
               profileUrl={`${window.location.origin}/${userInfo?.username}`}

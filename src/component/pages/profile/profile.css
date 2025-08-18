@@ -869,7 +869,6 @@
 .link-join-biofoge {
   padding: 10px 16px 14px 16px;
   border-radius: 40px;
-  cursor: pointer;
   transition: all 0.2s ease;
   display: flex;
   flex-wrap: wrap;
@@ -879,6 +878,21 @@
   align-items: baseline;
   width: auto;
 }
+/* .link-join-subscribe {
+  position: relative;
+  transition: all 0.3s ease;
+  padding: 10px 16px 14px 16px;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-wrap: wrap;
+  border-color: #ffffff;
+  gap: 8px;
+  border: none;
+  justify-content: center;
+  align-items: baseline;
+  width: 150px;
+  border-radius: 24px;
+} */
 
 .link-join-text {
   font-size: 20px;
@@ -1260,12 +1274,7 @@
   }
 
   .passwordProfile {
-    color: rgb(255, 255, 255);
-    height: 40px;
-    width: 40px;
-    cursor: pointer;
-    font-size: 40px;
-    top: 11%;
+
     left: 360px;
   }
 
@@ -1458,6 +1467,27 @@
 }
 
 .link-card:not(.locked-link):hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+/* .link-join-subscribe:not(.locked-link):hover {
+   transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+} */
+.link-join-subscribe {
+  position: relative;
+  transition: all 0.3s ease;
+  padding: 10px 16px 14px 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  border: none;
+  justify-content: center;
+  align-items: baseline;
+  width: auto;
+  border-radius: 24px;
+}
+.link-join-subscribe:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }

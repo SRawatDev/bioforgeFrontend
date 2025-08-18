@@ -31,7 +31,9 @@ export const apiUrls = {
     statuslinkCategory:"api/v1/status-linkCategory", 
     deletelinkCategory:"api/v1/delete-linkCategory" ,
     //subsciber
-    getAllsubscribe:"api/v1/getAll-subscribe" 
+    getAllsubscribe:"api/v1/getAll-subscribe",
+    createsession:"api/payment/create-checkout-session",
+    addSubscriber:"api/v1/add-subscribe"
 
 
 };

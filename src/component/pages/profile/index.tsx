@@ -21,6 +21,7 @@ import './profile.css'
 import { FaLock } from 'react-icons/fa'
 import { FaCopy } from 'react-icons/fa'
 import SuccessMessage from '../../../helpers/Success'
+import ProductCarousel from '../dashboard/Product'
 
 interface userInfo {
   _id: string
@@ -531,6 +532,12 @@ const Index: React.FC = () => {
                             allowFullScreen
                           ></iframe>
                         )}
+                          {link?.LinkCategoryId && link.LinkCategoryId.length > 0 && (
+                    <ProductCarousel
+                      products={link.LinkCategoryId} 
+                      userInfo={userInfo} 
+                    />
+                  )}
                       </>
                     ))}
                   </div>

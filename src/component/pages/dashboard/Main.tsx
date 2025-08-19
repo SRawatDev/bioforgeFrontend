@@ -408,14 +408,14 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
                   >
                     Round
                   </span>
-                  <span
+                  {/* <span
                     className={`static-banner-thumb text-center bg-light ${
                       userInfo?.theme?.themeDesign === 'pill' ? 'selected' : ''
                     }`}
                     onClick={() => selectedDesign('pill')}
                   >
                     Pill
-                  </span>
+                  </span> */}
                   <span
                     className={`static-banner-thumb text-center bg-light ${
                       userInfo?.theme?.themeDesign === 'beveled' ? 'selected' : ''
@@ -424,7 +424,7 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
                   >
                     Beveled
                   </span>
-                  <span
+                  {/* <span
                     className={`static-banner-thumb text-center bg-light ${
                       userInfo?.theme?.themeDesign === 'outlined' ? 'selected' : ''
                     }`}
@@ -455,7 +455,7 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
                     onClick={() => selectedDesign('flat')}
                   >
                     Flat
-                  </span>
+                  </span> */}
                   <span
                     className={`static-banner-thumb text-center bg-light ${
                       userInfo?.theme?.themeDesign === 'neon' ? 'selected' : ''
@@ -472,14 +472,14 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
                   >
                     Vintage
                   </span>
-                  <span
+                  {/* <span
                     className={`static-banner-thumb text-center bg-light ${
                       userInfo?.theme?.themeDesign === 'modern' ? 'selected' : ''
                     }`}
                     onClick={() => selectedDesign('modern')}
                   >
                     Modern
-                  </span>
+                  </span> */}
                 </div>
               </div>
 

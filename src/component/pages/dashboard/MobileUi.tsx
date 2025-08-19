@@ -47,8 +47,7 @@ interface Link {
   linkLogo: string;
   is_index: number;
   video?: videoInterface;
-  // LinkCategoryId?: linkCategoryInterface[];
-  LinkCategoryId?: linkCategoryInterface[]; // Array of category IDs
+  LinkCategoryId?: linkCategoryInterface[]; 
   _id: string;
 }
 
@@ -57,7 +56,6 @@ interface MobileUiProps {
   newUserData: userInfo | null;
 }
 
-// Product Slider Component
 const ProductSlider: React.FC<{
   LinkCategoryId: linkCategoryInterface[];
   fontFamily?: string;

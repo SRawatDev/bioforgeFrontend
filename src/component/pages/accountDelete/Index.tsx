@@ -1,51 +1,33 @@
+
 import React, { useState, useEffect } from "react";
 import { Eye, EyeOff, AlertTriangle, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { callAPI } from "../../../utils/apicall.utils";
-import ErrorMessage from "../../../helpers/ErrorMessage";
 import { apiUrls } from "../../../utils/api.utils";
 import SuccessMessage from "../../../helpers/Success";
 import { clearData } from "../../../redux/Slice";
 
-interface DeleteAccountModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
-
-interface DeleteAccountData {
-  password: string;
-}
-
+interface DeleteAccountModalProps { isOpen: boolean; onClose: () => void; }
+interface DeleteAccountData { password: string; }
 const DeleteAccountModal: React.FC<DeleteAccountModalProps> = ({ isOpen, onClose }) => {
   const [loader, setLoader] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [step, setStep] = useState<'warning' | 'password'>('warning');
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  
-  const [deleteAccountData, setDeleteAccountData] = useState<DeleteAccountData>({
-    password: "",
-  });
-
-  const [errors, setErrors] = useState({
-    password: "",
-    general: ""
-  });
-
-  // Reset form when modal opens/closes
+  const [deleteAccountData, setDeleteAccountData] = useState<DeleteAccountData>({password: "",});
+  const [errors, setErrors] = useState({password: "",general: ""});
   useEffect(() => {
     if (isOpen) {
       setStep('warning');
       setDeleteAccountData({ password: "" });
       setErrors({ password: "", general: "" });
       setShowPassword(false);
-      // Prevent body scroll when modal is open
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
     }
-
     return () => {
       document.body.style.overflow = 'unset';
     };
@@ -53,47 +35,27 @@ const DeleteAccountModal: React.FC<DeleteAccountModalProps> = ({ isOpen, onClose
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setDeleteAccountData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-    
-    // Clear specific field error when user starts typing
+    setDeleteAccountData((prev) => ({...prev,[name]: value,}));
     if (errors[name as keyof typeof errors]) {
-      setErrors(prev => ({
-        ...prev,
-        [name]: "",
-        general: ""
-      }));
+      setErrors(prev => ({...prev, [name]: "", general: ""}));
     }
   };
-
-  const validateForm = () => {
-    const newErrors = {
-      password: "",
-      general: ""
-    };
-
+  const validateForm = () => {const newErrors = {password: "",general: "" };
     if (!deleteAccountData.password.trim()) {
       newErrors.password = "Password is required to delete account";
     } else if (deleteAccountData.password.length < 6) {
       newErrors.password = "Please enter a valid password";
     }
-
     setErrors(newErrors);
     return !Object.values(newErrors).some(error => error !== "");
   };
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
     if (!validateForm()) {
       return;
     }
-
     setLoader(true);
     setErrors({ password: "", general: "" });
-
     try {
       const response = await callAPI(
         apiUrls.accountDelete,
@@ -102,7 +64,7 @@ const DeleteAccountModal: React.FC<DeleteAccountModalProps> = ({ isOpen, onClose
         deleteAccountData
       );
       setLoader(false);
-      
+
       if (!response?.data?.status) {
         setErrors(prev => ({
           ...prev,
@@ -123,27 +85,20 @@ const DeleteAccountModal: React.FC<DeleteAccountModalProps> = ({ isOpen, onClose
       }));
     }
   };
-
   const handleCancel = () => {
     setDeleteAccountData({ password: "" });
     setErrors({ password: "", general: "" });
     setStep('warning');
     onClose();
   };
-
   const proceedToPasswordStep = () => {
     setStep('password');
   };
-
   if (!isOpen) return null;
-
   return (
     <>
-      <div 
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
+      <div
+        style={{position: 'fixed',top: 0,left: 0,
           width: '100vw',
           height: '100vh',
           backgroundColor: 'rgba(0, 0, 0, 0.6)',
@@ -156,7 +111,7 @@ const DeleteAccountModal: React.FC<DeleteAccountModalProps> = ({ isOpen, onClose
           padding: '20px',
           boxSizing: 'border-box'
         }}
-        // onClick={handleCancel}
+      // onClick={handleCancel}
       >
         <div
           style={{
@@ -169,7 +124,7 @@ const DeleteAccountModal: React.FC<DeleteAccountModalProps> = ({ isOpen, onClose
             overflow: 'auto',
             position: 'relative',
             animation: 'modalFadeIn 0.3s ease-out forwards',
-            scrollbarWidth:'none'
+            scrollbarWidth: 'none'
           }}
           onClick={(e) => e.stopPropagation()}
         >
@@ -326,7 +281,7 @@ const DeleteAccountModal: React.FC<DeleteAccountModalProps> = ({ isOpen, onClose
                 >
                   Keep My Account
                 </button>
-                
+
                 <button
                   type="button"
                   onClick={proceedToPasswordStep}
@@ -512,7 +467,7 @@ const DeleteAccountModal: React.FC<DeleteAccountModalProps> = ({ isOpen, onClose
                   >
                     Back
                   </button>
-                  
+
                   <button
                     type="submit"
                     disabled={loader || !deleteAccountData.password.trim()}
@@ -532,7 +487,7 @@ const DeleteAccountModal: React.FC<DeleteAccountModalProps> = ({ isOpen, onClose
                     }}
                     onMouseEnter={(e) => {
                       if (!loader && deleteAccountData.password.trim()) {
-                         (e.target as HTMLButtonElement).style.backgroundColor = '#c82333';
+                        (e.target as HTMLButtonElement).style.backgroundColor = '#c82333';
                       }
                     }}
                     onMouseLeave={(e) => {
@@ -580,5 +535,4 @@ const DeleteAccountModal: React.FC<DeleteAccountModalProps> = ({ isOpen, onClose
     </>
   );
 };
-
 export default DeleteAccountModal;

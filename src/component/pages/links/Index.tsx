@@ -31,6 +31,7 @@ interface LinkItem {
   protectedLinks?: string;
   clickCount?: number;
   clicks?: clicks[];
+  LinkCategoryId?: string[];
 }
 
 interface getuser {
@@ -65,6 +66,7 @@ const Index: React.FC<Props> = ({ getUserDetail }) => {
     linkLogo: "",
     status: "",
     type: "",
+    LinkCategoryId:[]
   });
 
   // Fetch regular links (non-social)

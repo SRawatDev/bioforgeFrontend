@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import ErrorMessage from "../../../helpers/ErrorMessage";
-import { callAPI, callAPIWithoutAuth } from "../../../utils/apicall.utils";
+import { callAPIWithoutAuth } from "../../../utils/apicall.utils";
 import { apiUrls } from "../../../utils/api.utils";
 import { defaultConfig } from "../../../config";
 import { Link, useNavigate } from "react-router-dom";
 import { BiLogoGmail } from "react-icons/bi";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { socialPlatforms } from "../links/linksAddEdit";
 import "./mobilePreview.css";
 import axios from "axios";
+import Product from "./Product";
 
 interface userInfo {
   _id: string;
@@ -23,15 +23,15 @@ interface userInfo {
 }
 
 interface videoInterface {
-  _id?: string;
-  videoLink?: string;
+  _id?: string,
+  videoLink?: string
 }
 
-interface linkCategoryInterface {
-  _id: string;
-  title: string;
-  link: string;
-  image?: string;
+interface productInterface {
+  _id?: string;
+  title?: string;
+  image?: string
+  link?: string
 }
 
 interface theme {
@@ -42,12 +42,12 @@ interface theme {
 }
 
 interface Link {
+  LinkCategoryId?: productInterface[]
   linkTitle: string;
   linkUrl: string;
   linkLogo: string;
   is_index: number;
-  video?: videoInterface;
-  LinkCategoryId?: linkCategoryInterface[]; 
+  video?: videoInterface
   _id: string;
 }
 
@@ -56,208 +56,247 @@ interface MobileUiProps {
   newUserData: userInfo | null;
 }
 
-const ProductSlider: React.FC<{
-  LinkCategoryId: linkCategoryInterface[];
-  fontFamily?: string;
-  fontColor?: string;
-}> = ({ LinkCategoryId, fontFamily, fontColor }) => {
+// Carousel Component
+const ProductCarousel: React.FC<{
+  products: productInterface[];
+  userInfo: userInfo | null;
+}> = ({ products, userInfo }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isAutoplay, setIsAutoplay] = useState(true);
 
-  // Auto-loop functionality
-  useEffect(() => {
-    if (!isAutoplay || LinkCategoryId.length <= 1) return;
-
-    const interval = setInterval(() => {
-      setCurrentIndex(prev => (prev + 1) % LinkCategoryId.length);
-    }, 3000); // Change slide every 3 seconds
-
-    return () => clearInterval(interval);
-  }, [LinkCategoryId.length, isAutoplay]);
-
-  const goToPrevious = () => {
-    setIsAutoplay(false);
-    setCurrentIndex(prev => (prev - 1 + LinkCategoryId.length) % LinkCategoryId.length);
-    // Resume autoplay after 5 seconds of inactivity
-    setTimeout(() => setIsAutoplay(true), 5000);
+  const nextSlide = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % products.length);
   };
 
-  const goToNext = () => {
-    setIsAutoplay(false);
-    setCurrentIndex(prev => (prev + 1) % LinkCategoryId.length);
-    // Resume autoplay after 5 seconds of inactivity
-    setTimeout(() => setIsAutoplay(true), 5000);
+  const prevSlide = () => {
+    setCurrentIndex((prevIndex) => 
+      prevIndex === 0 ? products.length - 1 : prevIndex - 1
+    );
   };
 
-  if (!LinkCategoryId || LinkCategoryId.length === 0) return null;
+  const goToSlide = (index: number) => {
+    setCurrentIndex(index);
+  };
+
+  if (!products || products.length === 0) return null;
+
   return (
-    <div className="product-slider-container" style={{ margin: '15px 0' }}>
-      <h4 
-        style={{ 
-          fontFamily, 
-          color: fontColor || 'white',
-          marginBottom: '10px',
-          textAlign: 'center',
-          fontSize: '14px'
-        }}
-      >
-        Featured Links ({LinkCategoryId.length})
-      </h4>
-      
-      <div className="product-slider" style={{ position: 'relative' }}>
-        {/* Navigation Arrows */}
-        {LinkCategoryId.length > 1 && (
-          <>
-            <button
-              onClick={goToPrevious}
-              style={{
-                position: 'absolute',
-                left: '5px',
-                top: '50%',
-                transform: 'translateY(-50%)',
-                zIndex: 2,
-                background: 'rgba(0, 0, 0, 0.5)',
-                border: 'none',
-                borderRadius: '50%',
-                width: '30px',
-                height: '30px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: 'white',
-                cursor: 'pointer'
-              }}
-            >
-              <FaChevronLeft size={12} />
-            </button>
-            <button
-              onClick={goToNext}
-              style={{
-                position: 'absolute',
-                right: '5px',
-                top: '50%',
-                transform: 'translateY(-50%)',
-                zIndex: 2,
-                background: 'rgba(0, 0, 0, 0.5)',
-                border: 'none',
-                borderRadius: '50%',
-                width: '30px',
-                height: '30px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: 'white',
-                cursor: 'pointer'
-              }}
-            >
-              <FaChevronRight size={12} />
-            </button>
-          </>
-        )}
-        
-        <div 
-          className="product-slides" 
-          style={{ 
-            display: 'flex',
-            transform: `translateX(-${currentIndex * 100}%)`,
-            transition: 'transform 0.5s ease-in-out',
-            overflow: 'hidden'
-          }}
-        >
-          {LinkCategoryId.map((link, index) => (
-            <div 
-              key={link._id}
-              className="product-slide"
-              style={{
-                minWidth: '100%',
-                display: 'flex',
-                alignItems: 'center',
-                padding: '15px',
-                backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                backdropFilter: 'blur(10px)',
-                borderRadius: '10px',
-                margin: '0 2px',
-                boxSizing: 'border-box'
-              }}
-            >
-              <Link
-                to={link.link}
+    <div className="product-carousel" style={{
+      position: 'relative',
+      width: '240px',
+      height: '140px',
+      margin: '8px auto',
+      borderRadius: '8px',
+      overflow: 'hidden',
+      backgroundColor: 'rgba(255, 255, 255, 0.08)',
+      backdropFilter: 'blur(5px)',
+      border: '1px solid rgba(255, 255, 255, 0.15)',
+      boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)'
+    }}>
+      {/* Carousel Container */}
+      <div style={{
+        display: 'flex',
+        transform: `translateX(-${currentIndex * 100}%)`,
+        transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+        height: '100%',
+        width: `${products.length * 100}%`
+      }}>
+        {products.map((item, index) => (
+          <div
+            key={item._id || index}
+            style={{
+              width: '240px', // Fixed width for each slide
+              height: '100%',
+              flexShrink: 0,
+              padding: '12px',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              textAlign: 'center',
+              boxSizing: 'border-box'
+            }}
+          >
+            {item.image && (
+              <img
+                src={defaultConfig?.imagePath + item.image}
+                alt={item.title || 'Product'}
+                style={{
+                  width: '60px',
+                  height: '60px',
+                  objectFit: 'cover',
+                  borderRadius: '6px',
+                  marginBottom: '8px',
+                  flexShrink: 0
+                }}
+              />
+            )}
+            <h4 style={{
+              fontFamily: userInfo?.theme?.fontFamily,
+              color: userInfo?.theme?.fontColor || 'white',
+              fontSize: '13px',
+              margin: '0 0 8px 0',
+              fontWeight: '600',
+              lineHeight: '1.2',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              display: '-webkit-box',
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: 'vertical',
+              maxWidth: '100%',
+              textAlign: 'center'
+            }}>
+              {item.title}
+            </h4>
+            {item.link && (
+              <a
+                href={item.link.toString()}
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{
-                  display: 'flex',
-                  alignItems: 'center',
+                  display: 'inline-block',
+                  padding: '6px 12px',
+                  backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                  color: userInfo?.theme?.fontColor || 'white',
                   textDecoration: 'none',
-                  width: '100%',
-                  gap: '12px'
+                  borderRadius: '4px',
+                  fontSize: '10px',
+                  fontFamily: userInfo?.theme?.fontFamily,
+                  border: '1px solid rgba(255, 255, 255, 0.3)',
+                  transition: 'all 0.2s ease',
+                  flexShrink: 0,
+                  whiteSpace: 'nowrap'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.3)';
+                  e.currentTarget.style.transform = 'scale(1.05)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
+                  e.currentTarget.style.transform = 'scale(1)';
                 }}
               >
-                {link.image && (
-                  <img
-                    src={defaultConfig.imagePath + link.image}
-                    alt={link.title}
-                    style={{
-                      width: '60px',
-                      height: '60px',
-                      borderRadius: '8px',
-                      objectFit: 'cover',
-                      flexShrink: 0
-                    }}
-                  />
-                )}
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <h5 
-                    style={{
-                      fontFamily,
-                      color: fontColor || 'white',
-                      margin: '0 0 4px 0',
-                      fontSize: '14px',
-                      whiteSpace: 'nowrap',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis'
-                    }}
-                  >
-                    {link.title}
-                  </h5>
-                </div>
-              </Link>
-            </div>
-          ))}
-        </div>
-        
-        {/* Dots indicator */}
-        {LinkCategoryId.length > 1 && (
-          <div 
+                Visit Link
+              </a>
+            )}
+          </div>
+        ))}
+      </div>
+
+      {/* Navigation Arrows */}
+      {products.length > 1 && (
+        <>
+          <button
+            onClick={prevSlide}
             style={{
+              position: 'absolute',
+              left: '5px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              backgroundColor: 'rgba(0, 0, 0, 0.7)',
+              border: 'none',
+              borderRadius: '50%',
+              width: '24px',
+              height: '24px',
+              color: 'white',
+              cursor: 'pointer',
+              fontSize: '12px',
               display: 'flex',
+              alignItems: 'center',
               justifyContent: 'center',
-              gap: '6px',
-              marginTop: '10px'
+              zIndex: 5,
+              transition: 'all 0.2s ease'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
+              e.currentTarget.style.transform = 'translateY(-50%) scale(1.1)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+              e.currentTarget.style.transform = 'translateY(-50%) scale(1)';
             }}
           >
-            {LinkCategoryId.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => {
-                  setIsAutoplay(false);
-                  setCurrentIndex(index);
-                  setTimeout(() => setIsAutoplay(true), 5000);
-                }}
-                style={{
-                  width: '8px',
-                  height: '8px',
-                  borderRadius: '50%',
-                  border: 'none',
-                  backgroundColor: index === currentIndex ? 
-                    (fontColor || 'white') : 
-                    'rgba(255, 255, 255, 0.3)',
-                  cursor: 'pointer',
-                  transition: 'background-color 0.3s ease'
-                }}
-              />
-            ))}
-          </div>
-        )}
+            ‹
+          </button>
+          <button
+            onClick={nextSlide}
+            style={{
+              position: 'absolute',
+              right: '5px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              backgroundColor: 'rgba(0, 0, 0, 0.7)',
+              border: 'none',
+              borderRadius: '50%',
+              width: '24px',
+              height: '24px',
+              color: 'white',
+              cursor: 'pointer',
+              fontSize: '12px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 5,
+              transition: 'all 0.2s ease'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
+              e.currentTarget.style.transform = 'translateY(-50%) scale(1.1)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+              e.currentTarget.style.transform = 'translateY(-50%) scale(1)';
+            }}
+          >
+            ›
+          </button>
+        </>
+      )}
+
+      {/* Dots Indicator */}
+      {products.length > 1 && (
+        <div style={{
+          position: 'absolute',
+          bottom: '8px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          display: 'flex',
+          justifyContent: 'center',
+          gap: '6px'
+        }}>
+          {products.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => goToSlide(index)}
+              style={{
+                width: '6px',
+                height: '6px',
+                borderRadius: '50%',
+                border: 'none',
+                backgroundColor: index === currentIndex 
+                  ? (userInfo?.theme?.fontColor || 'white')
+                  : 'rgba(255, 255, 255, 0.5)',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                transform: index === currentIndex ? 'scale(1.2)' : 'scale(1)'
+              }}
+            />
+          ))}
+        </div>
+      )}
+
+      {/* Current Slide Counter */}
+      <div style={{
+        position: 'absolute',
+        top: '5px',
+        right: '8px',
+        backgroundColor: 'rgba(0, 0, 0, 0.6)',
+        color: 'white',
+        fontSize: '9px',
+        padding: '2px 6px',
+        borderRadius: '10px',
+        fontFamily: userInfo?.theme?.fontFamily
+      }}>
+        {currentIndex + 1} / {products.length}
       </div>
     </div>
   );
@@ -265,9 +304,8 @@ const ProductSlider: React.FC<{
 
 export const MobileUi: React.FC<MobileUiProps> = ({ userInfo, newUserData }) => {
   const [ip, setIp] = useState<string>("");
-  const [linkCategories, setLinkCategories] = useState<{ [key: string]: linkCategoryInterface[] }>({});
   const navigate = useNavigate();
-
+  
   const getUserIp = async () => {
     try {
       const response = await axios.get("https://api.ipify.org/?format=json");
@@ -276,52 +314,10 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo, newUserData }) => 
       ErrorMessage(error.message || "Something went wrong");
     }
   };
-
-  // Function to fetch link categories by IDs
-  const fetchLinkCategories = async (LinkCategoryId: string[]) => {
-    try {
-      const response = await callAPI(
-        apiUrls.getlinks, // Assuming this is your getLinks endpoint
-        { LinkCategoryId }, // Send array of IDs
-        'GET',
-        {}
-      );
-      
-      if (response?.data?.status) {
-        return response.data.data || [];
-      } else {
-        console.error('Failed to fetch link categories:', response?.data?.message);
-        return [];
-      }
-    } catch (error: any) {
-      console.error('Error fetching link categories:', error.message);
-      return [];
-    }
-  };
-
-  // Fetch link categories for each link that has LinkCategoryId
-  useEffect(() => {
-    const fetchAllLinkCategories = async () => {
-      if (!newUserData?.non_social) return;
-
-      const categoriesMap: { [key: string]: linkCategoryInterface[] } = {};
-      
-      for (const link of newUserData.non_social) {
-        if (link.LinkCategoryId && link.LinkCategoryId.length > 0) {
-          const categories = await fetchLinkCategories(link.LinkCategoryId);
-          categoriesMap[link._id] = categories;
-        }
-      }
-      
-      setLinkCategories(categoriesMap);
-    };
-
-    fetchAllLinkCategories();
-  }, [newUserData?.non_social]);
-
+  
   useEffect(() => {
     getUserIp();
-  }, []);
+  }, [ip]);
 
   const handleClickSubmit = async (id: string) => {
     try {
@@ -346,7 +342,7 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo, newUserData }) => 
       ErrorMessage(error.message || "Something went wrong");
     }
   };
-
+  
   const getYouTubeEmbedUrl = (url: string) => {
     try {
       const urlObj = new URL(url);
@@ -360,7 +356,6 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo, newUserData }) => 
 
       if (!videoId) return null;
 
-      // Minimal branding + no unrelated recommendations
       return `https://www.youtube.com/embed/${videoId}?modestbranding=1&rel=0&controls=1`;
     } catch {
       return null;
@@ -413,7 +408,7 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo, newUserData }) => 
           <div
             className="content-wrapper"
             style={{
-              position: "relative",
+              position: "relative", 
               backdropFilter: "blur(3px)",
               WebkitBackdropFilter: "blur(3px)",
               zIndex: 1,
@@ -483,7 +478,7 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo, newUserData }) => 
 
             <div className="links-list">
               {Array.isArray(newUserData?.non_social) && newUserData?.non_social.map((link) => (
-                <div key={link._id} className="link-wrapper">
+                <div key={link._id}>
                   <Link
                     to={link.linkUrl}
                     target="_blank"
@@ -513,42 +508,37 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo, newUserData }) => 
                       {link.linkTitle}
                     </span>
                   </Link>
-
-                  {/* Video Section */}
+                  
                   {getYouTubeEmbedUrl(link?.video?.videoLink || "") && (
-                    <div style={{ margin: '10px 0', textAlign: 'center' }}>
+                    <div>
                       <iframe
-                        width="280"
-                        height="160"
+                        width="250"
+                        height="150"
                         src={getYouTubeEmbedUrl(link?.video?.videoLink || "") || ""}
                         frameBorder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowFullScreen
-                        style={{
-                          borderRadius: '10px',
-                          maxWidth: '100%'
-                        }}
                       ></iframe>
                     </div>
                   )}
-
-                  {/* Link Categories Slider Section */}
-                  {linkCategories[link._id] && linkCategories[link._id].length > 0 && (
-                    <ProductSlider
-                      LinkCategoryId={linkCategories[link._id]}
-                      fontFamily={userInfo?.theme?.fontFamily}
-                      fontColor={userInfo?.theme?.fontColor}
+                  
+                  {/* Product Carousel */}
+                  {link?.LinkCategoryId && link.LinkCategoryId.length > 0 && (
+                    <ProductCarousel 
+                      products={link.LinkCategoryId} 
+                      userInfo={userInfo} 
                     />
                   )}
                 </div>
               ))}
             </div>
-
+            
             <div className="spcial-links-list d-flex justify-content-center gap-2">
               {Array.isArray(newUserData?.social) && newUserData?.social.map((link) => {
                 const matchedPlatform = socialPlatforms.find(
                   (platform) =>
-                    platform.label.toLowerCase() === link.linkTitle.toLowerCase()
+                    platform.label.toLowerCase() ===
+                    link.linkTitle.toLowerCase()
                 );
                 return (
                   <Link

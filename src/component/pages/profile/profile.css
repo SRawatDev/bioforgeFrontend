@@ -46,17 +46,7 @@
   z-index: 10;
 }
 
-/* Content */
-.mobile-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 0 16px 80px; /* Bottom padding for share button */
-  width: 100%;
-  max-width: 500px;
-  margin: 0 auto;
-}
+
 
 /* Profile Header */
 .mobile-profile-header {
@@ -235,9 +225,7 @@
   }
 }
 
-.mobile-content {
-  animation: fadeIn 0.3s ease-out;
-}
+
 
 /* Dark theme adjustments */
 @media (prefers-color-scheme: dark) {
@@ -588,30 +576,12 @@
     height: 54px;
     font-size: 24px;
   }
-  .passwordProfile {
-    color: rgb(255, 255, 255);
-    height: 40px;
-    width: 40px;
-    cursor: pointer;
-    font-size: 40px;
-    top: 19%;
-    left: 1024px;
-  }
+
   .blinking-icon {
     animation: blink 2s infinite;
     color: #fbbf24 !important;
   }
-  .passwordProfile {
-    transition: all 0.3s ease;
-    display: block !important;
-    opacity: 1 !important;
-    position: fixed;
-    right: 0;
-    bottom: 0;
-    margin-bottom: 10px;
-    margin-right: 11px;
-    z-index: 10;
-  }
+
 }
 @media (min-width: 1024) {
   .password-modal {
@@ -678,30 +648,12 @@
     height: 54px;
     font-size: 24px;
   }
-  .passwordProfile {
-    color: rgb(255, 255, 255);
-    height: 40px;
-    width: 40px;
-    cursor: pointer;
-    font-size: 40px;
-    top: 19%;
-    left: 990px;
-  }
+
   .blinking-icon {
     color: #fbbf24 !important;
   }
-  .passwordProfile {
-    transition: all 0.3s ease;
-    display: block !important;
-    opacity: 1 !important;
-    position: fixed;
-    right: 0;
-    bottom: 0;
-    margin-bottom: 10px;
-    margin-right: 11px;
-    z-index: 10;
-  }
 }
+
 
 /* Loading animation */
 @keyframes pulse {
@@ -1273,10 +1225,7 @@
     padding: 10px 14px;
   }
 
-  .passwordProfile {
 
-    left: 360px;
-  }
 
   .password-tooltip span {
     font-size: 11px;

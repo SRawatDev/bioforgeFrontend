@@ -108,7 +108,6 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
         };
       }
 
-      // ✅ Dispatch with updated state inside the updater function
       dispatch(addData(updated));
       return updated;
     });
@@ -408,14 +407,7 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
                   >
                     Round
                   </span>
-                  {/* <span
-                    className={`static-banner-thumb text-center bg-light ${
-                      userInfo?.theme?.themeDesign === 'pill' ? 'selected' : ''
-                    }`}
-                    onClick={() => selectedDesign('pill')}
-                  >
-                    Pill
-                  </span> */}
+               
                   <span
                     className={`static-banner-thumb text-center bg-light ${
                       userInfo?.theme?.themeDesign === 'beveled' ? 'selected' : ''
@@ -424,38 +416,7 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
                   >
                     Beveled
                   </span>
-                  {/* <span
-                    className={`static-banner-thumb text-center bg-light ${
-                      userInfo?.theme?.themeDesign === 'outlined' ? 'selected' : ''
-                    }`}
-                    onClick={() => selectedDesign('outlined')}
-                  >
-                    Outlined
-                  </span>
-                  <span
-                    className={`static-banner-thumb text-center bg-light ${
-                      userInfo?.theme?.themeDesign === 'gradient' ? 'selected' : ''
-                    }`}
-                    onClick={() => selectedDesign('gradient')}
-                  >
-                    Gradient
-                  </span>
-                  <span
-                    className={`static-banner-thumb text-center bg-light ${
-                      userInfo?.theme?.themeDesign === 'shadow' ? 'selected' : ''
-                    }`}
-                    onClick={() => selectedDesign('shadow')}
-                  >
-                    Shadow
-                  </span>
-                  <span
-                    className={`static-banner-thumb text-center bg-light ${
-                      userInfo?.theme?.themeDesign === 'flat' ? 'selected' : ''
-                    }`}
-                    onClick={() => selectedDesign('flat')}
-                  >
-                    Flat
-                  </span> */}
+                  
                   <span
                     className={`static-banner-thumb text-center bg-light ${
                       userInfo?.theme?.themeDesign === 'neon' ? 'selected' : ''
@@ -472,14 +433,7 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
                   >
                     Vintage
                   </span>
-                  {/* <span
-                    className={`static-banner-thumb text-center bg-light ${
-                      userInfo?.theme?.themeDesign === 'modern' ? 'selected' : ''
-                    }`}
-                    onClick={() => selectedDesign('modern')}
-                  >
-                    Modern
-                  </span> */}
+                
                 </div>
               </div>
 

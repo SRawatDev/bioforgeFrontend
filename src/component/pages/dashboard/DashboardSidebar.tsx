@@ -3,7 +3,7 @@ import { defaultConfig } from "../../../config";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { LogoutModal } from "../../../layout/Header";
 import SuccessMessage from "../../../helpers/Success";
-import {IoLogOut,IoVideocam} from "react-icons/io5";
+import { IoLogOut, IoVideocam } from "react-icons/io5";
 import { RiDeleteBin6Fill } from "react-icons/ri";
 import { PiLinkSimpleHorizontalBold } from "react-icons/pi";
 import { FaUser } from "react-icons/fa";
@@ -100,7 +100,6 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose,children }
       onClick: handleDeleteAccountClick, 
     },
   ];
-
   const mainItems = menuItems.filter((item) => item.category === "main");
   
   useEffect(() => {
@@ -119,7 +118,6 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose,children }
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isMobile, onClose]);
-
   return (
     <>
       <div className="Main-Navbar-section d-flex">
@@ -227,7 +225,6 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose,children }
             {!isCollapsed && <span>Logout</span>}
           </button>
         </nav>
-
         {isMobile && <div className="sidebar-backdrop" onClick={onClose}></div>}
         {showLogout && (
           <LogoutModal

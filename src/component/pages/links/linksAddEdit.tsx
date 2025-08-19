@@ -134,7 +134,6 @@ export const LinksAddEdit: React.FC<Props> = ({
       ErrorMessage('Failed to fetch videos')
     }
   }
-
   const productDetail = async () => {
     setLoader(true)
     try {
@@ -185,7 +184,6 @@ export const LinksAddEdit: React.FC<Props> = ({
           linkLogo: '',
           type: 'social',
           videoId: '',
-          protectedLinks: 'public',
           LinkCategoryId: []
         })
         setPreview(null)
@@ -199,6 +197,7 @@ export const LinksAddEdit: React.FC<Props> = ({
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target
+  
 
     if (name === 'LinkCategoryId') {
       const selectElement = e.target as HTMLSelectElement
@@ -221,7 +220,17 @@ export const LinksAddEdit: React.FC<Props> = ({
         linkLogo: selected ? selected.value : prev.linkLogo
       }))
       setPreview(null)
-    } else {
+    }else if(value==='social'){
+      setPreview("")
+    
+
+ setLink(prev => ({
+        ...prev,
+        [name]: value,
+        LinkCategoryId: [],videoId: '', linkLogo:''
+      }))
+    }
+       else {
       setLink(prev => ({
         ...prev,
         [name]: value
@@ -321,8 +330,13 @@ export const LinksAddEdit: React.FC<Props> = ({
     setLoader(true)
     try {
       const endpoint = action === 'edit' ? apiUrls.linkupdate : apiUrls.addlinks
-      const payload = action === 'edit' ? { ...submitLink, _id: linkDetail._id } : submitLink
-
+      const payload =
+        action === 'edit' ? { ...link, _id: linkDetail._id } : link
+      if (payload.type === 'social') {
+        payload.linkLogo = ''
+        payload.LinkCategoryId = []
+      }
+     
       const response = await callAPI(endpoint, {}, 'POST', payload)
       setLoader(false)
       if (!response?.data?.status) {

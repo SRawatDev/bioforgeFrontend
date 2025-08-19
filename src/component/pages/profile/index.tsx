@@ -32,6 +32,7 @@ interface userInfo {
   banner_img: string
   profile_img: string
   theme: theme
+  isProtectedLinkPassword:boolean
 }
 
 interface videoInterface {
@@ -627,8 +628,9 @@ const Index: React.FC = () => {
               </div>
             </div>
           </div>
-
-          <div
+          {
+            userInfo?.isProtectedLinkPassword &&
+            <div
             onClick={handlePasswordIconClick}
             title='Click to view private links'
           >
@@ -636,8 +638,8 @@ const Index: React.FC = () => {
               className='passwordProfile blinking-icon'
               style={
                 {
-                  height: '40px',
-                  width: '40px',
+                  height: '30px',
+                  width: '30px',
                   color: userInfo?.theme?.fontColor || '#fbbf24',
                   cursor: 'pointer',
                   fontSize: '40px',
@@ -647,6 +649,7 @@ const Index: React.FC = () => {
               }
             />
           </div>
+            }
 
           {/* Password Modal - existing */}
           {showPasswordModal && (

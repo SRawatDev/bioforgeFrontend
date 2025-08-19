@@ -379,6 +379,7 @@
     bottom: 10px;
     padding-right: 122px;
     left: 25px;
+    border: 2px solid #6366f1;
 }
 
 .logout-btns:hover {

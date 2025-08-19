@@ -92,13 +92,13 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose,children }
       icon: <RiLockPasswordFill />,
       category: "main",
     },
-    {
-      path: null, 
-      label: "Delete Account",
-      icon: <RiDeleteBin6Fill />,
-      category: "main",
-      onClick: handleDeleteAccountClick, 
-    },
+    // {
+    //   path: null, 
+    //   label: "Delete Account",
+    //   icon: <RiDeleteBin6Fill />,
+    //   category: "main",
+    //   onClick: handleDeleteAccountClick, 
+    // },
   ];
   const mainItems = menuItems.filter((item) => item.category === "main");
   
@@ -181,7 +181,7 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose,children }
                       ) : (
                         <button
                           className="menu-link menu-button"
-                          onClick={item.onClick}
+                 
                           title={isCollapsed ? item.label : ""}
                           style={{
                             background: 'none',
@@ -216,14 +216,32 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose,children }
             </div>
           </div>
           
-          <button
-            className="logout-btns"
-            onClick={handleLogoutClick}
-            title={isCollapsed ? "Logout" : ''}
-          >
-            <IoLogOut className="menu-icon" />
-            {!isCollapsed && <span>Logout</span>}
+          <div className="dropdown w-100">
+      <button
+        className="btn logout-btns dropdown-toggle d-flex align-items-center"
+        type="button"
+        id="logoutDropdown"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+        title={isCollapsed ? "Logout" : ""}
+      >
+        {!isCollapsed && <span className="ms-2">Setting</span>}
+      </button>
+
+      <ul className="dropdown-menu" aria-labelledby="logoutDropdown">
+        <li>
+          <button className="dropdown-item" onClick={handleLogoutClick}>
+            Logout
           </button>
+        </li>
+        <li>
+          <button className="dropdown-item"  onClick={handleDeleteAccountClick}>
+            Delete Account
+          </button>
+        </li>
+      
+      </ul>
+    </div>
         </nav>
         {isMobile && <div className="sidebar-backdrop" onClick={onClose}></div>}
         {showLogout && (
@@ -241,21 +259,7 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose,children }
       </div>
 
 
-      <style>{`
-        .menu-button {
-          font-family: inherit;
-          font-size: inherit;
-        }
-        
-        .menu-button:hover {
-          background-color: #fff5f5 !important;
-        }
-        
-        .menu-button:focus {
-          outline: 2px solid #dc3545;
-          outline-offset: 2px;
-        }
-      `}</style>
+     
     </>
   );
 };

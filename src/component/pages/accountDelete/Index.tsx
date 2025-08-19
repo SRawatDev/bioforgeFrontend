@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { FaEyeSlash, FaEye } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
@@ -8,31 +9,16 @@ import SuccessMessage from "../../../helpers/Success";
 import { clearData } from "../../../redux/Slice";
 import ErrorMessage from "../../../helpers/ErrorMessage";
 
-interface DeleteAccountModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
-
-interface DeleteAccountData {
-  password: string;
-}
-
-const DeleteAccountModal: React.FC<DeleteAccountModalProps> = ({
-  isOpen,
-  onClose,
-}) => {
+interface DeleteAccountModalProps { isOpen: boolean; onClose: () => void; }
+interface DeleteAccountData { password: string; }
+const DeleteAccountModal: React.FC<DeleteAccountModalProps> = ({ isOpen, onClose }) => {
   const [loader, setLoader] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [step, setStep] = useState<"warning" | "password">("warning");
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  const [deleteAccountData, setDeleteAccountData] = useState<DeleteAccountData>(
-    {
-      password: "",
-    }
-  );
-
+  const [deleteAccountData, setDeleteAccountData] = useState<DeleteAccountData>({password: "",});
+  const [errors, setErrors] = useState({password: "",general: ""});
   useEffect(() => {
     if (isOpen) {
       setStep("warning");
@@ -43,7 +29,6 @@ const DeleteAccountModal: React.FC<DeleteAccountModalProps> = ({
     } else {
       document.body.style.overflow = "unset";
     }
-
     return () => {
       document.body.style.overflow = "unset";
     };
@@ -56,7 +41,6 @@ const DeleteAccountModal: React.FC<DeleteAccountModalProps> = ({
       [name]: value,
     }));
   };
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoader(true);
@@ -84,19 +68,15 @@ const DeleteAccountModal: React.FC<DeleteAccountModalProps> = ({
       setLoader(false);
     }
   };
-
   const handleCancel = () => {
     setDeleteAccountData({ password: "" });
     setStep("warning");
     onClose();
   };
-
   const proceedToPasswordStep = () => {
     setStep("password");
   };
-
   if (!isOpen) return null;
-
   return (
     <>
     

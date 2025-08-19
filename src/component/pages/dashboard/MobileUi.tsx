@@ -9,6 +9,7 @@ import { socialPlatforms } from "../links/linksAddEdit";
 import "./mobilePreview.css";
 import axios from "axios";
 import Product from "./Product";
+
 interface userInfo {
   _id: string;
   username: string;
@@ -20,24 +21,28 @@ interface userInfo {
   profile_img: string;
   theme: theme;
 }
+
 interface videoInterface {
   _id?: string,
   videoLink?: string
 }
+
 interface productInterface {
-  _id?: string,
-  title?: string,
-  image?: string,
-  link?: number
+  _id?: string;
+  title?: string;
+  image?: string
+  link?: string
 }
+
 interface theme {
   fontFamily: string;
   is_colorImage: string;
   fontColor: string;
   themeDesign?: string;
 }
+
 interface Link {
-  LinkCategoryId?:productInterface[]
+  LinkCategoryId?: productInterface[]
   linkTitle: string;
   linkUrl: string;
   linkLogo: string;
@@ -45,13 +50,262 @@ interface Link {
   video?: videoInterface
   _id: string;
 }
+
 interface MobileUiProps {
   userInfo: userInfo | null;
   newUserData: userInfo | null;
 }
+
+// Carousel Component
+const ProductCarousel: React.FC<{
+  products: productInterface[];
+  userInfo: userInfo | null;
+}> = ({ products, userInfo }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const nextSlide = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % products.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentIndex((prevIndex) => 
+      prevIndex === 0 ? products.length - 1 : prevIndex - 1
+    );
+  };
+
+  const goToSlide = (index: number) => {
+    setCurrentIndex(index);
+  };
+
+  if (!products || products.length === 0) return null;
+
+  return (
+    <div className="product-carousel" style={{
+      position: 'relative',
+      width: '240px',
+      height: '140px',
+      margin: '8px auto',
+      borderRadius: '8px',
+      overflow: 'hidden',
+      backgroundColor: 'rgba(255, 255, 255, 0.08)',
+      backdropFilter: 'blur(5px)',
+      border: '1px solid rgba(255, 255, 255, 0.15)',
+      boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)'
+    }}>
+      {/* Carousel Container */}
+      <div style={{
+        display: 'flex',
+        transform: `translateX(-${currentIndex * 100}%)`,
+        transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+        height: '100%',
+        width: `${products.length * 100}%`
+      }}>
+        {products.map((item, index) => (
+          <div
+            key={item._id || index}
+            style={{
+              width: '240px', // Fixed width for each slide
+              height: '100%',
+              flexShrink: 0,
+              padding: '12px',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              textAlign: 'center',
+              boxSizing: 'border-box'
+            }}
+          >
+            {item.image && (
+              <img
+                src={defaultConfig?.imagePath + item.image}
+                alt={item.title || 'Product'}
+                style={{
+                  width: '60px',
+                  height: '60px',
+                  objectFit: 'cover',
+                  borderRadius: '6px',
+                  marginBottom: '8px',
+                  flexShrink: 0
+                }}
+              />
+            )}
+            <h4 style={{
+              fontFamily: userInfo?.theme?.fontFamily,
+              color: userInfo?.theme?.fontColor || 'white',
+              fontSize: '13px',
+              margin: '0 0 8px 0',
+              fontWeight: '600',
+              lineHeight: '1.2',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              display: '-webkit-box',
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: 'vertical',
+              maxWidth: '100%',
+              textAlign: 'center'
+            }}>
+              {item.title}
+            </h4>
+            {item.link && (
+              <a
+                href={item.link.toString()}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: 'inline-block',
+                  padding: '6px 12px',
+                  backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                  color: userInfo?.theme?.fontColor || 'white',
+                  textDecoration: 'none',
+                  borderRadius: '4px',
+                  fontSize: '10px',
+                  fontFamily: userInfo?.theme?.fontFamily,
+                  border: '1px solid rgba(255, 255, 255, 0.3)',
+                  transition: 'all 0.2s ease',
+                  flexShrink: 0,
+                  whiteSpace: 'nowrap'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.3)';
+                  e.currentTarget.style.transform = 'scale(1.05)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
+                  e.currentTarget.style.transform = 'scale(1)';
+                }}
+              >
+                Visit Link
+              </a>
+            )}
+          </div>
+        ))}
+      </div>
+
+      {/* Navigation Arrows */}
+      {products.length > 1 && (
+        <>
+          <button
+            onClick={prevSlide}
+            style={{
+              position: 'absolute',
+              left: '5px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              backgroundColor: 'rgba(0, 0, 0, 0.7)',
+              border: 'none',
+              borderRadius: '50%',
+              width: '24px',
+              height: '24px',
+              color: 'white',
+              cursor: 'pointer',
+              fontSize: '12px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 5,
+              transition: 'all 0.2s ease'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
+              e.currentTarget.style.transform = 'translateY(-50%) scale(1.1)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+              e.currentTarget.style.transform = 'translateY(-50%) scale(1)';
+            }}
+          >
+            ‹
+          </button>
+          <button
+            onClick={nextSlide}
+            style={{
+              position: 'absolute',
+              right: '5px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              backgroundColor: 'rgba(0, 0, 0, 0.7)',
+              border: 'none',
+              borderRadius: '50%',
+              width: '24px',
+              height: '24px',
+              color: 'white',
+              cursor: 'pointer',
+              fontSize: '12px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 5,
+              transition: 'all 0.2s ease'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
+              e.currentTarget.style.transform = 'translateY(-50%) scale(1.1)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+              e.currentTarget.style.transform = 'translateY(-50%) scale(1)';
+            }}
+          >
+            ›
+          </button>
+        </>
+      )}
+
+      {/* Dots Indicator */}
+      {products.length > 1 && (
+        <div style={{
+          position: 'absolute',
+          bottom: '8px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          display: 'flex',
+          justifyContent: 'center',
+          gap: '6px'
+        }}>
+          {products.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => goToSlide(index)}
+              style={{
+                width: '6px',
+                height: '6px',
+                borderRadius: '50%',
+                border: 'none',
+                backgroundColor: index === currentIndex 
+                  ? (userInfo?.theme?.fontColor || 'white')
+                  : 'rgba(255, 255, 255, 0.5)',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                transform: index === currentIndex ? 'scale(1.2)' : 'scale(1)'
+              }}
+            />
+          ))}
+        </div>
+      )}
+
+      {/* Current Slide Counter */}
+      <div style={{
+        position: 'absolute',
+        top: '5px',
+        right: '8px',
+        backgroundColor: 'rgba(0, 0, 0, 0.6)',
+        color: 'white',
+        fontSize: '9px',
+        padding: '2px 6px',
+        borderRadius: '10px',
+        fontFamily: userInfo?.theme?.fontFamily
+      }}>
+        {currentIndex + 1} / {products.length}
+      </div>
+    </div>
+  );
+};
+
 export const MobileUi: React.FC<MobileUiProps> = ({ userInfo, newUserData }) => {
   const [ip, setIp] = useState<string>("");
   const navigate = useNavigate();
+  
   const getUserIp = async () => {
     try {
       const response = await axios.get("https://api.ipify.org/?format=json");
@@ -60,6 +314,7 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo, newUserData }) => 
       ErrorMessage(error.message || "Something went wrong");
     }
   };
+  
   useEffect(() => {
     getUserIp();
   }, [ip]);
@@ -87,6 +342,7 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo, newUserData }) => 
       ErrorMessage(error.message || "Something went wrong");
     }
   };
+  
   const getYouTubeEmbedUrl = (url: string) => {
     try {
       const urlObj = new URL(url);
@@ -120,8 +376,7 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo, newUserData }) => 
             height: "100%",
             overflow: "scroll",
             fontFamily: userInfo?.theme?.fontFamily,
-            backgroundImage: `url(${defaultConfig?.imagePath + userInfo?.banner_img
-              })`,
+            backgroundImage: `url(${defaultConfig?.imagePath + userInfo?.banner_img})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
             backgroundRepeat: "no-repeat",
@@ -136,7 +391,6 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo, newUserData }) => 
               left: 0,
               width: "100%",
               height: "100%",
-
             }}
           ></div>
           <div
@@ -154,9 +408,9 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo, newUserData }) => 
           <div
             className="content-wrapper"
             style={{
-              position: "relative", backdropFilter: "blur(3px)",
+              position: "relative", 
+              backdropFilter: "blur(3px)",
               WebkitBackdropFilter: "blur(3px)",
-
               zIndex: 1,
             }}
           >
@@ -224,22 +478,18 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo, newUserData }) => 
 
             <div className="links-list">
               {Array.isArray(newUserData?.non_social) && newUserData?.non_social.map((link) => (
-                <>
-
+                <div key={link._id}>
                   <Link
-                    key={link._id}
                     to={link.linkUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`link-card ${userInfo?.theme?.themeDesign || "round"
-                      }`}
+                    className={`link-card ${userInfo?.theme?.themeDesign || "round"}`}
                     onClick={() => handleClickSubmit(link._id)}
                     style={
                       {
                         "--card-bg": userInfo?.theme?.is_colorImage || "#333",
                         "--card-color": userInfo?.theme?.fontColor || "white",
-                        "--card-font":
-                          userInfo?.theme?.fontFamily || "sans-serif",
+                        "--card-font": userInfo?.theme?.fontFamily || "sans-serif",
                       } as React.CSSProperties
                     }
                   >
@@ -258,6 +508,7 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo, newUserData }) => 
                       {link.linkTitle}
                     </span>
                   </Link>
+                  
                   {getYouTubeEmbedUrl(link?.video?.videoLink || "") && (
                     <div>
                       <iframe
@@ -269,21 +520,19 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo, newUserData }) => 
                         allowFullScreen
                       ></iframe>
                     </div>
-                  )
-                  }
-                  {/* {
-                    link?.LinkCategoryId?.map((item,index)=>{
-                      return (
-                       
-                        <>{item?.title}</>
-                      )
-                    })
-                  } */}
-                  <Product/>
-                 
-                </>
+                  )}
+                  
+                  {/* Product Carousel */}
+                  {link?.LinkCategoryId && link.LinkCategoryId.length > 0 && (
+                    <ProductCarousel 
+                      products={link.LinkCategoryId} 
+                      userInfo={userInfo} 
+                    />
+                  )}
+                </div>
               ))}
             </div>
+            
             <div className="spcial-links-list d-flex justify-content-center gap-2">
               {Array.isArray(newUserData?.social) && newUserData?.social.map((link) => {
                 const matchedPlatform = socialPlatforms.find(
@@ -299,7 +548,6 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo, newUserData }) => 
                     rel="noopener noreferrer"
                     className="link-card-social"
                     onClick={() => handleClickSubmit(link._id)}
-
                   >
                     {matchedPlatform && (
                       <span

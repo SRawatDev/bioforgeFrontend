@@ -45,6 +45,7 @@ const ProductCarousel: React.FC<{
   products: productInterface[];
   userInfo: userInfo | null;
 }> = ({ products, userInfo }) => {
+  console.log("hcsdhgsdhfgsd",products)
   const [currentIndex, setCurrentIndex] = useState<number>(0);
 
   const nextSlide = () => {

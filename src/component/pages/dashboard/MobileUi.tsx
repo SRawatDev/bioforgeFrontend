@@ -57,7 +57,8 @@ interface MobileUiProps {
 }
 
 // Carousel Component
-const ProductCarousel: React.FC<{
+// Individual Product Slide Component - Each product gets its own slide
+const IndividualProductSlides: React.FC<{
   products: productInterface[];
   userInfo: userInfo | null;
 }> = ({ products, userInfo }) => {
@@ -79,8 +80,11 @@ const ProductCarousel: React.FC<{
 
   if (!products || products.length === 0) return null;
 
+  // Get current product
+  const currentProduct = products[currentIndex];
+
   return (
-    <div className="product-carousel" style={{
+    <div className="individual-product-slides" style={{
       position: 'relative',
       width: '240px',
       height: '140px',
@@ -92,97 +96,84 @@ const ProductCarousel: React.FC<{
       border: '1px solid rgba(255, 255, 255, 0.15)',
       boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)'
     }}>
-      {/* Carousel Container */}
+      {/* Single Product Display */}
       <div style={{
-        display: 'flex',
-        transform: `translateX(-${currentIndex * 100}%)`,
-        transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+        width: '100%',
         height: '100%',
-        width: `${products.length * 100}%`
+        padding: '12px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        textAlign: 'center',
+        boxSizing: 'border-box',
+        transition: 'opacity 0.3s ease'
       }}>
-        {products.map((item, index) => (
-          <div
-            key={item._id || index}
+        {currentProduct.image && (
+          <img
+            src={defaultConfig?.imagePath + currentProduct.image}
+            alt={currentProduct.title || 'Product'}
             style={{
-              width: '240px', // Fixed width for each slide
-              height: '100%',
+              width: '60px',
+              height: '60px',
+              objectFit: 'cover',
+              borderRadius: '6px',
+              marginBottom: '8px',
+              flexShrink: 0
+            }}
+          />
+        )}
+        <h4 style={{
+          fontFamily: userInfo?.theme?.fontFamily,
+          color: userInfo?.theme?.fontColor || 'white',
+          fontSize: '13px',
+          margin: '0 0 8px 0',
+          fontWeight: '600',
+          lineHeight: '1.2',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          display: '-webkit-box',
+          WebkitLineClamp: 2,
+          WebkitBoxOrient: 'vertical',
+          maxWidth: '100%',
+          textAlign: 'center'
+        }}>
+          {currentProduct.title}
+        </h4>
+        {currentProduct.link && (
+          <a
+            href={currentProduct.link.toString()}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: 'inline-block',
+              padding: '6px 12px',
+              backgroundColor: 'rgba(255, 255, 255, 0.2)',
+              color: userInfo?.theme?.fontColor || 'white',
+              textDecoration: 'none',
+              borderRadius: '4px',
+              fontSize: '10px',
+              fontFamily: userInfo?.theme?.fontFamily,
+              border: '1px solid rgba(255, 255, 255, 0.3)',
+              transition: 'all 0.2s ease',
               flexShrink: 0,
-              padding: '12px',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              textAlign: 'center',
-              boxSizing: 'border-box'
+              whiteSpace: 'nowrap'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.3)';
+              e.currentTarget.style.transform = 'scale(1.05)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
+              e.currentTarget.style.transform = 'scale(1)';
             }}
           >
-            {item.image && (
-              <img
-                src={defaultConfig?.imagePath + item.image}
-                alt={item.title || 'Product'}
-                style={{
-                  width: '60px',
-                  height: '60px',
-                  objectFit: 'cover',
-                  borderRadius: '6px',
-                  marginBottom: '8px',
-                  flexShrink: 0
-                }}
-              />
-            )}
-            <h4 style={{
-              fontFamily: userInfo?.theme?.fontFamily,
-              color: userInfo?.theme?.fontColor || 'white',
-              fontSize: '13px',
-              margin: '0 0 8px 0',
-              fontWeight: '600',
-              lineHeight: '1.2',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              display: '-webkit-box',
-              WebkitLineClamp: 2,
-              WebkitBoxOrient: 'vertical',
-              maxWidth: '100%',
-              textAlign: 'center'
-            }}>
-              {item.title}
-            </h4>
-            {item.link && (
-              <a
-                href={item.link.toString()}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  display: 'inline-block',
-                  padding: '6px 12px',
-                  backgroundColor: 'rgba(255, 255, 255, 0.2)',
-                  color: userInfo?.theme?.fontColor || 'white',
-                  textDecoration: 'none',
-                  borderRadius: '4px',
-                  fontSize: '10px',
-                  fontFamily: userInfo?.theme?.fontFamily,
-                  border: '1px solid rgba(255, 255, 255, 0.3)',
-                  transition: 'all 0.2s ease',
-                  flexShrink: 0,
-                  whiteSpace: 'nowrap'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.3)';
-                  e.currentTarget.style.transform = 'scale(1.05)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
-                  e.currentTarget.style.transform = 'scale(1)';
-                }}
-              >
-                Visit Link
-              </a>
-            )}
-          </div>
-        ))}
+            Visit Link
+          </a>
+        )}
       </div>
 
-      {/* Navigation Arrows */}
+      {/* Navigation Arrows - Only show if more than 1 product */}
       {products.length > 1 && (
         <>
           <button
@@ -252,7 +243,7 @@ const ProductCarousel: React.FC<{
         </>
       )}
 
-      {/* Dots Indicator */}
+      {/* Dots Indicator - Only show if more than 1 product */}
       {products.length > 1 && (
         <div style={{
           position: 'absolute',
@@ -285,23 +276,45 @@ const ProductCarousel: React.FC<{
       )}
 
       {/* Current Slide Counter */}
+      {products.length > 1 && (
+        <div style={{
+          position: 'absolute',
+          top: '5px',
+          right: '8px',
+          backgroundColor: 'rgba(0, 0, 0, 0.6)',
+          color: 'white',
+          fontSize: '9px',
+          padding: '2px 6px',
+          borderRadius: '10px',
+          fontFamily: userInfo?.theme?.fontFamily
+        }}>
+          {currentIndex + 1} / {products.length}
+        </div>
+      )}
+
+      {/* Product ID Display for Development */}
       <div style={{
         position: 'absolute',
         top: '5px',
-        right: '8px',
+        left: '8px',
         backgroundColor: 'rgba(0, 0, 0, 0.6)',
         color: 'white',
-        fontSize: '9px',
-        padding: '2px 6px',
-        borderRadius: '10px',
-        fontFamily: userInfo?.theme?.fontFamily
+        fontSize: '8px',
+        padding: '2px 4px',
+        borderRadius: '8px',
+        fontFamily: 'monospace',
+        maxWidth: '120px',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap'
       }}>
-        {currentIndex + 1} / {products.length}
+        ID: {currentProduct._id}
       </div>
     </div>
   );
 };
 
+// Updated MobileUi component with the new individual slides
 export const MobileUi: React.FC<MobileUiProps> = ({ userInfo, newUserData }) => {
   const [ip, setIp] = useState<string>("");
   const navigate = useNavigate();
@@ -522,9 +535,9 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo, newUserData }) => 
                     </div>
                   )}
                   
-                  {/* Product Carousel */}
+                  {/* Individual Product Slides - Each product on its own slide */}
                   {link?.LinkCategoryId && link.LinkCategoryId.length > 0 && (
-                    <ProductCarousel 
+                    <IndividualProductSlides 
                       products={link.LinkCategoryId} 
                       userInfo={userInfo} 
                     />

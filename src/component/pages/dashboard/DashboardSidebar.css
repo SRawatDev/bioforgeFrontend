@@ -362,15 +362,15 @@
 }
 
 .logout-btns {
-    display: flex;
+
     margin: auto;
-    align-items: center;
+
     position: fixed;
     gap: 12px;
     padding: 12px;
     border-radius: 12px;
     text-decoration: none;
-    color: #4a5568;
+
     font-weight: 500;
     font-size: 14px;
     transition: all 0.2s ease;
@@ -381,12 +381,17 @@
     left: 25px;
     border: 2px solid #6366f1;
 }
-
-.logout-btns:hover {
-  background: rgba(229, 62, 62, 0.08);
-  border-color: #cf1f1f;
-  color: #e53e3e;
+.logout-btns ul{
+  padding: 18px 84px 15px 18px;
 }
+.drop_menu{
+  padding: 2px 2px 2px 2px;
+}
+.drop_menu:hover {
+  cursor: pointer;
+  transform: translateX(4px);
+}
+
 
 .collapse-toggle {
   position: absolute;

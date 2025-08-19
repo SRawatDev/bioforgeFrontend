@@ -3,17 +3,16 @@ import { defaultConfig } from "../../../config";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { LogoutModal } from "../../../layout/Header";
 import SuccessMessage from "../../../helpers/Success";
-import { IoLogOut, IoVideocam } from "react-icons/io5";
-import { RiDeleteBin6Fill } from "react-icons/ri";
+import { IoVideocam } from "react-icons/io5";
 import { PiLinkSimpleHorizontalBold } from "react-icons/pi";
 import { FaUser } from "react-icons/fa";
 import { RiLockPasswordFill } from "react-icons/ri";
 import "./DashboardSidebar.css";
 import "./dashboard.css";
 import { useDispatch } from "react-redux";
-import {  clearData } from "../../../redux/Slice";
-import { MdProductionQuantityLimits, MdUnsubscribe} from "react-icons/md";
-import DeleteAccountModal from "../accountDelete/Index"; 
+import { clearData } from "../../../redux/Slice";
+import { MdProductionQuantityLimits, MdUnsubscribe } from "react-icons/md";
+import DeleteAccountModal from "../accountDelete/Index";
 
 interface SidebarProps {
   isMobile?: boolean;
@@ -21,11 +20,11 @@ interface SidebarProps {
   children?: React.ReactNode
 }
 
-const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose,children }) => {
+const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose, children }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [showLogout, setShowLogout] = useState(false);
-  const [showDeleteModal, setShowDeleteModal] = useState(false); 
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const storedata = useDispatch();
 
@@ -40,7 +39,7 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose,children }
     if (isMobile && onClose) {
       onClose();
     }
-   setTimeout(() => setShowDeleteModal(true),300);
+    setTimeout(() => setShowDeleteModal(true), 300);
   };
 
   const handleLogoutConfirm = () => {
@@ -92,16 +91,10 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose,children }
       icon: <RiLockPasswordFill />,
       category: "main",
     },
-    {
-      path: null, 
-      label: "Delete Account",
-      icon: <RiDeleteBin6Fill />,
-      category: "main",
-      onClick: handleDeleteAccountClick, 
-    },
+
   ];
   const mainItems = menuItems.filter((item) => item.category === "main");
-  
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (isMobile && onClose) {
@@ -131,7 +124,7 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose,children }
                       src={
                         localStorage.getItem("profile_img")
                           ? defaultConfig.imagePath +
-                            localStorage.getItem("profile_img")
+                          localStorage.getItem("profile_img")
                           : "https://i.pravatar.cc/48"
                       }
                       alt="Profile"
@@ -142,7 +135,6 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose,children }
                       }}
                     />
                   </div>
-
                   {!isCollapsed && (
                     <div className="user-info">
                       <h6 className="username">
@@ -154,7 +146,6 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose,children }
               </Link>
             </div>
           </div>
-
           <div className="sidebar-content">
             <div className="sidebar-menu">
               <div className="menu-section">
@@ -164,9 +155,8 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose,children }
                       {item.path ? (
                         <Link
                           to={item.path}
-                          className={`menu-link ${
-                            isActiveLink(item.path) ? "active" : ""
-                          }`}
+                          className={`menu-link ${isActiveLink(item.path) ? "active" : ""
+                            }`}
                           onClick={isMobile && onClose ? onClose : undefined}
                           title={isCollapsed ? item.label : ""}
                         >
@@ -181,7 +171,6 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose,children }
                       ) : (
                         <button
                           className="menu-link menu-button"
-                          onClick={item.onClick}
                           title={isCollapsed ? item.label : ""}
                           style={{
                             background: 'none',
@@ -193,7 +182,7 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose,children }
                             display: 'flex',
                             alignItems: 'center',
                             gap: '12px',
-                            color: '#dc3545', 
+                            color: '#dc3545',
                             transition: 'all 0.2s ease'
                           }}
                           onMouseEnter={(e) => {
@@ -215,15 +204,30 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose,children }
               </div>
             </div>
           </div>
-          
-          <button
-            className="logout-btns"
-            onClick={handleLogoutClick}
-            title={isCollapsed ? "Logout" : ''}
-          >
-            <IoLogOut className="menu-icon" />
-            {!isCollapsed && <span>Logout</span>}
-          </button>
+          <div className="dropdown w-100">
+            <button
+              className="btn logout-btns dropdown-toggle d-flex align-items-center"
+              type="button"
+              id="logoutDropdown"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+              title={isCollapsed ? "Logout" : ""}
+            >
+              {!isCollapsed && <span className="ms-2">Setting</span>}
+            </button>
+            <ul className="dropdown-menu" aria-labelledby="logoutDropdown">
+              <li className="drop_menu">
+                <span  onClick={handleDeleteAccountClick}>
+                  Delete Account
+                </span>
+              </li>
+              <li className="drop_menu">
+                <span  onClick={handleLogoutClick}>
+                  Logout
+                </span>
+              </li>
+            </ul>
+          </div>
         </nav>
         {isMobile && <div className="sidebar-backdrop" onClick={onClose}></div>}
         {showLogout && (
@@ -236,26 +240,8 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose,children }
           isOpen={showDeleteModal}
           onClose={() => setShowDeleteModal(false)}
         />
-
         {children}
       </div>
-
-
-      <style>{`
-        .menu-button {
-          font-family: inherit;
-          font-size: inherit;
-        }
-        
-        .menu-button:hover {
-          background-color: #fff5f5 !important;
-        }
-        
-        .menu-button:focus {
-          outline: 2px solid #dc3545;
-          outline-offset: 2px;
-        }
-      `}</style>
     </>
   );
 };

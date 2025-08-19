@@ -33,11 +33,11 @@ interface userInfo {
   banner_img: string
   profile_img: string
   theme: theme
-  isProtectedLinkPassword:boolean
+  isProtectedLinkPassword: boolean
 }
 interface productInterface {
-  _id?: string;
-  title?: string;
+  _id?: string
+  title?: string
   image?: string
   link?: string
 }
@@ -58,27 +58,28 @@ interface Link {
   linkUrl: string
   linkLogo: string
   is_index: number
-    LinkCategoryId?: productInterface[]
+  LinkCategoryId?: productInterface[]
   _id: string
   protectedLinks?: string
   video?: videoInterface
 }
 
 const Index: React.FC = () => {
-  const [ip, setIp] = useState<string>('');
-  const navigate = useNavigate();
-  const id = useParams();
-  const [userInfo, setUserInfo] = useState<userInfo | null>(null);
-  const [loader, setLoader] = useState<boolean>(false);
-  const [showPasswordModal, setShowPasswordModal] = useState<boolean>(false);
-  const [password, setPassword] = useState<string>('');
-  const [selectedLink, setSelectedLink] = useState<Link | null>(null);
-  const [showSharePopup, setShowSharePopup] = useState<boolean>(false);
-  const [selectedShareLink, setSelectedShareLink] = useState<Link | null>(null);
+  const [ip, setIp] = useState<string>('')
+  const navigate = useNavigate()
+  const id = useParams()
+  const [userInfo, setUserInfo] = useState<userInfo | null>(null)
+  const [loader, setLoader] = useState<boolean>(false)
+  const [showPasswordModal, setShowPasswordModal] = useState<boolean>(false)
+  const [password, setPassword] = useState<string>('')
+  const [selectedLink, setSelectedLink] = useState<Link | null>(null)
+  const [showSharePopup, setShowSharePopup] = useState<boolean>(false)
+  const [selectedShareLink, setSelectedShareLink] = useState<Link | null>(null)
 
   // New subscription modal state - following same pattern as showPasswordModal
-  const [showSubscriptionModal, setShowSubscriptionModal] = useState<boolean>(false);
-  const [email, setEmail] = useState<string>('');
+  const [showSubscriptionModal, setShowSubscriptionModal] =
+    useState<boolean>(false)
+  const [email, setEmail] = useState<string>('')
 
   const getUserDetail = async (header?: string) => {
     setLoader(true)
@@ -144,8 +145,8 @@ const Index: React.FC = () => {
       if (!response?.data?.status) {
         navigate('/')
         ErrorMessage(response?.data?.data?.message)
-      }else{
-        SuccessMessage(response?.data?.message);
+      } else {
+        SuccessMessage(response?.data?.message)
       }
     } catch (error: any) {
       setLoader(false)
@@ -153,33 +154,32 @@ const Index: React.FC = () => {
     }
   }
 
-
   const handleSubscriptionSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoader(true)
     try {
       const payload = {
-        email,
-      };
+        email
+      }
 
       const response = await callAPIWithoutAuth(
         apiUrls.addSubscriber,
         { _id: id.id },
         'POST',
         payload
-      );
+      )
       setLoader(false)
-      closeSubscriptionModal();
+      closeSubscriptionModal()
       if (!response?.data?.status) {
-        ErrorMessage(response?.data?.message);
-      }else{
-        SuccessMessage(response?.data?.message);
+        ErrorMessage(response?.data?.message)
+      } else {
+        SuccessMessage(response?.data?.message)
       }
     } catch (error: any) {
       setLoader(true)
-      ErrorMessage(error.message || 'Something went wrong');
+      ErrorMessage(error.message || 'Something went wrong')
     }
-  };
+  }
 
   const handlePasswordSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -424,8 +424,9 @@ const Index: React.FC = () => {
                 left: 0,
                 width: '100%',
                 height: '100%',
-                backgroundImage: `url(${defaultConfig?.imagePath + userInfo?.banner_img
-                  })`,
+                backgroundImage: `url(${
+                  defaultConfig?.imagePath + userInfo?.banner_img
+                })`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat',
@@ -474,8 +475,9 @@ const Index: React.FC = () => {
                     {userInfo.non_social.map(link => (
                       <>
                         <div
-                          className={`link-card ${userInfo.theme.themeDesign || 'round'
-                            }`}
+                          className={`link-card ${
+                            userInfo.theme.themeDesign || 'round'
+                          }`}
                           onClick={() => handleClickSubmit(link._id)}
                           style={
                             {
@@ -532,12 +534,13 @@ const Index: React.FC = () => {
                             allowFullScreen
                           ></iframe>
                         )}
-                          {link?.LinkCategoryId && link.LinkCategoryId.length > 0 && (
-                    <ProductCarousel
-                      products={link.LinkCategoryId} 
-                      userInfo={userInfo} 
-                    />
-                  )}
+                        {link?.LinkCategoryId &&
+                          link.LinkCategoryId.length > 0 && (
+                            <ProductCarousel 
+                              products={link.LinkCategoryId}
+                              userInfo={userInfo}
+                            />
+                          )}
                       </>
                     ))}
                   </div>
@@ -582,7 +585,15 @@ const Index: React.FC = () => {
                   </div>
                 )}
               </div>
-              <div className='d-flex justify-content-center mt-4' style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
+              <div
+                className='d-flex justify-content-center mt-4'
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  gap: '10px'
+                }}
+              >
                 <button
                   type='button'
                   className='link-join-biofoge'
@@ -642,28 +653,26 @@ const Index: React.FC = () => {
               </div>
             </div>
           </div>
-          {
-            userInfo?.isProtectedLinkPassword &&
+          {userInfo?.isProtectedLinkPassword && (
             <div
-            onClick={handlePasswordIconClick}
-            title='Click to view private links'
-          >
-            <FaLock
-              className='passwordProfile blinking-icon'
-              style={
-                {
-                  height: '30px',
-                  width: '30px',
-                  color: userInfo?.theme?.fontColor || '#fbbf24',
-                  cursor: 'pointer',
-                  fontSize: '40px',
-                  marginLeft: '70px'
-
-                } as React.CSSProperties
-              }
-            />
-          </div>
-            }
+              onClick={handlePasswordIconClick}
+              title='Click to view private links'
+            >
+              <FaLock
+                className='passwordProfile blinking-icon'
+                style={
+                  {
+                    height: '30px',
+                    width: '30px',
+                    color: userInfo?.theme?.fontColor || '#fbbf24',
+                    cursor: 'pointer',
+                    fontSize: '40px',
+                    marginLeft: '70px'
+                  } as React.CSSProperties
+                }
+              />
+            </div>
+          )}
 
           {/* Password Modal - existing */}
           {showPasswordModal && (

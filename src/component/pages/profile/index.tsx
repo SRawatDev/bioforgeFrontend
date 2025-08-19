@@ -34,6 +34,12 @@ interface userInfo {
   theme: theme
   isProtectedLinkPassword:boolean
 }
+interface productInterface {
+  _id?: string;
+  title?: string;
+  image?: string
+  link?: string
+}
 
 interface videoInterface {
   _id?: string
@@ -51,6 +57,7 @@ interface Link {
   linkUrl: string
   linkLogo: string
   is_index: number
+    LinkCategoryId?: productInterface[]
   _id: string
   protectedLinks?: string
   video?: videoInterface

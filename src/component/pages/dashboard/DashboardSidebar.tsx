@@ -215,7 +215,7 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose, children 
             >
               {!isCollapsed && <span className="ms-2">Setting</span>}
             </button>
-            <ul className="dropdown-menu" aria-labelledby="logoutDropdown">
+            <ul className="dropdown-menu newdropdownul" aria-labelledby="logoutDropdown">
               <li className="drop_menu">
                 <span  onClick={handleDeleteAccountClick}>
                   Delete Account

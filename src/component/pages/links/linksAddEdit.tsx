@@ -16,7 +16,8 @@ import {
   FaTimes,
   FaLink,
   FaUpload,
-  FaImage
+  FaImage,
+  FaSearch
 } from 'react-icons/fa'
 import { MdAdd, MdEdit } from 'react-icons/md'
 import './LinksAddEdit.css'
@@ -38,7 +39,7 @@ interface Link {
   type: string
   videoId?: string
   protectedLinks?: string
-  LinkCategoryIds?: string[]
+  LinkCategoryId?: string[]
 }
 
 export const socialPlatforms = [
@@ -73,12 +74,14 @@ export const socialPlatforms = [
     color: '#FF0000'
   }
 ]
+
 interface videoInterface {
   _id: string
   videoTitle: string
   videoLink: string
   status: string
 }
+
 interface productInterface {
   _id: string
   title: string
@@ -96,6 +99,8 @@ export const LinksAddEdit: React.FC<Props> = ({
 }) => {
   const [video, setVideo] = useState<videoInterface[]>([])
   const [product, setProduct] = useState<productInterface[]>([])
+  const [filteredProducts, setFilteredProducts] = useState<productInterface[]>([])
+  const [productSearchTerm, setProductSearchTerm] = useState('')
   const [loader, setLoader] = useState(false);
   const [link, setLink] = useState<Link>({
     linkTitle: '',
@@ -104,10 +109,11 @@ export const LinksAddEdit: React.FC<Props> = ({
     type: 'social',
     protectedLinks: 'public',
     videoId: '',
-    LinkCategoryIds: []
+    LinkCategoryId: []
   })
   const [preview, setPreview] = useState<string | null>(null)
   const [dragActive, setDragActive] = useState(false)
+
   const videoDetail = async () => {
     setLoader(true)
     try {
@@ -125,10 +131,10 @@ export const LinksAddEdit: React.FC<Props> = ({
       }
     } catch (err: any) {
       setLoader(false)
-      ErrorMessage('Failed to fetch social links')
+      ErrorMessage('Failed to fetch videos')
     }
   }
-  //getlinkCategory
+
   const productDetail = async () => {
     setLoader(true)
     try {
@@ -140,22 +146,36 @@ export const LinksAddEdit: React.FC<Props> = ({
       )
       setLoader(false)
       if (response?.data?.status) {
-        setProduct(response.data.data || [])
+        const products = response.data.data || []
+        setProduct(products)
+        setFilteredProducts(products)
       } else {
         ErrorMessage(response?.data?.message)
       }
     } catch (err: any) {
       setLoader(false)
-      ErrorMessage('Failed to fetch social links')
+      ErrorMessage('Failed to fetch products')
     }
   }
+
+  // Filter products based on search term
+  useEffect(() => {
+    if (productSearchTerm.trim() === '') {
+      setFilteredProducts(product)
+    } else {
+      const filtered = product.filter(item =>
+        item.title.toLowerCase().includes(productSearchTerm.toLowerCase())
+      )
+      setFilteredProducts(filtered)
+    }
+  }, [productSearchTerm, product])
 
   useEffect(() => {
     if (open) {
       if (action === 'edit') {
         setLink({
           ...linkDetail,
-          LinkCategoryIds: linkDetail.LinkCategoryIds || []
+          LinkCategoryId: linkDetail.LinkCategoryId || []
         })
         setPreview(linkDetail?.linkLogo || null)
       } else if (action === 'add') {
@@ -165,7 +185,8 @@ export const LinksAddEdit: React.FC<Props> = ({
           linkLogo: '',
           type: 'social',
           videoId: '',
-          LinkCategoryIds: []
+          protectedLinks: 'public',
+          LinkCategoryId: []
         })
         setPreview(null)
       }
@@ -173,20 +194,20 @@ export const LinksAddEdit: React.FC<Props> = ({
     videoDetail()
     productDetail()
   }, [open, action, linkDetail])
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target
 
-    if (name === 'LinkCategoryIds') {
-      // For <select multiple>, use selectedOptions to get all selected values
+    if (name === 'LinkCategoryId') {
       const selectElement = e.target as HTMLSelectElement
       const selectedValues = Array.from(selectElement.selectedOptions).map(
         option => option.value
       )
       setLink(prev => ({
         ...prev,
-        LinkCategoryIds: selectedValues
+        LinkCategoryId: selectedValues
       }))
     } else if (name === 'linkTitle' && link.type === 'social') {
       const selected = socialPlatforms.find(
@@ -206,6 +227,26 @@ export const LinksAddEdit: React.FC<Props> = ({
         [name]: value
       }))
     }
+  }
+
+  const handleProductSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setProductSearchTerm(e.target.value)
+  }
+
+  const handleProductToggle = (productId: string) => {
+    setLink(prev => ({
+      ...prev,
+      LinkCategoryId: prev.LinkCategoryId?.includes(productId)
+        ? prev.LinkCategoryId.filter(id => id !== productId)
+        : [...(prev.LinkCategoryId || []), productId]
+    }))
+  }
+
+  const removeSelectedProduct = (productId: string) => {
+    setLink(prev => ({
+      ...prev,
+      LinkCategoryId: prev.LinkCategoryId?.filter(id => id !== productId)
+    }))
   }
 
   const handleDrag = (e: React.DragEvent) => {
@@ -243,7 +284,8 @@ export const LinksAddEdit: React.FC<Props> = ({
         ErrorMessage(apiResponse?.data?.message)
       }
     } catch (err) {
-      setLoader(true)
+      setLoader(false)
+      ErrorMessage('Failed to upload image')
     }
   }
 
@@ -263,21 +305,24 @@ export const LinksAddEdit: React.FC<Props> = ({
       ErrorMessage('Please upload custom logo')
       return
     }
-    if (link.videoId === '') {
-      delete link.videoId
+
+    const submitLink = { ...link }
+    
+    if (submitLink.videoId === '') {
+      delete submitLink.videoId
     }
+    if (submitLink.type === 'social') {
+      submitLink.linkLogo = ''
+    }
+    if (submitLink.LinkCategoryId?.length === 0) {
+      delete submitLink.LinkCategoryId
+    }
+
     setLoader(true)
     try {
       const endpoint = action === 'edit' ? apiUrls.linkupdate : apiUrls.addlinks
-      const payload =
-        action === 'edit' ? { ...link, _id: linkDetail._id } : link
-      if (payload.type === 'social') {
-        payload.linkLogo = ''
-      }
-      // Ensure LinkCategoryIds is included in the payload
-      if (payload.LinkCategoryIds?.length === 0) {
-        delete payload.LinkCategoryIds // Remove if no products selected
-      }
+      const payload = action === 'edit' ? { ...submitLink, _id: linkDetail._id } : submitLink
+
       const response = await callAPI(endpoint, {}, 'POST', payload)
       setLoader(false)
       if (!response?.data?.status) {
@@ -432,10 +477,12 @@ export const LinksAddEdit: React.FC<Props> = ({
                   />
                 </div>
               </div>
+
+              {/* Protected Links */}
               <div className='form-section'>
                 <div className='input-group'>
                   <label htmlFor='protectedLinks' className='field-label'>
-                    Protect You Links
+                    Protect Your Links
                   </label>
                   <select
                     id='protectedLinks'
@@ -449,7 +496,7 @@ export const LinksAddEdit: React.FC<Props> = ({
                       Public
                     </option>
                     <option key={'private'} value={'private'}>
-                      private
+                      Private
                     </option>
                   </select>
                 </div>
@@ -540,14 +587,14 @@ export const LinksAddEdit: React.FC<Props> = ({
                           <input
                             type='checkbox'
                             value={item._id}
-                            checked={link.LinkCategoryIds?.includes(item._id)}
+                            checked={link.LinkCategoryId?.includes(item._id)}
                             onChange={e => {
                               const { value, checked } = e.target
                               setLink(prev => ({
                                 ...prev,
-                                LinkCategoryIds: checked
-                                  ? [...(prev.LinkCategoryIds || []), value]
-                                  : prev.LinkCategoryIds?.filter(
+                                LinkCategoryId: checked
+                                  ? [...(prev.LinkCategoryId || []), value]
+                                  : prev.LinkCategoryId?.filter(
                                       id => id !== value
                                     )
                               }))
@@ -558,11 +605,11 @@ export const LinksAddEdit: React.FC<Props> = ({
                       ))}
                     </div>
                     {/* Display selected products */}
-                    {link.LinkCategoryIds && link.LinkCategoryIds.length > 0 && (
+                    {link.LinkCategoryId && link.LinkCategoryId.length > 0 && (
                       <div className='selected-products'>
                         <label className='form-label'>Selected Products:</label>
                         <ul>
-                          {link.LinkCategoryIds.map(id => {
+                          {link.LinkCategoryId.map(id => {
                             const foundProduct = product.find(p => p._id === id)
                             return (
                               <li key={id}>
@@ -572,8 +619,8 @@ export const LinksAddEdit: React.FC<Props> = ({
                                   onClick={() =>
                                     setLink(prev => ({
                                       ...prev,
-                                      LinkCategoryIds:
-                                        prev.LinkCategoryIds?.filter(
+                                      LinkCategoryId:
+                                        prev.LinkCategoryId?.filter(
                                           pid => pid !== id
                                         )
                                     }))

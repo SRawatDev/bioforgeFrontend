@@ -20,6 +20,7 @@ import { addData, clearData } from "../../../redux/Slice";
 import "./Main.css";
 import Updateprofileshimmer from "../../Updateprofileshimmer";
 import { useSelector } from "react-redux";
+
 const fontOptions = [
   'Times New Roman',
   'Georgia',
@@ -33,6 +34,9 @@ const fontOptions = [
   'system-ui',
   'sans-serif'
 ]
+
+
+
 interface Theme {
   themeType: string
   fontFamily: string
@@ -40,6 +44,7 @@ interface Theme {
   fontColor: string
   themeDesign?: string
 }
+
 interface UserInfo {
   _id: string
   username: string
@@ -50,15 +55,18 @@ interface UserInfo {
   protectedLinksPassword?: string,
   theme: Theme
 }
+
 export interface ThemeData {
   _id?: string
   themeName: string
   themeImg: string
   themeDiscription: string
 }
+
 interface Props {
   getUserDetails: () => void
 }
+
 const Main: React.FC<Props> = ({ getUserDetails }) => {
   const dispatch = useDispatch()
   const navigate = useNavigate();
@@ -70,6 +78,7 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
   const [previewBanner, setPreviewBanner] = useState<string | null>(null);
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
+
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
@@ -124,6 +133,7 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
       setLoader(true)
     }
   }
+
   const getUserDetail = async () => {
     setLoader(true)
     try {
@@ -233,7 +243,6 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
   const handleCancel = () => {
     navigate(`/dashboard/index/${localStorage.getItem("_id")}`);
     dispatch(clearData())
-
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -260,6 +269,7 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
       setLoader(true)
     }
   }
+
   const selectSelectedTheme = (img: string) => {
     setPreviewBanner(img);
 
@@ -292,6 +302,7 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
       return updated;
     });
   };
+
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
@@ -367,36 +378,111 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
                   </div>
                 </div>
               </div>
+
               <div className='section-card'>
                 <div className='section-header'>
                   <h3 className='section-title'>Button Design </h3>
                 </div>
                 <div className='static-button-grid'>
                   <span
-                    className={`static-banner-thumb text-center bg-light ${userInfo?.theme?.themeDesign === "curved"
-                      ? "selected"
-                      : ""
-                      }`}
+                    className={`static-banner-thumb text-center bg-light ${
+                      userInfo?.theme?.themeDesign === "curved" ? "selected" : ""
+                    }`}
                     onClick={() => selectedDesign("curved")}
                   >
                     Curved
                   </span>
                   <span
-                    className={`static-button-thumb text-center bg-light ${userInfo?.theme?.themeDesign === 'sharp' ? 'selected' : ''
-                      }`}
+                    className={`static-button-thumb text-center bg-light ${
+                      userInfo?.theme?.themeDesign === 'sharp' ? 'selected' : ''
+                    }`}
                     onClick={() => selectedDesign('sharp')}
                   >
                     Sharp
                   </span>
                   <span
-                    className={`static-button-thumb text-center bg-light ${userInfo?.theme?.themeDesign === 'round' ? 'selected' : ''
-                      }`}
+                    className={`static-button-thumb text-center bg-light ${
+                      userInfo?.theme?.themeDesign === 'round' ? 'selected' : ''
+                    }`}
                     onClick={() => selectedDesign('round')}
                   >
                     Round
                   </span>
+                  <span
+                    className={`static-banner-thumb text-center bg-light ${
+                      userInfo?.theme?.themeDesign === 'pill' ? 'selected' : ''
+                    }`}
+                    onClick={() => selectedDesign('pill')}
+                  >
+                    Pill
+                  </span>
+                  <span
+                    className={`static-banner-thumb text-center bg-light ${
+                      userInfo?.theme?.themeDesign === 'beveled' ? 'selected' : ''
+                    }`}
+                    onClick={() => selectedDesign('beveled')}
+                  >
+                    Beveled
+                  </span>
+                  <span
+                    className={`static-banner-thumb text-center bg-light ${
+                      userInfo?.theme?.themeDesign === 'outlined' ? 'selected' : ''
+                    }`}
+                    onClick={() => selectedDesign('outlined')}
+                  >
+                    Outlined
+                  </span>
+                  <span
+                    className={`static-banner-thumb text-center bg-light ${
+                      userInfo?.theme?.themeDesign === 'gradient' ? 'selected' : ''
+                    }`}
+                    onClick={() => selectedDesign('gradient')}
+                  >
+                    Gradient
+                  </span>
+                  <span
+                    className={`static-banner-thumb text-center bg-light ${
+                      userInfo?.theme?.themeDesign === 'shadow' ? 'selected' : ''
+                    }`}
+                    onClick={() => selectedDesign('shadow')}
+                  >
+                    Shadow
+                  </span>
+                  <span
+                    className={`static-banner-thumb text-center bg-light ${
+                      userInfo?.theme?.themeDesign === 'flat' ? 'selected' : ''
+                    }`}
+                    onClick={() => selectedDesign('flat')}
+                  >
+                    Flat
+                  </span>
+                  <span
+                    className={`static-banner-thumb text-center bg-light ${
+                      userInfo?.theme?.themeDesign === 'neon' ? 'selected' : ''
+                    }`}
+                    onClick={() => selectedDesign('neon')}
+                  >
+                    Neon
+                  </span>
+                  <span
+                    className={`static-banner-thumb text-center bg-light ${
+                      userInfo?.theme?.themeDesign === 'vintage' ? 'selected' : ''
+                    }`}
+                    onClick={() => selectedDesign('vintage')}
+                  >
+                    Vintage
+                  </span>
+                  <span
+                    className={`static-banner-thumb text-center bg-light ${
+                      userInfo?.theme?.themeDesign === 'modern' ? 'selected' : ''
+                    }`}
+                    onClick={() => selectedDesign('modern')}
+                  >
+                    Modern
+                  </span>
                 </div>
               </div>
+
               <div className='section-card'>
                 <div className='section-header'>
                   <h3 className='section-title'>Profile Picture</h3>
@@ -434,6 +520,7 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
                   />
                 </div>
               </div>
+
               <div className='section-card'>
                 <div className='section-header'>
                   <h3 className='section-title'>About You</h3>
@@ -453,6 +540,7 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
                   />
                 </div>
               </div>
+
               <div className='section-card'>
                 <div className='section-header'>
                   <h3 className='section-title'>
@@ -529,10 +617,10 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
                   </div>
                 </div>
               </div>
+
               <div className='section-card'>
                 <div className='section-header'>
                   <h3 className='section-title'>
-                    {/* <FaPalette className='section-icon' /> */}
                     Protect Your Private Links
                   </h3>
                 </div>
@@ -547,7 +635,6 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
                     placeholder=" "
                     id="protectedLinksPassword"
                     required
-
                   />
                   <label htmlFor="protectedLinksPassword" className="register-label">
                     Password
@@ -586,4 +673,5 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
     </>
   )
 }
+
 export default Main

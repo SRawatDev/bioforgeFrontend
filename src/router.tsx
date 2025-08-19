@@ -106,7 +106,8 @@ const routes: AppRoute[] = [
   {
     path: '*',
     element: lazy(() => import('./component/PageNotFound'))
-  }
+  },
+ 
 ]
 
 export function RenderRout() {

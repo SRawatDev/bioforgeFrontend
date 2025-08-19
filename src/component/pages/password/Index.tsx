@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { FaEyeSlash, FaEye } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 import { callAPI } from "../../../utils/apicall.utils";
 import ErrorMessage from "../../../helpers/ErrorMessage";
 import { apiUrls } from "../../../utils/api.utils";
@@ -131,10 +132,6 @@ const Index = () => {
     });
   };
 
-  const handleBackToDashboard = () => {
-    navigate(`/dashboard/updateProfile/${localStorage.getItem("_id")}`);
-  };
-
   return (
     <div style={{
       minHeight: '100vh',
@@ -188,7 +185,7 @@ const Index = () => {
       {/* Main Content */}
       <div style={{
         padding: '0 40px',
-        maxWidth: '1200px',
+        // maxWidth: '1200px',
         margin: '0 auto'
       }}>
         <form onSubmit={handleSubmit}>
@@ -212,7 +209,7 @@ const Index = () => {
             display: 'grid',
             gridTemplateColumns: '1fr 1fr 1fr',
             gap: '30px',
-            marginBottom: '40px'
+            marginBottom: '2px'
           }}>
             {/* Current Password Field */}
             <div>
@@ -279,7 +276,7 @@ const Index = () => {
                     justifyContent: 'center'
                   }}
                 >
-                  {showPassword.oldPassword ? <Eye size={18} /> : <EyeOff size={18} />}
+                  {showPassword.oldPassword ? <FaEye size={18} /> : <FaEyeSlash size={18} />}
                 </button>
               </div>
               {errors.oldPassword && (
@@ -358,7 +355,7 @@ const Index = () => {
                     justifyContent: 'center'
                   }}
                 >
-                  {showPassword.newPassword ? <Eye size={18} /> : <EyeOff size={18} />}
+                  {showPassword.newPassword ? <FaEye size={18} /> : <FaEyeSlash size={18} />}
                 </button>
               </div>
               {errors.newPassword && (
@@ -437,7 +434,7 @@ const Index = () => {
                     justifyContent: 'center'
                   }}
                 >
-                  {showPassword.confirmPassword ? <Eye size={18} /> : <EyeOff size={18} />}
+                  {showPassword.confirmPassword ? <FaEye size={18} /> : <FaEyeSlash size={18} />}
                 </button>
               </div>
               {errors.confirmPassword && (
@@ -457,7 +454,7 @@ const Index = () => {
             display: 'flex',
             justifyContent: 'flex-end',
             gap: '12px',
-            paddingTop: '20px'
+            paddingTop: '8px'
           }}>
             {/* Only show Cancel button when user has typed something */}
             {hasContent && (
@@ -477,10 +474,10 @@ const Index = () => {
                   textDecoration: 'underline'
                 }}
                 onMouseEnter={(e) => {
-                  e.target.style.color = '#495057';
+                  (e.target as HTMLButtonElement).style.color = '#495057';
                 }}
                 onMouseLeave={(e) => {
-                  e.target.style.color = '#6c757d';
+                 (e.target as HTMLButtonElement).style.color = '#6c757d';
                 }}
               >
                 Cancel
@@ -494,8 +491,8 @@ const Index = () => {
                 padding: '10px 24px',
                 fontSize: '14px',
                 fontWeight: '500',
-                color: '#ffffff',
-                backgroundColor: loader ? '#6c757d' : '#28a745',
+                background: 'linear-gradient(135deg, #6366f1, #8b5cf6)',
+                color: 'white',
                 border: 'none',
                 borderRadius: '6px',
                 cursor: loader ? 'not-allowed' : 'pointer',
@@ -503,12 +500,12 @@ const Index = () => {
               }}
               onMouseEnter={(e) => {
                 if (!loader) {
-                  e.target.style.backgroundColor = '#218838';
+                  (e.target as HTMLButtonElement).style.backgroundColor = '#218838';
                 }
               }}
               onMouseLeave={(e) => {
                 if (!loader) {
-                  e.target.style.backgroundColor = '#28a745';
+                  (e.target as HTMLButtonElement).style.backgroundColor = '#28a745';
                 }
               }}
             >

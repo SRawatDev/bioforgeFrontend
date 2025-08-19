@@ -38,7 +38,7 @@ interface Link {
   type: string
   videoId?: string
   protectedLinks?: string
-  LinkCategoryIds?: string[]
+  LinkCategoryId?: string[]
 }
 
 export const socialPlatforms = [
@@ -104,7 +104,7 @@ export const LinksAddEdit: React.FC<Props> = ({
     type: 'social',
     protectedLinks: 'public',
     videoId: '',
-    LinkCategoryIds: []
+    LinkCategoryId: []
   })
   const [preview, setPreview] = useState<string | null>(null)
   const [dragActive, setDragActive] = useState(false)
@@ -128,7 +128,6 @@ export const LinksAddEdit: React.FC<Props> = ({
       ErrorMessage('Failed to fetch social links')
     }
   }
-  //getlinkCategory
   const productDetail = async () => {
     setLoader(true)
     try {
@@ -155,7 +154,7 @@ export const LinksAddEdit: React.FC<Props> = ({
       if (action === 'edit') {
         setLink({
           ...linkDetail,
-          LinkCategoryIds: linkDetail.LinkCategoryIds || []
+          LinkCategoryId: linkDetail.LinkCategoryId || []
         })
         setPreview(linkDetail?.linkLogo || null)
       } else if (action === 'add') {
@@ -165,7 +164,7 @@ export const LinksAddEdit: React.FC<Props> = ({
           linkLogo: '',
           type: 'social',
           videoId: '',
-          LinkCategoryIds: []
+          LinkCategoryId: []
         })
         setPreview(null)
       }
@@ -177,16 +176,16 @@ export const LinksAddEdit: React.FC<Props> = ({
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target
+  
 
-    if (name === 'LinkCategoryIds') {
-      // For <select multiple>, use selectedOptions to get all selected values
+    if (name === 'LinkCategoryId') {
       const selectElement = e.target as HTMLSelectElement
       const selectedValues = Array.from(selectElement.selectedOptions).map(
         option => option.value
       )
       setLink(prev => ({
         ...prev,
-        LinkCategoryIds: selectedValues
+        LinkCategoryId: selectedValues
       }))
     } else if (name === 'linkTitle' && link.type === 'social') {
       const selected = socialPlatforms.find(
@@ -200,7 +199,17 @@ export const LinksAddEdit: React.FC<Props> = ({
         linkLogo: selected ? selected.value : prev.linkLogo
       }))
       setPreview(null)
-    } else {
+    }else if(value==='social'){
+      setPreview("")
+    
+
+ setLink(prev => ({
+        ...prev,
+        [name]: value,
+        LinkCategoryId: [],videoId: '', linkLogo:''
+      }))
+    }
+       else {
       setLink(prev => ({
         ...prev,
         [name]: value
@@ -273,10 +282,10 @@ export const LinksAddEdit: React.FC<Props> = ({
         action === 'edit' ? { ...link, _id: linkDetail._id } : link
       if (payload.type === 'social') {
         payload.linkLogo = ''
+        payload.LinkCategoryId = []
       }
-      // Ensure LinkCategoryIds is included in the payload
-      if (payload.LinkCategoryIds?.length === 0) {
-        delete payload.LinkCategoryIds // Remove if no products selected
+      if (payload.LinkCategoryId?.length === 0) {
+        delete payload.LinkCategoryId 
       }
       const response = await callAPI(endpoint, {}, 'POST', payload)
       setLoader(false)
@@ -540,14 +549,14 @@ export const LinksAddEdit: React.FC<Props> = ({
                           <input
                             type='checkbox'
                             value={item._id}
-                            checked={link.LinkCategoryIds?.includes(item._id)}
+                            checked={link.LinkCategoryId?.includes(item._id)}
                             onChange={e => {
                               const { value, checked } = e.target
                               setLink(prev => ({
                                 ...prev,
-                                LinkCategoryIds: checked
-                                  ? [...(prev.LinkCategoryIds || []), value]
-                                  : prev.LinkCategoryIds?.filter(
+                                LinkCategoryId: checked
+                                  ? [...(prev.LinkCategoryId || []), value]
+                                  : prev.LinkCategoryId?.filter(
                                       id => id !== value
                                     )
                               }))
@@ -558,11 +567,11 @@ export const LinksAddEdit: React.FC<Props> = ({
                       ))}
                     </div>
                     {/* Display selected products */}
-                    {link.LinkCategoryIds && link.LinkCategoryIds.length > 0 && (
+                    {link.LinkCategoryId && link.LinkCategoryId.length > 0 && (
                       <div className='selected-products'>
                         <label className='form-label'>Selected Products:</label>
                         <ul>
-                          {link.LinkCategoryIds.map(id => {
+                          {link.LinkCategoryId.map(id => {
                             const foundProduct = product.find(p => p._id === id)
                             return (
                               <li key={id}>
@@ -572,8 +581,8 @@ export const LinksAddEdit: React.FC<Props> = ({
                                   onClick={() =>
                                     setLink(prev => ({
                                       ...prev,
-                                      LinkCategoryIds:
-                                        prev.LinkCategoryIds?.filter(
+                                      LinkCategoryId:
+                                        prev.LinkCategoryId?.filter(
                                           pid => pid !== id
                                         )
                                     }))

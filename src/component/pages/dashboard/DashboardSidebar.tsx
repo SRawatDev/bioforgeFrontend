@@ -12,7 +12,7 @@ import "./DashboardSidebar.css";
 import "./dashboard.css";
 import { useDispatch } from "react-redux";
 import {  clearData } from "../../../redux/Slice";
-import { MdProductionQuantityLimits, MdUnsubscribe,MdSubscriptions } from "react-icons/md";
+import { MdProductionQuantityLimits, MdUnsubscribe } from "react-icons/md";
 
 interface SidebarProps {
   isMobile?: boolean;

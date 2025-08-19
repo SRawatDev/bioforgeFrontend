@@ -636,8 +636,8 @@ const Index: React.FC = () => {
               className='passwordProfile blinking-icon'
               style={
                 {
-                  height: '40px',
-                  width: '40px',
+                  height: '30px',
+                  width: '30px',
                   color: userInfo?.theme?.fontColor || '#fbbf24',
                   cursor: 'pointer',
                   fontSize: '40px',

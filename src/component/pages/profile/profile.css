@@ -576,10 +576,7 @@
     height: 54px;
     font-size: 24px;
   }
-  .passwordProfile {
-    top: 19%;
-    left: 1024px;
-  }
+
   .blinking-icon {
     animation: blink 2s infinite;
     color: #fbbf24 !important;

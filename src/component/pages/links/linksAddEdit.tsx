@@ -284,9 +284,7 @@ export const LinksAddEdit: React.FC<Props> = ({
         payload.linkLogo = ''
         payload.LinkCategoryId = []
       }
-      if (payload.LinkCategoryId?.length === 0) {
-        delete payload.LinkCategoryId 
-      }
+     
       const response = await callAPI(endpoint, {}, 'POST', payload)
       setLoader(false)
       if (!response?.data?.status) {

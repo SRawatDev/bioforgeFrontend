@@ -3,7 +3,7 @@ import { defaultConfig } from "../../../config";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { LogoutModal } from "../../../layout/Header";
 import SuccessMessage from "../../../helpers/Success";
-import {IoLogOut,IoVideocam} from "react-icons/io5";
+import { IoLogOut, IoVideocam } from "react-icons/io5";
 import { RiDeleteBin6Fill } from "react-icons/ri";
 import { PiLinkSimpleHorizontalBold } from "react-icons/pi";
 import { FaUser } from "react-icons/fa";
@@ -11,7 +11,7 @@ import { RiLockPasswordFill } from "react-icons/ri";
 import "./DashboardSidebar.css";
 import "./dashboard.css";
 import { useDispatch } from "react-redux";
-import {  clearData } from "../../../redux/Slice";
+import { clearData } from "../../../redux/Slice";
 import { MdProductionQuantityLimits, MdUnsubscribe } from "react-icons/md";
 
 interface SidebarProps {
@@ -20,12 +20,12 @@ interface SidebarProps {
   children?: React.ReactNode
 }
 // React.FC<{ children?: React.ReactNode }>
-const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose,children }) => {
+const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose, children }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [showLogout, setShowLogout] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const storedata=useDispatch()
+  const storedata = useDispatch()
 
   const handleLogoutClick = () => {
     if (isMobile && onClose) {
@@ -35,7 +35,7 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose,children }
   };
 
   const handleLogoutConfirm = () => {
-    
+
     SuccessMessage("Logout successfully");
     localStorage.clear();
     storedata(clearData())
@@ -97,7 +97,6 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose,children }
       category: "main",
     },
   ];
-
   const mainItems = menuItems.filter((item) => item.category === "main");
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -115,78 +114,73 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose,children }
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isMobile, onClose]);
-
   return (
     <>
-    <div className="Main-Navbar-section d-flex">
-      <nav className="sidebardashboard bg-white">
-        
-        <div className="sidebar-header">
-          <div className="user-profile-section">
-            <Link to={"/"}>
-      
-            <div className="user-profile">
-              <div className="avatar-container">
-                <img
-                  src={
-                    localStorage.getItem("profile_img")
-                      ? defaultConfig.imagePath +
+      <div className="Main-Navbar-section d-flex">
+        <nav className="sidebardashboard bg-white">
+
+          <div className="sidebar-header">
+            <div className="user-profile-section">
+              <Link to={"/"}>
+
+                <div className="user-profile">
+                  <div className="avatar-container">
+                    <img
+                      src={
                         localStorage.getItem("profile_img")
-                      : "https://i.pravatar.cc/48"
-                  }
-                  alt="Profile"
-                  className="user-avatar"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).src =
-                      "https://i.pravatar.cc/48";
-                  }}
-                />
+                          ? defaultConfig.imagePath +
+                          localStorage.getItem("profile_img")
+                          : "https://i.pravatar.cc/48"
+                      }
+                      alt="Profile"
+                      className="user-avatar"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src =
+                          "https://i.pravatar.cc/48";
+                      }}
+                    />
+                  </div>
+
+                  {!isCollapsed && (
+                    <div className="user-info">
+                      <h6 className="username">
+                        {localStorage.getItem("username") || "User"}
+                      </h6>
+                    </div>
+                  )}
+                </div>
+              </Link>
+            </div>
+          </div>
+          <div className="sidebar-content">
+            <div className="sidebar-menu">
+              <div className="menu-section">
+                <ul className="menu-list">
+                  {mainItems.map((item, index) => (
+                    <li key={index} className="menu-item">
+                      <Link
+                        to={item.path}
+                        className={`menu-link ${isActiveLink(item.path) ? "active" : ""
+                          }`}
+                        onClick={isMobile && onClose ? onClose : undefined}
+                        title={isCollapsed ? item.label : ""}
+                      >
+                        <span className="menu-icon">{item.icon}</span>
+                        {!isCollapsed && (
+                          <span className="menu-text">{item.label}</span>
+                        )}
+                        {isActiveLink(item.path) && (
+                          <div className="active-indicator"></div>
+                        )}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
               </div>
 
-              {!isCollapsed && (
-                <div className="user-info">
-                  <h6 className="username">
-                    {localStorage.getItem("username") || "User"}
-                  </h6>
-                </div>
-              )}
             </div>
-                  </Link>
           </div>
-        </div>
-
-
-        
-        <div className="sidebar-content">
-          <div className="sidebar-menu">
-            <div className="menu-section">
-              <ul className="menu-list">
-                {mainItems.map((item, index) => (
-                  <li key={index} className="menu-item">
-                    <Link
-                      to={item.path}
-                      className={`menu-link ${
-                        isActiveLink(item.path) ? "active" : ""
-                      }`}
-                      onClick={isMobile && onClose ? onClose : undefined}
-                      title={isCollapsed ? item.label : ""}
-                    >
-                      <span className="menu-icon">{item.icon}</span>
-                      {!isCollapsed && (
-                        <span className="menu-text">{item.label}</span>
-                      )}
-                      {isActiveLink(item.path) && (
-                        <div className="active-indicator"></div>
-                      )}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-               
-          </div>
-        </div>
-            <button
+          <button
             className="logout-btns"
             onClick={handleLogoutClick}
             title={isCollapsed ? "Logout" : ''}
@@ -194,19 +188,15 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose,children }
             <IoLogOut className="menu-icon" />
             {!isCollapsed && <span>Logout</span>}
           </button>
-   
-
-      </nav>
-
-      {isMobile && <div className="sidebar-backdrop" onClick={onClose}></div>}
-
-      {showLogout && (
-        <LogoutModal
-          onClose={() => setShowLogout(false)}
-          onConfirm={handleLogoutConfirm}
-        />
-      )}
-      {children}
+        </nav>
+        {isMobile && <div className="sidebar-backdrop" onClick={onClose}></div>}
+        {showLogout && (
+          <LogoutModal
+            onClose={() => setShowLogout(false)}
+            onConfirm={handleLogoutConfirm}
+          />
+        )}
+        {children}
       </div>
     </>
   );

@@ -284,7 +284,7 @@
   position: relative;
   position: absolute;
   bottom: 0;
-  width: 285px;
+  width: 290px;
 }
 
 .upgrade-card {
@@ -384,7 +384,7 @@
 
 .logout-btns:hover {
   background: rgba(229, 62, 62, 0.08);
-  border-color: #feb2b2;
+  border-color: #cf1f1f;
   color: #e53e3e;
 }
 

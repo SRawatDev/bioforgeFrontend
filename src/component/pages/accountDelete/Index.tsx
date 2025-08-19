@@ -58,11 +58,6 @@ const Index = () => {
           <div className="register-col-left">
             <div className="register-form-wrapper">
               <div className="register-header">
-                <img
-                  src="/assets/logo.png"
-                  className="register-logo"
-                  alt="BioForge Logo"
-                />
                 <h4 className="register-title">Delete You Bioforge Account</h4>
               </div>
               <form onSubmit={handleSubmit} className="register-form">
@@ -111,69 +106,6 @@ const Index = () => {
                   </div>
                 </div>
               </form>
-            </div>
-          </div>
-
-          <div className="register-col-right">
-            <div className="register-right-content gradient-custom-2">
-              <div className="register-right-text">
-                <h4 className="right-title">Start Your Digital Journey</h4>
-                <p className="right-description">
-                  Join thousands of creators, professionals, and brands who use
-                  BioForge to craft beautiful, personalized bio pages. Showcase
-                  your digital identity with style and connect with your
-                  audience like never before.
-                </p>
-
-                <div className="benefits-list">
-                  <div className="benefit-item">
-                    <div className="benefit-number">1</div>
-                    <div className="benefit-content">
-                      <h5>Choose Your Template</h5>
-                      <p>
-                        Select from our collection of beautiful, mobile-first
-                        templates
-                      </p>
-                    </div>
-                  </div>
-                  <div className="benefit-item">
-                    <div className="benefit-number">2</div>
-                    <div className="benefit-content">
-                      <h5>Customize Your Page</h5>
-                      <p>
-                        Add your links, customize colors, and make it uniquely
-                        yours
-                      </p>
-                    </div>
-                  </div>
-                  <div className="benefit-item">
-                    <div className="benefit-number">3</div>
-                    <div className="benefit-content">
-                      <h5>Share & Grow</h5>
-                      <p>
-                        Get your unique link and start building your digital
-                        presence
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Stats */}
-                <div className="stats-section">
-                  <div className="stat-item">
-                    <div className="stat-number">10K+</div>
-                    <div className="stat-label">Active Users</div>
-                  </div>
-                  <div className="stat-item">
-                    <div className="stat-number">50+</div>
-                    <div className="stat-label">Templates</div>
-                  </div>
-                  <div className="stat-item">
-                    <div className="stat-number">99.9%</div>
-                    <div className="stat-label">Uptime</div>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>

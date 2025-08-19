@@ -11,21 +11,23 @@ import { RiLockPasswordFill } from "react-icons/ri";
 import "./DashboardSidebar.css";
 import "./dashboard.css";
 import { useDispatch } from "react-redux";
-import { clearData } from "../../../redux/Slice";
-import { MdProductionQuantityLimits, MdUnsubscribe } from "react-icons/md";
+import {  clearData } from "../../../redux/Slice";
+import { MdProductionQuantityLimits, MdUnsubscribe} from "react-icons/md";
+import DeleteAccountModal from "../accountDelete/Index"; 
 
 interface SidebarProps {
   isMobile?: boolean;
   onClose?: () => void;
   children?: React.ReactNode
 }
-// React.FC<{ children?: React.ReactNode }>
-const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose, children }) => {
+
+const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose,children }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [showLogout, setShowLogout] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false); 
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const storedata = useDispatch()
+  const storedata = useDispatch();
 
   const handleLogoutClick = () => {
     if (isMobile && onClose) {
@@ -34,8 +36,14 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose, children 
     setTimeout(() => setShowLogout(true), 300);
   };
 
-  const handleLogoutConfirm = () => {
+  const handleDeleteAccountClick = () => {
+    if (isMobile && onClose) {
+      onClose();
+    }
+   setTimeout(() => setShowDeleteModal(true),300);
+  };
 
+  const handleLogoutConfirm = () => {
     SuccessMessage("Logout successfully");
     localStorage.clear();
     storedata(clearData())
@@ -78,12 +86,6 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose, children 
       icon: <MdUnsubscribe />,
       category: "main",
     },
-    // {
-    //   path: `/dashboard/checkoutpayment/${localStorage.getItem("_id")}`,
-    //   label: "Subcription",
-    //   icon: <MdSubscriptions />,
-    //   category: "main",
-    // },
     {
       path: `/dashboard/changepassword`,
       label: "Change Password",
@@ -91,13 +93,15 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose, children 
       category: "main",
     },
     {
-      path: "/dashboard/deleteAccount",
+      path: null, 
       label: "Delete Account",
       icon: <RiDeleteBin6Fill />,
       category: "main",
+      onClick: handleDeleteAccountClick, 
     },
   ];
   const mainItems = menuItems.filter((item) => item.category === "main");
+  
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (isMobile && onClose) {
@@ -118,18 +122,16 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose, children 
     <>
       <div className="Main-Navbar-section d-flex">
         <nav className="sidebardashboard bg-white">
-
           <div className="sidebar-header">
             <div className="user-profile-section">
               <Link to={"/"}>
-
                 <div className="user-profile">
                   <div className="avatar-container">
                     <img
                       src={
                         localStorage.getItem("profile_img")
                           ? defaultConfig.imagePath +
-                          localStorage.getItem("profile_img")
+                            localStorage.getItem("profile_img")
                           : "https://i.pravatar.cc/48"
                       }
                       alt="Profile"
@@ -152,34 +154,68 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose, children 
               </Link>
             </div>
           </div>
+
           <div className="sidebar-content">
             <div className="sidebar-menu">
               <div className="menu-section">
                 <ul className="menu-list">
                   {mainItems.map((item, index) => (
                     <li key={index} className="menu-item">
-                      <Link
-                        to={item.path}
-                        className={`menu-link ${isActiveLink(item.path) ? "active" : ""
+                      {item.path ? (
+                        <Link
+                          to={item.path}
+                          className={`menu-link ${
+                            isActiveLink(item.path) ? "active" : ""
                           }`}
-                        onClick={isMobile && onClose ? onClose : undefined}
-                        title={isCollapsed ? item.label : ""}
-                      >
-                        <span className="menu-icon">{item.icon}</span>
-                        {!isCollapsed && (
-                          <span className="menu-text">{item.label}</span>
-                        )}
-                        {isActiveLink(item.path) && (
-                          <div className="active-indicator"></div>
-                        )}
-                      </Link>
+                          onClick={isMobile && onClose ? onClose : undefined}
+                          title={isCollapsed ? item.label : ""}
+                        >
+                          <span className="menu-icon">{item.icon}</span>
+                          {!isCollapsed && (
+                            <span className="menu-text">{item.label}</span>
+                          )}
+                          {item.path && isActiveLink(item.path) && (
+                            <div className="active-indicator"></div>
+                          )}
+                        </Link>
+                      ) : (
+                        <button
+                          className="menu-link menu-button"
+                          onClick={item.onClick}
+                          title={isCollapsed ? item.label : ""}
+                          style={{
+                            background: 'none',
+                            border: 'none',
+                            width: '100%',
+                            textAlign: 'left',
+                            cursor: 'pointer',
+                            padding: '12px 16px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '12px',
+                            color: '#dc3545', 
+                            transition: 'all 0.2s ease'
+                          }}
+                          onMouseEnter={(e) => {
+                            (e.target as any).style.backgroundColor = '#fff5f5';
+                          }}
+                          onMouseLeave={(e) => {
+                            (e.target as any).style.backgroundColor = 'transparent';
+                          }}
+                        >
+                          <span className="menu-icon">{item.icon}</span>
+                          {!isCollapsed && (
+                            <span className="menu-text">{item.label}</span>
+                          )}
+                        </button>
+                      )}
                     </li>
                   ))}
                 </ul>
               </div>
-
             </div>
           </div>
+          
           <button
             className="logout-btns"
             onClick={handleLogoutClick}
@@ -196,8 +232,30 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose, children 
             onConfirm={handleLogoutConfirm}
           />
         )}
+        <DeleteAccountModal
+          isOpen={showDeleteModal}
+          onClose={() => setShowDeleteModal(false)}
+        />
+
         {children}
       </div>
+
+
+      <style>{`
+        .menu-button {
+          font-family: inherit;
+          font-size: inherit;
+        }
+        
+        .menu-button:hover {
+          background-color: #fff5f5 !important;
+        }
+        
+        .menu-button:focus {
+          outline: 2px solid #dc3545;
+          outline-offset: 2px;
+        }
+      `}</style>
     </>
   );
 };

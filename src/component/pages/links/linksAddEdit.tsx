@@ -16,7 +16,8 @@ import {
   FaTimes,
   FaLink,
   FaUpload,
-  FaImage
+  FaImage,
+  FaSearch
 } from 'react-icons/fa'
 import { MdAdd, MdEdit } from 'react-icons/md'
 import './LinksAddEdit.css'
@@ -73,12 +74,14 @@ export const socialPlatforms = [
     color: '#FF0000'
   }
 ]
+
 interface videoInterface {
   _id: string
   videoTitle: string
   videoLink: string
   status: string
 }
+
 interface productInterface {
   _id: string
   title: string
@@ -96,6 +99,8 @@ export const LinksAddEdit: React.FC<Props> = ({
 }) => {
   const [video, setVideo] = useState<videoInterface[]>([])
   const [product, setProduct] = useState<productInterface[]>([])
+  const [filteredProducts, setFilteredProducts] = useState<productInterface[]>([])
+  const [productSearchTerm, setProductSearchTerm] = useState('')
   const [loader, setLoader] = useState(false);
   const [link, setLink] = useState<Link>({
     linkTitle: '',
@@ -108,6 +113,7 @@ export const LinksAddEdit: React.FC<Props> = ({
   })
   const [preview, setPreview] = useState<string | null>(null)
   const [dragActive, setDragActive] = useState(false)
+
   const videoDetail = async () => {
     setLoader(true)
     try {
@@ -125,7 +131,7 @@ export const LinksAddEdit: React.FC<Props> = ({
       }
     } catch (err: any) {
       setLoader(false)
-      ErrorMessage('Failed to fetch social links')
+      ErrorMessage('Failed to fetch videos')
     }
   }
   const productDetail = async () => {
@@ -139,15 +145,29 @@ export const LinksAddEdit: React.FC<Props> = ({
       )
       setLoader(false)
       if (response?.data?.status) {
-        setProduct(response.data.data || [])
+        const products = response.data.data || []
+        setProduct(products)
+        setFilteredProducts(products)
       } else {
         ErrorMessage(response?.data?.message)
       }
     } catch (err: any) {
       setLoader(false)
-      ErrorMessage('Failed to fetch social links')
+      ErrorMessage('Failed to fetch products')
     }
   }
+
+  // Filter products based on search term
+  useEffect(() => {
+    if (productSearchTerm.trim() === '') {
+      setFilteredProducts(product)
+    } else {
+      const filtered = product.filter(item =>
+        item.title.toLowerCase().includes(productSearchTerm.toLowerCase())
+      )
+      setFilteredProducts(filtered)
+    }
+  }, [productSearchTerm, product])
 
   useEffect(() => {
     if (open) {
@@ -172,6 +192,7 @@ export const LinksAddEdit: React.FC<Props> = ({
     videoDetail()
     productDetail()
   }, [open, action, linkDetail])
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -217,6 +238,26 @@ export const LinksAddEdit: React.FC<Props> = ({
     }
   }
 
+  const handleProductSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setProductSearchTerm(e.target.value)
+  }
+
+  const handleProductToggle = (productId: string) => {
+    setLink(prev => ({
+      ...prev,
+      LinkCategoryId: prev.LinkCategoryId?.includes(productId)
+        ? prev.LinkCategoryId.filter(id => id !== productId)
+        : [...(prev.LinkCategoryId || []), productId]
+    }))
+  }
+
+  const removeSelectedProduct = (productId: string) => {
+    setLink(prev => ({
+      ...prev,
+      LinkCategoryId: prev.LinkCategoryId?.filter(id => id !== productId)
+    }))
+  }
+
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault()
     e.stopPropagation()
@@ -252,7 +293,8 @@ export const LinksAddEdit: React.FC<Props> = ({
         ErrorMessage(apiResponse?.data?.message)
       }
     } catch (err) {
-      setLoader(true)
+      setLoader(false)
+      ErrorMessage('Failed to upload image')
     }
   }
 
@@ -272,9 +314,19 @@ export const LinksAddEdit: React.FC<Props> = ({
       ErrorMessage('Please upload custom logo')
       return
     }
-    if (link.videoId === '') {
-      delete link.videoId
+
+    const submitLink = { ...link }
+    
+    if (submitLink.videoId === '') {
+      delete submitLink.videoId
     }
+    if (submitLink.type === 'social') {
+      submitLink.linkLogo = ''
+    }
+    if (submitLink.LinkCategoryId?.length === 0) {
+      delete submitLink.LinkCategoryId
+    }
+
     setLoader(true)
     try {
       const endpoint = action === 'edit' ? apiUrls.linkupdate : apiUrls.addlinks
@@ -439,10 +491,12 @@ export const LinksAddEdit: React.FC<Props> = ({
                   />
                 </div>
               </div>
+
+              {/* Protected Links */}
               <div className='form-section'>
                 <div className='input-group'>
                   <label htmlFor='protectedLinks' className='field-label'>
-                    Protect You Links
+                    Protect Your Links
                   </label>
                   <select
                     id='protectedLinks'
@@ -456,7 +510,7 @@ export const LinksAddEdit: React.FC<Props> = ({
                       Public
                     </option>
                     <option key={'private'} value={'private'}>
-                      private
+                      Private
                     </option>
                   </select>
                 </div>

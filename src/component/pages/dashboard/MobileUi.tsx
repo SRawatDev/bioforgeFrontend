@@ -8,6 +8,7 @@ import { BiLogoGmail } from "react-icons/bi";
 import { socialPlatforms } from "../links/linksAddEdit";
 import "./mobilePreview.css";
 import axios from "axios";
+import Product from "./Product";
 interface userInfo {
   _id: string;
   username: string;
@@ -23,6 +24,12 @@ interface videoInterface {
   _id?: string,
   videoLink?: string
 }
+interface productInterface {
+  _id?: string,
+  title?: string,
+  image?: string,
+  link?: number
+}
 interface theme {
   fontFamily: string;
   is_colorImage: string;
@@ -30,6 +37,7 @@ interface theme {
   themeDesign?: string;
 }
 interface Link {
+  LinkCategoryId?:productInterface[]
   linkTitle: string;
   linkUrl: string;
   linkLogo: string;
@@ -80,24 +88,23 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo, newUserData }) => 
     }
   };
   const getYouTubeEmbedUrl = (url: string) => {
-  try {
-    const urlObj = new URL(url);
-    let videoId = "";
+    try {
+      const urlObj = new URL(url);
+      let videoId = "";
 
-    if (urlObj.hostname.includes("youtu.be")) {
-      videoId = urlObj.pathname.slice(1);
-    } else if (urlObj.hostname.includes("youtube.com")) {
-      videoId = urlObj.searchParams.get("v") || "";
+      if (urlObj.hostname.includes("youtu.be")) {
+        videoId = urlObj.pathname.slice(1);
+      } else if (urlObj.hostname.includes("youtube.com")) {
+        videoId = urlObj.searchParams.get("v") || "";
+      }
+
+      if (!videoId) return null;
+
+      return `https://www.youtube.com/embed/${videoId}?modestbranding=1&rel=0&controls=1`;
+    } catch {
+      return null;
     }
-
-    if (!videoId) return null;
-
-    // Minimal branding + no unrelated recommendations
-    return `https://www.youtube.com/embed/${videoId}?modestbranding=1&rel=0&controls=1`;
-  } catch {
-    return null;
-  }
-};
+  };
 
   return (
     <>
@@ -218,58 +225,62 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo, newUserData }) => 
             <div className="links-list">
               {Array.isArray(newUserData?.non_social) && newUserData?.non_social.map((link) => (
                 <>
-                
-                <Link
-                  key={link._id}
-                  to={link.linkUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`link-card ${userInfo?.theme?.themeDesign || "round"
-                    }`}
-                  onClick={() => handleClickSubmit(link._id)}
-                  style={
-                    {
-                      "--card-bg": userInfo?.theme?.is_colorImage || "#333",
-                      "--card-color": userInfo?.theme?.fontColor || "white",
-                      "--card-font":
-                        userInfo?.theme?.fontFamily || "sans-serif",
-                    } as React.CSSProperties
-                  }
-                >
-                  <img
-                    src={defaultConfig?.imagePath + link.linkLogo}
-                    alt={link.linkTitle}
-                    className="link-logo"
-                  />
-                  <span
-                    className="link-card-title"
-                    style={{
-                      fontFamily: userInfo?.theme?.fontFamily,
-                      color: userInfo?.theme?.fontColor || "white",
-                    }}
+
+                  <Link
+                    key={link._id}
+                    to={link.linkUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`link-card ${userInfo?.theme?.themeDesign || "round"
+                      }`}
+                    onClick={() => handleClickSubmit(link._id)}
+                    style={
+                      {
+                        "--card-bg": userInfo?.theme?.is_colorImage || "#333",
+                        "--card-color": userInfo?.theme?.fontColor || "white",
+                        "--card-font":
+                          userInfo?.theme?.fontFamily || "sans-serif",
+                      } as React.CSSProperties
+                    }
                   >
-                    {link.linkTitle}
-                  </span>
-                  
-
-
-
-                </Link>
-
-                {getYouTubeEmbedUrl(link?.video?.videoLink || "") && (
-                <div>
-                  <iframe
-                      width="250"
-                      height="150"
-                      src={getYouTubeEmbedUrl(link?.video?.videoLink || "") || ""}
-                      frameBorder="0"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                    ></iframe>
-                  </div>
+                    <img
+                      src={defaultConfig?.imagePath + link.linkLogo}
+                      alt={link.linkTitle}
+                      className="link-logo"
+                    />
+                    <span
+                      className="link-card-title"
+                      style={{
+                        fontFamily: userInfo?.theme?.fontFamily,
+                        color: userInfo?.theme?.fontColor || "white",
+                      }}
+                    >
+                      {link.linkTitle}
+                    </span>
+                  </Link>
+                  {getYouTubeEmbedUrl(link?.video?.videoLink || "") && (
+                    <div>
+                      <iframe
+                        width="250"
+                        height="150"
+                        src={getYouTubeEmbedUrl(link?.video?.videoLink || "") || ""}
+                        frameBorder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                      ></iframe>
+                    </div>
                   )
-                  
                   }
+                  {/* {
+                    link?.LinkCategoryId?.map((item,index)=>{
+                      return (
+                       
+                        <>{item?.title}</>
+                      )
+                    })
+                  } */}
+                  <Product/>
+                 
                 </>
               ))}
             </div>
@@ -288,7 +299,7 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo, newUserData }) => 
                     rel="noopener noreferrer"
                     className="link-card-social"
                     onClick={() => handleClickSubmit(link._id)}
-                  // style={{ color: "black" }}
+
                   >
                     {matchedPlatform && (
                       <span

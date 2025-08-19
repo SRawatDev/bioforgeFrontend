@@ -643,6 +643,7 @@ const Index: React.FC = () => {
                   color: userInfo?.theme?.fontColor || '#fbbf24',
                   cursor: 'pointer',
                   fontSize: '40px',
+                  marginLeft: '70px'
 
                 } as React.CSSProperties
               }

@@ -25,6 +25,12 @@ interface videoInterface {
   _id?: string,
   videoLink?: string
 }
+interface productInterface {
+  _id?: string,
+  title?: string,
+  image?: string,
+  link?: number
+}
 
 interface Link {
   linkTitle: string;
@@ -32,6 +38,7 @@ interface Link {
   linkLogo: string;
   is_index: number;
   _id: string;
+  LinkCategoryId?:productInterface[]
   video?: videoInterface
 }
 

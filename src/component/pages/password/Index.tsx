@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Eye, EyeOff } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { FaEyeSlash, FaEye } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 import { callAPI } from "../../../utils/apicall.utils";
 import ErrorMessage from "../../../helpers/ErrorMessage";
 import { apiUrls } from "../../../utils/api.utils";
@@ -18,22 +18,13 @@ const Index = () => {
     newPassword: false,
     confirmPassword: false,
   });
-   const navigate = useNavigate();
+  const navigate = useNavigate();
   const [changepasswordData, setchangepasswordData] = useState<changepasswordInterface>({
     oldPassword: "",
     newPassword: "",
     confirmPassword: "",
   });
 
-  const [errors, setErrors] = useState({
-    oldPassword: "",
-    newPassword: "",
-    confirmPassword: "",
-    general: ""
-  });
-
-  // Check if any field has content to show Cancel button
-  const hasContent = changepasswordData.oldPassword || changepasswordData.newPassword || changepasswordData.confirmPassword;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -41,59 +32,15 @@ const Index = () => {
       ...prev,
       [name]: value,
     }));
-    
-    // Clear specific field error when user starts typing
-    if (errors[name as keyof typeof errors]) {
-      setErrors(prev => ({
-        ...prev,
-        [name]: "",
-        general: ""
-      }));
-    }
+
   };
-
-  const validateForm = () => {
-    const newErrors = {
-      oldPassword: "",
-      newPassword: "",
-      confirmPassword: "",
-      general: ""
-    };
-
-    if (!changepasswordData.oldPassword.trim()) {
-      newErrors.oldPassword = "Current password is required";
-    }
-
-    if (!changepasswordData.newPassword.trim()) {
-      newErrors.newPassword = "New password is required";
-    } else if (changepasswordData.newPassword.length < 6) {
-      newErrors.newPassword = "Password must be at least 6 characters long";
-    }
-
-    if (!changepasswordData.confirmPassword.trim()) {
-      newErrors.confirmPassword = "Please confirm your password";
-    } else if (changepasswordData.newPassword !== changepasswordData.confirmPassword) {
-      newErrors.confirmPassword = "Passwords do not match";
-    }
-
-    if (changepasswordData.oldPassword === changepasswordData.newPassword && changepasswordData.oldPassword) {
-      newErrors.general = "New password must be different from current password";
-    }
-
-    setErrors(newErrors);
-    return !Object.values(newErrors).some(error => error !== "");
-  };
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    
-    if (!validateForm()) {
+    e.preventDefault()
+    if (changepasswordData.newPassword !== changepasswordData.confirmPassword) {
+      ErrorMessage("New Password and Confirm Password do not match");
       return;
     }
-
     setLoader(true);
-    setErrors({ oldPassword: "", newPassword: "", confirmPassword: "", general: "" });
-
     try {
       const response = await callAPI(
         apiUrls.changePassword,
@@ -113,28 +60,8 @@ const Index = () => {
       }
     } catch (err: any) {
       setLoader(false);
-      ErrorMessage("An error occurred. Please try again later.");
     }
   };
-
-  const handleCancel = () => {
-    setchangepasswordData({
-      oldPassword: "",
-      newPassword: "",
-      confirmPassword: "",
-    });
-    setErrors({
-      oldPassword: "",
-      newPassword: "",
-      confirmPassword: "",
-      general: ""
-    });
-  };
-
-  const handleBackToDashboard = () => {
-    navigate(`/dashboard/updateProfile/${localStorage.getItem("_id")}`);
-  };
-
   return (
     <div style={{
       minHeight: '100vh',
@@ -167,8 +94,6 @@ const Index = () => {
           }}></div>
         </div>
       )}
-
-      {/* Header */}
       <div style={{
         backgroundColor: '#ffffff',
         borderBottom: '1px solid #e9ecef',
@@ -184,37 +109,17 @@ const Index = () => {
           Change Password
         </h1>
       </div>
-
-      {/* Main Content */}
       <div style={{
-        padding: '0 40px',
-        maxWidth: '1200px',
+        padding: '0 30px',
         margin: '0 auto'
       }}>
         <form onSubmit={handleSubmit}>
-          {/* General Error Message */}
-          {errors.general && (
-            <div style={{
-              backgroundColor: '#f8d7da',
-              color: '#721c24',
-              padding: '12px 16px',
-              border: '1px solid #f5c6cb',
-              borderRadius: '6px',
-              marginBottom: '20px',
-              fontSize: '14px'
-            }}>
-              {errors.general}
-            </div>
-          )}
-
-          {/* Three Password Fields in Row */}
           <div style={{
             display: 'grid',
             gridTemplateColumns: '1fr 1fr 1fr',
-            gap: '30px',
-            marginBottom: '40px'
+            gap: '22px',
+
           }}>
-            {/* Current Password Field */}
             <div>
               <label style={{
                 display: 'block',
@@ -237,7 +142,7 @@ const Index = () => {
                     width: '100%',
                     padding: '12px 40px 12px 16px',
                     fontSize: '14px',
-                    border: `1px solid ${errors.oldPassword ? '#dc3545' : '#ced4da'}`,
+
                     borderRadius: '6px',
                     outline: 'none',
                     transition: 'border-color 0.15s ease-in-out',
@@ -245,19 +150,10 @@ const Index = () => {
                     boxSizing: 'border-box',
                     color: '#495057'
                   }}
-                  onFocus={(e) => {
-                    if (!errors.oldPassword) {
-                      e.target.style.borderColor = '#80bdff';
-                    }
-                  }}
-                  onBlur={(e) => {
-                    if (!errors.oldPassword) {
-                      e.target.style.borderColor = '#ced4da';
-                    }
-                  }}
+
                 />
-                <button
-                  type="button"
+                <span
+
                   onClick={() =>
                     setShowPassword((prev) => ({
                       ...prev,
@@ -267,7 +163,7 @@ const Index = () => {
                   style={{
                     position: 'absolute',
                     right: '12px',
-                    top: '50%',
+                    top: '40%',
                     transform: 'translateY(-50%)',
                     background: 'none',
                     border: 'none',
@@ -279,21 +175,11 @@ const Index = () => {
                     justifyContent: 'center'
                   }}
                 >
-                  {showPassword.oldPassword ? <Eye size={18} /> : <EyeOff size={18} />}
-                </button>
+                  {showPassword.oldPassword ? <FaEyeSlash size={18} /> : <FaEye size={18} />}
+                </span>
               </div>
-              {errors.oldPassword && (
-                <div style={{
-                  color: '#dc3545',
-                  fontSize: '12px',
-                  marginTop: '4px'
-                }}>
-                  {errors.oldPassword}
-                </div>
-              )}
-            </div>
 
-            {/* New Password Field */}
+            </div>
             <div>
               <label style={{
                 display: 'block',
@@ -316,7 +202,7 @@ const Index = () => {
                     width: '100%',
                     padding: '12px 40px 12px 16px',
                     fontSize: '14px',
-                    border: `1px solid ${errors.newPassword ? '#dc3545' : '#ced4da'}`,
+
                     borderRadius: '6px',
                     outline: 'none',
                     transition: 'border-color 0.15s ease-in-out',
@@ -324,19 +210,10 @@ const Index = () => {
                     boxSizing: 'border-box',
                     color: '#495057'
                   }}
-                  onFocus={(e) => {
-                    if (!errors.newPassword) {
-                      e.target.style.borderColor = '#80bdff';
-                    }
-                  }}
-                  onBlur={(e) => {
-                    if (!errors.newPassword) {
-                      e.target.style.borderColor = '#ced4da';
-                    }
-                  }}
+
                 />
-                <button
-                  type="button"
+                <span
+
                   onClick={() =>
                     setShowPassword((prev) => ({
                       ...prev,
@@ -346,7 +223,7 @@ const Index = () => {
                   style={{
                     position: 'absolute',
                     right: '12px',
-                    top: '50%',
+                    top: '40%',
                     transform: 'translateY(-50%)',
                     background: 'none',
                     border: 'none',
@@ -358,21 +235,11 @@ const Index = () => {
                     justifyContent: 'center'
                   }}
                 >
-                  {showPassword.newPassword ? <Eye size={18} /> : <EyeOff size={18} />}
-                </button>
+                  {showPassword.newPassword ? <FaEyeSlash size={18} /> : <FaEye size={18} />}
+                </span>
               </div>
-              {errors.newPassword && (
-                <div style={{
-                  color: '#dc3545',
-                  fontSize: '12px',
-                  marginTop: '4px'
-                }}>
-                  {errors.newPassword}
-                </div>
-              )}
-            </div>
 
-            {/* Confirm Password Field */}
+            </div>
             <div>
               <label style={{
                 display: 'block',
@@ -395,7 +262,7 @@ const Index = () => {
                     width: '100%',
                     padding: '12px 40px 12px 16px',
                     fontSize: '14px',
-                    border: `1px solid ${errors.confirmPassword ? '#dc3545' : '#ced4da'}`,
+
                     borderRadius: '6px',
                     outline: 'none',
                     transition: 'border-color 0.15s ease-in-out',
@@ -403,19 +270,9 @@ const Index = () => {
                     boxSizing: 'border-box',
                     color: '#495057'
                   }}
-                  onFocus={(e) => {
-                    if (!errors.confirmPassword) {
-                      e.target.style.borderColor = '#80bdff';
-                    }
-                  }}
-                  onBlur={(e) => {
-                    if (!errors.confirmPassword) {
-                      e.target.style.borderColor = '#ced4da';
-                    }
-                  }}
+
                 />
-                <button
-                  type="button"
+                <span
                   onClick={() =>
                     setShowPassword((prev) => ({
                       ...prev,
@@ -425,7 +282,7 @@ const Index = () => {
                   style={{
                     position: 'absolute',
                     right: '12px',
-                    top: '50%',
+                    top: '40%',
                     transform: 'translateY(-50%)',
                     background: 'none',
                     border: 'none',
@@ -437,94 +294,42 @@ const Index = () => {
                     justifyContent: 'center'
                   }}
                 >
-                  {showPassword.confirmPassword ? <Eye size={18} /> : <EyeOff size={18} />}
-                </button>
+                  {showPassword.confirmPassword ? <FaEyeSlash size={18} /> : <FaEye size={18} />}
+                </span>
               </div>
-              {errors.confirmPassword && (
-                <div style={{
-                  color: '#dc3545',
-                  fontSize: '12px',
-                  marginTop: '4px'
-                }}>
-                  {errors.confirmPassword}
-                </div>
-              )}
+
+
             </div>
           </div>
-
-          {/* Action Buttons */}
           <div style={{
             display: 'flex',
             justifyContent: 'flex-end',
-            gap: '12px',
-            paddingTop: '20px'
           }}>
-            {/* Only show Cancel button when user has typed something */}
-            {hasContent && (
-              <button
-                type="button"
-                onClick={handleCancel}
-                style={{
-                  padding: '10px 24px',
-                  fontSize: '14px',
-                  fontWeight: '500',
-                  color: '#6c757d',
-                  backgroundColor: 'transparent',
-                  border: 'none',
-                  borderRadius: '6px',
-                  cursor: 'pointer',
-                  transition: 'color 0.15s ease-in-out',
-                  textDecoration: 'underline'
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.color = '#495057';
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.color = '#6c757d';
+            <div className='form-actions'>
+              <span
+
+                className='btn-secondary'
+                onClick={() => {
+                  setchangepasswordData({
+                    oldPassword: "",
+                    newPassword: "",
+                    confirmPassword: "",
+                  })
+                  navigate(`/dashboard/index/${localStorage.getItem("_id")}`)
                 }}
               >
                 Cancel
+              </span>
+              <button type="submit" className='btn-primary'>
+                Submit
               </button>
-            )}
-            
-            <button
-              type="submit"
-              disabled={loader}
-              style={{
-                padding: '10px 24px',
-                fontSize: '14px',
-                fontWeight: '500',
-                color: '#ffffff',
-                backgroundColor: loader ? '#6c757d' : '#28a745',
-                border: 'none',
-                borderRadius: '6px',
-                cursor: loader ? 'not-allowed' : 'pointer',
-                transition: 'background-color 0.15s ease-in-out'
-              }}
-              onMouseEnter={(e) => {
-                if (!loader) {
-                  e.target.style.backgroundColor = '#218838';
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (!loader) {
-                  e.target.style.backgroundColor = '#28a745';
-                }
-              }}
-            >
-              {loader ? 'Submitting...' : 'Submit'}
-            </button>
+            </div>
           </div>
         </form>
-      </div>
+      </div >
 
-      <style>{`
-        @keyframes spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
-        }
-      `}</style>
-    </div>
+
+    </div >
   );
 };
 

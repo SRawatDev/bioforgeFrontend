@@ -29,7 +29,7 @@ interface productInterface {
   _id?: string,
   title?: string,
   image?: string,
-  link?: number
+  link?: string
 }
 
 interface Link {
@@ -258,7 +258,7 @@ const Index = () => {
             <div className="device-frame">
               <div className="device-status-bar"></div>
               <div className="device-content">
-                {loader ? <ProfileShimmer /> : <MobileUi userInfo={storeData} newUserData={userInfo} />}
+                {loader ? <ProfileShimmer /> : <MobileUi userInfo={storeData} newUserData={userInfo || null} />}
               </div>
               <div className="device-home-button"></div>
             </div>

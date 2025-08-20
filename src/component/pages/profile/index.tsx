@@ -144,8 +144,6 @@ const Index: React.FC = () => {
       if (!response?.data?.status) {
         navigate('/')
         ErrorMessage(response?.data?.data?.message)
-      }else{
-        SuccessMessage(response?.data?.message);
       }
     } catch (error: any) {
       setLoader(false)

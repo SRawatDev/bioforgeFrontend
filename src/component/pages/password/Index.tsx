@@ -104,9 +104,9 @@ const Index = () => {
                   className="cp-toggle-password"
                 >
                   {showPassword.oldPassword ? (
-                    <FaEyeSlash size={18} />
-                  ) : (
                     <FaEye size={18} />
+                  ) : (
+                    <FaEyeSlash size={18} />
                   )}
                 </span>
               </div>
@@ -135,9 +135,9 @@ const Index = () => {
                   className="cp-toggle-password"
                 >
                   {showPassword.newPassword ? (
-                    <FaEyeSlash size={18} />
-                  ) : (
                     <FaEye size={18} />
+                  ) : (
+                    <FaEyeSlash size={18} />
                   )}
                 </span>
               </div>
@@ -167,9 +167,9 @@ const Index = () => {
                   className="cp-toggle-password"
                 >
                   {showPassword.confirmPassword ? (
-                    <FaEyeSlash size={18} />
-                  ) : (
                     <FaEye size={18} />
+                  ) : (
+                    <FaEyeSlash size={18} />
                   )}
                 </span>
               </div>

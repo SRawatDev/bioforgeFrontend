@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { defaultConfig } from "../../../config";
 interface userInfo {
@@ -45,32 +45,47 @@ const ProductCarousel: React.FC<{
   products: productInterface[];
   userInfo: userInfo | null;
 }> = ({ products, userInfo }) => {
-  console.log("hcsdhgsdhfgsd",products)
-  const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [slideWidth, setSlideWidth] = useState(0);
+
+  useEffect(() => {
+    if (containerRef.current) {
+      setSlideWidth(containerRef.current.offsetWidth);
+    }
+
+    const handleResize = () => {
+      if (containerRef.current) {
+        setSlideWidth(containerRef.current.offsetWidth);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const nextSlide = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % products.length);
-  };
-
-  const prevSlide = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? products.length - 1 : prevIndex - 1
+    setCurrentIndex((prev) =>
+      prev === products.length - 1 ? 0 : prev + 1
     );
   };
 
-  const goToSlide = (index: number) => {
-    setCurrentIndex(index);
+  const prevSlide = () => {
+    setCurrentIndex((prev) =>
+      prev === 0 ? products.length - 1 : prev - 1
+    );
   };
 
-  if (!products || products.length === 0) return null;
+  const goToSlide = (index: number) => setCurrentIndex(index);
 
   return (
     <div
+      ref={containerRef}
       className="product-carousel"
       style={{
         position: "relative",
-        width: "240px",
-        height: "140px",
+        width: "100%",
+        height: "230px",
         margin: "8px auto",
         borderRadius: "8px",
         overflow: "hidden",
@@ -84,17 +99,17 @@ const ProductCarousel: React.FC<{
       <div
         style={{
           display: "flex",
-          transform: `translateX(-${currentIndex * 240}px)`, // slide by width
+          transform: `translateX(-${currentIndex * slideWidth}px)`,
           transition: "transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
           height: "100%",
-          width: `${products.length * 240}px`,
+          width: `${products.length * 100}%`,
         }}
       >
         {products.map((item, index) => (
           <div
             key={item._id || index}
             style={{
-              width: "240px", // Fixed width for each slide
+              width: `${slideWidth}px`,
               height: "100%",
               flexShrink: 0,
               padding: "2px 3px 0px 5px",
@@ -111,8 +126,8 @@ const ProductCarousel: React.FC<{
                 src={defaultConfig?.imagePath + item.image}
                 alt={item.title || "Product"}
                 style={{
-                  width: "60px",
-                  height: "60px",
+                  width: "100%",
+                  height: "134px",
                   objectFit: "cover",
                   borderRadius: "6px",
                   marginBottom: "8px",
@@ -137,28 +152,29 @@ const ProductCarousel: React.FC<{
                 textAlign: "center",
               }}
             >
-              <RouterLink to={item?.link || "#"} target="blank"  style={{
+              <RouterLink
+                to={item?.link || "#"}
+                target="blank"
+                style={{
                   display: "inline-block",
                   padding: "6px 12px",
-                
                   color: userInfo?.theme?.fontColor || "white",
                   textDecoration: "none",
                   borderRadius: "4px",
-                  fontSize: "10px",
+                  fontSize: "14px",
                   fontFamily: userInfo?.theme?.fontFamily,
-                 
                   transition: "all 0.2s ease",
                   flexShrink: 0,
-
-                }}>
-              {item.title}
+                }}
+              >
+                {item.title}
               </RouterLink>
             </h4>
-         
           </div>
         ))}
       </div>
 
+     
       {products.length > 1 && (
         <>
           <button
@@ -265,4 +281,5 @@ const ProductCarousel: React.FC<{
     </div>
   );
 };
+
 export default ProductCarousel;

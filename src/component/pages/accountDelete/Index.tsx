@@ -247,14 +247,7 @@ const DeleteAccountModal: React.FC<DeleteAccountModalProps> = ({ isOpen, onClose
                     cursor: "pointer",
                     transition: "background-color 0.2s ease",
                   }}
-                  onMouseEnter={(e) => {
-                    (e.target as HTMLButtonElement).style.backgroundColor =
-                      "#c82333";
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.target as HTMLButtonElement).style.backgroundColor =
-                      "#dc3545";
-                  }}
+                 
                 >
                   Yes, Delete My Account
                 </button>
@@ -343,9 +336,9 @@ const DeleteAccountModal: React.FC<DeleteAccountModalProps> = ({ isOpen, onClose
                       }}
                     >
                       {showPassword ? (
-                        <FaEyeSlash size={18} />
-                      ) : (
                         <FaEye size={18} />
+                      ) : (
+                        <FaEyeSlash size={18} />
                       )}
                     </button>
                   </div>

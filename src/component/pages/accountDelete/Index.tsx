@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from "react";
 import { FaEyeSlash, FaEye } from "react-icons/fa";
+import { RxCross2 } from "react-icons/rx";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { callAPI } from "../../../utils/apicall.utils";
@@ -98,6 +99,7 @@ const DeleteAccountModal: React.FC<DeleteAccountModalProps> = ({ isOpen, onClose
           boxSizing: "border-box",
         }}
       >
+     
         <div
           style={{
             backgroundColor: "#ffffff",
@@ -113,27 +115,17 @@ const DeleteAccountModal: React.FC<DeleteAccountModalProps> = ({ isOpen, onClose
             scrollbarWidth: "none",
           }}
           onClick={(e) => e.stopPropagation()}
-        >
-          <button
-            onClick={handleCancel}
+
+        >   <RxCross2 onClick={handleCancel}
             style={{
+              width: "24px",
+              height: "24px",
+              marginLeft:' 462px',
+              marginTop: '19px',
               position: "absolute",
-              top: "20px",
-              right: "20px",
-              background: "none",
-              border: "none",
               cursor: "pointer",
-              padding: "8px",
-              borderRadius: "8px",
-              color: "#6c757d",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              transition: "all 0.2s ease",
-              zIndex: 11,
-            }}
-          
-          ></button>
+              color: "#1529e0ff",
+            }}/>
 
           {step === "warning" && (
             <div style={{ padding: "40px" }}>
@@ -150,7 +142,7 @@ const DeleteAccountModal: React.FC<DeleteAccountModalProps> = ({ isOpen, onClose
                   style={{
                     fontSize: "24px",
                     fontWeight: "700",
-                    color: "#dc3545",
+                    color: "#5154ebff",
                     margin: "0 0 16px 0",
                   }}
                 >
@@ -159,7 +151,7 @@ const DeleteAccountModal: React.FC<DeleteAccountModalProps> = ({ isOpen, onClose
                 <p
                   style={{
                     fontSize: "16px",
-                    color: "#6c757d",
+                    color: "#181717ff",
                     lineHeight: "1.5",
                     margin: "0 0 24px 0",
                   }}
@@ -171,8 +163,8 @@ const DeleteAccountModal: React.FC<DeleteAccountModalProps> = ({ isOpen, onClose
 
               <div
                 style={{
-                  backgroundColor: "#fff5f5",
-                  border: "1px solid #fed7d7",
+                  backgroundColor: "#dee0f3ff",
+                  border: "1px solid #5b4bf0ff",
                   borderRadius: "12px",
                   padding: "20px",
                   marginBottom: "32px",
@@ -182,7 +174,7 @@ const DeleteAccountModal: React.FC<DeleteAccountModalProps> = ({ isOpen, onClose
                   style={{
                     fontSize: "16px",
                     fontWeight: "600",
-                    color: "#dc3545",
+                    color: "#314bdfff",
                     margin: "0 0 16px 0",
                   }}
                 >
@@ -192,7 +184,7 @@ const DeleteAccountModal: React.FC<DeleteAccountModalProps> = ({ isOpen, onClose
                   style={{
                     margin: 0,
                     paddingLeft: "20px",
-                    color: "#721c24",
+                    color: "#3d54d4ff",
                   }}
                 >
                   <li style={{ marginBottom: "8px" }}>
@@ -222,9 +214,9 @@ const DeleteAccountModal: React.FC<DeleteAccountModalProps> = ({ isOpen, onClose
                     padding: "12px 24px",
                     fontSize: "14px",
                     fontWeight: "500",
-                    color: "#6c757d",
-                    backgroundColor: "#f8f9fa",
-                    border: "1px solid #dee2e6",
+                    color: "#3d54d4ff",
+                    backgroundColor: "#dee0f3ff",
+                    border: "1px solid #5b4bf0ff",
                     borderRadius: "8px",
                     cursor: "pointer",
                     transition: "all 0.2s ease",
@@ -241,20 +233,13 @@ const DeleteAccountModal: React.FC<DeleteAccountModalProps> = ({ isOpen, onClose
                     fontSize: "14px",
                     fontWeight: "500",
                     color: "#ffffff",
-                    backgroundColor: "#dc3545",
+                    backgroundColor: "#5b4bf0ff",
                     border: "none",
                     borderRadius: "8px",
                     cursor: "pointer",
                     transition: "background-color 0.2s ease",
                   }}
-                  onMouseEnter={(e) => {
-                    (e.target as HTMLButtonElement).style.backgroundColor =
-                      "#c82333";
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.target as HTMLButtonElement).style.backgroundColor =
-                      "#dc3545";
-                  }}
+                 
                 >
                   Yes, Delete My Account
                 </button>
@@ -269,7 +254,7 @@ const DeleteAccountModal: React.FC<DeleteAccountModalProps> = ({ isOpen, onClose
                   style={{
                     fontSize: "22px",
                     fontWeight: "600",
-                    color: "#dc3545",
+                    color: "#5b4bf0ff",
                     margin: "0 0 8px 0",
                   }}
                 >
@@ -278,7 +263,7 @@ const DeleteAccountModal: React.FC<DeleteAccountModalProps> = ({ isOpen, onClose
                 <p
                   style={{
                     fontSize: "14px",
-                    color: "#6c757d",
+                    color: "#171718ff",
                     margin: 0,
                   }}
                 >
@@ -343,9 +328,9 @@ const DeleteAccountModal: React.FC<DeleteAccountModalProps> = ({ isOpen, onClose
                       }}
                     >
                       {showPassword ? (
-                        <FaEyeSlash size={18} />
-                      ) : (
                         <FaEye size={18} />
+                      ) : (
+                        <FaEyeSlash size={18} />
                       )}
                     </button>
                   </div>
@@ -388,8 +373,8 @@ const DeleteAccountModal: React.FC<DeleteAccountModalProps> = ({ isOpen, onClose
                       color: "#ffffff",
                       backgroundColor:
                         loader || !deleteAccountData.password.trim()
-                          ? "#6c757d"
-                          : "#dc3545",
+                          ? "#cbd0faff"
+                          : "#5b4bf0ff",
                       border: "none",
                       borderRadius: "8px",
                       cursor:

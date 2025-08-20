@@ -588,7 +588,7 @@ const Main: React.FC<Props> = ({ getUserDetails }) => {
                     className={`register-input`}
                     placeholder=" "
                     id="protectedLinksPassword"
-                    required
+                    
                   />
                   <label htmlFor="protectedLinksPassword" className="register-label">
                     Password

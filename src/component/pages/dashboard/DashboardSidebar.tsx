@@ -1,144 +1,147 @@
-import React, { useState, useEffect } from "react";
-import { defaultConfig } from "../../../config";
-import { Link, useNavigate, useLocation } from "react-router-dom";
-import { LogoutModal } from "../../../layout/Header";
-import SuccessMessage from "../../../helpers/Success";
-import { IoVideocam } from "react-icons/io5";
-import { PiLinkSimpleHorizontalBold } from "react-icons/pi";
-import { FaUser } from "react-icons/fa";
-import { RiLockPasswordFill } from "react-icons/ri";
-import "./DashboardSidebar.css";
-import "./dashboard.css";
-import { useDispatch } from "react-redux";
-import { clearData } from "../../../redux/Slice";
-import { MdProductionQuantityLimits, MdUnsubscribe } from "react-icons/md";
-import DeleteAccountModal from "../accountDelete/Index";
+import React, { useState, useEffect } from 'react'
+import { defaultConfig } from '../../../config'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
+import { LogoutModal } from '../../../layout/Header'
+import SuccessMessage from '../../../helpers/Success'
+import { IoVideocam } from 'react-icons/io5'
+import { PiLinkSimpleHorizontalBold } from 'react-icons/pi'
+import { FaUser } from 'react-icons/fa'
+import { RiLockPasswordFill } from 'react-icons/ri'
+import './DashboardSidebar.css'
+import './dashboard.css'
+import { useDispatch } from 'react-redux'
+import { clearData } from '../../../redux/Slice'
+import { MdProductionQuantityLimits, MdUnsubscribe } from 'react-icons/md'
+import DeleteAccountModal from '../accountDelete/Index'
 
 interface SidebarProps {
-  isMobile?: boolean;
-  onClose?: () => void;
+  isMobile?: boolean
+  onClose?: () => void
   children?: React.ReactNode
 }
 
-const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose, children }) => {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const [showLogout, setShowLogout] = useState(false);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [isCollapsed, setIsCollapsed] = useState(false);
-  const storedata = useDispatch();
+const DashboardSidebar: React.FC<SidebarProps> = ({
+  isMobile,
+  onClose,
+  children
+}) => {
+  const navigate = useNavigate()
+  const location = useLocation()
+  const [showLogout, setShowLogout] = useState(false)
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
+  const [isCollapsed, setIsCollapsed] = useState(false)
+  const storedata = useDispatch()
 
   const handleLogoutClick = () => {
     if (isMobile && onClose) {
-      onClose();
+      onClose()
     }
-    setTimeout(() => setShowLogout(true), 300);
-  };
+    setTimeout(() => setShowLogout(true), 300)
+  }
 
   const handleDeleteAccountClick = () => {
     if (isMobile && onClose) {
-      onClose();
+      onClose()
     }
-    setTimeout(() => setShowDeleteModal(true), 300);
-  };
+    setTimeout(() => setShowDeleteModal(true), 300)
+  }
 
   const handleLogoutConfirm = () => {
-    SuccessMessage("Logout successfully");
-    localStorage.clear();
+    SuccessMessage('Logout successfully')
+    localStorage.clear()
     storedata(clearData())
-    setShowLogout(false);
-    navigate("/login");
-  };
+    setShowLogout(false)
+    navigate('/login')
+  }
 
   const isActiveLink = (path: string) => {
-    return location.pathname === path || location.pathname.startsWith(path);
-  };
+    return location.pathname === path || location.pathname.startsWith(path)
+  }
 
   const menuItems = [
     {
-      path: `/dashboard/updateProfile/${localStorage.getItem("_id")}`,
-      label: "Edit Profile",
+      path: `/dashboard/updateProfile/${localStorage.getItem('_id')}`,
+      label: 'Edit Profile',
       icon: <FaUser />,
-      category: "main",
+      category: 'main'
     },
     {
-      path: `/dashboard/links/${localStorage.getItem("_id")}`,
-      label: "Manage Links",
+      path: `/dashboard/links/${localStorage.getItem('_id')}`,
+      label: 'Manage Links',
       icon: <PiLinkSimpleHorizontalBold />,
-      category: "main",
+      category: 'main'
     },
     {
-      path: `/dashboard/Video/${localStorage.getItem("_id")}`,
-      label: "Manage Video",
+      path: `/dashboard/Video/${localStorage.getItem('_id')}`,
+      label: 'Manage Video',
       icon: <IoVideocam />,
-      category: "main",
+      category: 'main'
     },
     {
-      path: `/dashboard/product/${localStorage.getItem("_id")}`,
-      label: "Manage Product",
+      path: `/dashboard/product/${localStorage.getItem('_id')}`,
+      label: 'Manage Product',
       icon: <MdProductionQuantityLimits />,
-      category: "main",
+      category: 'main'
     },
     {
-      path: `/dashboard/subscribe/${localStorage.getItem("_id")}`,
-      label: "Subcriber",
+      path: `/dashboard/subscribe/${localStorage.getItem('_id')}`,
+      label: 'Subcriber',
       icon: <MdUnsubscribe />,
-      category: "main",
+      category: 'main'
     },
     {
       path: `/dashboard/changepassword`,
-      label: "Change Password",
+      label: 'Change Password',
       icon: <RiLockPasswordFill />,
-      category: "main",
-    },
-
-  ];
-  const mainItems = menuItems.filter((item) => item.category === "main");
+      category: 'main'
+    }
+  ]
+  const mainItems = menuItems.filter(item => item.category === 'main')
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (isMobile && onClose) {
-        const sidebar = document.querySelector(".dashboard-sidebar");
+        const sidebar = document.querySelector('.dashboard-sidebar')
         if (sidebar && !sidebar.contains(event.target as Node)) {
-          onClose();
+          onClose()
         }
       }
-    };
+    }
     if (isMobile) {
-      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener('mousedown', handleClickOutside)
     }
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [isMobile, onClose]);
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [isMobile, onClose])
   return (
     <>
-      <div className="Main-Navbar-section d-flex">
-        <nav className="sidebardashboard bg-white">
-          <div className="sidebar-header">
-            <div className="user-profile-section">
-              <Link to={"/"}>
-                <div className="user-profile">
-                  <div className="avatar-container">
+      <div className='Main-Navbar-section d-flex'>
+        <nav className='sidebardashboard bg-white'>
+          <div className='sidebar-header'>
+            <div className='user-profile-section'>
+              <Link to={'/'}>
+                <div className='user-profile'>
+                  <div className='avatar-container'>
                     <img
                       src={
-                        localStorage.getItem("profile_img")
+                        localStorage.getItem('profile_img')
                           ? defaultConfig.imagePath +
-                          localStorage.getItem("profile_img")
-                          : "https://i.pravatar.cc/48"
+                            localStorage.getItem('profile_img')
+                          : 'https://i.pravatar.cc/48'
                       }
-                      alt="Profile"
-                      className="user-avatar"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src =
-                          "https://i.pravatar.cc/48";
+                      alt='Profile'
+                      className='user-avatar'
+                      onError={e => {
+                        ;(e.target as HTMLImageElement).src =
+                          'https://i.pravatar.cc/48'
                       }}
                     />
                   </div>
                   {!isCollapsed && (
-                    <div className="user-info">
-                      <h6 className="username">
-                        {localStorage.getItem("username") || "User"}
+                    <div className='user-info'>
+                      <h6 className='username'>
+                        {localStorage.getItem('username') || 'User'}
                       </h6>
                     </div>
                   )}
@@ -146,32 +149,33 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose, children 
               </Link>
             </div>
           </div>
-          <div className="sidebar-content">
-            <div className="sidebar-menu">
-              <div className="menu-section">
-                <ul className="menu-list">
+          <div className='sidebar-content'>
+            <div className='sidebar-menu'>
+              <div className='menu-section'>
+                <ul className='menu-list'>
                   {mainItems.map((item, index) => (
-                    <li key={index} className="menu-item">
+                    <li key={index} className='menu-item'>
                       {item.path ? (
                         <Link
                           to={item.path}
-                          className={`menu-link ${isActiveLink(item.path) ? "active" : ""
-                            }`}
+                          className={`menu-link ${
+                            isActiveLink(item.path) ? 'active' : ''
+                          }`}
                           onClick={isMobile && onClose ? onClose : undefined}
-                          title={isCollapsed ? item.label : ""}
+                          title={isCollapsed ? item.label : ''}
                         >
-                          <span className="menu-icon">{item.icon}</span>
+                          <span className='menu-icon'>{item.icon}</span>
                           {!isCollapsed && (
-                            <span className="menu-text">{item.label}</span>
+                            <span className='menu-text'>{item.label}</span>
                           )}
                           {item.path && isActiveLink(item.path) && (
-                            <div className="active-indicator"></div>
+                            <div className='active-indicator'></div>
                           )}
                         </Link>
                       ) : (
                         <button
-                          className="menu-link menu-button"
-                          title={isCollapsed ? item.label : ""}
+                          className='menu-link menu-button'
+                          title={isCollapsed ? item.label : ''}
                           style={{
                             background: 'none',
                             border: 'none',
@@ -185,16 +189,17 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose, children 
                             color: '#dc3545',
                             transition: 'all 0.2s ease'
                           }}
-                          onMouseEnter={(e) => {
-                            (e.target as any).style.backgroundColor = '#fff5f5';
+                          onMouseEnter={e => {
+                            ;(e.target as any).style.backgroundColor = '#fff5f5'
                           }}
-                          onMouseLeave={(e) => {
-                            (e.target as any).style.backgroundColor = 'transparent';
+                          onMouseLeave={e => {
+                            ;(e.target as any).style.backgroundColor =
+                              'transparent'
                           }}
                         >
-                          <span className="menu-icon">{item.icon}</span>
+                          <span className='menu-icon'>{item.icon}</span>
                           {!isCollapsed && (
-                            <span className="menu-text">{item.label}</span>
+                            <span className='menu-text'>{item.label}</span>
                           )}
                         </button>
                       )}
@@ -204,32 +209,70 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose, children 
               </div>
             </div>
           </div>
-          <div className="dropdown w-100">
+          <div className='dropdown w-100'>
             <button
-              className="btn logout-btns dropdown-toggle d-flex align-items-center"
-              type="button"
-              id="logoutDropdown"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-              title={isCollapsed ? "Logout" : ""}
+              className='btn logout-btns dropdown-toggle d-flex align-items-center'
+              type='button'
+              id='logoutDropdown'
+              data-bs-toggle='dropdown'
+              aria-expanded='false'
+              title={isCollapsed ? 'Logout' : ''}
             >
-              {!isCollapsed && <span className="ms-2">Setting</span>}
+              {!isCollapsed && <span className='ms-2'>Setting</span>}
             </button>
-            <ul className="dropdown-menu newdropdownul" aria-labelledby="logoutDropdown">
-              <li className="drop_menu">
-                <span  onClick={handleDeleteAccountClick}>
+            <ul
+              className='dropdown-menu newdropdownul'
+              style={{ width: '212px' }}
+              aria-labelledby='logoutDropdown'
+            >
+              <li className='drop_menu'>
+                <button
+                  onClick={handleDeleteAccountClick}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    width: '160px',
+                    textAlign: 'left',
+                    cursor: 'pointer',
+                    padding: '8px 26px 8px 6px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '12px',
+                    borderRadius: '8px',
+                    color: '#ffffffff',
+                    backgroundColor: '#6366f1',
+                    transition: 'all 0.2s ease'
+                  }}
+                >
                   Delete Account
-                </span>
+                </button>
               </li>
-              <li className="drop_menu">
-                <span  onClick={handleLogoutClick}>
+              <li className='drop_menu'>
+                <button
+                  onClick={handleLogoutClick}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    width: '160px',
+                    textAlign: 'left',
+                    cursor: 'pointer',
+                    padding: '8px 26px 8px 6px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '12px',
+                    borderRadius: '8px',
+                    color: '#ffffffff',
+                    backgroundColor: '#6366f1',
+                    transition: 'all 0.2s ease'
+                  }}
+                >
                   Logout
-                </span>
+                </button>
               </li>
             </ul>
           </div>
         </nav>
-        {isMobile && <div className="sidebar-backdrop" onClick={onClose}></div>}
+        {isMobile && <div className='sidebar-backdrop' onClick={onClose}></div>}
         {showLogout && (
           <LogoutModal
             onClose={() => setShowLogout(false)}
@@ -243,7 +286,7 @@ const DashboardSidebar: React.FC<SidebarProps> = ({ isMobile, onClose, children 
         {children}
       </div>
     </>
-  );
-};
+  )
+}
 
-export default DashboardSidebar;
+export default DashboardSidebar

@@ -1,202 +1,206 @@
-import React, { useEffect, useState } from "react";
-import ErrorMessage from "../../../helpers/ErrorMessage";
-import { callAPIWithoutAuth } from "../../../utils/apicall.utils";
-import { apiUrls } from "../../../utils/api.utils";
-import { defaultConfig } from "../../../config";
-import { Link as RouterLink, useNavigate } from "react-router-dom";
-import { BiLogoGmail } from "react-icons/bi";
-import { socialPlatforms } from "../links/linksAddEdit";
-import "./mobilePreview.css";
-import axios from "axios";
-import ProductCarousel from "./Product";
+import React, { useEffect, useState } from 'react'
+import ErrorMessage from '../../../helpers/ErrorMessage'
+import { callAPIWithoutAuth } from '../../../utils/apicall.utils'
+import { apiUrls } from '../../../utils/api.utils'
+import { defaultConfig } from '../../../config'
+import { Link as RouterLink, useNavigate } from 'react-router-dom'
+import { BiLogoGmail } from 'react-icons/bi'
+import { socialPlatforms } from '../links/linksAddEdit'
+import './mobilePreview.css'
+import axios from 'axios'
+import ProductCarousel from './Product'
 
 interface userInfo {
-  _id: string;
-  username: string;
-  email: string;
-  social: CustomLink[];
-  non_social: CustomLink[];
-  bio: string;
-  banner_img: string;
-  profile_img: string;
-  theme: theme;
+  _id: string
+  username: string
+  email: string
+  social: CustomLink[]
+  non_social: CustomLink[]
+  bio: string
+  banner_img: string
+  profile_img: string
+  theme: theme
 }
 
 interface videoInterface {
-  _id?: string,
+  _id?: string
   videoLink?: string
 }
 
 interface productInterface {
-  _id?: string;
-  title?: string;
+  _id?: string
+  title?: string
   image?: string
   link?: string
 }
 
 interface theme {
-  fontFamily: string;
-  is_colorImage: string;
-  fontColor: string;
-  themeDesign?: string;
+  fontFamily: string
+  is_colorImage: string
+  fontColor: string
+  themeDesign?: string
 }
 
 interface CustomLink {
   LinkCategoryId?: productInterface[]
-  linkTitle: string;
-  linkUrl: string;
-  linkLogo: string;
-  is_index: number;
+  linkTitle: string
+  linkUrl: string
+  linkLogo: string
+  is_index: number
   video?: videoInterface
-  _id: string;
+  _id: string
 }
 
 interface MobileUiProps {
-  userInfo: userInfo | null;
-  newUserData: userInfo | null;
+  userInfo: userInfo | null
+  newUserData: userInfo | null
 }
 
+export const MobileUi: React.FC<MobileUiProps> = ({
+  userInfo,
+  newUserData
+}) => {
+  const [ip, setIp] = useState<string>('')
+  const navigate = useNavigate()
 
-export const MobileUi: React.FC<MobileUiProps> = ({ userInfo, newUserData }) => {
-  const [ip, setIp] = useState<string>("");
-  const navigate = useNavigate();
-  
   const getUserIp = async () => {
     try {
-      const response = await axios.get("https://api.ipify.org/?format=json");
-      setIp(response.data.ip);
+      const response = await axios.get('https://api.ipify.org/?format=json')
+      setIp(response.data.ip)
     } catch (error: any) {
-      ErrorMessage(error.message || "Something went wrong");
+      ErrorMessage(error.message || 'Something went wrong')
     }
-  };
-  
+  }
+
   useEffect(() => {
-    getUserIp();
-  }, [ip]);
+    getUserIp()
+  }, [ip])
 
   const handleClickSubmit = async (id: string) => {
     try {
-      const userId = localStorage.getItem("accessToken")
-        ? localStorage.getItem("_id") || ""
-        : "";
+      const userId = localStorage.getItem('accessToken')
+        ? localStorage.getItem('_id') || ''
+        : ''
       const payload = {
         userId,
-        ipAddress: userId ? "" : ip,
-      };
+        ipAddress: userId ? '' : ip
+      }
       const response = await callAPIWithoutAuth(
-        apiUrls.linkClicked + "/" + id,
+        apiUrls.linkClicked + '/' + id,
         {},
-        "POST",
+        'POST',
         payload
-      );
+      )
       if (!response?.data?.status) {
-        navigate("/");
-        ErrorMessage(response?.data?.data?.message);
+        navigate('/')
+        ErrorMessage(response?.data?.data?.message)
       }
     } catch (error: any) {
-      ErrorMessage(error.message || "Something went wrong");
+      ErrorMessage(error.message || 'Something went wrong')
     }
-  };
-  
+  }
+
   const getYouTubeEmbedUrl = (url: string) => {
     try {
-      const urlObj = new URL(url);
-      let videoId = "";
+      const urlObj = new URL(url)
+      let videoId = ''
 
-      if (urlObj.hostname.includes("youtu.be")) {
-        videoId = urlObj.pathname.slice(1);
-      } else if (urlObj.hostname.includes("youtube.com")) {
-        videoId = urlObj.searchParams.get("v") || "";
+      if (urlObj.hostname.includes('youtu.be')) {
+        videoId = urlObj.pathname.slice(1)
+      } else if (urlObj.hostname.includes('youtube.com')) {
+        videoId = urlObj.searchParams.get('v') || ''
       }
 
-      if (!videoId) return null;
+      if (!videoId) return null
 
-      return `https://www.youtube.com/embed/${videoId}?modestbranding=1&rel=0&controls=1`;
+      return `https://www.youtube.com/embed/${videoId}?modestbranding=1&rel=0&controls=1`
     } catch {
-      return null;
+      return null
     }
-  };
+  }
 
   return (
     <>
       <section
-        id="phone-preview-container"
-        style={{ height: "100%" }}
-        aria-label="Mobile preview of Linktree"
+        id='phone-preview-container'
+        style={{ height: '100%' }}
+        aria-label='Mobile preview of Linktree'
       >
         <div
-          className="profile-container"
+          className='profile-container'
           style={{
-            position: "relative",
-            height: "100%",
-            overflow: "scroll",
+            position: 'relative',
+            height: '100%',
+            overflow: 'scroll',
             fontFamily: userInfo?.theme?.fontFamily,
-            backgroundImage: `url(${defaultConfig?.imagePath + userInfo?.banner_img})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-            color: userInfo?.theme?.fontColor || "white",
+            backgroundImage: `url(${
+              defaultConfig?.imagePath + userInfo?.banner_img
+            })`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+            color: userInfo?.theme?.fontColor || 'white'
           }}
         >
           <div
-            className="blurred-background"
+            className='blurred-background'
             style={{
-              position: "absolute",
+              position: 'absolute',
               top: 0,
               left: 0,
-              width: "100%",
-              height: "100%",
+              width: '100%',
+              height: '100%'
             }}
           ></div>
           <div
             style={{
-              position: "absolute",
+              position: 'absolute',
               top: 0,
               left: 0,
-              width: "100%",
-              height: "100%",
-              backgroundColor: "rgba(0, 0, 0, 0.4)",
-              zIndex: 1,
+              width: '100%',
+              height: '100%',
+              backgroundColor: 'rgba(0, 0, 0, 0.4)',
+              zIndex: 1
             }}
           ></div>
-          <div className="blur-overlay"></div>
+          <div className='blur-overlay'></div>
           <div
-            className="content-wrapper"
+            className='content-wrapper'
             style={{
-              position: "relative", 
-              backdropFilter: "blur(3px)",
-              WebkitBackdropFilter: "blur(3px)",
-              zIndex: 1,
+              position: 'relative',
+              backdropFilter: 'blur(3px)',
+              WebkitBackdropFilter: 'blur(3px)',
+              zIndex: 1
             }}
           >
-            <div className="profile-picture">
+            <div className='profile-picture'>
               <img
-                id="profileImage"
+                id='profileImage'
                 src={defaultConfig?.imagePath + userInfo?.profile_img}
-                alt="Profil Fotoğrafı"
+                alt='Profil Fotoğrafı'
               />
             </div>
 
-            <div className="profile-info">
+            <div className='profile-info'>
               <h1
-                id="username"
-                className="editprofile"
+                id='username'
+                className='editprofile'
                 style={{
                   fontFamily: userInfo?.theme?.fontFamily,
-                  color: userInfo?.theme?.fontColor || "white",
+                  color: userInfo?.theme?.fontColor || 'white'
                 }}
               >
                 @{userInfo?.username}
               </h1>
 
-              <div className="contactEmail">
+              <div className='contactEmail'>
                 <p
                   style={{
                     fontFamily: userInfo?.theme?.fontFamily,
-                    color: userInfo?.theme?.fontColor || "white",
+                    color: userInfo?.theme?.fontColor || 'white'
                   }}
                 >
-                  <p className="mobile-email-button">
+                  <p className='mobile-email-button'>
                     <BiLogoGmail />
                     <p>{userInfo?.email}</p>
                   </p>
@@ -204,125 +208,142 @@ export const MobileUi: React.FC<MobileUiProps> = ({ userInfo, newUserData }) => 
               </div>
 
               <p
-                id="bio"
-                className="editprofile"
+                id='bio'
+                className='editprofile'
                 style={{
                   fontFamily: userInfo?.theme?.fontFamily,
-                  textAlign: "left",
-                  color: userInfo?.theme?.fontColor || "white",
+                  textAlign: 'left',
+                  color: userInfo?.theme?.fontColor || 'white'
                 }}
               >
                 {userInfo?.bio}
               </p>
             </div>
 
-            <div className="edit-form" id="editForm">
+            <div className='edit-form' id='editForm'>
               <input
-                type="text"
-                id="editUsername"
-                placeholder="Adınızı girin"
+                type='text'
+                id='editUsername'
+                placeholder='Adınızı girin'
               />
               <textarea
-                id="editBio"
+                id='editBio'
                 style={{ fontFamily: userInfo?.theme?.fontFamily }}
-                placeholder="Hakkınızda bir şeyler yazın.."
+                placeholder='Hakkınızda bir şeyler yazın..'
                 rows={3}
-                defaultValue={""}
+                defaultValue={''}
               />
             </div>
 
-            <div className="links-list">
-              {Array.isArray(newUserData?.non_social) && newUserData?.non_social.map((link) => (
-                <div key={link._id}>
-                  <a
-                    href={link.linkUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`link-card ${userInfo?.theme?.themeDesign || "round"}`}
-                    onClick={() => handleClickSubmit(link._id)}
-                    style={
-                      {
-                        "--card-bg": userInfo?.theme?.is_colorImage || "#333",
-                        "--card-color": userInfo?.theme?.fontColor || "white",
-                        "--card-font": userInfo?.theme?.fontFamily || "sans-serif",
-                      } as React.CSSProperties
-                    }
-                  >
-                    <img
-                      src={defaultConfig?.imagePath + link.linkLogo}
-                      alt={link.linkTitle}
-                      className="link-logo"
-                    />
-                    <span
-                      className="link-card-title"
-                      style={{
-                        fontFamily: userInfo?.theme?.fontFamily,
-                        color: userInfo?.theme?.fontColor || "white",
-                      }}
+            <div className='links-list-model'>
+              {Array.isArray(newUserData?.non_social) &&
+                newUserData?.non_social.map(link => (
+                  <div key={link._id} className='link-item-container-model'>
+                    <a
+                      href={link.linkUrl}
+                      target='_blank'
+                      rel='noopener noreferrer'
+                      className={`link-card ${
+                        userInfo?.theme?.themeDesign || 'round'
+                      }`}
+                      onClick={() => handleClickSubmit(link._id)}
+                      style={
+                        {
+                          '--card-bg': userInfo?.theme?.is_colorImage || '#333',
+                          '--card-color': userInfo?.theme?.fontColor || 'white',
+                          '--card-font':
+                            userInfo?.theme?.fontFamily || 'sans-serif'
+                        } as React.CSSProperties
+                      }
                     >
-                      {link.linkTitle}
-                    </span>
-                  </a>
-                  
-                  {getYouTubeEmbedUrl(link?.video?.videoLink || "") && (
-                    <div>
-                      <iframe
-                        width="250"
-                        height="150"
-                        src={getYouTubeEmbedUrl(link?.video?.videoLink || "") || ""}
-                        frameBorder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                      ></iframe>
-                    </div>
-                  )}
-                  
-                  {/* Product Carousel */}
-                  {link?.LinkCategoryId && link.LinkCategoryId.length > 0 && (
-                    <ProductCarousel 
-                      products={link.LinkCategoryId} 
-                      userInfo={userInfo} 
-                    />
-                  )}
-                </div>
-              ))}
-            </div>
-            
-            <div className="spcial-links-list d-flex justify-content-center gap-2">
-              {Array.isArray(newUserData?.social) && newUserData?.social.map((link) => {
-                const matchedPlatform = socialPlatforms.find(
-                  (platform) =>
-                    platform.label.toLowerCase() ===
-                    link.linkTitle.toLowerCase()
-                );
-                return (
-                  <a
-                    key={link._id}
-                    href={link.linkUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="link-card-social"
-                    onClick={() => handleClickSubmit(link._id)}
-                  >
-                    {matchedPlatform && (
+                      <img
+                        src={defaultConfig?.imagePath + link.linkLogo}
+                        alt={link.linkTitle}
+                        className='link-logo-model'
+                      />
                       <span
-                        className="social-icons"
+                        className='link-card-title'
                         style={{
                           fontFamily: userInfo?.theme?.fontFamily,
-                          color: userInfo?.theme?.fontColor || "white",
-                          gap: 0,
+                          color: userInfo?.theme?.fontColor || 'white'
                         }}
                       >
-                        {matchedPlatform.icon}
+                        {link.linkTitle}
                       </span>
+                    </a>
+
+                    {/* YouTube Video */}
+                    {getYouTubeEmbedUrl(link?.video?.videoLink || '') && (
+                      <div className='video-container-model'>
+                        <iframe
+                          src={
+                            getYouTubeEmbedUrl(link?.video?.videoLink || '') ||
+                            ''
+                          }
+                          frameBorder='0'
+                          allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+                          allowFullScreen
+                          style={{
+                            width: '100%',
+                            height: 'auto',
+                            aspectRatio: '16/9',
+                            borderRadius: '8px',
+                            maxWidth: '100%'
+                          }}
+                        />
+                      </div>
                     )}
-                  </a>
-                );
-              })}
+
+                    {/* Product Carousel */}
+                    {link?.LinkCategoryId && link.LinkCategoryId.length > 0 && (
+                      <div className='carousel-container-model'>
+                        <ProductCarousel
+                          products={link.LinkCategoryId}
+                          userInfo={userInfo}
+                        />
+                      </div>
+                    )}
+                  </div>
+                ))}
+            </div>
+
+            <div className='spcial-links-list d-flex justify-content-center gap-2'
+            style={{ marginBottom: '20px' }}>
+              {Array.isArray(newUserData?.social) &&
+                newUserData?.social.map(link => {
+                  const matchedPlatform = socialPlatforms.find(
+                    platform =>
+                      platform.label.toLowerCase() ===
+                      link.linkTitle.toLowerCase()
+                  )
+                  return (
+                    <a
+                      key={link._id}
+                      href={link.linkUrl}
+                      target='_blank'
+                      rel='noopener noreferrer'
+                      className='link-card-social'
+                      onClick={() => handleClickSubmit(link._id)}
+                    >
+                      {matchedPlatform && (
+                        <span
+                          className='social-icons'
+                          style={{
+                            fontFamily: userInfo?.theme?.fontFamily,
+                            color: userInfo?.theme?.fontColor || 'white',
+                            gap: 0
+                          }}
+                        >
+                          {matchedPlatform.icon}
+                        </span>
+                      )}
+                    </a>
+                  )
+                })}
             </div>
           </div>
         </div>
       </section>
     </>
-  );
-};
+  )
+}

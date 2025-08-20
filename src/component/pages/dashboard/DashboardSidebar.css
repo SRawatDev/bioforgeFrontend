@@ -385,13 +385,11 @@
   padding: 18px 84px 15px 18px;
 }
 .drop_menu{
-  padding: 2px 2px 2px 2px;
+  padding: 2px 0px 12px 2px;
 }
 .drop_menu:hover {
   cursor: pointer;
-  transform: translateX(4px);
 }
-
 
 .collapse-toggle {
   position: absolute;

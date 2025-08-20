@@ -314,17 +314,18 @@ export const LinksAddEdit: React.FC<Props> = ({
       ErrorMessage('Please upload custom logo')
       return
     }
+  
 
     const submitLink = { ...link }
     
-    if (submitLink.videoId === '') {
-      delete submitLink.videoId
+    if (link.videoId === '') {
+      delete link.videoId
     }
-    if (submitLink.type === 'social') {
-      submitLink.linkLogo = ''
+    if (link.type === 'social') {
+      link.linkLogo = ''
     }
-    if (submitLink.LinkCategoryId?.length === 0) {
-      delete submitLink.LinkCategoryId
+    if (link.LinkCategoryId?.length === 0) {
+      delete link.LinkCategoryId
     }
 
     setLoader(true)
@@ -575,6 +576,7 @@ export const LinksAddEdit: React.FC<Props> = ({
                       onChange={handleChange}
                       className='select-field'
                       style={{ borderRadius: '10px', padding: '10px' }}
+                      
                     >
                       <option key={''} value={''}>
                         select
@@ -618,7 +620,7 @@ export const LinksAddEdit: React.FC<Props> = ({
                         </label>
                       ))}
                     </div>
-                    {/* Display selected products */}
+
                     {link.LinkCategoryId && link.LinkCategoryId.length > 0 && (
                       <div className='selected-products'>
                         <label className='form-label'>Selected Products:</label>
